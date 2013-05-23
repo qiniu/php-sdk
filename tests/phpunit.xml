@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./bootstrap.php" colors="true">
+    <testsuites>
+        
+        <testsuite name="Rs">
+            <directory suffix=".php">./qiniu/Tests/Rs</directory>
+        </testsuite>
+        
+        <testsuite name="Fop">
+        	<directory suffix=".php">./qiniu/Tests/Fop</directory>
+        </testsuite>
+        
+        <testsuite name="Io">
+        	<directory suffix=".php">./qiniu/Tests/Io</directory>
+        </testsuite>
+        
+        <testsuite name="AuthToken">
+        	<directory suffix=".php">./qiniu/Tests/AuthToken</directory>
+        </testsuite>
+        
+        <testsuite name="Rpc">
+        	<directory suffix=".php">./qiniu/Tests/Rpc</directory>
+        </testsuite>
+        
+    </testsuites>
+	<php>
+		<const name="BUCKET_NAME" value="php_sdk_test_bucket" />
+		<const name="KEY_NAME" value="php_sdk_test_key" />
+	</php>
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./Tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
