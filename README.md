@@ -1,4 +1,4 @@
-# Qiniu Resource (Cloud) Storage SDK for PHP
+# Qiniu Resource Storage SDK for PHP
 
 [![Build Status](https://api.travis-ci.org/qiniu/php-sdk.png?branch=master)](https://travis-ci.org/qiniu/php-sdk)
 
