@@ -18,10 +18,15 @@ class AuthDigestTest extends PHPUnit_Framework_TestCase
 
 	public function testSetKeys()
 	{
-		Qiniu_SetKeys("abc", "def");
 		$mac = Qiniu_RequireMac(null);
-		$this->assertEquals($mac->AccessKey, "abc");
-		$this->assertEquals($mac->SecretKey, "def");
+		$this->assertTrue(!empty($mac->AccessKey) && !empty($mac->SecretKey), 'please provide keys');
+
+		Qiniu_SetKeys('abc', 'def');
+		$mac = Qiniu_RequireMac(null);
+		$this->assertEquals($mac->AccessKey, 'abc');
+		$this->assertEquals($mac->SecretKey, 'def');
+
+		Qiniu_SetKeys($mac->AccessKey, $mac->SecretKey);
 	}
 }
 
