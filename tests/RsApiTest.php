@@ -31,9 +31,9 @@ class RsApiTest extends PHPUnit_Framework_TestCase
 		$this->rs->delete($this->bucket, $this->key2);
 		$this->rs->delete($this->bucket, $this->key3);
 
-		list($ret, $err) = $this->rs->copy($this->bucket, $this->key1, $this->bucket, $this->key2);
+		$err = $this->rs->copy($this->bucket, $this->key1, $this->bucket, $this->key2);
 		$this->assertNull($err);
-		list($ret, $err) = $this->rs->move($this->bucket, $this->key2, $this->bucket, $this->key3);
+		$err = $this->rs->move($this->bucket, $this->key2, $this->bucket, $this->key3);
 		$this->assertNull($err);
 		$err = $this->rs->delete($this->bucket, $this->key3);
 		$this->assertNull($err);
@@ -43,7 +43,7 @@ class RsApiTest extends PHPUnit_Framework_TestCase
 
 	public function testBatchStat()
 	{
-		$entries = array(new EntryPath($this->bucket, $this->key1), new EntryPath($this->bucket, $this->key2));
+		$entries = array(new Qiniu_RS_EntryPath($this->bucket, $this->key1), new Qiniu_RS_EntryPath($this->bucket, $this->key2));
 		list($ret, $err) = $this->rs->batchStat($entries);
 		$this->assertNotNull($err);
 		error_log(print_r($ret, true));
@@ -53,19 +53,19 @@ class RsApiTest extends PHPUnit_Framework_TestCase
 
 	public function testBatchDeleteMoveCopy()
 	{
-		$e1 = new EntryPath($this->bucket, $this->key1);
-		$e2 = new EntryPath($this->bucket, $this->key2);
-		$e3 = new EntryPath($this->bucket, $this->key3);
-		$e4 = new EntryPath($this->bucket, $this->key4);
+		$e1 = new Qiniu_RS_EntryPath($this->bucket, $this->key1);
+		$e2 = new Qiniu_RS_EntryPath($this->bucket, $this->key2);
+		$e3 = new Qiniu_RS_EntryPath($this->bucket, $this->key3);
+		$e4 = new Qiniu_RS_EntryPath($this->bucket, $this->key4);
 		$this->rs->batchDelete(array($e2, $e3,$e4));
 
-		$entryPairs = array(new EntryPathPair($e1, $e2), new EntryPathPair($e1, $e3));
+		$entryPairs = array(new Qiniu_RS_EntryPathPair($e1, $e2), new Qiniu_RS_EntryPathPair($e1, $e3));
 		list($ret, $err) = $this->rs->batchCopy($entryPairs);
 		$this->assertNull($err);
 		$this->assertEquals($ret[0]['code'], 200);
 		$this->assertEquals($ret[0]['code'], 200);
 
-		list($ret, $err) = $this->rs->batchMove(array(new EntryPathPair($e2, $e4)));
+		list($ret, $err) = $this->rs->batchMove(array(new Qiniu_RS_EntryPathPair($e2, $e4)));
 		$this->assertNull($err);
 		$this->assertEquals($ret[0]['code'], 200);
 

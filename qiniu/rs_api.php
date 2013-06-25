@@ -100,7 +100,7 @@ class Qiniu_RS_Client
 // ----------------------------------------------------------
 // class Qiniu_RS_EntryPath
 
-class EntryPath
+class Qiniu_RS_EntryPath
 {
 	public $bucket;
 	public $key;
@@ -111,7 +111,7 @@ class EntryPath
 	}
 }
 
-class EntryPathPair
+class Qiniu_RS_EntryPathPair
 {
 	public $src;
 	public $dest;
