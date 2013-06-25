@@ -31,6 +31,7 @@ class Qiniu_Mac {
 	public function SignRequest($req, $incbody) // => ($token, $error)
 	{
 		$url = $req->URL;
+		$url = parse_url($url['path']);
 		$data = $url['path'];
 		if (isset($url['query'])) {
 			$data .= '?' . $url['query'];
@@ -40,7 +41,6 @@ class Qiniu_Mac {
 		if ($incbody) {
 			$data .= $req->Body;
 		}
-
 		return $this->Sign($data);
 	}
 }
