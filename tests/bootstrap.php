@@ -1,7 +1,6 @@
 <?php
 
 require_once("../qiniu/rs.php");
-require_once("../qiniu/rs_api.php");
 require_once("../qiniu/rsf.php");
 
 $accessKey = getenv("QINIU_ACCESS_KEY");

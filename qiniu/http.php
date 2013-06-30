@@ -211,7 +211,7 @@ function Qiniu_Client_CallNoRet($self, $url) // => $error
 	return Qiniu_ResponseError($resp);
 }
 
-function Qiniu_Client_CallWithForm($self, $url, $params) // => $error
+function Qiniu_Client_CallWithForm($self, $url, $params) // => ($data, $error)
 {
 	$u = array('path' => $url);
 	if (is_array($params)) {
