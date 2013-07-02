@@ -11,7 +11,7 @@ if (!empty($accessKey) && !empty($secretKey)) {
 }
 
 $tid = getenv("TRAVIS_JOB_NUMBER");
-if !empty($tid) {
+if (!empty($tid)) {
 	$tid = strstr($tid, ".");
 }
 
