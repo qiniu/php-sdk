@@ -1,16 +1,17 @@
 <?php
 
-require("bootstrap.php");
+require_once("bootstrap.php");
 
 class RsTest extends PHPUnit_Framework_TestCase
 {
 	public $client;
 	public $bucket;
 	public $key;
-	public $notExistKey = "not_exist";
+	public $notExistKey = 'not_exist';
 
 	public function setUp()
 	{
+		initKeys();
 		$this->client = new Qiniu_MacHttpClient(null);
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
 		$this->key = getenv("QINIU_KEY_NAME");
@@ -28,8 +29,8 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testDeleteMoveCopy()
 	{
-		$key2 = rand();
-		$key3 = rand();
+		$key2 = 'testOp2' . getTid();
+		$key3 = 'testOp3' . getTid();
 		Qiniu_RS_Delete($this->client, $this->bucket, $key2);
 		Qiniu_RS_Delete($this->client, $this->bucket, $key3);
 

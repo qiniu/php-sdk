@@ -156,17 +156,17 @@ class Qiniu_HttpClient
 
 class Qiniu_MacHttpClient
 {
-	private $mac;
+	public $Mac;
 
 	public function __construct($mac)
 	{
-		$this->mac = Qiniu_RequireMac($mac);
+		$this->Mac = Qiniu_RequireMac($mac);
 	}
 
 	public function RoundTrip($req) // => ($resp, $error)
 	{
 		$incbody = Qiniu_Client_incBody($req);
-		$token = $this->mac->SignRequest($req, $incbody);
+		$token = $this->Mac->SignRequest($req, $incbody);
 		$req->Header['Authorization'] = "QBox $token";
 		return Qiniu_Client_do($req);
 	}

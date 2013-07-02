@@ -2,7 +2,7 @@
 
 require_once("bootstrap.php");
 
-class IoTest extends PHPUnit_Framework_TestCase
+class RsUtilsTest extends PHPUnit_Framework_TestCase
 {
 	public $bucket;
 	public $client;
@@ -19,11 +19,9 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$key = 'testPutFile' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
-		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
-		$upToken = $putPolicy->Token(null);
 		$putExtra = new Qiniu_PutExtra();
 		$putExtra->CheckCrc = 1;
-		list($ret, $err) = Qiniu_PutFile($upToken, $key, __file__, $putExtra);
+		list($ret, $err) = Qiniu_RS_PutFile($this->client, $this->bucket, $key, __file__, $putExtra);
 		$this->assertNull($err);
 		$this->assertArrayHasKey('hash', $ret);
 		var_dump($ret);
@@ -41,9 +39,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$key = 'testPut' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
-		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
-		$upToken = $putPolicy->Token(null);
-		list($ret, $err) = Qiniu_Put($upToken, $key, "hello world!", null);
+		list($ret, $err) = Qiniu_RS_Put($this->client, $this->bucket, $key, "hello world!", null);
 		$this->assertNull($err);
 		$this->assertArrayHasKey('hash', $ret);
 		var_dump($ret);

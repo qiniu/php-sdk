@@ -57,11 +57,10 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($data, $err
 	if ($putExtra->CheckCrc) {
 		if ($putExtra->CheckCrc === 1) {
 			$hash = hash_file('crc32b', $localFile);
-			$crc32 = unpack('N', pack('H*', $hash));
-			$fields['crc32'] = $crc32[1];
-		} else {
-			$fields['crc32'] = $putExtra->Crc32;
+			$array = unpack('N', pack('H*', $hash));
+			$putExtra->Crc32 = $array[1];
 		}
+		$fields['crc32'] = sprintf('%u', $putExtra->Crc32);
 	}
 
 	$client = new Qiniu_HttpClient;
