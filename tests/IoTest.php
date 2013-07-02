@@ -23,8 +23,13 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$putExtra = new Qiniu_PutExtra();
 		$putExtra->CheckCrc = 1;
 		list($ret, $err) = Qiniu_PutFile($upToken, $key, __file__, $putExtra);
-		$this->assertArrayHasKey('hash', $ret);
 		$this->assertNull($err);
+		$this->assertArrayHasKey('hash', $ret);
+		var_dump($ret);
+
+		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
+		$this->assertNull($err);
+		var_dump($ret);
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
@@ -38,8 +43,8 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
 		$upToken = $putPolicy->Token(null);
 		list($ret, $err) = Qiniu_Put($upToken, $key, "hello world!", null);
-		$this->assertArrayHasKey('hash', $ret);
 		$this->assertNull($err);
+		$this->assertArrayHasKey('hash', $ret);
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
