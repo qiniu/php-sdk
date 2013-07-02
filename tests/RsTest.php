@@ -6,21 +6,19 @@ class RsTest extends PHPUnit_Framework_TestCase
 {
 	public $client;
 	public $bucket;
+	public $key;
 	public $notExistKey = "not_exist";
-	public $key1;
-	public $key2 = "file_name_2";
-	public $key3 = "file_name_3";
-	public $key4 = "file_name_4";
+
 	public function setUp()
 	{
 		$this->client = new Qiniu_Client(null);
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
-		$this->key1 = getenv("QINIU_KEY_NAME");
+		$this->key = getenv("QINIU_KEY_NAME");
 	}
 
 	public function testStat()
 	{
-		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $this->key1);
+		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $this->key);
 		$this->assertArrayHasKey('hash', $ret);
 		$this->assertNull($err);
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $this->notExistKey);
@@ -30,22 +28,26 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testDeleteMoveCopy()
 	{
-		Qiniu_RS_Delete($this->client, $this->bucket, $this->key2);
-		Qiniu_RS_Delete($this->client, $this->bucket, $this->key3);
+		$key2 = rand();
+		$key3 = rand();
+		Qiniu_RS_Delete($this->client, $this->bucket, $key2);
+		Qiniu_RS_Delete($this->client, $this->bucket, $key3);
 
-		$err = Qiniu_RS_Copy($this->client, $this->bucket, $this->key1, $this->bucket, $this->key2);
+		$err = Qiniu_RS_Copy($this->client, $this->bucket, $this->key, $this->bucket, $key2);
 		$this->assertNull($err);
-		$err = Qiniu_RS_Move($this->client, $this->bucket, $this->key2, $this->bucket, $this->key3);
+		$err = Qiniu_RS_Move($this->client, $this->bucket, $key2, $this->bucket, $key3);
 		$this->assertNull($err);
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $this->key3);
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key3);
 		$this->assertNull($err);
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $this->key2);
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key2);
 		$this->assertNotNull($err, "delete key2 false");
 	}
 
 	public function testBatchStat()
 	{
-		$entries = array(new Qiniu_RS_EntryPath($this->bucket, $this->key1), new Qiniu_RS_EntryPath($this->bucket, $this->key2));
+		$key2 = rand();
+		Qiniu_RS_Delete($this->client, $this->bucket, $key2);
+		$entries = array(new Qiniu_RS_EntryPath($this->bucket, $this->key), new Qiniu_RS_EntryPath($this->bucket, $key2));
 		list($ret, $err) = Qiniu_RS_BatchStat($this->client, $entries);
 		$this->assertNotNull($err);
 		$this->assertEquals($ret[0]['code'], 200);
@@ -54,10 +56,13 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testBatchDeleteMoveCopy()
 	{
-		$e1 = new Qiniu_RS_EntryPath($this->bucket, $this->key1);
-		$e2 = new Qiniu_RS_EntryPath($this->bucket, $this->key2);
-		$e3 = new Qiniu_RS_EntryPath($this->bucket, $this->key3);
-		$e4 = new Qiniu_RS_EntryPath($this->bucket, $this->key4);
+		$key2 = rand();
+		$key3 = rand();
+		$key4 = rand();
+		$e1 = new Qiniu_RS_EntryPath($this->bucket, $this->key);
+		$e2 = new Qiniu_RS_EntryPath($this->bucket, $key2);
+		$e3 = new Qiniu_RS_EntryPath($this->bucket, $key3);
+		$e4 = new Qiniu_RS_EntryPath($this->bucket, $key4);
 		Qiniu_RS_BatchDelete($this->client, array($e2, $e3,$e4));
 
 		$entryPairs = array(new Qiniu_RS_EntryPathPair($e1, $e2), new Qiniu_RS_EntryPathPair($e1, $e3));

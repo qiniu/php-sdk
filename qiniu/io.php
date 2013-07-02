@@ -23,6 +23,9 @@ class Qiniu_PutExtra
 function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($data, $err)
 {
 	global $QINIU_UP_HOST;
+	if ($key == null) {
+		$key = UNDEFINED_KEY;
+	}
 	$fields = array('key' => $key, 'token' => $upToken);
 
 	if ( $putExtra->CheckCrc == AUTO_CRC32 || $putExtra->CheckCrc == WITH_CRC32 ) {
@@ -37,6 +40,9 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($data, $err)
 function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($data, $err)
 {
 	global $QINIU_UP_HOST;
+	if ($key == null) {
+		$key = UNDEFINED_KEY;
+	}
 	$fields = array('key' => $key, 'token' => $upToken, 'file' => '@' . $localFile);
 
 	if ( $putExtra->CheckCrc == AUTO_CRC32 ) {
