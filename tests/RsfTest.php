@@ -5,11 +5,12 @@ require("bootstrap.php");
 class RsfTest extends PHPUnit_Framework_TestCase
 {
 	public $rsf;
-	public $bucket = BUCKET_NAME;
+	public $bucket;
 
 	public function setUp()
 	{
 		$this->rsf = new Qiniu_RSF_Client(null);
+		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
 
 	public function testRsf()

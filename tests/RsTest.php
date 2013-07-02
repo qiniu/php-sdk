@@ -5,15 +5,17 @@ require("bootstrap.php");
 class RsApiTest extends PHPUnit_Framework_TestCase
 {
 	public $client;
-	public $bucket = BUCKET_NAME;
+	public $bucket;
 	public $notExistKey = "not_exist";
-	public $key1 = KEY_NAME;
+	public $key1;
 	public $key2 = "file_name_2";
 	public $key3 = "file_name_3";
 	public $key4 = "file_name_4";
 	public function setUp()
 	{
 		$this->client = new Qiniu_Client(null);
+		$this->bucket = getenv("QINIU_BUCKET_NAME");
+		$this->key1 = getenv("QINIU_KEY_NAME");
 	}
 
 	public function testStat()

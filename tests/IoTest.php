@@ -4,13 +4,14 @@ require("bootstrap.php");
 
 class IoTest extends PHPUnit_Framework_TestCase
 {
-	public $bucket = BUCKET_NAME;
+	public $bucket;
 	public $key = "iotest";
 	public $client;
 
 	public function setUp()
 	{
 		$this->client = new Qiniu_Client(null);
+		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
 
 	public function testPutFile()
