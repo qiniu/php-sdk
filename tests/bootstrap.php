@@ -1,7 +1,6 @@
 <?php
 
 require_once("../qiniu/rs.php");
-require_once("../qiniu/rsf.php");
 require_once("../qiniu/io.php");
 require_once("../qiniu/fop.php");
 

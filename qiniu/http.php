@@ -129,7 +129,6 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$body = $req->Body;
 	if (!empty($body)) {
 		$options[CURLOPT_POSTFIELDS] = $body;
-		//$options[CURLOPT_POSTFIELDSIZE] = strlen($body);
 	}
 	curl_setopt_array($ch, $options);
 	$result = curl_exec($ch);
@@ -147,7 +146,15 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	return array($resp, null);
 }
 
-class Qiniu_Client
+class Qiniu_HttpClient
+{
+	public function RoundTrip($req) // => ($resp, $error)
+	{
+		return Qiniu_Client_do($req);
+	}
+}
+
+class Qiniu_MacHttpClient
 {
 	private $mac;
 
@@ -156,7 +163,7 @@ class Qiniu_Client
 		$this->mac = Qiniu_RequireMac($mac);
 	}
 
-	public function Exec($req) // => ($resp, $error)
+	public function RoundTrip($req) // => ($resp, $error)
 	{
 		$incbody = Qiniu_Client_incBody($req);
 		$token = $this->mac->SignRequest($req, $incbody);
@@ -190,7 +197,7 @@ function Qiniu_Client_Call($self, $url) // => ($data, $error)
 {
 	$u = array('path' => $url);
 	$req = new Qiniu_Request($u, null);
-	list($resp, $err) = $self->Exec($req);
+	list($resp, $err) = $self->RoundTrip($req);
 	if ($err !== null) {
 		return array(null, $err);
 	}
@@ -201,7 +208,7 @@ function Qiniu_Client_CallNoRet($self, $url) // => $error
 {
 	$u = array('path' => $url);
 	$req = new Qiniu_Request($u, null);
-	list($resp, $err) = $self->Exec($req);
+	list($resp, $err) = $self->RoundTrip($req);
 	if ($err !== null) {
 		return array(null, $err);
 	}
@@ -211,41 +218,39 @@ function Qiniu_Client_CallNoRet($self, $url) // => $error
 	return Qiniu_ResponseError($resp);
 }
 
-function Qiniu_Client_CallWithForm($self, $url, $params, $contentType = 'application/x-www-form-urlencoded') // => ($data, $error)
+function Qiniu_Client_CallWithForm(
+	$self, $url, $params, $contentType = 'application/x-www-form-urlencoded') // => ($data, $error)
 {
 	$u = array('path' => $url);
-	if ($contentType === 'application/x-www-form-urlencoded' && is_array($params)) {
-		$params = http_build_query($params);
+	if ($contentType === 'application/x-www-form-urlencoded') {
+		if (is_array($params)) {
+			$params = http_build_query($params);
+		}
 	}
 	$req = new Qiniu_Request($u, $params);
-	$req->Header['Content-Type'] = $contentType;
-	list($resp, $err) = $self->Exec($req);
+	if ($contentType !== 'multipart/form-data') {
+		$req->Header['Content-Type'] = $contentType;
+	}
+	list($resp, $err) = $self->RoundTrip($req);
 	if ($err !== null) {
 		return array(null, $err);
 	}
 	return Qiniu_Client_ret($resp);
 }
 
-function Qiniu_Client_CallWithMultiPart($self, $url, $fields, $files)
+// --------------------------------------------------------------------------------
+
+function Qiniu_Client_CallWithMultipartForm($self, $url, $fields, $files)
 {
-	list($contentType, $body) = Qiniu_Encode_MultiPart_Form($fields, $files);
+	list($contentType, $body) = Qiniu_Build_MultipartForm($fields, $files);
 	return Qiniu_Client_CallWithForm($self, $url, $body, $contentType);
 }
 
-// --------------------------------------------------------------------------------
-
-function Qiniu_Encode_MultiPart_Form($fields, $files) // => ($contentType, $body)
+function Qiniu_Build_MultipartForm($fields, $files) // => ($contentType, $body)
 {
-	$eol = "\r\n";
 	$data = array();
-	if ($fields == '') {
-		$fields = array();
-	}
-	if ($files == '') {
-		$files = array();
-	}
+	$mimeBoundary = md5(microtime());
 
-	$mimeBoundary = md5(time());
 	foreach ($fields as $name => $val){
 		array_push($data, '--' . $mimeBoundary);
 		array_push($data, "Content-Disposition: form-data; name=$name");
@@ -265,8 +270,10 @@ function Qiniu_Encode_MultiPart_Form($fields, $files) // => ($contentType, $body
 	array_push($data, '--' . $mimeBoundary);
 	array_push($data, '');
 
-	$body = implode($eol, $data);
+	$body = implode("\r\n", $data);
 	$contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
 	return array($contentType, $body);
 }
+
+// --------------------------------------------------------------------------------
 
