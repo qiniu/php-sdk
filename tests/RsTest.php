@@ -7,7 +7,7 @@ class RsTest extends PHPUnit_Framework_TestCase
 	public $client;
 	public $bucket;
 	public $key;
-	public $notExistKey = "not_exist";
+	public $notExistKey = 'not_exist';
 
 	public function setUp()
 	{
@@ -28,8 +28,8 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testDeleteMoveCopy()
 	{
-		$key2 = rand();
-		$key3 = rand();
+		$key2 = 'testOp2' . $tid;
+		$key3 = 'testOp3' . $tid;
 		Qiniu_RS_Delete($this->client, $this->bucket, $key2);
 		Qiniu_RS_Delete($this->client, $this->bucket, $key3);
 
