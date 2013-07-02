@@ -8,7 +8,7 @@ require_once("auth_digest.php");
 class Qiniu_Error
 {
 	public $Err;	 // string
-	public $Reqid;	 // string 
+	public $Reqid;	 // string
 	public $Details; // []string
 	public $Code;	 // int
 
@@ -48,7 +48,7 @@ class Qiniu_Response
 
 	public function __construct($code, $body)
 	{
-		$this->StatusCode = code;
+		$this->StatusCode = $code;
 		$this->Header = array();
 		$this->Body = $body;
 		$this->ContentLength = strlen($body);
@@ -62,7 +62,7 @@ function Qiniu_Header_Get($header, $key) // => $val
 {
 	$val = @$header[$key];
 	if (isset($val)) {
-		if (isarray($val)) {
+		if (is_array($val)) {
 			return $val[0];
 		}
 		return $val;
@@ -117,10 +117,19 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 		CURLOPT_CUSTOMREQUEST  => 'POST',
 		CURLOPT_URL => $url['path']
 	);
+	$httpHeader = $req->Header;
+	if (!empty($httpHeader))
+	{
+		$header = array();
+		foreach($httpHeader as $key => $parsedUrlValue) {
+			$header[] = "$key: $parsedUrlValue";
+		}
+		$options[CURLOPT_HTTPHEADER] = $header;
+	}
 	$body = $req->Body;
 	if (!empty($body)) {
 		$options[CURLOPT_POSTFIELDS] = $body;
-		$options[CURLOPT_POSTFIELDSIZE] = strlen($body);
+		//$options[CURLOPT_POSTFIELDSIZE] = strlen($body);
 	}
 	curl_setopt_array($ch, $options);
 	$result = curl_exec($ch);
@@ -161,6 +170,7 @@ class Qiniu_Client
 function Qiniu_Client_ret($resp) // => ($data, $error)
 {
 	$code = $resp->StatusCode;
+	$data = null;
 	if ($code >= 200 && $code <= 299) {
 		if ($resp->ContentLength !== 0) {
 			$data = json_decode($resp->Body, true);
@@ -201,5 +211,62 @@ function Qiniu_Client_CallNoRet($self, $url) // => $error
 	return Qiniu_ResponseError($resp);
 }
 
+function Qiniu_Client_CallWithForm($self, $url, $params, $contentType = 'application/x-www-form-urlencoded') // => ($data, $error)
+{
+	$u = array('path' => $url);
+	if ($contentType === 'application/x-www-form-urlencoded' && is_array($params)) {
+		$params = http_build_query($params);
+	}
+	$req = new Qiniu_Request($u, $params);
+	$req->Header['Content-Type'] = $contentType;
+	list($resp, $err) = $self->Exec($req);
+	if ($err !== null) {
+		return array(null, $err);
+	}
+	return Qiniu_Client_ret($resp);
+}
+
+function Qiniu_Client_CallWithMultiPart($self, $url, $fields, $files)
+{
+	list($contentType, $body) = Qiniu_Encode_MultiPart_Form($fields, $files);
+	return Qiniu_Client_CallWithForm($self, $url, $body, $contentType);
+}
+
 // --------------------------------------------------------------------------------
+
+function Qiniu_Encode_MultiPart_Form($fields, $files) // => ($contentType, $body)
+{
+	$eol = "\r\n";
+	$data = array();
+	if ($fields == '') {
+		$fields = array();
+	}
+	if ($files == '') {
+		$files = array();
+	}
+
+	$mimeBoundary = md5(time());
+	foreach ($fields as $name => $val){
+		array_push($data, '--' . $mimeBoundary);
+		array_push($data, "Content-Disposition: form-data; name=$name");
+		array_push($data, '');
+		array_push($data, $val);
+	}
+
+	foreach ($files as $file) {
+		array_push($data, '--' . $mimeBoundary);
+		list($name, $fileName, $fileCxt) = $file;
+		array_push($data, "Content-Disposition: form-data; name=$name; filename=$fileName");
+		array_push($data, 'Content-Type: application/octet-stream');
+		array_push($data, '');
+		array_push($data, $fileCxt);
+	}
+
+	array_push($data, '--' . $mimeBoundary);
+	array_push($data, '');
+
+	$body = implode($eol, $data);
+	$contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
+	return array($contentType, $body);
+}
 
