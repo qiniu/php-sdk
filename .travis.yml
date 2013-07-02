@@ -4,8 +4,8 @@ php:
   - 5.3
   - 5.4
 before_script:
-  - export QINIU_ACCESS_KEY="iN7NgwM31j4-BZacMjPrOQBs34UG1maYCAQmhdCV"
-  - export QINIU_SECRET_KEY="6QTOr2Jg1gcZEWDQXKOGZh5PziC2MCV5KsntT70j"
+  - export QINIU_ACCESS_KEY="Vhiv6a22kVN_zhtetbPNeG9sY3JUL1HG597EmBwQ"
+  - export QINIU_SECRET_KEY="b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD"
 script:
   - cd tests; phpunit .
 

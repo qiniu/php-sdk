@@ -32,7 +32,10 @@ class Qiniu_Mac {
 	{
 		$url = $req->URL;
 		$url = parse_url($url['path']);
-		$data = $url['path'];
+		$data = '';
+		if (isset($url['path'])) {
+			$data = $url['path'];
+		}
 		if (isset($url['query'])) {
 			$data .= '?' . $url['query'];
 		}

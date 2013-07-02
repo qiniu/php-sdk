@@ -50,6 +50,11 @@ class Qiniu_RS_PutPolicy
 	public $EndUser;
 	public $Expires;
 
+	public function __construct($scope)
+	{
+		$this->Scope = $scope;
+	}
+
 	public function Token($mac) // => $token
 	{
 		$deadline = $this->Expires;
