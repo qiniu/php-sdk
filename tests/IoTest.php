@@ -9,6 +9,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
+		initKeys();
 		$this->client = new Qiniu_MacHttpClient(null);
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
