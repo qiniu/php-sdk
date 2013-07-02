@@ -15,3 +15,7 @@ if (!empty($tid)) {
 	$tid = strstr($tid, ".");
 }
 
+function getTid() {
+	return $tid;
+}
+

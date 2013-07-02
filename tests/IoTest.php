@@ -15,7 +15,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 
 	public function testPutFile()
 	{
-		$key = 'testPutFile' . $tid;
+		$key = 'testPutFile' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
@@ -37,7 +37,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 
 	public function testPut()
 	{
-		$key = 'testPut' . $tid;
+		$key = 'testPut' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);

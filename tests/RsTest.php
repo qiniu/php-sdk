@@ -28,8 +28,8 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testDeleteMoveCopy()
 	{
-		$key2 = 'testOp2' . $tid;
-		$key3 = 'testOp3' . $tid;
+		$key2 = 'testOp2' . getTid();
+		$key3 = 'testOp3' . getTid();
 		Qiniu_RS_Delete($this->client, $this->bucket, $key2);
 		Qiniu_RS_Delete($this->client, $this->bucket, $key3);
 

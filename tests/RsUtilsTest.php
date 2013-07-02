@@ -15,7 +15,7 @@ class RsUtilsTest extends PHPUnit_Framework_TestCase
 
 	public function testPutFile()
 	{
-		$key = 'testPutFile' . $tid;
+		$key = 'testPutFile' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
 		$putExtra = new Qiniu_PutExtra();
@@ -35,7 +35,7 @@ class RsUtilsTest extends PHPUnit_Framework_TestCase
 
 	public function testPut()
 	{
-		$key = 'testPut' . $tid;
+		$key = 'testPut' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
 		list($ret, $err) = Qiniu_RS_Put($this->client, $this->bucket, $key, "hello world!", null);
