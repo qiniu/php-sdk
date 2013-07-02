@@ -2,7 +2,7 @@
 
 require("bootstrap.php");
 
-class RsApiTest extends PHPUnit_Framework_TestCase
+class RsTest extends PHPUnit_Framework_TestCase
 {
 	public $client;
 	public $bucket;

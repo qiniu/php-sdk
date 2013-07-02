@@ -6,7 +6,7 @@ php:
 before_script:
   - export QINIU_ACCESS_KEY="Vhiv6a22kVN_zhtetbPNeG9sY3JUL1HG597EmBwQ"
   - export QINIU_SECRET_KEY="b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD"
-  - export QINIU_BUCKET_NAME="php_sdk_test_bucket"
+  - export QINIU_BUCKET_NAME="phpsdk"
   - export QINIU_KEY_NAME="file_name"
 script:
   - cd tests; phpunit .

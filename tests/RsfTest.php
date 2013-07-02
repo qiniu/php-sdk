@@ -23,8 +23,8 @@ class RsfTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($err);
 		$this->assertArrayHasKey('marker', $ret);
 
-		list($ret, $err) = $this->rsf->ListPrefix($this->bucket, "file", $ret['marker'], 2);
-		$this->assertNull($err);
+		list($ret, $err) = $this->rsf->ListPrefix($this->bucket, "file", $ret['marker'], 1);
+		$this->assertEquals($err, 'EOF');
 	}
 
 }
