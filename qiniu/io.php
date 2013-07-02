@@ -24,10 +24,10 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($data, $err)
 
 	$fields = array('token' => $upToken);
 	if ($key === null) {
-		$fields['key'] = $key;
 		$fname = '?';
 	} else {
 		$fname = $key;
+		$fields['key'] = $key;
 	}
 	if ($putExtra->CheckCrc) {
 		$fields['crc32'] = $putExtra->Crc32;
@@ -49,10 +49,10 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($data, $err
 
 	$fields = array('token' => $upToken, 'file' => '@' . $localFile);
 	if ($key === null) {
-		$fields['key'] = $key;
 		$fname = '?';
 	} else {
 		$fname = $key;
+		$fields['key'] = $key;
 	}
 	if ($putExtra->CheckCrc) {
 		if ($putExtra->CheckCrc === 1) {
