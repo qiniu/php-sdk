@@ -1,6 +1,6 @@
 <?php
 
-require("bootstrap.php");
+require_once("bootstrap.php");
 
 class IoTest extends PHPUnit_Framework_TestCase
 {

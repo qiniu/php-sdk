@@ -1,6 +1,6 @@
 <?php
 
-require("bootstrap.php");
+require_once("bootstrap.php");
 
 class RsTest extends PHPUnit_Framework_TestCase
 {

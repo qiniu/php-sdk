@@ -16,6 +16,7 @@ if (!empty($tid)) {
 }
 
 function getTid() {
+	global $tid;
 	return $tid;
 }
 
