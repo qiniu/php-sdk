@@ -1,11 +1,10 @@
 <?php
 
-require_once('bootstrap.php');
+require_once("bootstrap.php");
 
 class FopTest extends PHPUnit_Framework_TestCase
 {
-
-	public	$url = 'http://phpsdk.qiniudn.com/f22.jpeg';
+	public $url = 'http://phpsdk.qiniudn.com/f22.jpeg';
 
 	public function testImageView()
 	{
