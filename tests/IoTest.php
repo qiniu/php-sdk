@@ -45,8 +45,14 @@ class IoTest extends PHPUnit_Framework_TestCase
 		list($ret, $err) = Qiniu_Put($upToken, $key, "hello world!", null);
 		$this->assertNull($err);
 		$this->assertArrayHasKey('hash', $ret);
+		var_dump($ret);
+
+		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
+		$this->assertNull($err);
+		var_dump($ret);
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
 	}
 }
+
