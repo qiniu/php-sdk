@@ -1,7 +1,6 @@
 <?php
 
 require_once("http.php");
-require_once("auth_digest.php");
 
 // ----------------------------------------------------------
 // class Qiniu_RSF_Client
@@ -35,8 +34,6 @@ class Qiniu_RSF_Client
 		}
 
 		$url =  $QINIU_RSF_HOST . "/list?" . http_build_query($query);
-		echo $url;
-		var_dump($this->Conn);
 		list($ret, $err) = Qiniu_Client_Call($this->Conn, $url);
 		if (!isset($ret['marker'])) {
 			$err = new Qiniu_Error(400, 'EOF');
