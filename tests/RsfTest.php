@@ -10,7 +10,7 @@ class RsfTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		initKeys();
-		$this->client = new Qiniu_RSF_Client(null);
+		$this->client = new Qiniu_MacHttpClient(null);
 		$this->bucket = getenv('QINIU_BUCKET_NAME');
 		$this->key = getenv('QINIU_KEY_NAME');
 	}
@@ -18,13 +18,14 @@ class RsfTest extends PHPUnit_Framework_TestCase
 	public function testListPrefix()
 	{
 		echo $this->bucket;
-		list($ret, $err) = $this->client->ListPrefix($this->bucket, null, null, null);
+		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket, null, null, null);
 		$this->assertEquals($err->Err, 'EOF');
+		$this->assertEquals($markerOut, '');
 
-		list($ret, $err) = $this->client->ListPrefix($this->bucket, null, null, 1);
-		$this->assertArrayHasKey('marker', $ret);
+		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket, null, null, 1);
+		$this->assertFalse($markerOut === '');
 
-		list($ret, $err) = $this->client->ListPrefix($this->bucket, $this->key, null, null);
-		$this->assertLessThanOrEqual(1, count($ret['items']));
+		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket, $this->key, null, null);
+		$this->assertLessThanOrEqual(1, count($items));
 	}
 }
