@@ -9,6 +9,11 @@ class Qiniu_RS_GetPolicy
 {
 	public $Expires;
 
+	public function __construct($expires = 0)
+	{
+		$this->Expires = $expires;
+	}
+
 	public function MakeRequest($baseUrl, $mac) // => $privateUrl
 	{
 		$deadline = $this->Expires;
@@ -50,9 +55,10 @@ class Qiniu_RS_PutPolicy
 	public $EndUser;
 	public $Expires;
 
-	public function __construct($scope)
+	public function __construct($scope, $expires = 0)
 	{
 		$this->Scope = $scope;
+		$this->Expires = $expires;
 	}
 
 	public function Token($mac) // => $token
