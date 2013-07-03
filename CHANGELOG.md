@@ -1,8 +1,16 @@
 ## CHANGE LOG
 
+### v6.0.1
+
+2013-07-03 issue [#10](https://github.com/qiniu/api/pull/10)
+
+- new Qiniu_RS_GetPolicy($expires = 0);
+- new Qiniu_RS_PutPolicy($scope, $expires = 0);
+
+
 ### v6.0.0
 
-2013-06-29 issue [#9](https://github.com/qiniu/api/pull/9)
+2013-07-02 issue [#9](https://github.com/qiniu/api/pull/9)
 
 - 遵循 [sdkspec v6.0.2](https://github.com/qiniu/sdkspec/tree/v6.0.2)
   - `Qiniu_Put/PutFile` 调整为基于 up.qiniu.com 的协议，extra *PutExtra 参数可以为 nil
