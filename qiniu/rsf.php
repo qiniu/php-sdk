@@ -16,8 +16,8 @@ class Qiniu_RSF_Client
 
 	/**
 	 * 1. 首次请求 marker = ""
-     * 2. 无论 err 值如何，均应该先看 entries 是否有内容
-     * 3. 如果后续没有更多数据，err 返回 EOF，markerOut 返回 ""（但不通过该特征来判断是否结束）
+	 * 2. 无论 err 值如何，均应该先看 entries 是否有内容
+	 * 3. 如果后续没有更多数据，err 返回 EOF，markerOut 返回 ""（但不通过该特征来判断是否结束）
 	 */
 	public function ListPrefix($bucket, $prefix, $marker, $limit) // => ($ret => array('items' => items, 'marker': markerOut), $err)
 	{
