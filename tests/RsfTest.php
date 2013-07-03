@@ -15,8 +15,6 @@ class RsfTest extends PHPUnit_Framework_TestCase
 		$this->key = getenv('QINIU_KEY_NAME');
 	}
 
-
-	//$bucket, $prefix, $marker, $limit
 	public function testListPrefix()
 	{
 		echo $this->bucket;
