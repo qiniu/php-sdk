@@ -176,5 +176,47 @@ function Qiniu_RS_Copy($self, $bucketSrc, $keySrc, $bucketDest, $keyDest) // => 
 	return Qiniu_Client_CallNoRet($self, $QINIU_RS_HOST . $uri);
 }
 
+
 // ----------------------------------------------------------
+//batch
+
+function Qiniu_RS_Batch($self, $ops) // => ($data, $error)
+{
+	global $QINIU_RS_HOST;
+	$url = $QINIU_RS_HOST . '/batch';
+	$params = 'op=' . implode('&op=', $ops);
+	return Qiniu_Client_CallWithForm($self, $url, $params);
+}
+
+function Qiniu_RS_BatchStat($self, $entryPaths)
+{
+	foreach ($entryPaths as $entryPath) {
+		$params[] = Qiniu_RS_URIStat($entryPath->bucket, $entryPath->key);
+	}
+	return Qiniu_RS_Batch($self,$params);
+}
+
+function Qiniu_RS_BatchDelete($self, $entryPaths)
+{
+	foreach ($entryPaths as $entryPath) {
+		$params[] = Qiniu_RS_URIDelete($entryPath->bucket, $entryPath->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
+
+function Qiniu_RS_BatchMove($self, $entryPairs)
+{
+	foreach ($entryPairs as $entryPair) {
+		$params[] = Qiniu_RS_URIMove($entryPair->src->bucket, $entryPair->src->key, $entryPair->dest->bucket, $entryPair->dest->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
+
+function Qiniu_RS_BatchCopy($self, $entryPairs)
+{
+	foreach ($entryPairs as $entryPair) {
+		$params[] = Qiniu_RS_URICopy($entryPair->src->bucket, $entryPair->src->key, $entryPair->dest->bucket, $entryPair->dest->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
 
