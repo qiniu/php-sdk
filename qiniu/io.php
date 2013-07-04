@@ -14,7 +14,7 @@ class Qiniu_PutExtra
 	public $CheckCrc = 0;
 }
 
-function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($data, $err)
+function Qiniu_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet, $err)
 {
 	global $QINIU_UP_HOST;
 
@@ -39,7 +39,7 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($data, $err)
 	return Qiniu_Client_CallWithMultipartForm($client, $QINIU_UP_HOST, $fields, $files);
 }
 
-function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($data, $err)
+function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $err)
 {
 	global $QINIU_UP_HOST;
 
@@ -66,4 +66,6 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($data, $err
 	$client = new Qiniu_HttpClient;
 	return Qiniu_Client_CallWithForm($client, $QINIU_UP_HOST, $fields, 'multipart/form-data');
 }
+
+// ----------------------------------------------------------
 
