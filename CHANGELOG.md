@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.0
+
+2013-07-04 issue [#22](https://github.com/qiniu/api/pull/22)
+
+- hotfix: 修复上传的时候 key 中不能出现 '/' 的错误
+
+
 ### v6.0.2
 
 2013-07-04 issue [#20](https://github.com/qiniu/api/pull/20)
