@@ -2,6 +2,7 @@
 
 require_once("../qiniu/fop.php");
 require_once("../qiniu/rs_utils.php");
+require_once("../qiniu/rsf.php");
 
 $accessKey = getenv("QINIU_ACCESS_KEY");
 $secretKey = getenv("QINIU_SECRET_KEY");
