@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.1
+
+2013-07-04 issue [#24](https://github.com/qiniu/api/pull/24)
+
+- 支持断点续上传(`Qiniu_RS_Rput`, `Qiniu_RS_RputFile`)
+
+
 ### v6.1.0
 
 2013-07-04 issue [#22](https://github.com/qiniu/api/pull/22)

@@ -170,9 +170,8 @@ function Qiniu_RS_Copy($self, $bucketSrc, $keySrc, $bucketDest, $keyDest) // => 
 	return Qiniu_Client_CallNoRet($self, $QINIU_RS_HOST . $uri);
 }
 
-
 // ----------------------------------------------------------
-//batch
+// batch
 
 function Qiniu_RS_Batch($self, $ops) // => ($data, $error)
 {
@@ -221,4 +220,6 @@ function Qiniu_RS_BatchCopy($self, $entryPairs)
 	}
 	return Qiniu_RS_Batch($self, $params);
 }
+
+// ----------------------------------------------------------
 
