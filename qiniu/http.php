@@ -251,28 +251,36 @@ function Qiniu_Build_MultipartForm($fields, $files) // => ($contentType, $body)
 	$data = array();
 	$mimeBoundary = md5(microtime());
 
-	foreach ($fields as $name => $val){
+	foreach ($fields as $name => $val) {
 		array_push($data, '--' . $mimeBoundary);
-		array_push($data, "Content-Disposition: form-data; name=$name");
+		array_push($data, "Content-Disposition: form-data; name=\"$name\"");
 		array_push($data, '');
 		array_push($data, $val);
 	}
 
 	foreach ($files as $file) {
 		array_push($data, '--' . $mimeBoundary);
-		list($name, $fileName, $fileCxt) = $file;
-		array_push($data, "Content-Disposition: form-data; name=$name; filename=$fileName");
+		list($name, $fileName, $fileBody) = $file;
+		$fileName = Qiniu_escapeQuotes($fileName);
+		array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
 		array_push($data, 'Content-Type: application/octet-stream');
 		array_push($data, '');
-		array_push($data, $fileCxt);
+		array_push($data, $fileBody);
 	}
 
-	array_push($data, '--' . $mimeBoundary);
+	array_push($data, '--' . $mimeBoundary . '--');
 	array_push($data, '');
 
 	$body = implode("\r\n", $data);
 	$contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
 	return array($contentType, $body);
+}
+
+function Qiniu_escapeQuotes($str)
+{
+	$find = array("\\", "\"");
+	$replace = array("\\\\", "\\\"");
+	return str_replace($find, $replace, $str);
 }
 
 // --------------------------------------------------------------------------------
