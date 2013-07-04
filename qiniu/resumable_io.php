@@ -16,6 +16,10 @@ class Qiniu_Rio_PutExtra
 	public $Progresses = null;	// 可选。上传进度：[]BlkputRet
 	public $Notify = null;		// 进度通知：func(blkIdx int, blkSize int, ret *BlkputRet)
 	public $NotifyErr = null;	// 错误通知：func(blkIdx int, blkSize int, err error)
+
+	public function __construct($bucket = null) {
+		$this->Bucket = $bucket;
+	}
 }
 
 // ----------------------------------------------------------
@@ -34,12 +38,19 @@ function Qiniu_Rio_BlockCount($fsize) // => $blockCnt
 
 function Qiniu_Rio_Mkblock($self, $host, $reader, $size) // => ($blkputRet, $err)
 {
-	$body = fread($reader, $size);
-	if ($body === false) {
-		$err = Qiniu_NewError(0, 'fread failed');
-		return array(null, $err);
+	if (is_resource($reader)) {
+		$body = fread($reader, $size);
+		if ($body === false) {
+			$err = Qiniu_NewError(0, 'fread failed');
+			return array(null, $err);
+		}
+	} else {
+		list($body, $err) = $reader->Read($size);
+		if ($err !== null) {
+			return array(null, $err);
+		}
 	}
-	if (strlen($body) != $fsize) {
+	if (strlen($body) != $size) {
 		$err = Qiniu_NewError(0, 'fread failed: unexpected eof');
 		return array(null, $err);
 	}
@@ -58,7 +69,7 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 	}
 
 	$ctxs = array();
-	for ($extra->Progresses as $prog) {
+	foreach ($extra->Progresses as $prog) {
 		$ctxs []= $prog['ctx'];
 	}
 	$body = implode(',', $ctxs);
@@ -98,8 +109,8 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 	$progresses = array();
 	$host = $QINIU_UP_HOST;
 	$uploaded = 0;
-	while($uploaded < $fsize) {
-		if ($uploaded + QINIU_RIO_BLOCK_SIZE < $fsize) {
+	while ($uploaded < $fsize) {
+		if ($fsize < $uploaded + QINIU_RIO_BLOCK_SIZE) {
 			$bsize = $fsize - $uploaded;
 		} else {
 			$bsize = QINIU_RIO_BLOCK_SIZE;
@@ -110,12 +121,12 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 		$progresses []= $blkputRet;
 	}
 
+	$putExtra->Progresses = $progresses;
 	return Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $putExtra);
 }
 
 function Qiniu_Rio_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $err)
 {
-
 	$fp = fopen($localFile, 'rb');
 	if ($fp === false) {
 		$err = Qiniu_NewError(0, 'fopen failed');

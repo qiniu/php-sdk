@@ -2,6 +2,7 @@
 
 require_once("rs.php");
 require_once("io.php");
+require_once("resumable_io.php");
 
 function Qiniu_RS_Put($self, $bucket, $key, $body, $putExtra) // => ($putRet, $err)
 {
