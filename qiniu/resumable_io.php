@@ -134,9 +134,9 @@ function Qiniu_Rio_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet
 	}
 
 	$fi = fstat($fp);
-
-	Qiniu_Rio_Put($upToken, $key, $fp, $fi['size'], $putExtra);
+	$result = Qiniu_Rio_Put($upToken, $key, $fp, $fi['size'], $putExtra);
 	fclose($fp);
+	return $result;
 }
 
 // ----------------------------------------------------------

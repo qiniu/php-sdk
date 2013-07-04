@@ -14,7 +14,7 @@ class Qiniu_PutExtra
 	public $CheckCrc = 0;
 }
 
-function Qiniu_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet, $err)
+function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 {
 	global $QINIU_UP_HOST;
 
