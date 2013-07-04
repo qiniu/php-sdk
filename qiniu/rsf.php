@@ -27,15 +27,17 @@ function Qiniu_RSF_ListPrefix(
 
 	$url =  $QINIU_RSF_HOST . '/list?' . http_build_query($query);
 	list($ret, $err) = Qiniu_Client_Call($self, $url);
+	if ($err !== null) {
+		return array(null, '', $err);
+	}
 
 	$items = $ret['items'];
-	if (!isset($ret['marker'])) {
+	if (empty($ret['marker'])) {
 		$markerOut = '';
 		$err = Qiniu_RSF_EOF;
 	} else {
 		$markerOut = $ret['marker'];
 	}
-
 	return array($items, $markerOut, $err);
 }
 

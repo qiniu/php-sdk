@@ -19,7 +19,7 @@ class RsfTest extends PHPUnit_Framework_TestCase
 	{
 		echo $this->bucket;
 		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket);
-		$this->assertEquals($err->Err, Qiniu_RSF_EOF);
+		$this->assertEquals($err, Qiniu_RSF_EOF);
 		$this->assertEquals($markerOut, '');
 
 		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket, '', '', 1);
