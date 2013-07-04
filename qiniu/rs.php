@@ -190,6 +190,7 @@ function Qiniu_RS_Batch($self, $ops) // => ($data, $error)
 
 function Qiniu_RS_BatchStat($self, $entryPaths)
 {
+	$params = array();
 	foreach ($entryPaths as $entryPath) {
 		$params[] = Qiniu_RS_URIStat($entryPath->bucket, $entryPath->key);
 	}
@@ -198,6 +199,7 @@ function Qiniu_RS_BatchStat($self, $entryPaths)
 
 function Qiniu_RS_BatchDelete($self, $entryPaths)
 {
+	$params = array();
 	foreach ($entryPaths as $entryPath) {
 		$params[] = Qiniu_RS_URIDelete($entryPath->bucket, $entryPath->key);
 	}
@@ -206,16 +208,22 @@ function Qiniu_RS_BatchDelete($self, $entryPaths)
 
 function Qiniu_RS_BatchMove($self, $entryPairs)
 {
+	$params = array();
 	foreach ($entryPairs as $entryPair) {
-		$params[] = Qiniu_RS_URIMove($entryPair->src->bucket, $entryPair->src->key, $entryPair->dest->bucket, $entryPair->dest->key);
+		$src = $entryPair->src;
+		$dest = $entryPair->dest;
+		$params[] = Qiniu_RS_URIMove($src->bucket, $src->key, $dest->bucket, $dest->key);
 	}
 	return Qiniu_RS_Batch($self, $params);
 }
 
 function Qiniu_RS_BatchCopy($self, $entryPairs)
 {
+	$params = array();
 	foreach ($entryPairs as $entryPair) {
-		$params[] = Qiniu_RS_URICopy($entryPair->src->bucket, $entryPair->src->key, $entryPair->dest->bucket, $entryPair->dest->key);
+		$src = $entryPair->src;
+		$dest = $entryPair->dest;
+		$params[] = Qiniu_RS_URICopy($src->bucket, $src->key, $dest->bucket, $dest->key);
 	}
 	return Qiniu_RS_Batch($self, $params);
 }
