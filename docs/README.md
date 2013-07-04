@@ -53,14 +53,14 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 
 	$bucket = "phpsdk";
 	$key = "pic.jpg";
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$client = new Qiniu_MacHttpClient(null);
 
 	list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key);
@@ -76,7 +76,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 
 	$bucket = "phpsdk";
 	$key = "pic.jpg";
@@ -84,7 +84,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$client = new Qiniu_MacHttpClient(null);
 	
 	$err = Qiniu_RS_Copy($client, $bucket, $key, $bucket, $key1);
@@ -100,7 +100,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 
 	$bucket = "phpsdk";
 	$key = "pic.jpg";
@@ -108,7 +108,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$client = new Qiniu_MacHttpClient(null);
 	
 	$err = Qiniu_RS_Move($client, $bucket, $key, $bucket, $key1);
@@ -124,14 +124,14 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 	
 	$bucket = "phpsdk";
 	$key1 = "file_name1";
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$client = new Qiniu_MacHttpClient(null);
 	
 	$err = Qiniu_RS_Delete($client, $bucket, $key1);
@@ -178,13 +178,13 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 服务端生成 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken) 代码如下：
 
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 	
 	$bucket = 'phpsdk';
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$putPolicy = new Qiniu_RS_PutPolicy($bucket);
 	$upToken = $putPolicy->Token(null);
 	
@@ -193,15 +193,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 上传字符串
 
-	require_once("io.php");
-	require_once("rs.php");
+	require_once("qiniu/io.php");
+	require_once("qiniu/rs.php");
 	
 	$bucket = "phpsdk";
 	$key1 = "file_name1";
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$putPolicy = new Qiniu_RS_PutPolicy($bucket);
 	$upToken = $putPolicy->Token(null);
 	list($ret, $err) = Qiniu_Put($upToken, $key1, "Qiniu Storage!", null);
@@ -214,15 +214,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 上传本地文件
 
-	require_once("io.php");
-	require_once("rs.php");
+	require_once("qiniu/io.php");
+	require_once("qiniu/rs.php");
 	
 	$bucket = "phpsdk";
 	$key1 = "file_name1";
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);
+	Qiniu_SetKeys($accessKey, $secretKey);
 	$putPolicy = new Qiniu_RS_PutPolicy($bucket);
 	$upToken = $putPolicy->Token(null);
 	$putExtra = new Qiniu_PutExtra();
@@ -295,14 +295,14 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 注意，尖括号不是必需，代表替换项。  
 私有下载链接可以使用 SDK 提供的如下方法生成：
 
-	require_once("rs.php");
+	require_once("qiniu/rs.php");
 
 	$key = 'pic.jpg';
 	$domain = 'phpsdk.qiniudn.com';
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);	
+	Qiniu_SetKeys($accessKey, $secretKey);	
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 	$getPolicy = new Qiniu_RS_GetPolicy();
 	$privateUrl = $getPolicy->MakeRequest($baseUrl);
@@ -319,15 +319,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 <a name=fop-image-info></a>
 #### 1.1 查看图像属性
 
-	require_once("rs.php");
-	require_once("fop.php");
+	require_once("qiniu/rs.php");
+	require_once("qiniu/fop.php");
 
 	$key = 'pic.jpg';
 	$domain = 'phpsdk.qiniudn.com';
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);	
+	Qiniu_SetKeys($accessKey, $secretKey);	
 	//生成baseUrl
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 
@@ -347,15 +347,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 #### 1.2 查看图片EXIF信息
 
 
-	require_once("rs.php");
-	require_once("fop.php");
+	require_once("qiniu/rs.php");
+	require_once("qiniu/fop.php");
 
 	$key = 'pic.jpg';
 	$domain = 'phpsdk.qiniudn.com';
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);	
+	Qiniu_SetKeys($accessKey, $secretKey);	
 	//生成baseUrl
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 	
@@ -372,15 +372,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 <a name=fop-image-view></a>
 #### 1.3 生成图片预览
 
-	require_once("rs.php");
-	require_once("fop.php");
+	require_once("qiniu/rs.php");
+	require_once("qiniu/fop.php");
 
 	$key = 'pic.jpg';
 	$domain = 'phpsdk.qiniudn.com';
 	$accessKey = '<YOUR_APP_ACCESS_KEY>';
 	$secretKey = '<YOUR_APP_SECRET_KEY>';
 	
-	Qiniu_setKeys($accessKey, $secretKey);	
+	Qiniu_SetKeys($accessKey, $secretKey);	
 	//生成baseUrl
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 	
