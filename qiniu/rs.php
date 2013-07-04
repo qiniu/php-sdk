@@ -9,11 +9,6 @@ class Qiniu_RS_GetPolicy
 {
 	public $Expires;
 
-	public function __construct($expires = 0)
-	{
-		$this->Expires = $expires;
-	}
-
 	public function MakeRequest($baseUrl, $mac) // => $privateUrl
 	{
 		$deadline = $this->Expires;
@@ -55,10 +50,9 @@ class Qiniu_RS_PutPolicy
 	public $EndUser;
 	public $Expires;
 
-	public function __construct($scope, $expires = 0)
+	public function __construct($scope)
 	{
 		$this->Scope = $scope;
-		$this->Expires = $expires;
 	}
 
 	public function Token($mac) // => $token
@@ -176,5 +170,55 @@ function Qiniu_RS_Copy($self, $bucketSrc, $keySrc, $bucketDest, $keyDest) // => 
 	return Qiniu_Client_CallNoRet($self, $QINIU_RS_HOST . $uri);
 }
 
+
 // ----------------------------------------------------------
+//batch
+
+function Qiniu_RS_Batch($self, $ops) // => ($data, $error)
+{
+	global $QINIU_RS_HOST;
+	$url = $QINIU_RS_HOST . '/batch';
+	$params = 'op=' . implode('&op=', $ops);
+	return Qiniu_Client_CallWithForm($self, $url, $params);
+}
+
+function Qiniu_RS_BatchStat($self, $entryPaths)
+{
+	$params = array();
+	foreach ($entryPaths as $entryPath) {
+		$params[] = Qiniu_RS_URIStat($entryPath->bucket, $entryPath->key);
+	}
+	return Qiniu_RS_Batch($self,$params);
+}
+
+function Qiniu_RS_BatchDelete($self, $entryPaths)
+{
+	$params = array();
+	foreach ($entryPaths as $entryPath) {
+		$params[] = Qiniu_RS_URIDelete($entryPath->bucket, $entryPath->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
+
+function Qiniu_RS_BatchMove($self, $entryPairs)
+{
+	$params = array();
+	foreach ($entryPairs as $entryPair) {
+		$src = $entryPair->src;
+		$dest = $entryPair->dest;
+		$params[] = Qiniu_RS_URIMove($src->bucket, $src->key, $dest->bucket, $dest->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
+
+function Qiniu_RS_BatchCopy($self, $entryPairs)
+{
+	$params = array();
+	foreach ($entryPairs as $entryPair) {
+		$src = $entryPair->src;
+		$dest = $entryPair->dest;
+		$params[] = Qiniu_RS_URICopy($src->bucket, $src->key, $dest->bucket, $dest->key);
+	}
+	return Qiniu_RS_Batch($self, $params);
+}
 

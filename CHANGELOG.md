@@ -1,5 +1,13 @@
 ## CHANGE LOG
 
+### v6.0.2
+
+2013-07-04 issue [#20](https://github.com/qiniu/api/pull/20)
+
+- 增加 rsf, batch 支持
+- 初步补充文档
+
+
 ### v6.0.1
 
 2013-07-03 issue [#10](https://github.com/qiniu/api/pull/10)
