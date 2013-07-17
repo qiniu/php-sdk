@@ -47,11 +47,9 @@ class Qiniu_Mac {
 		return $this->Sign($data);
 	}
 
-	public function VerifyCallback($auth, $url, $body)  // ==> bool
+	public function VerifyCallback($auth, $url, $body) // ==> bool
 	{
-
 		$url = parse_url($url);
-
 		$data = '';
 		if (isset($url['path'])) {
 			$data = $url['path'];
