@@ -304,7 +304,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 	Qiniu_SetKeys($accessKey, $secretKey);	
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 	$getPolicy = new Qiniu_RS_GetPolicy();
-	$privateUrl = $getPolicy->MakeRequest($baseUrl);
+	$privateUrl = $getPolicy->MakeRequest($baseUrl, null);
 	echo "====> getPolicy result: \n";
 	echo $privateUrl . "\n";
 
