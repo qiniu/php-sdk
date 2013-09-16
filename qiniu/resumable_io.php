@@ -102,12 +102,10 @@ class Qiniu_Rio_UploadClient
 
 function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet, $err)
 {
-	global $QINIU_UP_HOST;
-
 	$self = new Qiniu_Rio_UploadClient($upToken);
 
 	$progresses = array();
-	$host = $QINIU_UP_HOST;
+	$host = QINIU_UP_HOST;
 	$uploaded = 0;
 	while ($uploaded < $fsize) {
 		if ($fsize < $uploaded + QINIU_RIO_BLOCK_SIZE) {
