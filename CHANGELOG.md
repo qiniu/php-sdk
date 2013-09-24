@@ -1,5 +1,13 @@
 ## CHANGE LOG
 
+### v6.1.2
+
+2013-09-24 issue [#40](https://github.com/qiniu/php-sdk/pull/40)
+
+- 解决与某些 PHP 框架不兼容问题（主要是全局变量的定义）
+- 改善 `json_decode` 的错误提示（有可能 `json_last_error_msg` 函数不存在）
+
+
 ### v6.1.1
 
 2013-07-04 issue [#24](https://github.com/qiniu/php-sdk/pull/24)
