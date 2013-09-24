@@ -182,7 +182,8 @@ function Qiniu_Client_ret($resp) // => ($data, $error)
 		if ($resp->ContentLength !== 0) {
 			$data = json_decode($resp->Body, true);
 			if ($data === null) {
-				$err = new Qiniu_Error(0, json_last_error_msg());
+				$err_msg = function_exists('json_last_error_msg') ? json_last_error_msg() : "error with content:" . $resp->Body;
+				$err = new Qiniu_Error(0, $err_msg);
 				return array(null, $err);
 			}
 		}
