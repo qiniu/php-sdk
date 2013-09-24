@@ -12,8 +12,6 @@ define('Qiniu_RSF_EOF', 'EOF');
 function Qiniu_RSF_ListPrefix(
 	$self, $bucket, $prefix = '', $marker = '', $limit = 0) // => ($items, $markerOut, $err)
 {
-	global $QINIU_RSF_HOST;
-
 	$query = array('bucket' => $bucket);
 	if (!empty($prefix)) {
 		$query['prefix'] = $prefix;
@@ -25,7 +23,7 @@ function Qiniu_RSF_ListPrefix(
 		$query['limit'] = $limit;
 	}
 
-	$url =  $QINIU_RSF_HOST . '/list?' . http_build_query($query);
+	$url =  QINIU_RSF_HOST . '/list?' . http_build_query($query);
 	list($ret, $err) = Qiniu_Client_Call($self, $url);
 	if ($err !== null) {
 		return array(null, '', $err);
