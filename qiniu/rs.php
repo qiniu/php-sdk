@@ -49,6 +49,8 @@ class Qiniu_RS_PutPolicy
 	public $AsyncOps;
 	public $EndUser;
 	public $Expires;
+    public $PersistentOps;
+    public $PersistentNotifyUrl;
 
 	public function __construct($scope)
 	{
@@ -82,6 +84,10 @@ class Qiniu_RS_PutPolicy
 		if (!empty($this->EndUser)) {
 			$policy['endUser'] = $this->EndUser;
 		}
+        if (!empty($this->PersistentOps) && !empty($this->PersistentNotifyUrl)) {
+            $policy['persistentOps'] = $this->PersistentOps;
+            $policy['persistentNotifyUrl'] = $this->PersistentNotifyUrl;
+        }
 
 		$b = json_encode($policy);
 		return Qiniu_SignWithData($mac, $b);
