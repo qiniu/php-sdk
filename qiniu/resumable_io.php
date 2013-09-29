@@ -62,10 +62,10 @@ function Qiniu_Rio_Mkblock($self, $host, $reader, $size) // => ($blkputRet, $err
 
 function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $err)
 {
-    $url = $host . '/mkfile/' . $fsize;
-    if ($key !== null) {
-        $url .= '/key/' . Qiniu_Encode($key);
-    }
+	$url = $host . '/mkfile/' . $fsize;
+	if ($key !== null) {
+		$url .= '/key/' . Qiniu_Encode($key);
+	}
 	if (!empty($extra->MimeType)) {
 		$url .= '/mimeType/' . Qiniu_Encode($extra->MimeType);
 	}
