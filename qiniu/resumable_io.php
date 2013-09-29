@@ -59,11 +59,13 @@ function Qiniu_Rio_Mkblock($self, $host, $reader, $size) // => ($blkputRet, $err
 	return Qiniu_Client_CallWithForm($self, $url, $body, 'application/octet-stream');
 }
 
+
 function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $err)
 {
-	$entry = $extra->Bucket . ':' . $key;
-	$url = $host . '/rs-mkfile/' . Qiniu_Encode($entry) . '/fsize/' . $fsize;
-
+    $url = $host . '/mkfile/' . $fsize;
+    if ($key !== null) {
+        $url .= '/key/' . Qiniu_Encode($key);
+    }
 	if (!empty($extra->MimeType)) {
 		$url .= '/mimeType/' . Qiniu_Encode($extra->MimeType);
 	}
@@ -74,7 +76,7 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 	}
 	$body = implode(',', $ctxs);
 
-	return Qiniu_Client_CallWithForm($self, $url, $body, 'text/plain');
+	return Qiniu_Client_CallWithForm($self, $url, $body, 'application/octet-stream');
 }
 
 // ----------------------------------------------------------
@@ -122,7 +124,7 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 	}
 
 	$putExtra->Progresses = $progresses;
-	return Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $putExtra);
+	return Qiniu_Rio_Mkfile($self, $QINIU_UP_HOST, $key, $fsize, $putExtra);
 }
 
 function Qiniu_Rio_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $err)
