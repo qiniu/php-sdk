@@ -1,0 +1,14 @@
+{
+    "name": "qiniu/php-sdk",
+    "type": "library",
+    "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
+    "keywords": ["qiniu","storage","CDN","sdk"],
+    "homepage": "http://www.qiniu.com/",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2.4"
+    },
+    "autoload": {
+		"psr-0": { "qiniu\\": "/" }
+	}
+}
