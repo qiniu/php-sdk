@@ -26,6 +26,6 @@ class RsfTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($markerOut === '');
 
 		list($items, $markerOut, $err) = Qiniu_RSF_ListPrefix($this->client, $this->bucket, $this->key);
-		$this->assertLessThanOrEqual(1, count($items));
+		$this->assertLessThanOrEqual(count($items), 1);
 	}
 }
