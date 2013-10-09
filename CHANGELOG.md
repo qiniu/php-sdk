@@ -1,5 +1,13 @@
 ## CHANGE LOG
 
+### v6.1.3
+
+2013-10-09 issues [#50](https://github.com/qiniu/php-sdk/pull/50)
+
+- 断点续上传使用mkfile
+- 修订文档
+- 消除测试用例并发问题
+
 ### v6.1.2
 
 2013-09-24 issue [#40](https://github.com/qiniu/php-sdk/pull/40)

@@ -145,7 +145,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 ## 上传下载接口
 	
 <a name=upload></a>
-###1. 文件上传
+### 1. 文件上传
 
 为了尽可能地改善终端用户的上传体验，七牛云存储首创了客户端直传功能。一般云存储的上传流程是：
 
@@ -283,7 +283,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 	//$baseUrl 就是您要访问资源的地址
 	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 
-其中<domain>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
+其中\<domain\>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
 
 **注意： key必须采用utf8编码，如使用非utf8编码访问七牛云存储将反馈错误**
 
