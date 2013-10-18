@@ -84,8 +84,10 @@ class Qiniu_RS_PutPolicy
 		if (!empty($this->EndUser)) {
 			$policy['endUser'] = $this->EndUser;
 		}
-		if (!empty($this->PersistentOps) && !empty($this->PersistentNotifyUrl)) {
+		if (!empty($this->PersistentOps)) {
 			$policy['persistentOps'] = $this->PersistentOps;
+		}
+		if (!empty($this->PersistentNotifyUrl)) {
 			$policy['persistentNotifyUrl'] = $this->PersistentNotifyUrl;
 		}
 
