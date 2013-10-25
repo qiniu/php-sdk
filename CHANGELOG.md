@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.4
+
+2013-10-25 issues [#52](https://github.com/qiniu/php-sdk/pull/52)
+
+- PutPolicy: 增加 saveKey、persistentOps/persistentNotifyUrl、fsizeLimit 等支持
+
+
 ### v6.1.3
 
 2013-10-09 issues [#50](https://github.com/qiniu/php-sdk/pull/50)
@@ -7,6 +14,7 @@
 - 断点续上传使用mkfile
 - 修订文档
 - 消除测试用例并发问题
+
 
 ### v6.1.2
 
