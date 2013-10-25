@@ -55,5 +55,19 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
 	}
+
+	public function testPut_sizelimit()
+	{
+		$key = 'testPut_sizelimit' . getTid();
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+
+		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
+		$putPolicy->FsizeLimit = 1;
+		$upToken = $putPolicy->Token(null);
+		list($ret, $err) = Qiniu_Put($upToken, $key, "hello world!", null);
+		$this->assertNull($ret);
+		$this->assertEquals($err->Err, 'exceed FsizeLimit');
+		var_dump($ret);
+	}
 }
 
