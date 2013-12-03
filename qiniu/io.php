@@ -47,7 +47,7 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 		$putExtra = new Qiniu_PutExtra;
 	}
 
-	$fields = array('token' => $upToken, 'file' => '@' . $localFile);
+	$fields = array('token' => $upToken, 'file' => new \CURLFile($localFile));
 	if ($key === null) {
 		$fname = '?';
 	} else {
