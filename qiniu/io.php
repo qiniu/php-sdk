@@ -33,6 +33,12 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 		$fields['crc32'] = $putExtra->Crc32;
 	}
 
+	if ($putExtra->Params) {
+		foreach ($putExtra->Params as $k=>$v) {
+			$fields[$k] = $v;	 
+		}
+	}
+
 	$files = array(array('file', $fname, $body));
 
 	$client = new Qiniu_HttpClient;
