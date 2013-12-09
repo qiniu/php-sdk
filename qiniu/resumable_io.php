@@ -71,8 +71,9 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 	}
 
 	if (!empty($extra->Params)) {
-		foreach ($etra->Params as $k=>$v) {
-			$url .= "/" . Qiniu_Encode($k) . "/" . Qiniu_Encode($v);
+		foreach ($extra->Params as $k=>$v) {
+			#$url .= "/" . Qiniu_Encode($k) . "/" . Qiniu_Encode($v);
+			$url .= "/" . $k . "/" . Qiniu_Encode($v);
 		}
 	}
 
