@@ -32,13 +32,11 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 	if ($putExtra->CheckCrc) {
 		$fields['crc32'] = $putExtra->Crc32;
 	}
-
 	if ($putExtra->Params) {
 		foreach ($putExtra->Params as $k=>$v) {
 			$fields[$k] = $v;	 
 		}
 	}
-
 	$files = array(array('file', $fname, $body));
 
 	$client = new Qiniu_HttpClient;
@@ -67,6 +65,12 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 			$putExtra->Crc32 = $array[1];
 		}
 		$fields['crc32'] = sprintf('%u', $putExtra->Crc32);
+	}
+
+	if ($putExtra->Params) {
+		foreach ($putExtra->Params as $k=>$v) {
+			$fields[$k] = $v;
+		}
 	}
 
 	$client = new Qiniu_HttpClient;
