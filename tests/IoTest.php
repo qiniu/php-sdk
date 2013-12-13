@@ -90,9 +90,9 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($err);
 
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
-		$this->assertNull($err);
-		$this->assertEquals($ret['mimeType'], 'application/x-httpd-php');
 		var_dump($ret);
+		$this->assertNull($err);
+		$this->assertEquals($ret['mimeType'], 'application/x-php');
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
