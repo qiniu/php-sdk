@@ -37,7 +37,8 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 			$fields[$k] = $v;	 
 		}
 	}
-	$files = array(array('file', $fname, $body));
+	$mimeType = $putExtra->MimeType === null ? 'application/octet-stream' : $putExtra->MimeType;
+	$files = array(array('file', $fname, $body, $mimeType));
 
 	$client = new Qiniu_HttpClient;
 	return Qiniu_Client_CallWithMultipartForm($client, $QINIU_UP_HOST, $fields, $files);
@@ -51,7 +52,8 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 		$putExtra = new Qiniu_PutExtra;
 	}
 
-	$fields = array('token' => $upToken, 'file' => '@' . $localFile);
+	$mimeStr = $putExtra->MimeType === null ? '' : ';type=' . $putExtra->MimeType;
+	$fields = array('token' => $upToken, 'file' => '@' . $localFile . $mimeStr);
 	if ($key === null) {
 		$fname = '?';
 	} else {
