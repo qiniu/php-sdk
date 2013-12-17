@@ -261,10 +261,10 @@ function Qiniu_Build_MultipartForm($fields, $files) // => ($contentType, $body)
 
 	foreach ($files as $file) {
 		array_push($data, '--' . $mimeBoundary);
-		list($name, $fileName, $fileBody) = $file;
+		list($name, $fileName, $fileBody, $mimeType) = $file;
 		$fileName = Qiniu_escapeQuotes($fileName);
 		array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
-		array_push($data, 'Content-Type: application/octet-stream');
+		array_push($data, "Content-Type: $mimeType");
 		array_push($data, '');
 		array_push($data, $fileBody);
 	}

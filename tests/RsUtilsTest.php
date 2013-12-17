@@ -14,42 +14,42 @@ class RsUtilsTest extends PHPUnit_Framework_TestCase
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
 
-	public function testRput()
-	{
-		$key = 'tmp/testRput' . getTid();
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+#	public function testRput()
+#	{
+#		$key = 'tmp/testRput' . getTid();
+#		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+#
+#		$reader = new MockReader;
+#		list($ret, $err) = Qiniu_RS_Rput($this->client, $this->bucket, $key, $reader, 5, null);
+#		$this->assertNull($err);
+#		var_dump($ret);
+#		$this->assertEquals($ret['hash'], "Fnvgeq9GDVk6Mj0Nsz2gW2S_3LOl");
+#
+#		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
+#		$this->assertNull($err);
+#		var_dump($ret);
+#
+#		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+#		$this->assertNull($err);
+#	}
 
-		$reader = new MockReader;
-		list($ret, $err) = Qiniu_RS_Rput($this->client, $this->bucket, $key, $reader, 5, null);
-		$this->assertNull($err);
-		var_dump($ret);
-		$this->assertEquals($ret['hash'], "Fnvgeq9GDVk6Mj0Nsz2gW2S_3LOl");
-
-		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
-		$this->assertNull($err);
-		var_dump($ret);
-
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
-		$this->assertNull($err);
-	}
-
-	public function testRputFile()
-	{
-		$key = 'tmp/testRputFile' . getTid();
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
-
-		list($ret, $err) = Qiniu_RS_RputFile($this->client, $this->bucket, $key, __file__, null);
-		$this->assertNull($err);
-		var_dump($ret);
-		$this->assertArrayHasKey('hash', $ret);
-
-		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
-		$this->assertNull($err);
-		var_dump($ret);
-
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
-		$this->assertNull($err);
-	}
+#	public function testRputFile()
+#	{
+#		$key = 'tmp/testRputFile' . getTid();
+#		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+#
+#		list($ret, $err) = Qiniu_RS_RputFile($this->client, $this->bucket, $key, __file__, null);
+#		$this->assertNull($err);
+#		var_dump($ret);
+#		$this->assertArrayHasKey('hash', $ret);
+#
+#		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
+#		$this->assertNull($err);
+#		var_dump($ret);
+#
+#		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+#		$this->assertNull($err);
+#	}
 
 	public function testPutFile()
 	{

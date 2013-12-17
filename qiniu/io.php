@@ -32,8 +32,13 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 	if ($putExtra->CheckCrc) {
 		$fields['crc32'] = $putExtra->Crc32;
 	}
-
-	$files = array(array('file', $fname, $body));
+	if ($putExtra->Params) {
+		foreach ($putExtra->Params as $k=>$v) {
+			$fields[$k] = $v;	 
+		}
+	}
+	$mimeType = $putExtra->MimeType === null ? 'application/octet-stream' : $putExtra->MimeType;
+	$files = array(array('file', $fname, $body, $mimeType));
 
 	$client = new Qiniu_HttpClient;
 	return Qiniu_Client_CallWithMultipartForm($client, $QINIU_UP_HOST, $fields, $files);
@@ -47,7 +52,8 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 		$putExtra = new Qiniu_PutExtra;
 	}
 
-	$fields = array('token' => $upToken, 'file' => '@' . $localFile);
+	$mimeStr = $putExtra->MimeType === null ? '' : ';type=' . $putExtra->MimeType;
+	$fields = array('token' => $upToken, 'file' => '@' . $localFile . $mimeStr);
 	if ($key === null) {
 		$fname = '?';
 	} else {
@@ -61,6 +67,12 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 			$putExtra->Crc32 = $array[1];
 		}
 		$fields['crc32'] = sprintf('%u', $putExtra->Crc32);
+	}
+
+	if ($putExtra->Params) {
+		foreach ($putExtra->Params as $k=>$v) {
+			$fields[$k] = $v;
+		}
 	}
 
 	$client = new Qiniu_HttpClient;
