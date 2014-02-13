@@ -86,11 +86,36 @@ class IoTest extends PHPUnit_Framework_TestCase
 
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
 		$this->assertNull($err);
-		$this->assertEquals($ret['mimeType'], 'application/x-httpd-php');
+		$this->assertEquals($ret['mimeType'], 'application/x-php');
 		var_dump($ret);
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
+	}
+
+	public function testPut_mimetype() {
+		$key = 'testPut_mimetype' . getTid();
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+		$scope = $this->bucket . ":" . $key;
+
+		$putPolicy = new Qiniu_RS_PutPolicy($scope);
+		$putPolicy->ReturnBody = '{"key":$(key),"mimeType":$(mimeType)}';
+		$upToken = $putPolicy->Token(null);
+
+		$putExtra = new Qiniu_PutExtra();
+		$putExtra->MimeType = 'image/jpg';
+
+		list($ret1, $err1) = Qiniu_PutFile($upToken, $key, __file__, $putExtra);
+		var_dump($ret1);
+		$this->assertNull($err1);
+		$this->assertEquals($ret1['mimeType'], 'image/jpg');
+
+		list($ret2, $err2) = Qiniu_Put($upToken, $key, "hello world", $putExtra);
+		var_dump($ret2);
+		$this->assertNull($err2);
+		$this->assertEquals($ret2['mimeType'], 'image/jpg');
+
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 	}
 
 	public function testPut_exclusive()
