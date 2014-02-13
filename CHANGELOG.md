@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.5
+
+2014-2-13 issues [#59](https://github.com/qiniu/php-sdk/pull/59)
+
+- 修复 PutExtra.MimeType 无效的问题
+
+
 ### v6.1.4
 
 2013-10-25 issues [#52](https://github.com/qiniu/php-sdk/pull/52)
