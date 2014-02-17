@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.6
+
+2014-2-17 issues [#62](https://github.com/qiniu/php-sdk/pull/62)
+
+- 上传策略[支持transform/fopTimeout字段](http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-transform)，用于支持对上传内容做一次同步的数据处理，并将结果作为最终资源保存
+
+
 ### v6.1.5
 
 2014-2-13 issues [#59](https://github.com/qiniu/php-sdk/pull/59)
