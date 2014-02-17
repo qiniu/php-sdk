@@ -164,20 +164,5 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($ret["mimeType"], "image/png");
 		var_dump($ret);
 	}
-	public function testPut_fopTimeout() {
-		$key = 'testPut_fopTimeout' . getTid();
-		$scope = $this->bucket . ':' . $key;
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
-
-		$putPolicy = new Qiniu_RS_PutPolicy($scope);
-		$putPolicy->Transform = "imageMogr2/format/png";
-		$putPolicy->FopTimeout = 1;
-		$upToken = $putPolicy->Token(null);
-
-		$pic_path = "../docs/gist/logo.jpg";
-		list($ret, $err) = Qiniu_PutFile($upToken, $key, $pic_path, null);
-		$this->assertNull($ret);
-		var_dump($err);
-	}
 }
 
