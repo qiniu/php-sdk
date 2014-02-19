@@ -32,10 +32,12 @@ class RioTest extends PHPUnit_Framework_TestCase
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
 		$upToken = $putPolicy->Token(null);
 		$putExtra = new Qiniu_Rio_PutExtra($this->bucket);
+		$putExtra->Params = array('x:test'=>'test');
 		$reader = new MockReader;
 		list($ret, $err) = Qiniu_Rio_Put($upToken, $key, $reader, 5, $putExtra);
 		$this->assertNull($err);
 		$this->assertEquals($ret['hash'], "Fnvgeq9GDVk6Mj0Nsz2gW2S_3LOl");
+		$this->assertEquals($ret['x:test'], "test");
 		var_dump($ret);
 
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
@@ -54,10 +56,12 @@ class RioTest extends PHPUnit_Framework_TestCase
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
 		$upToken = $putPolicy->Token(null);
 		$putExtra = new Qiniu_Rio_PutExtra($this->bucket);
+		$putExtra->Params = array('x:test'=>'test');
 		$reader = new MockReader;
 		list($ret, $err) = Qiniu_Rio_Put($upToken, $key, $reader, QINIU_RIO_BLOCK_SIZE + 5, $putExtra);
 		$this->assertNull($err);
 		$this->assertEquals($ret['hash'], "lgQEOCZ8Ievliq8XOfZmWTndgOll");
+		$this->assertEquals($ret['x:test'], "test");
 		var_dump($ret);
 
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);

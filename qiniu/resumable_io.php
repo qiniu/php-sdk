@@ -70,6 +70,13 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 		$url .= '/mimeType/' . Qiniu_Encode($extra->MimeType);
 	}
 
+	if (!empty($extra->Params)) {
+		foreach ($extra->Params as $k=>$v) {
+			#$url .= "/" . Qiniu_Encode($k) . "/" . Qiniu_Encode($v);
+			$url .= "/" . $k . "/" . Qiniu_Encode($v);
+		}
+	}
+
 	$ctxs = array();
 	foreach ($extra->Progresses as $prog) {
 		$ctxs []= $prog['ctx'];
