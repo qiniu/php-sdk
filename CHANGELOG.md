@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### v6.1.7
+
+2014-2-19 issues [#64](https://github.com/qiniu/php-sdk/pull/64)
+
+- 修复 PutExtra.Params 无效的问题
+
 ### v6.1.6
 
 2014-2-17 issues [#62](https://github.com/qiniu/php-sdk/pull/62)
