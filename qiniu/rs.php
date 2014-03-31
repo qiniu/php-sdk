@@ -57,6 +57,7 @@ class Qiniu_RS_PutPolicy
 	public $PersistentNotifyUrl;
 	public $Transform;
 	public $FopTimeout;
+	public $MimeLimit;
 
 	public function __construct($scope)
 	{
@@ -114,6 +115,10 @@ class Qiniu_RS_PutPolicy
 		if (!empty($this->FopTimeout)) {
 			$policy['fopTimeout'] = $this->FopTimeout;
 		}
+		if (!empty($this->MimeLimit)) {
+			$policy['mimeLimit'] = $this->MimeLimit;
+		}
+
 
 		$b = json_encode($policy);
 		return Qiniu_SignWithData($mac, $b);
