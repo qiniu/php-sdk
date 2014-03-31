@@ -253,6 +253,13 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 		public $Expires;			// 可选。默认是 3600 秒
 		public $PersistentOps;		// 可选。
 		public $PersistentNotifyUrl;	// 如果设置了PersistentOps，必须同时设置此项。
+		public $InsertOnly;		// 可选。如果设置为非0值，则无论scope设置为何种形式，都只能以`新增`方式上传，不能覆盖。
+		public $DetectMime;		// 可选。如果设为非0值，则忽略上传端传递的文件MimeType信息，使用七牛服务器侦测内容后的判断结果。
+		public $FsizeLimit;		// 可选。int类型，超过限制大小的上传内容会被判为上传失败，返回413状态码。
+		public $SaveKey;			// 可选。自定义资源名格式。
+		public $Transform;			// 可选。指定资源经过怎样的处理后再保存。
+		public $FopTimeout;		// 可选。int类型，指定transform的超时时间，如果文件处理超过此值，则认为上传失败。
+		public $MimeLimit;			// 可选。限定上传的文件类型。
 	}
 
 * `scope` 限定客户端的权限。如果 `scope` 是 bucket，则客户端只能新增文件到指定的 bucket，不能修改文件。如果 `scope` 为 bucket:key，则客户端可以修改指定的文件。**注意： key必须采用utf8编码，如使用非utf8编码访问七牛云存储将反馈错误**
