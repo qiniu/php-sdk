@@ -46,6 +46,23 @@ class Qiniu_Mac {
 		}
 		return $this->Sign($data);
 	}
+
+	public function VerifyCallback($auth, $url, $body) // ==> bool
+	{
+		$url = parse_url($url);
+		$data = '';
+		if (isset($url['path'])) {
+			$data = $url['path'];
+		}
+		if (isset($url['query'])) {
+			$data .= '?' . $url['query'];
+		}
+		$data .= "\n";
+
+		$data .= $body;
+		$token = 'QBox ' . $this->Sign($data);
+		return $auth === $token;
+	}
 }
 
 function Qiniu_SetKeys($accessKey, $secretKey)
