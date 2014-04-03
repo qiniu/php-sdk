@@ -2,7 +2,7 @@
 
 ### v6.1.9
 
-2014-3-31 issues [#67](https://github.com/qiniu/php-sdk/pull/67)
+2014-04-03 issues [#67](https://github.com/qiniu/php-sdk/pull/67)
 
 - 新增3个新接口：fetch、prefetch、pfop的调用范例代码，需要使用这三个接口的用户可以参考。
 
