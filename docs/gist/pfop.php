@@ -19,7 +19,7 @@ $encodedKey = urlencode($key);
 $encodedFops = urlencode($fops);
 $encodedNotifyURL = urlencode($notifyURL);
 
-$apiHost = "http://iovip.qbox.me";
+$apiHost = "http://api.qiniu.com";
 $apiPath = "/pfop/";
 $requestBody = "bucket=$encodedBucket&key=$encodedKey&fops=$encodedFops&notifyURL=$encodedNotifyURL";
 if ($force !== 0) {
