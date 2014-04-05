@@ -169,5 +169,19 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($ret["mimeType"], "image/png");
 		var_dump($ret);
 	}
+	public function testPut_mimeLimit() {
+		$key = 'testPut_mimeLimit' . getTid();
+		$scope = $this->bucket . ':' . $key;
+		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
+
+		$putPolicy = new Qiniu_RS_PutPolicy($scope);
+		$putPolicy->MimeLimit = "image/*";
+		$upToken = $putPolicy->Token(null);
+
+		list($ret, $err) = Qiniu_PutFile($upToken, $key, __file__, null);
+		$this->assertNull($ret);
+		$this->assertEquals($err->Err, "limited mimeType: this file type is forbidden to upload");
+		var_dump($err);
+	}
 }
 

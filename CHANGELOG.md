@@ -1,5 +1,12 @@
 ## CHANGE LOG
 
+### v6.1.8
+
+2014-4-6 issues [#68](https://github.com/qiniu/php-sdk/pull/68)
+
+- [#66]上传策略[支持mimeLimit字段](http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-mime-limit)，用于限定上传文件的mimeType。
+- [#67] 新增接口的调用范例
+
 ### v6.1.7
 
 2014-2-19 issues [#64](https://github.com/qiniu/php-sdk/pull/64)
