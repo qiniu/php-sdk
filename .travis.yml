@@ -10,4 +10,3 @@ before_script:
   - export QINIU_KEY_NAME="file_name"
 script:
   - cd tests; phpunit .
-
