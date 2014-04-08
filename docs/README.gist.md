@@ -254,6 +254,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 @gist(gist/demo.php#require_rs)
 
 @gist(gist/demo.php#set_keys)
+@gist(gist/demo.php#bucket)
 @gist(gist/demo.php#putpolicy)
 
 ```
@@ -339,7 +340,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 {php}
 
 @gist(gist/demo.php#require_rs)
-@gist(gist/demo.php#require_io)
+@gist(gist/demo.php#require_rio)
 
 @gist(gist/demo.php#bucket)
 @gist(gist/demo.php#key1)
