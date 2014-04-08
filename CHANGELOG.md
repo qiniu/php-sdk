@@ -1,5 +1,11 @@
 ## CHANGE LOG
 
+### v6.1.9
+
+2014-4-8 issues [#69](https://github.com/qiniu/php-sdk/pull/69)
+
+- [#69] 增加User Agent以方便日志查询。
+
 ### v6.1.8
 
 2014-4-6 issues [#68](https://github.com/qiniu/php-sdk/pull/68)
