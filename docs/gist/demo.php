@@ -26,7 +26,7 @@ $key1 = 'file_name_1';
 $key2 = 'file_name_2';
 # @endgist
 # @gist file
-$file = 'docs/gist/f22.jpeg';
+$file = 'docs/gist/logo.jpg';
 # @endgist
 # @gist domain
 $domain = 'phpsdk.qiniudn.com';
