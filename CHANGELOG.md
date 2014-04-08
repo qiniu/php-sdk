@@ -1,5 +1,56 @@
 ## CHANGE LOG
 
+### v6.1.8
+
+2014-4-6 issues [#68](https://github.com/qiniu/php-sdk/pull/68)
+
+- [#66]上传策略[支持mimeLimit字段](http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-mime-limit)，用于限定上传文件的mimeType。
+- [#67] 新增接口的调用范例
+
+### v6.1.7
+
+2014-2-19 issues [#64](https://github.com/qiniu/php-sdk/pull/64)
+
+- 修复 PutExtra.Params 无效的问题
+
+### v6.1.6
+
+2014-2-17 issues [#62](https://github.com/qiniu/php-sdk/pull/62)
+
+- 上传策略[支持transform/fopTimeout字段](http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html#put-policy-transform)，用于支持对上传内容做一次同步的数据处理，并将结果作为最终资源保存
+
+
+### v6.1.5
+
+2014-2-13 issues [#59](https://github.com/qiniu/php-sdk/pull/59)
+
+- 修复 PutExtra.MimeType 无效的问题
+
+
+### v6.1.4
+
+2013-10-25 issues [#52](https://github.com/qiniu/php-sdk/pull/52)
+
+- PutPolicy: 增加 saveKey、persistentOps/persistentNotifyUrl、fsizeLimit 等支持
+
+
+### v6.1.3
+
+2013-10-09 issues [#50](https://github.com/qiniu/php-sdk/pull/50)
+
+- 断点续上传使用mkfile
+- 修订文档
+- 消除测试用例并发问题
+
+
+### v6.1.2
+
+2013-09-24 issue [#40](https://github.com/qiniu/php-sdk/pull/40)
+
+- 解决与某些 PHP 框架不兼容问题（主要是全局变量的定义）
+- 改善 `json_decode` 的错误提示（有可能 `json_last_error_msg` 函数不存在）
+
+
 ### v6.1.1
 
 2013-07-04 issue [#24](https://github.com/qiniu/php-sdk/pull/24)

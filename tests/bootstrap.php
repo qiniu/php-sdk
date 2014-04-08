@@ -9,7 +9,9 @@ $secretKey = getenv("QINIU_SECRET_KEY");
 
 $tid = getenv("TRAVIS_JOB_NUMBER");
 if (!empty($tid)) {
+    $pid = getmypid();
 	$tid = strstr($tid, ".");
+    $tid .= "." . $pid;
 }
 
 function initKeys() {

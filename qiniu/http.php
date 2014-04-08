@@ -182,7 +182,8 @@ function Qiniu_Client_ret($resp) // => ($data, $error)
 		if ($resp->ContentLength !== 0) {
 			$data = json_decode($resp->Body, true);
 			if ($data === null) {
-				$err = new Qiniu_Error(0, json_last_error_msg());
+				$err_msg = function_exists('json_last_error_msg') ? json_last_error_msg() : "error with content:" . $resp->Body;
+				$err = new Qiniu_Error(0, $err_msg);
 				return array(null, $err);
 			}
 		}
@@ -260,10 +261,11 @@ function Qiniu_Build_MultipartForm($fields, $files) // => ($contentType, $body)
 
 	foreach ($files as $file) {
 		array_push($data, '--' . $mimeBoundary);
-		list($name, $fileName, $fileBody) = $file;
+		list($name, $fileName, $fileBody, $mimeType) = $file;
+		$mimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
 		$fileName = Qiniu_escapeQuotes($fileName);
 		array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
-		array_push($data, 'Content-Type: application/octet-stream');
+		array_push($data, "Content-Type: $mimeType");
 		array_push($data, '');
 		array_push($data, $fileBody);
 	}

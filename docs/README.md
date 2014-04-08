@@ -1,7 +1,8 @@
 ---
-title: PHP SDK 
+title: PHP SDK
 ---
 
+# PHP SDK 使用指南
 
 此 SDK 适用于 PHP 5.1.0 及其以上版本。基于 [七牛云存储官方API](http://docs.qiniu.com) 构建。使用此 SDK 构建您的网络应用程序，能让您以非常便捷地方式将数据安全地存储到七牛云存储上。无论您的网络应用是一个网站程序，还是包括从云端（服务端程序）到终端（手持设备应用）的架构的服务或应用，通过七牛云存储及其 SDK，都能让您应用程序的终端用户高速上传和下载，同时也让您的服务端更加轻盈。
 
@@ -19,12 +20,12 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 		- [5.1 批量获取文件信息](#batch_stat)
 		- [5.2 批量复制文件](#batch_copy)
 		- [5.3 批量删除文件](#batch_delete)
-		- [5.4 批量移动文件](#batch_move)				
+		- [5.4 批量移动文件](#batch_move)
 - [上传下载接口](#get-and-put-api)
 	- [1 文件上传](#upload)
 		- [1.1 上传流程](#io-put-flow)
 		- [1.2 上传策略](#io-put-policy)
-		- [1.3 断点续上传](#rio-putfile)		
+		- [1.3 断点续上传](#rio-putfile)
 	- [2 文件下载](#io-download)
 		- [2.1 公有资源下载](#public-download)
 		- [2.2 私有资源下载](#private-download)
@@ -62,10 +63,10 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 {php}
 
 require_once("../../qiniu/rs.php");
-	
+
 $bucket = 'phpsdk';
 $key = 'pic';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -78,7 +79,7 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
-```	
+```
 <a name="rs-copy"></a>
 ### 2. 复制单个文件
 
@@ -88,11 +89,11 @@ if ($err !== null) {
 {php}
 
 require_once("../../qiniu/rs.php");
-	
+
 $bucket = 'phpsdk';
 $key = 'pic';
 $key2 = 'file_name';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -104,17 +105,17 @@ if ($err !== null) {
 } else {
 	echo "Success! \n";
 }
-```	
+```
 <a name=rs-move></a>
 ### 3. 移动单个文件
 
 示例代码如下：
 
 ```
-{php}	
+{php}
 
 require_once("../../qiniu/rs.php");
-	
+
 $bucket = 'phpsdk';
 $key = 'pic';
 $key2 = 'file_name';
@@ -131,7 +132,7 @@ if ($err !== null) {
 } else {
 	echo "Success! \n";
 }
-```	
+```
 <a name=rs-delete></a>
 ### 4. 删除单个文件
 
@@ -139,12 +140,12 @@ if ($err !== null) {
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
-	
+
 $bucket = 'phpsdk';
 $key = 'pic';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -157,7 +158,7 @@ if ($err !== null) {
 } else {
 	echo "Success! \n";
 }
-```	
+```
 <a name=batch></a>
 ### 5.批量操作
 当您需要一次性进行多个操作时，可以使用批量操作。
@@ -167,13 +168,13 @@ if ($err !== null) {
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 
 $bucket = 'phpsdk';
 $key = 'pic';
 $key2 = 'file_name';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -189,20 +190,20 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
-```	
+```
 <a name=batch_copy></a>
 #### 5.2 批量复制文件
 示例代码如下：
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 
 $bucket = 'phpsdk';
 $key = 'pic';
 $key2 = 'file_name';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -227,13 +228,13 @@ if ($err !== null) {
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 
 $bucket = 'phpsdk';
 $key = 'pic';
 $key2 = 'file_name';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -256,12 +257,12 @@ if ($err !== null) {
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 
 $bucket = 'phpsdk';
 $key = 'pic';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -281,9 +282,9 @@ if ($err !== null) {
 ```
 <a name="get-and-put-api"></a>
 ## 上传下载接口
-	
+
 <a name=upload></a>
-###1. 文件上传
+### 1. 文件上传
 
 为了尽可能地改善终端用户的上传体验，七牛云存储首创了客户端直传功能。一般云存储的上传流程是：
 
@@ -315,7 +316,7 @@ if ($err !== null) {
 服务端生成 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken) 代码如下:
 
 ```
-{php}	
+{php}
 
 require_once("../../qiniu/rs.php");
 
@@ -324,7 +325,7 @@ $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 $putPolicy = new Qiniu_RS_PutPolicy($bucket);
 $upToken = $putPolicy->Token(null);
-```	 
+```
 上传文件到七牛（通常是客户端完成，但也可以发生在服务端）：
 
 
@@ -332,7 +333,7 @@ $upToken = $putPolicy->Token(null);
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 require_once("../../qiniu/io.php");
 
@@ -352,13 +353,13 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
-```	 
+```
 
 上传本地文件
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 require_once("../../qiniu/io.php");
 
@@ -381,7 +382,7 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
-```	
+```
 <a name="io-put-policy"></a>
 ### 1.2 上传策略
 
@@ -397,14 +398,25 @@ if ($err !== null) {
 		public $AsyncOps;			// 可选
 		public $EndUser;			// 可选
 		public $Expires;			// 可选。默认是 3600 秒
+		public $PersistentOps;		// 可选。
+		public $PersistentNotifyUrl;	// 如果设置了PersistentOps，必须同时设置此项。
+		public $InsertOnly;		// 可选。如果设置为非0值，则无论scope设置为何种形式，都只能以`新增`方式上传，不能覆盖。
+		public $DetectMime;		// 可选。如果设为非0值，则忽略上传端传递的文件MimeType信息，使用七牛服务器侦测内容后的判断结果。
+		public $FsizeLimit;		// 可选。int类型，超过限制大小的上传内容会被判为上传失败，返回413状态码。
+		public $SaveKey;			// 可选。自定义资源名格式。
+		public $Transform;			// 可选。指定资源经过怎样的处理后再保存。
+		public $FopTimeout;		// 可选。int类型，指定transform的超时时间，如果文件处理超过此值，则认为上传失败。
+		public $MimeLimit;			// 可选。限定上传的文件类型。
 	}
 
-* `scope` 限定客户端的权限。如果 `scope` 是 bucket，则客户端只能新增文件到指定的 bucket，不能修改文件。如果 `scope` 为 bucket:key，则客户端可以修改指定的文件。
+* `scope` 限定客户端的权限。如果 `scope` 是 bucket，则客户端只能新增文件到指定的 bucket，不能修改文件。如果 `scope` 为 bucket:key，则客户端可以修改指定的文件。**注意： key必须采用utf8编码，如使用非utf8编码访问七牛云存储将反馈错误**
 * `callbackUrl` 设定业务服务器的回调地址，这样业务服务器才能感知到上传行为的发生。
 * `callbackBody` 设定业务服务器的回调信息。文件上传成功后，七牛向业务服务器的callbackUrl发送的POST请求携带的数据。支持 [魔法变量](http://docs.qiniu.com/api/put.html#MagicVariables) 和 [自定义变量](http://docs.qiniu.com/api/put.html#xVariables)。
 * `returnUrl` 设置用于浏览器端文件上传成功后，浏览器执行301跳转的URL，一般为 HTML Form 上传时使用。文件上传成功后浏览器会自动跳转到 `returnUrl?upload_ret=returnBody`。
 * `returnBody` 可调整返回给客户端的数据包，支持 [魔法变量](http://docs.qiniu.com/api/put.html#MagicVariables) 和 [自定义变量](http://docs.qiniu.com/api/put.html#xVariables)。`returnBody` 只在没有 `callbackUrl` 时有效（否则直接返回 `callbackUrl` 返回的结果）。不同情形下默认返回的 `returnBody` 并不相同。在一般情况下返回的是文件内容的 `hash`，也就是下载该文件时的 `etag`；但指定 `returnUrl` 时默认的 `returnBody` 会带上更多的信息。
 * `asyncOps` 可指定上传完成后，需要自动执行哪些数据处理。这是因为有些数据处理操作（比如音视频转码）比较慢，如果不进行预转可能第一次访问的时候效果不理想，预转可以很大程度改善这一点。
+* `persistentOps` 可指定音视频文件上传完成后，需要进行的转码持久化操作。asyncOps的处理结果保存在缓存当中，有可能失效。而persistentOps的处理结果以文件形式保存在bucket中，体验更佳。[数据处理(持久化)](http://docs.qiniu.com/api/persistent-ops.html)
+* `persistentNotifyUrl` 音视频转码持久化完成后，七牛的服务器会向用户发送处理结果通知。这里指定的url就是用于接收通知的接口。设置了`persistentOps`,则需要同时设置此字段。
 
 关于上传策略更完整的说明，请参考 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken)。
 
@@ -414,7 +426,7 @@ if ($err !== null) {
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 require_once("../../qiniu/resumable_io.php");
 
@@ -436,7 +448,7 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
-```	
+```
 
 <a name=io-download></a>
 ### 2. 文件下载
@@ -451,18 +463,17 @@ if ($err !== null) {
 如果在给bucket绑定了域名的话，可以通过以下地址访问。
 
 	[GET] http://<domain>/<key>
-	
+
 示例代码：
 
-```
-{php}
-	
-$key = 'pic';
-$domain = 'phpsdk.qiniudn.com';
-//$baseUrl 就是您要访问资源的地址:
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
-```	
-其中<domain>可以到[七牛云存储开发者自助网站](https://portal.qiniu.com/)绑定, 域名可以使用自己一级域名的或者是由七牛提供的二级域名(`<bucket>.qiniudn.com`)。注意，尖括号不是必需，代表替换项。
+	$key = 'pic.jpg';
+	$domain = 'phpsdk.qiniudn.com';
+	//$baseUrl 就是您要访问资源的地址
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+
+其中\<domain\>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
+
+**注意： key必须采用utf8编码，如使用非utf8编码访问七牛云存储将反馈错误**
 
 <a name=private-download></a>
 #### 2.2 私有资源下载
@@ -470,27 +481,30 @@ $baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 
 	[GET] http://<domain>/<key>?e=<deadline>&token=<downloadToken>
 
-注意，尖括号不是必需，代表替换项。  
+注意，尖括号不是必需，代表替换项。
 私有下载链接可以使用 SDK 提供的如下方法生成：
 
 ```
 {php}
 
 require_once("../../qiniu/rs.php");
-	
+
 $key = 'pic';
 $domain = 'phpsdk.qiniudn.com';
-	
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+
+Qiniu_SetKeys($accessKey, $secretKey);
+$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+$getPolicy = new Qiniu_RS_GetPolicy();
+$privateUrl = $getPolicy->MakeRequest($baseUrl, null);
+echo "====> getPolicy result: \n";
+echo $privateUrl . "\n";
 
 $baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $privateUrl = $getPolicy->MakeRequest($baseUrl, null);
 echo "\n\n====> getPolicy result: \n";
 echo $privateUrl . "\n";
-```	
+```
 
 <a name=fop-api></a>
 ## 数据处理接口
@@ -503,13 +517,13 @@ echo $privateUrl . "\n";
 
 ```
 {php}
-	
+
 require_once("../../qiniu/rs.php");
 require_once("../../qiniu/fop.php");
 
 $key = 'pic';
 $domain = 'phpsdk.qiniudn.com';
-	
+
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
@@ -556,7 +570,7 @@ $imgExifPrivateUrl = $getPolicy->MakeRequest($imgExifUrl, null);
 echo "\n\n====> imageView privateUrl: \n";
 echo $imgExifPrivateUrl . "\n";
 ```
-	
+
 <a name=fop-image-view></a>
 #### 1.3 生成图片预览
 
