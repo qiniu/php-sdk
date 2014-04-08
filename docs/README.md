@@ -62,17 +62,17 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
+$key1 = 'file_name_1';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
 $client = new Qiniu_MacHttpClient(null);
-list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key);
+list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Stat result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -88,17 +88,18 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$key2 = 'file_name';
+$key1 = 'file_name_1';
+$key2 = 'file_name_2';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$err = Qiniu_RS_Copy($client, $bucket, $key, $bucket, $key2);
+$client = new Qiniu_MacHttpClient(null);
+$err = Qiniu_RS_Copy($client, $bucket, $key1, $bucket, $key2);
 echo "\n\n====> Qiniu_RS_Copy result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -114,18 +115,18 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$key2 = 'file_name';
+$key1 = 'file_name_1';
+$key2 = 'file_name_2';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
 $client = new Qiniu_MacHttpClient(null);
-$err = Qiniu_RS_Move($client, $bucket, $key2, $bucket, $key);
+$err = Qiniu_RS_Move($client, $bucket, $key2, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Move result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -141,17 +142,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
+$key1 = 'file_name_1';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
 $client = new Qiniu_MacHttpClient(null);
-$err = Qiniu_RS_Delete($client, $bucket, $key);
+$err = Qiniu_RS_Delete($client, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Delete result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -169,17 +170,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$key2 = 'file_name';
+$key1 = 'file_name_1';
+$key2 = 'file_name_2';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key);
+$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
 $e2 = new Qiniu_RS_EntryPath($bucket, $key2);
 $client = new Qiniu_MacHttpClient(null);
 $entries = array($e1, $e2);
@@ -198,19 +199,19 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$key2 = 'file_name';
+$key1 = 'file_name_1';
+$key2 = 'file_name_2';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key);
+$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
 $e2 = new Qiniu_RS_EntryPath($bucket, $key2);
-$key3 = $key . '3';
+$key3 = $key1 . '3';
 $e3 = new Qiniu_RS_EntryPath($bucket, $key3);
 $client = new Qiniu_MacHttpClient(null);
 $entryPairs = array(new Qiniu_RS_EntryPathPair($e1, $e2), new Qiniu_RS_EntryPathPair($e1, $e3));
@@ -229,17 +230,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$key2 = 'file_name';
+$key1 = 'file_name_1';
+$key2 = 'file_name_2';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key);
+$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
 $e2 = new Qiniu_RS_EntryPath($bucket, $key2);
 $client = new Qiniu_MacHttpClient(null);
 $entries = array($e1, $e2);
@@ -250,6 +251,7 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
+
 ```
 <a name=batch_move></a>
 #### 5.4 批量移动文件
@@ -258,17 +260,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
+$key1 = 'file_name_1';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key);
-$key3 = $key . '3';
+$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
+$key3 = $key1 . '3';
 $e3 = new Qiniu_RS_EntryPath($bucket, $key3);
 $client = new Qiniu_MacHttpClient(null);
 $entryPairs = array(new Qiniu_RS_EntryPathPair($e3, $e1));
@@ -279,6 +281,7 @@ if ($err !== null) {
 } else {
 	var_dump($ret);
 }
+
 ```
 <a name="get-and-put-api"></a>
 ## 上传下载接口
@@ -318,13 +321,15 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
+$bucket = 'phpsdk';
 $putPolicy = new Qiniu_RS_PutPolicy($bucket);
 $upToken = $putPolicy->Token(null);
+
 ```
 上传文件到七牛（通常是客户端完成，但也可以发生在服务端）：
 
@@ -334,11 +339,11 @@ $upToken = $putPolicy->Token(null);
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/io.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/io.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
+$key1 = 'file_name_1';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
@@ -346,7 +351,7 @@ Qiniu_setKeys($accessKey, $secretKey);
 
 $putPolicy = new Qiniu_RS_PutPolicy($bucket);
 $upToken = $putPolicy->Token(null);
-list($ret, $err) = Qiniu_Put($upToken, $key, "Qiniu Storage!", null);
+list($ret, $err) = Qiniu_Put($upToken, $key1, 'Qiniu Storage!', null);
 echo "\n\n====> Qiniu_Put result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -360,12 +365,12 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/io.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/io.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$file = 'f22.jpeg';
+$key1 = 'file_name_1';
+$file = 'docs/gist/logo.jpg';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
@@ -375,7 +380,7 @@ $putPolicy = new Qiniu_RS_PutPolicy($bucket);
 $upToken = $putPolicy->Token(null);
 $putExtra = new Qiniu_PutExtra();
 $putExtra->Crc32 = 1;
-list($ret, $err) = Qiniu_PutFile($upToken, $key, $file, $putExtra);
+list($ret, $err) = Qiniu_PutFile($upToken, $key1, $file, $putExtra);
 echo "\n\n====> Qiniu_PutFile result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -427,12 +432,12 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/resumable_io.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/resumable_io.php');
 
 $bucket = 'phpsdk';
-$key = 'pic';
-$file = 'f22.jpeg';
+$key1 = 'file_name_1';
+$file = 'docs/gist/logo.jpg';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
@@ -441,7 +446,7 @@ Qiniu_setKeys($accessKey, $secretKey);
 $putPolicy = new Qiniu_RS_PutPolicy($bucket);
 $upToken = $putPolicy->Token(null);
 $putExtra = new Qiniu_Rio_PutExtra($bucket);
-list($ret, $err) = Qiniu_Rio_PutFile($upToken, $key, $file, $putExtra);
+list($ret, $err) = Qiniu_Rio_PutFile($upToken, $key1, $file, $putExtra);
 echo "\n\n====> Qiniu_Rio_PutFile result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -466,10 +471,10 @@ if ($err !== null) {
 
 示例代码：
 
-	$key = 'pic.jpg';
+	$key1 = 'file_name_1';
 	$domain = 'phpsdk.qiniudn.com';
 	//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 
 其中\<domain\>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
 
@@ -487,23 +492,22 @@ if ($err !== null) {
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 
-$key = 'pic';
+$key1 = 'file_name_1';
 $domain = 'phpsdk.qiniudn.com';
 
-Qiniu_SetKeys($accessKey, $secretKey);
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
-$getPolicy = new Qiniu_RS_GetPolicy();
-$privateUrl = $getPolicy->MakeRequest($baseUrl, null);
-echo "====> getPolicy result: \n";
-echo $privateUrl . "\n";
-
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+$accessKey = '<YOUR_ACCESS_KEY>';
+$secretKey = '<YOUR_SECRET_KEY>';
+Qiniu_setKeys($accessKey, $secretKey);
+//$baseUrl 就是您要访问资源的地址
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
+$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $privateUrl = $getPolicy->MakeRequest($baseUrl, null);
 echo "\n\n====> getPolicy result: \n";
 echo $privateUrl . "\n";
+
 ```
 
 <a name=fop-api></a>
@@ -518,17 +522,18 @@ echo $privateUrl . "\n";
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/fop.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/fop.php');
 
-$key = 'pic';
+$key1 = 'file_name_1';
 $domain = 'phpsdk.qiniudn.com';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+//$baseUrl 就是您要访问资源的地址
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $imgInfo = new Qiniu_ImageInfo;
 
@@ -549,17 +554,18 @@ echo $imgInfoPrivateUrl . "\n";
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/fop.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/fop.php');
 
-$key = 'pic';
+$key1 = 'file_name_1';
 $domain = 'phpsdk.qiniudn.com';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+//$baseUrl 就是您要访问资源的地址
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $imgExif = new Qiniu_Exif;
 
@@ -577,17 +583,18 @@ echo $imgExifPrivateUrl . "\n";
 ```
 {php}
 
-require_once("../../qiniu/rs.php");
-require_once("../../qiniu/fop.php");
+require_once('qiniu/rs.php');
+require_once('qiniu/fop.php');
 
-$key = 'pic';
+$key1 = 'file_name_1';
 $domain = 'phpsdk.qiniudn.com';
 
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
 Qiniu_setKeys($accessKey, $secretKey);
 
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+//$baseUrl 就是您要访问资源的地址
+	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $imgView = new Qiniu_ImageView;
 $imgView->Mode = 1;
@@ -621,5 +628,6 @@ Copyright (c) 2013 qiniu.com
 基于 MIT 协议发布:
 
 * [www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
+
 
 
