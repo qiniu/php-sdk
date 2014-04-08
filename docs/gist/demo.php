@@ -1,31 +1,32 @@
 <?php
 
+chdir('../..');
 # @gist require_io
-require_once("../../qiniu/io.php");
+require_once('qiniu/io.php');
 # @endgist
 # @gist require_rs
-require_once("../../qiniu/rs.php");
+require_once('qiniu/rs.php');
 # @endgist
 # @gist require_fop
-require_once("../../qiniu/fop.php");
+require_once('qiniu/fop.php');
 # @endgist
 # @gist require_rsf
-require_once("../../qiniu/rsf.php");
+require_once('qiniu/rsf.php');
 # @endgist
 # @gist require_rio
-require_once("../../qiniu/resumable_io.php");
+require_once('qiniu/resumable_io.php');
 # @endgist
 # @gist bucket
 $bucket = 'phpsdk';
 # @endgist
-# @gist key
-$key = 'pic';
+# @gist key1
+$key1 = 'file_name_1';
 # @endgist
 # @gist key2
-$key2 = 'file_name';
+$key2 = 'file_name_2';
 # @endgist
 # @gist file
-$file = 'f22.jpeg';
+$file = 'docs/gist/f22.jpeg';
 # @endgist
 # @gist domain
 $domain = 'phpsdk.qiniudn.com';
@@ -34,13 +35,15 @@ $domain = 'phpsdk.qiniudn.com';
 # @gist set_keys
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
+$accessKey = 'Vhiv6a22kVN_zhtetbPNeG9sY3JUL1HG597EmBwQ';
+$secretKey = 'b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD';
 Qiniu_setKeys($accessKey, $secretKey);
 # @endgist
 # @gist mac_client
 $client = new Qiniu_MacHttpClient(null);
 # @endgist
 
-Qiniu_RS_Delete($client, $bucket, $key);
+Qiniu_RS_Delete($client, $bucket, $key1);
 Qiniu_RS_Delete($client, $bucket, $key2);
 
 //------------------------------------io-----------------------------------------
@@ -50,7 +53,7 @@ $upToken = $putPolicy->Token(null);
 # @endgist
 
 # @gist put
-list($ret, $err) = Qiniu_Put($upToken, $key, "Qiniu Storage!", null);
+list($ret, $err) = Qiniu_Put($upToken, $key1, 'Qiniu Storage!', null);
 echo "\n\n====> Qiniu_Put result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -58,12 +61,12 @@ if ($err !== null) {
 	var_dump($ret);
 }
 # @endgist
-Qiniu_RS_Delete($client, $bucket, $key);
+Qiniu_RS_Delete($client, $bucket, $key1);
 
 # @gist putfile
 $putExtra = new Qiniu_PutExtra();
 $putExtra->Crc32 = 1;
-list($ret, $err) = Qiniu_PutFile($upToken, $key, $file, $putExtra);
+list($ret, $err) = Qiniu_PutFile($upToken, $key1, $file, $putExtra);
 echo "\n\n====> Qiniu_PutFile result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -71,10 +74,10 @@ if ($err !== null) {
 	var_dump($ret);
 }
 # @endgist
-Qiniu_RS_Delete($client, $bucket, $key);
+Qiniu_RS_Delete($client, $bucket, $key1);
 
 # @gist getpolicy
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 $getPolicy = new Qiniu_RS_GetPolicy();
 $privateUrl = $getPolicy->MakeRequest($baseUrl, null);
 echo "\n\n====> getPolicy result: \n";
@@ -83,10 +86,10 @@ echo $privateUrl . "\n";
 
 
 //------------------------------------rio-----------------------------------------
-//Qiniu_Rio_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $err)
+//Qiniu_Rio_PutFile($upToken, $key1, $localFile, $putExtra) // => ($putRet, $err)
 # @gist rio_putfile
 $putExtra = new Qiniu_Rio_PutExtra($bucket);
-list($ret, $err) = Qiniu_Rio_PutFile($upToken, $key, $file, $putExtra);
+list($ret, $err) = Qiniu_Rio_PutFile($upToken, $key1, $file, $putExtra);
 echo "\n\n====> Qiniu_Rio_PutFile result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -97,7 +100,7 @@ if ($err !== null) {
 
 //------------------------------------rs-----------------------------------------
 # @gist stat
-list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key);
+list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Stat result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -107,7 +110,7 @@ if ($err !== null) {
 # @endgist
 
 # @gist copy
-$err = Qiniu_RS_Copy($client, $bucket, $key, $bucket, $key2);
+$err = Qiniu_RS_Copy($client, $bucket, $key1, $bucket, $key2);
 echo "\n\n====> Qiniu_RS_Copy result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -117,7 +120,7 @@ if ($err !== null) {
 # @endgist
 
 # @gist delete
-$err = Qiniu_RS_Delete($client, $bucket, $key);
+$err = Qiniu_RS_Delete($client, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Delete result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -127,7 +130,7 @@ if ($err !== null) {
 # @endgist
 
 # @gist move
-$err = Qiniu_RS_Move($client, $bucket, $key2, $bucket, $key);
+$err = Qiniu_RS_Move($client, $bucket, $key2, $bucket, $key1);
 echo "\n\n====> Qiniu_RS_Move result: \n";
 if ($err !== null) {
 	var_dump($err);
@@ -137,13 +140,13 @@ if ($err !== null) {
 # @endgist
 
 # @gist entrypath1
-$e1 = new Qiniu_RS_EntryPath($bucket, $key);
+$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
 # @endgist
 # @gist entrypath2
 $e2 = new Qiniu_RS_EntryPath($bucket, $key2);
 # @endgist
 # @gist entrypath3
-$key3 = $key . '3';
+$key3 = $key1 . '3';
 $e3 = new Qiniu_RS_EntryPath($bucket, $key3);
 # @endgist
 
@@ -209,7 +212,8 @@ if ($err != null) {
 
 //------------------------------------fop-----------------------------------------
 # @gist base_url
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key);
+//$baseUrl 就是您要访问资源的地址
+$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
 # @endgist
 
 # @gist image_info
