@@ -81,6 +81,7 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 		$ctxs []= $prog['ctx'];
 	}
 	$body = implode(',', $ctxs);
+	var_dump($ctxs);
 
 	return Qiniu_Client_CallWithForm($self, $url, $body, 'application/octet-stream');
 }
