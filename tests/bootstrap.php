@@ -8,10 +8,13 @@ $accessKey = getenv("QINIU_ACCESS_KEY");
 $secretKey = getenv("QINIU_SECRET_KEY");
 
 $tid = getenv("TRAVIS_JOB_NUMBER");
+
+$testEnv = getenv("QINIU_TEST_ENV");
+
 if (!empty($tid)) {
-    $pid = getmypid();
+	$pid = getmypid();
 	$tid = strstr($tid, ".");
-    $tid .= "." . $pid;
+	$tid .= "." . $pid;
 }
 
 function initKeys() {
@@ -24,6 +27,11 @@ function initKeys() {
 function getTid() {
 	global $tid;
 	return $tid;
+}
+
+function getTestEnv() {
+	global $testEnv;
+	return $testEnv;
 }
 
 class MockReader

@@ -41,7 +41,7 @@ function Qiniu_Rio_Mkblock($self, $host, $reader, $size) // => ($blkputRet, $err
 	if (is_resource($reader)) {
 		$body = fread($reader, $size);
 		if ($body === false) {
-			$err = Qiniu_NewError(0, 'fread failed');
+			$err = new Qiniu_Error(0, 'fread failed');
 			return array(null, $err);
 		}
 	} else {
@@ -51,7 +51,7 @@ function Qiniu_Rio_Mkblock($self, $host, $reader, $size) // => ($blkputRet, $err
 		}
 	}
 	if (strlen($body) != $size) {
-		$err = Qiniu_NewError(0, 'fread failed: unexpected eof');
+		$err = new Qiniu_Error(0, 'fread failed: unexpected eof');
 		return array(null, $err);
 	}
 
@@ -81,7 +81,6 @@ function Qiniu_Rio_Mkfile($self, $host, $key, $fsize, $extra) // => ($putRet, $e
 		$ctxs []= $prog['ctx'];
 	}
 	$body = implode(',', $ctxs);
-	var_dump($ctxs);
 
 	return Qiniu_Client_CallWithForm($self, $url, $body, 'application/octet-stream');
 }
@@ -120,6 +119,8 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 	while ($uploaded < $fsize) {
 		$tried = 0;
 		$tryTimes = ($putExtra->TryTimes > 0) ? $putExtra->TryTimes : 1;
+		$blkputRet = null;
+		$err = null;
 		if ($fsize < $uploaded + QINIU_RIO_BLOCK_SIZE) {
 			$bsize = $fsize - $uploaded;
 		} else {
@@ -136,6 +137,10 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 		if ($err !== null) {
 			return array(null, $err);
 		}
+		if ($blkputRet === null ) {
+			$err = new Qiniu_Error(0, "rio: uploaded without ret");
+			return array(null, $err);
+		}
 		$uploaded += $bsize;
 		$progresses []= $blkputRet;
 	}
@@ -148,7 +153,7 @@ function Qiniu_Rio_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet
 {
 	$fp = fopen($localFile, 'rb');
 	if ($fp === false) {
-		$err = Qiniu_NewError(0, 'fopen failed');
+		$err = new Qiniu_Error(0, 'fopen failed');
 		return array(null, $err);
 	}
 
