@@ -92,3 +92,4 @@
   - 待增加：rsf, batch, resumable io 的支持
 - bugfix: 修复 crc32 为负数的错误
 - 增加 `Qiniu_RS_Put/PutFile` 辅助函数，用于服务端上传
+

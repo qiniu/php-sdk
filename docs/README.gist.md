@@ -62,23 +62,15 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$client = new Qiniu_MacHttpClient(null);
-list($ret, $err) = Qiniu_RS_Stat($client, $bucket, $key1);
-echo "\n\n====> Qiniu_RS_Stat result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#stat)
 ```
 <a name="rs-copy"></a>
 ### 2. 复制单个文件
@@ -88,24 +80,16 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$key2 = 'file_name_2';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#key2)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$client = new Qiniu_MacHttpClient(null);
-$err = Qiniu_RS_Copy($client, $bucket, $key1, $bucket, $key2);
-echo "\n\n====> Qiniu_RS_Copy result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	echo "Success! \n";
-}
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#copy)
 ```
 <a name=rs-move></a>
 ### 3. 移动单个文件
@@ -115,24 +99,16 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$key2 = 'file_name_2';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#key2)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$client = new Qiniu_MacHttpClient(null);
-$err = Qiniu_RS_Move($client, $bucket, $key2, $bucket, $key1);
-echo "\n\n====> Qiniu_RS_Move result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	echo "Success! \n";
-}
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#move)
 ```
 <a name=rs-delete></a>
 ### 4. 删除单个文件
@@ -142,23 +118,15 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$client = new Qiniu_MacHttpClient(null);
-$err = Qiniu_RS_Delete($client, $bucket, $key1);
-echo "\n\n====> Qiniu_RS_Delete result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	echo "Success! \n";
-}
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#delete)
 ```
 <a name=batch></a>
 ### 5.批量操作
@@ -170,27 +138,18 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$key2 = 'file_name_2';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#key2)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
-$e2 = new Qiniu_RS_EntryPath($bucket, $key2);
-$client = new Qiniu_MacHttpClient(null);
-$entries = array($e1, $e2);
-list($ret, $err) = Qiniu_RS_BatchStat($client, $entries);
-echo "\n\n====> Qiniu_RS_BatchStat result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#entrypath1)
+@gist(gist/demo.php#entrypath2)
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#batch_stat)
 ```
 <a name=batch_copy></a>
 #### 5.2 批量复制文件
@@ -199,29 +158,19 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$key2 = 'file_name_2';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#key2)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
-$e2 = new Qiniu_RS_EntryPath($bucket, $key2);
-$key3 = $key1 . '3';
-$e3 = new Qiniu_RS_EntryPath($bucket, $key3);
-$client = new Qiniu_MacHttpClient(null);
-$entryPairs = array(new Qiniu_RS_EntryPathPair($e1, $e2), new Qiniu_RS_EntryPathPair($e1, $e3));
-list($ret, $err) = Qiniu_RS_BatchCopy($client, $entryPairs);
-echo "\n\n====> Qiniu_RS_BatchCopy result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#entrypath1)
+@gist(gist/demo.php#entrypath2)
+@gist(gist/demo.php#entrypath3)
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#batch_copy)
 ```
 <a name=batch_delete></a>
 #### 5.3 批量删除文件
@@ -230,27 +179,18 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$key2 = 'file_name_2';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#key2)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
-$e2 = new Qiniu_RS_EntryPath($bucket, $key2);
-$client = new Qiniu_MacHttpClient(null);
-$entries = array($e1, $e2);
-list($ret, $err) = Qiniu_RS_BatchDelete($client, $entries);
-echo "\n\n====> Qiniu_RS_BatchDelete result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#entrypath1)
+@gist(gist/demo.php#entrypath2)
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#batch_delete)
 
 ```
 <a name=batch_move></a>
@@ -260,27 +200,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$e1 = new Qiniu_RS_EntryPath($bucket, $key1);
-$key3 = $key1 . '3';
-$e3 = new Qiniu_RS_EntryPath($bucket, $key3);
-$client = new Qiniu_MacHttpClient(null);
-$entryPairs = array(new Qiniu_RS_EntryPathPair($e3, $e1));
-list($ret, $err) = Qiniu_RS_BatchMove($client, $entryPairs);
-echo "\n\n====> Qiniu_RS_BatchMove result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#entrypath1)
+@gist(gist/demo.php#entrypath3)
+@gist(gist/demo.php#mac_client)
+@gist(gist/demo.php#batch_move)
 
 ```
 <a name="get-and-put-api"></a>
@@ -321,14 +251,11 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
-$bucket = 'phpsdk';
-$putPolicy = new Qiniu_RS_PutPolicy($bucket);
-$upToken = $putPolicy->Token(null);
+@gist(gist/demo.php#set_keys)
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#putpolicy)
 
 ```
 上传文件到七牛（通常是客户端完成，但也可以发生在服务端）：
@@ -339,25 +266,16 @@ $upToken = $putPolicy->Token(null);
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/io.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_io)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$putPolicy = new Qiniu_RS_PutPolicy($bucket);
-$upToken = $putPolicy->Token(null);
-list($ret, $err) = Qiniu_Put($upToken, $key1, 'Qiniu Storage!', null);
-echo "\n\n====> Qiniu_Put result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#putpolicy)
+@gist(gist/demo.php#put)
 ```
 
 上传本地文件
@@ -365,28 +283,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/io.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_io)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$file = 'docs/gist/logo.jpg';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#file)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$putPolicy = new Qiniu_RS_PutPolicy($bucket);
-$upToken = $putPolicy->Token(null);
-$putExtra = new Qiniu_PutExtra();
-$putExtra->Crc32 = 1;
-list($ret, $err) = Qiniu_PutFile($upToken, $key1, $file, $putExtra);
-echo "\n\n====> Qiniu_PutFile result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#putpolicy)
+@gist(gist/demo.php#putfile)
 ```
 <a name="io-put-policy"></a>
 ### 1.2 上传策略
@@ -432,27 +339,17 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/resumable_io.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_rio)
 
-$bucket = 'phpsdk';
-$key1 = 'file_name_1';
-$file = 'docs/gist/logo.jpg';
+@gist(gist/demo.php#bucket)
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#file)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-$putPolicy = new Qiniu_RS_PutPolicy($bucket);
-$upToken = $putPolicy->Token(null);
-$putExtra = new Qiniu_Rio_PutExtra($bucket);
-list($ret, $err) = Qiniu_Rio_PutFile($upToken, $key1, $file, $putExtra);
-echo "\n\n====> Qiniu_Rio_PutFile result: \n";
-if ($err !== null) {
-	var_dump($err);
-} else {
-	var_dump($ret);
-}
+@gist(gist/demo.php#putpolicy)
+@gist(gist/demo.php#rio_putfile)
 ```
 
 <a name=io-download></a>
@@ -471,10 +368,9 @@ if ($err !== null) {
 
 示例代码：
 
-	$key1 = 'file_name_1';
-	$domain = 'phpsdk.qiniudn.com';
-	//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
+	@gist(gist/demo.php#key1)
+	@gist(gist/demo.php#domain)
+	@gist(gist/demo.php#base_url)
 
 其中\<domain\>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
 
@@ -492,21 +388,14 @@ if ($err !== null) {
 ```
 {php}
 
-require_once('qiniu/rs.php');
+@gist(gist/demo.php#require_rs)
 
-$key1 = 'file_name_1';
-$domain = 'phpsdk.qiniudn.com';
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#domain)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
-//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
-$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
-$getPolicy = new Qiniu_RS_GetPolicy();
-$privateUrl = $getPolicy->MakeRequest($baseUrl, null);
-echo "\n\n====> getPolicy result: \n";
-echo $privateUrl . "\n";
+@gist(gist/demo.php#set_keys)
+@gist(gist/demo.php#base_url)
+@gist(gist/demo.php#getpolicy)
 
 ```
 
@@ -522,28 +411,16 @@ echo $privateUrl . "\n";
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/fop.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_fop)
 
-$key1 = 'file_name_1';
-$domain = 'phpsdk.qiniudn.com';
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#domain)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
-$getPolicy = new Qiniu_RS_GetPolicy();
-$imgInfo = new Qiniu_ImageInfo;
-
-//生成fopUrl
-$imgInfoUrl = $imgInfo->MakeRequest($baseUrl);
-
-//对fopUrl 进行签名，生成privateUrl。 公有bucket 此步可以省去。
-$imgInfoPrivateUrl = $getPolicy->MakeRequest($imgInfoUrl, null);
-echo "\n\n====> imageInfo privateUrl: \n";
-echo $imgInfoPrivateUrl . "\n";
+@gist(gist/demo.php#base_url)
+@gist(gist/demo.php#image_info)
 ```
 
 将`$imgInfoPrivateUrl`粘贴到浏览器地址栏中就可以查看该图像的信息了。
@@ -554,27 +431,16 @@ echo $imgInfoPrivateUrl . "\n";
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/fop.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_fop)
 
-$key1 = 'file_name_1';
-$domain = 'phpsdk.qiniudn.com';
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#domain)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
-$getPolicy = new Qiniu_RS_GetPolicy();
-$imgExif = new Qiniu_Exif;
-
-//生成fopUrl
-$imgExifUrl = $imgExif->MakeRequest($baseUrl);
-//对fopUrl 进行签名，生成privateUrl。 公有bucket 此步可以省去。
-$imgExifPrivateUrl = $getPolicy->MakeRequest($imgExifUrl, null);
-echo "\n\n====> imageView privateUrl: \n";
-echo $imgExifPrivateUrl . "\n";
+@gist(gist/demo.php#base_url)
+@gist(gist/demo.php#image_exif)
 ```
 
 <a name=fop-image-view></a>
@@ -583,31 +449,16 @@ echo $imgExifPrivateUrl . "\n";
 ```
 {php}
 
-require_once('qiniu/rs.php');
-require_once('qiniu/fop.php');
+@gist(gist/demo.php#require_rs)
+@gist(gist/demo.php#require_fop)
 
-$key1 = 'file_name_1';
-$domain = 'phpsdk.qiniudn.com';
+@gist(gist/demo.php#key1)
+@gist(gist/demo.php#domain)
 
-$accessKey = '<YOUR_ACCESS_KEY>';
-$secretKey = '<YOUR_SECRET_KEY>';
-Qiniu_setKeys($accessKey, $secretKey);
+@gist(gist/demo.php#set_keys)
 
-//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
-$getPolicy = new Qiniu_RS_GetPolicy();
-$imgView = new Qiniu_ImageView;
-$imgView->Mode = 1;
-$imgView->Width = 60;
-$imgView->Height = 30;
-
-//生成fopUrl
-$imgViewUrl = $imgView->MakeRequest($baseUrl);
-
-//对fopUrl 进行签名，生成privateUrl。 公有bucket 此步可以省去。
-$imgViewPrivateUrl = $getPolicy->MakeRequest($imgViewUrl, null);
-echo "\n\n====> imageView privateUrl: \n";
-echo $imgViewPrivateUrl . "\n";
+@gist(gist/demo.php#base_url)
+@gist(gist/demo.php#image_view)
 ```
 
 <a name=contribution></a>
@@ -628,6 +479,5 @@ Copyright (c) 2013 qiniu.com
 基于 MIT 协议发布:
 
 * [www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
-
 
 
