@@ -35,8 +35,6 @@ $domain = 'phpsdk.qiniudn.com';
 # @gist set_keys
 $accessKey = '<YOUR_ACCESS_KEY>';
 $secretKey = '<YOUR_SECRET_KEY>';
-$accessKey = 'Vhiv6a22kVN_zhtetbPNeG9sY3JUL1HG597EmBwQ';
-$secretKey = 'b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD';
 Qiniu_setKeys($accessKey, $secretKey);
 # @endgist
 # @gist mac_client
