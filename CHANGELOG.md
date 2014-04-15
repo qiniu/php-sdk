@@ -2,9 +2,10 @@
 
 ### v6.1.9
 
-2014-4-8 issues [#69](https://github.com/qiniu/php-sdk/pull/69)
+2014-4-8 issues [#69](https://github.com/qiniu/php-sdk/pull/69)  
 
-- [#69] 增加User Agent以方便日志查询。
+- [#69] 增加User Agent以方便日志查询。  
+- [#70] 增加Reqid、XLog信息以方便错误追溯。
 
 ### v6.1.8
 
