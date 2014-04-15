@@ -19,6 +19,11 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 	public function testStat()
 	{
+		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket . ":" . $this->key);
+		$upToken = $putPolicy->Token(null);
+		list($ret, $err) = Qiniu_PutFile($upToken, $this->key, __file__, null);
+		$this->assertNull($err);
+		Qiniu_RS_Delete($this->client, $this->bucket, $this->notExistKey);
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $this->key);
 		$this->assertArrayHasKey('hash', $ret);
 		$this->assertNull($err);

@@ -26,6 +26,9 @@ class RioTest extends PHPUnit_Framework_TestCase
 
 	public function testPut()
 	{
+		if (getTestEnv() == "travis") {
+			return;
+		}
 		$key = 'testRioPut' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
@@ -50,6 +53,9 @@ class RioTest extends PHPUnit_Framework_TestCase
 
 	public function testLargePut()
 	{
+		if (getTestEnv() == "travis") {
+			return;
+		}
 		$key = 'testRioLargePut' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 

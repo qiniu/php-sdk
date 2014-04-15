@@ -8,5 +8,6 @@ before_script:
   - export QINIU_SECRET_KEY="b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD"
   - export QINIU_BUCKET_NAME="phpsdk"
   - export QINIU_KEY_NAME="file_name"
+  - export QINIU_TEST_ENV="travis"
 script:
   - cd tests; phpunit .
