@@ -14,6 +14,15 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
 
+	public function testReqid()
+	{
+		$key = 'testReqid' . getTid();
+		list($ret, $err) = Qiniu_PutFile("", $key, __file__, null);
+		$this->assertNotNull($err);
+		$this->assertNotNull($err->Reqid);
+		var_dump($err);
+	}
+
 	public function testPutFile()
 	{
 		$key = 'testPutFile' . getTid();
