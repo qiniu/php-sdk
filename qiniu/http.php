@@ -156,7 +156,6 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$resp = new Qiniu_Response($code, $respBody);
 	$resp->Header['Content-Type'] = $contentType;
 	$resp->Header["X-Reqid"] = $reqid;
-	$resp->Header["X-Log"] = $xLog;
 	return array($resp, null);
 }
 

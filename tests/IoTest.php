@@ -20,7 +20,6 @@ class IoTest extends PHPUnit_Framework_TestCase
 		list($ret, $err) = Qiniu_PutFile("", $key, __file__, null);
 		$this->assertNotNull($err);
 		$this->assertNotNull($err->Reqid);
-		$this->assertNotNull($err->Details);
 		var_dump($err);
 	}
 
