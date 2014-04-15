@@ -86,6 +86,8 @@ function Qiniu_ResponseError($resp) // => $error
 			}
 		}
 	}
+	$err->Reqid = $reqId;
+	$err->Details = $details;
 	return $err;
 }
 
@@ -114,6 +116,8 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_SSL_VERIFYPEER => false,
 		CURLOPT_SSL_VERIFYHOST => false,
+		CURLOPT_HEADER => true,
+		CURLOPT_NOBODY => false,
 		CURLOPT_CUSTOMREQUEST  => 'POST',
 		CURLOPT_URL => $url['path']
 	);
@@ -141,9 +145,36 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	$contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 	curl_close($ch);
-	$resp = new Qiniu_Response($code, $result);
+
+	$responseArray = explode("\r\n\r\n", $result);
+	$responseArraySize = sizeof($responseArray);
+	$respHeader = $responseArray[$responseArraySize-2];
+	$respBody = $responseArray[$responseArraySize-1];
+
+	list($reqid, $xLog) = getReqInfo($respHeader);
+
+	$resp = new Qiniu_Response($code, $respBody);
 	$resp->Header['Content-Type'] = $contentType;
+	$resp->Header["X-Reqid"] = $reqid;
+	$resp->Header["X-Log"] = $xLog;
 	return array($resp, null);
+}
+
+function getReqInfo($headerContent) {
+	$headers = explode("\r\n", $headerContent);
+	$reqid = null;
+	$xLog = null;
+	foreach($headers as $header) {
+		$header = trim($header);
+		if(strpos($header, 'X-Reqid') !== false) {
+			list($k, $v) = explode(':', $header);
+			$reqid = trim($v);
+		} elseif(strpos($header, 'X-Log') !== false) {
+			list($k, $v) = explode(':', $header);
+			$xLog = trim($v);
+		}
+	}
+	return array($reqid, $xLog);
 }
 
 class Qiniu_HttpClient
