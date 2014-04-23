@@ -137,6 +137,8 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$body = $req->Body;
 	if (!empty($body)) {
 		$options[CURLOPT_POSTFIELDS] = $body;
+	} else {
+		$options[CURLOPT_POSTFIELDS] = "";
 	}
 	curl_setopt_array($ch, $options);
 	$result = curl_exec($ch);
