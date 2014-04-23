@@ -9,6 +9,6 @@
         "php": ">=5.2.4"
     },
     "autoload": {
-		"psr-0": { "qiniu\\": "/" }
+		"psr-0": { "qiniu\\": "qiniu" }
 	}
 }
