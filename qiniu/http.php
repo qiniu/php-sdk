@@ -1,6 +1,7 @@
 <?php
 
 require_once("auth_digest.php");
+require_once("conf.php");
 
 // --------------------------------------------------------------------------------
 // class Qiniu_Error
@@ -27,12 +28,14 @@ class Qiniu_Request
 	public $URL;
 	public $Header;
 	public $Body;
+	public $UA;
 
 	public function __construct($url, $body)
 	{
 		$this->URL = $url;
 		$this->Header = array();
 		$this->Body = $body;
+		$this->UA = Qiniu_UserAgent();
 	}
 }
 
@@ -86,6 +89,8 @@ function Qiniu_ResponseError($resp) // => $error
 			}
 		}
 	}
+	$err->Reqid = $reqId;
+	$err->Details = $details;
 	return $err;
 }
 
@@ -111,9 +116,12 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$ch = curl_init();
 	$url = $req->URL;
 	$options = array(
+		CURLOPT_USERAGENT => $req->UA,
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_SSL_VERIFYPEER => false,
 		CURLOPT_SSL_VERIFYHOST => false,
+		CURLOPT_HEADER => true,
+		CURLOPT_NOBODY => false,
 		CURLOPT_CUSTOMREQUEST  => 'POST',
 		CURLOPT_URL => $url['path']
 	);
@@ -129,6 +137,8 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$body = $req->Body;
 	if (!empty($body)) {
 		$options[CURLOPT_POSTFIELDS] = $body;
+	} else {
+		$options[CURLOPT_POSTFIELDS] = "";
 	}
 	curl_setopt_array($ch, $options);
 	$result = curl_exec($ch);
@@ -141,9 +151,35 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	$contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 	curl_close($ch);
-	$resp = new Qiniu_Response($code, $result);
+
+	$responseArray = explode("\r\n\r\n", $result);
+	$responseArraySize = sizeof($responseArray);
+	$respHeader = $responseArray[$responseArraySize-2];
+	$respBody = $responseArray[$responseArraySize-1];
+
+	list($reqid, $xLog) = getReqInfo($respHeader);
+
+	$resp = new Qiniu_Response($code, $respBody);
 	$resp->Header['Content-Type'] = $contentType;
+	$resp->Header["X-Reqid"] = $reqid;
 	return array($resp, null);
+}
+
+function getReqInfo($headerContent) {
+	$headers = explode("\r\n", $headerContent);
+	$reqid = null;
+	$xLog = null;
+	foreach($headers as $header) {
+		$header = trim($header);
+		if(strpos($header, 'X-Reqid') !== false) {
+			list($k, $v) = explode(':', $header);
+			$reqid = trim($v);
+		} elseif(strpos($header, 'X-Log') !== false) {
+			list($k, $v) = explode(':', $header);
+			$xLog = trim($v);
+		}
+	}
+	return array($reqid, $xLog);
 }
 
 class Qiniu_HttpClient
@@ -276,6 +312,21 @@ function Qiniu_Build_MultipartForm($fields, $files) // => ($contentType, $body)
 	$body = implode("\r\n", $data);
 	$contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
 	return array($contentType, $body);
+}
+
+function Qiniu_UserAgent() {
+	global $SDK_VER;
+	$sdkInfo = "QiniuPHP/$SDK_VER";
+
+	$systemInfo = php_uname("s");
+	$machineInfo = php_uname("m");
+
+	$envInfo = "($systemInfo/$machineInfo)";
+
+	$phpVer = phpversion();
+
+	$ua = "$sdkInfo $envInfo PHP/$phpVer";
+	return $ua;
 }
 
 function Qiniu_escapeQuotes($str)

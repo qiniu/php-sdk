@@ -14,6 +14,15 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$this->bucket = getenv("QINIU_BUCKET_NAME");
 	}
 
+	public function testReqid()
+	{
+		$key = 'testReqid' . getTid();
+		list($ret, $err) = Qiniu_PutFile("", $key, __file__, null);
+		$this->assertNotNull($err);
+		$this->assertNotNull($err->Reqid);
+		var_dump($err);
+	}
+
 	public function testPutFile()
 	{
 		$key = 'testPutFile' . getTid();
@@ -91,7 +100,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 
 		list($ret, $err) = Qiniu_RS_Stat($this->client, $this->bucket, $key);
 		$this->assertNull($err);
-		$this->assertEquals($ret['mimeType'], 'application/x-php');
+		$this->assertEquals($ret['mimeType'], 'application/x-httpd-php');
 		var_dump($ret);
 
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);

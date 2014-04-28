@@ -1,5 +1,13 @@
 ## CHANGE LOG
 
+### v6.1.9
+
+2014-4-8 issues [#75](https://github.com/qiniu/php-sdk/pull/75)
+
+- [#69] 增加User Agent以方便日志查询。
+- [#70] 增加Reqid信息以方便错误追溯。
+- [#71] Qiniu_RS_Stat返回411问题。
+
 ### v6.1.8
 
 2014-4-6 issues [#68](https://github.com/qiniu/php-sdk/pull/68)
@@ -92,3 +100,4 @@
   - 待增加：rsf, batch, resumable io 的支持
 - bugfix: 修复 crc32 为负数的错误
 - 增加 `Qiniu_RS_Put/PutFile` 辅助函数，用于服务端上传
+

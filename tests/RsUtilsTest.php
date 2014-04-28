@@ -16,6 +16,9 @@ class RsUtilsTest extends PHPUnit_Framework_TestCase
 
 	public function testRput()
 	{
+		if (getTestEnv() == "travis") {
+			return;
+		}
 		$key = 'tmp/testRput' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
@@ -35,6 +38,9 @@ class RsUtilsTest extends PHPUnit_Framework_TestCase
 
 	public function testRputFile()
 	{
+		if (getTestEnv() == "travis") {
+			return;
+		}
 		$key = 'tmp/testRputFile' . getTid();
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
