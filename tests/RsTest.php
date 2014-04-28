@@ -88,5 +88,11 @@ class RsTest extends PHPUnit_Framework_TestCase
 
 		Qiniu_RS_BatchDelete($this->client, array($e2, $e3, $e4));
 	}
+
+	public function testUrlEncode() {
+		$url = Qiniu_RS_MakeBaseUrl("www.qiniu.com", "a/b/c d");
+		var_dump($url);
+		$this->assertEquals($url, "http://www.qiniu.com/a/b/c%20d");
+	}
 }
 
