@@ -46,7 +46,7 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 
 function createFile($filename， $mime)
 {
-	// PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
+    // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
     // See: https://wiki.php.net/rfc/curl-file-upload
     if (function_exists('curl_file_create')) {
         return curl_file_create($filename, $mime);
