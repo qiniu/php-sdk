@@ -53,7 +53,7 @@ function createFile($filename, $mime)
     }
 
     // Use the old style if using an older version of PHP
-    $value = "@{$filename}"
+    $value = "@{$filename}";
     if (!empty($mime)) {
         $value .= ';type=' . $mime;
     }
