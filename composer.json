@@ -9,6 +9,6 @@
         "php": ">=5.2.4"
     },
     "autoload": {
-        "files": ["qiniu/rs.php"]
+        "files": ["qiniu/rs_utils.php"]
     }
 }
