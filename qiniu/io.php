@@ -44,7 +44,7 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 	return Qiniu_Client_CallWithMultipartForm($client, $QINIU_UP_HOST, $fields, $files);
 }
 
-function createFile($filename， $mime)
+function createFile($filename, $mime)
 {
     // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
     // See: https://wiki.php.net/rfc/curl-file-upload
