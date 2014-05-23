@@ -316,8 +316,6 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 		public $DetectMime;		// 可选。如果设为非0值，则忽略上传端传递的文件MimeType信息，使用七牛服务器侦测内容后的判断结果。
 		public $FsizeLimit;		// 可选。int类型，超过限制大小的上传内容会被判为上传失败，返回413状态码。
 		public $SaveKey;			// 可选。自定义资源名格式。
-		public $Transform;			// 可选。指定资源经过怎样的处理后再保存。
-		public $FopTimeout;		// 可选。int类型，指定transform的超时时间，如果文件处理超过此值，则认为上传失败。
 		public $MimeLimit;			// 可选。限定上传的文件类型。
 	}
 
