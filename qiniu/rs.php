@@ -55,7 +55,6 @@ class Qiniu_RS_PutPolicy
 	public $SaveKey;
 	public $PersistentOps;
 	public $PersistentNotifyUrl;
-	public $Transform;
 	public $FopTimeout;
 	public $MimeLimit;
 
@@ -108,9 +107,6 @@ class Qiniu_RS_PutPolicy
 		}
 		if (!empty($this->PersistentNotifyUrl)) {
 			$policy['persistentNotifyUrl'] = $this->PersistentNotifyUrl;
-		}
-		if (!empty($this->Transform)) {
-			$policy['transform'] = $this->Transform;
 		}
 		if (!empty($this->FopTimeout)) {
 			$policy['fopTimeout'] = $this->FopTimeout;

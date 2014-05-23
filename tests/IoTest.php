@@ -132,8 +132,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 	}
 
-	public function testPut_exclusive()
-	{
+	public function testPut_exclusive() {
 		$key = 'testPut_exclusive' . getTid();
 		$scope = $this->bucket . ':' . $key;
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
@@ -157,27 +156,7 @@ class IoTest extends PHPUnit_Framework_TestCase
 		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 		$this->assertNull($err);
 	}
-	public function testPut_transform() {
-		$key = 'testPut_transform' . getTid();
-		$scope = $this->bucket . ':' . $key;
-		$err = Qiniu_RS_Delete($this->client, $this->bucket, $key);
 
-		$putPolicy = new Qiniu_RS_PutPolicy($scope);
-		$putPolicy->Transform = "imageMogr2/format/png";
-		$putPolicy->ReturnBody = '{"key": $(key), "hash": $(etag), "mimeType":$(mimeType)}';
-		$upToken = $putPolicy->Token(null);
-
-		list($ret, $err) = Qiniu_PutFile($upToken, $key, __file__, null);
-		$this->assertNull($ret);
-		$this->assertEquals($err->Err, "fop fail or timeout");
-		var_dump($err);
-
-		$pic_path = "../docs/gist/logo.jpg";
-		list($ret, $err) = Qiniu_PutFile($upToken, $key, $pic_path, null);
-		$this->assertNull($err);
-		$this->assertEquals($ret["mimeType"], "image/png");
-		var_dump($ret);
-	}
 	public function testPut_mimeLimit() {
 		$key = 'testPut_mimeLimit' . getTid();
 		$scope = $this->bucket . ':' . $key;
