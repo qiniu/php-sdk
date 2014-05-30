@@ -34,7 +34,7 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 	}
 	if ($putExtra->Params) {
 		foreach ($putExtra->Params as $k=>$v) {
-			$fields[$k] = $v;	 
+			$fields[$k] = $v;
 		}
 	}
 
@@ -42,6 +42,23 @@ function Qiniu_Put($upToken, $key, $body, $putExtra) // => ($putRet, $err)
 
 	$client = new Qiniu_HttpClient;
 	return Qiniu_Client_CallWithMultipartForm($client, $QINIU_UP_HOST, $fields, $files);
+}
+
+function createFile($filename, $mime)
+{
+    // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
+    // See: https://wiki.php.net/rfc/curl-file-upload
+    if (function_exists('curl_file_create')) {
+        return curl_file_create($filename, $mime);
+    }
+
+    // Use the old style if using an older version of PHP
+    $value = "@{$filename}";
+    if (!empty($mime)) {
+        $value .= ';type=' . $mime;
+    }
+
+    return $value;
 }
 
 function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $err)
@@ -52,11 +69,7 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 		$putExtra = new Qiniu_PutExtra;
 	}
 
-	if (!empty($putExtra->MimeType)) {
-		$localFile .= ';type=' . $putExtra->MimeType;
-	}
-
-	$fields = array('token' => $upToken, 'file' => '@' . $localFile);
+	$fields = array('token' => $upToken, 'file' => createFile($localFile, $putExtra->MimeType));
 	if ($key === null) {
 		$fname = '?';
 	} else {
@@ -73,7 +86,7 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 	}
 	if ($putExtra->Params) {
 		foreach ($putExtra->Params as $k=>$v) {
-			$fields[$k] = $v;	 
+			$fields[$k] = $v;
 		}
 	}
 
