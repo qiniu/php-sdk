@@ -8,8 +8,12 @@ $pfop = new Qiniu_Pfop();
 
 $pfop->Bucket = "auditlog";
 $pfop->Key = "1.mp4";
+
+$savedKey = "6.m3u8";
 // $pfop->Fops = "avthumb/flv/r/24/vcodec/libx264";
-$pfop->Fops = "avthumb/m3u8/segtime/1";
+$savedEntry = Qiniu_Encode("$pfop->Bucket:$savedKey");
+
+$pfop->Fops = "avthumb/m3u8/segtime/60|saveas/$savedEntry";
 $pfop->NotifyURL = "http://api.rwfeng.com/index.php";
 
 list($ret, $err) = $pfop->MakeRequest($client);
