@@ -54,6 +54,7 @@ class Qiniu_RS_PutPolicy
 	public $FsizeLimit;
 	public $SaveKey;
 	public $PersistentOps;
+	public $PersistentPipeline;
 	public $PersistentNotifyUrl;
 	public $FopTimeout;
 	public $MimeLimit;
@@ -104,6 +105,9 @@ class Qiniu_RS_PutPolicy
 		}
 		if (!empty($this->PersistentOps)) {
 			$policy['persistentOps'] = $this->PersistentOps;
+		}
+		if (!empty($this->PersistentPipeline)) {
+			$policy['persistentPipeline'] = $this->PersistentPipeline;
 		}
 		if (!empty($this->PersistentNotifyUrl)) {
 			$policy['persistentNotifyUrl'] = $this->PersistentNotifyUrl;
