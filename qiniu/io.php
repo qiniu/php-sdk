@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__."http.php");
+require_once(__DIR__."/http.php");
 require_once("auth_digest.php");
 
 // ----------------------------------------------------------
