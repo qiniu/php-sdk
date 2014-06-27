@@ -3,13 +3,15 @@
 require_once('qiniu/io.php');
 require_once('qiniu/rs.php');
 
-$bucket = 'auditlog';
+$bucket = 'alibaba';
 $key1 = 'rwf';
-$file = '../php-sdk/1.mp4';
+$file = 'up_demo.php';
 
 
 $client = new Qiniu_MacHttpClient(null);
 $putPolicy = new Qiniu_RS_PutPolicy($bucket);
+$putPolicy->Scope = "$bucket:$key1";
+$putPolicy->EndUser = 'fuck';
 $upToken = $putPolicy->Token(null);
 
 $putExtra = new Qiniu_PutExtra();

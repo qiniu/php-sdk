@@ -255,4 +255,15 @@ function Qiniu_RS_BatchCopy($self, $entryPairs)
 }
 
 // ----------------------------------------------------------
+// fetch
+function Qiniu_RS_Fetch($self, $url, $bucket, $key)
+{
+
+	global $QINIU_IOVIP_HOST;
+	$path = '/fetch/' . Qiniu_Encode($url) . '/to/' . Qiniu_Encode("$bucket:$key");
+	return Qiniu_Client_CallNoRet($self, $QINIU_IOVIP_HOST . $path);
+}
+
+
+// ----------------------------------------------------------
 
