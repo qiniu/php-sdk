@@ -60,7 +60,7 @@ class Qiniu_ImageInfo {
 // --------------------------------------------------------------------------------
 // class Qiniu_watermark
 
-class Qiniu_watermark {
+class Qiniu_Watermark {
 
     public $imgUrl;
     public $dissolve;
