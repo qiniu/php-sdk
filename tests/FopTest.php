@@ -47,20 +47,20 @@ class FopTest extends PHPUnit_Framework_TestCase
 		$dy = 20;
 		$ops = array();
 
-        if(!empty($this->imgUrl)){
-            $ops[] = 'image/'.$this->urlsafe_base64_encode($this->imgUrl);
+        if(!empty($imgUrl)){
+            $ops[] = 'image/'.$this->urlsafe_base64_encode($imgUrl);
         }
-        if(!empty($this->dissolve)){
-            $ops[] = 'dissolve/'.$this->dissolve;
+        if(!empty($dissolve)){
+            $ops[] = 'dissolve/'.$dissolve;
         }
-        if(!empty($this->gravity)){
-            $ops[] = 'gravity/'.$this->gravity;
+        if(!empty($gravity)){
+            $ops[] = 'gravity/'.$gravity;
         }
-        if(!empty($this->dx)){
-            $ops[] = 'dx/'.$this->dx;
+        if(!empty($dx)){
+            $ops[] = 'dx/'.$dx;
         }
-        if(!empty($this->dy)){
-            $ops[] .= 'dy/'.$this->dy;
+        if(!empty($dy)){
+            $ops[] .= 'dy/'.$dy;
         }
         switch(count($ops)){
             case 0 :
