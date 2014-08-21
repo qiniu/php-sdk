@@ -40,11 +40,11 @@ class FopTest extends PHPUnit_Framework_TestCase
 	{
 		$watermark = new Qiniu_Watermark();
 		$url = $this->url;
-		$imgUrl = 'http://www.b1.qiniudn.com/images/logo-2.png';
-		$dissolve = 50;
-		$gravity = 'SouthEast';
-		$dx = 20;
-		$dy = 20;
+		$watermark->imgUrl = $imgUrl = 'http://www.b1.qiniudn.com/images/logo-2.png';
+		$watermark->dissolve = $dissolve = 50;
+		$watermark->gravity = $gravity = 'SouthEast';
+		$watermark->dx = $dx = 20;
+		$watermark->dy = $dy = 20;
 		$ops = array();
 
         if(!empty($imgUrl)){
