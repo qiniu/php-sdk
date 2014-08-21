@@ -70,20 +70,20 @@ class Qiniu_watermark {
 
     public function MakeRequest($url)
     {
-        if(!empty($imgUrl)){
+        if(!empty($this->imgUrl)){
             $url .= "?watermark/1".'/image/'.$this->urlsafe_base64_encode($this->imgUrl);
         }
-        if(!empty($dissolve)){
+        if(!empty($this->dissolve)){
             $url .= '/dissolve/'.$this->dissolve;
         }
-        if(!empty($gravity)){
+        if(!empty($this->gravity)){
             $url .= '/gravity/'.$this->gravity;
         }
-        if(!empty($dx)){
-            $dx .= '/dx/'.$this->dx;
+        if(!empty($this->dx)){
+            $url .= '/dx/'.$this->dx;
         }
-        if(!empty($dy)){
-            $dy .= '/dy/'.$this->dy;
+        if(!empty($this->dy)){
+            $url .= '/dy/'.$this->dy;
         }
         return $url;
     }
@@ -91,7 +91,9 @@ class Qiniu_watermark {
     private function urlsafe_base64_encode($imgUrl)
     {
         $base64Url = base64_encode($imgUrl);
-        $base64Url = str_replace(array('+', '/'), array('-', '_'), $base64Url).'=';
+        if(strpos($base64Url,'+') !== false && strpos($base64Url,'/') !== false){    
+            $base64Url = str_replace(array('+', '/'), array('-', '_'), $base64Url).'=';
+        }
         return $base64Url;
     }
 
