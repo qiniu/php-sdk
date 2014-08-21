@@ -56,3 +56,28 @@ class Qiniu_ImageInfo {
 	}
 
 }
+
+// --------------------------------------------------------------------------------
+// class Qiniu_watermark
+
+class Qiniu_watermark {
+
+    public $imgUrl;
+    public $dissolve;
+    public $gravity;
+    public $dx;
+    public $dy;
+
+    public function MakeRequest($url)
+    {
+        return $url . "?watermark/1".'/image/'.$this->urlsafe_base64_encode($this->imgUrl).'/dissolve/'.$this->dissolve.'/gravity/'.$this->gravity.'/dx/'.$this->dx.'/dy/'.$this->dy;
+    }
+
+    private function urlsafe_base64_encode($imgUrl)
+    {
+        $base64Url = base64_encode($imgUrl);
+        $base64Url = str_replace(array('+', '/'), array('-', '_'), $base64Url).'=';
+        return $base64Url;
+    }
+
+}
