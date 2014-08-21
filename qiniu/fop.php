@@ -70,7 +70,22 @@ class Qiniu_watermark {
 
     public function MakeRequest($url)
     {
-        return $url . "?watermark/1".'/image/'.$this->urlsafe_base64_encode($this->imgUrl).'/dissolve/'.$this->dissolve.'/gravity/'.$this->gravity.'/dx/'.$this->dx.'/dy/'.$this->dy;
+        if(!empty($imgUrl)){
+            $url .= "?watermark/1".'/image/'.$this->urlsafe_base64_encode($this->imgUrl);
+        }
+        if(!empty($dissolve)){
+            $url .= '/dissolve/'.$this->dissolve;
+        }
+        if(!empty($gravity)){
+            $url .= '/gravity/'.$this->gravity;
+        }
+        if(!empty($dx)){
+            $dx .= '/dx/'.$this->dx;
+        }
+        if(!empty($dy)){
+            $dy .= '/dy/'.$this->dy;
+        }
+        return $url;
     }
 
     private function urlsafe_base64_encode($imgUrl)
