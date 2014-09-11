@@ -59,8 +59,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -85,8 +84,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -112,8 +110,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -139,8 +136,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -167,8 +163,7 @@ if ($err !== null) {
 #### 5.1 批量获取文件属性信息
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -196,8 +191,7 @@ if ($err !== null) {
 #### 5.2 批量复制文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -227,8 +221,7 @@ if ($err !== null) {
 #### 5.3 批量删除文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -257,8 +250,7 @@ if ($err !== null) {
 #### 5.4 批量移动文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -318,8 +310,7 @@ if ($err !== null) {
 
 服务端生成 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken) 代码如下:
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -336,8 +327,7 @@ $upToken = $putPolicy->Token(null);
 
 上传字符串
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/io.php');
@@ -362,8 +352,7 @@ if ($err !== null) {
 
 上传本地文件
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/io.php');
@@ -393,24 +382,26 @@ if ($err !== null) {
 
 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken) 实际上是用 AccessKey/SecretKey 进行数字签名的上传策略(`Qiniu_RS_PutPolicy`)，它控制则整个上传流程的行为。让我们快速过一遍你都能够决策啥：
 
-	class Qiniu_RS_PutPolicy
-	{
-		public $Scope;				// 必选项。可以是 bucketName 或者 bucketName:key
-		public $CallbackUrl;		// 可选
-		public $CallbackBody;		// 可选
-		public $ReturnUrl;			// 可选， 更贴切的名字是 redirectUrl。
-		public $ReturnBody;			// 可选
-		public $AsyncOps;			// 可选
-		public $EndUser;			// 可选
-		public $Expires;			// 可选。默认是 3600 秒
-		public $PersistentOps;		// 可选。
-		public $PersistentNotifyUrl;	// 如果设置了PersistentOps，必须同时设置此项。
-		public $InsertOnly;		// 可选。如果设置为非0值，则无论scope设置为何种形式，都只能以`新增`方式上传，不能覆盖。
-		public $DetectMime;		// 可选。如果设为非0值，则忽略上传端传递的文件MimeType信息，使用七牛服务器侦测内容后的判断结果。
-		public $FsizeLimit;		// 可选。int类型，超过限制大小的上传内容会被判为上传失败，返回413状态码。
-		public $SaveKey;			// 可选。自定义资源名格式。
-		public $MimeLimit;			// 可选。限定上传的文件类型。
-	}
+```php
+class Qiniu_RS_PutPolicy
+{
+	public $Scope;				// 必选项。可以是 bucketName 或者 bucketName:key
+	public $CallbackUrl;		// 可选
+	public $CallbackBody;		// 可选
+	public $ReturnUrl;			// 可选， 更贴切的名字是 redirectUrl。
+	public $ReturnBody;			// 可选
+	public $AsyncOps;			// 可选
+	public $EndUser;			// 可选
+	public $Expires;			// 可选。默认是 3600 秒
+	public $PersistentOps;		// 可选。
+	public $PersistentNotifyUrl;	// 如果设置了PersistentOps，必须同时设置此项。
+	public $InsertOnly;		// 可选。如果设置为非0值，则无论scope设置为何种形式，都只能以`新增`方式上传，不能覆盖。
+	public $DetectMime;		// 可选。如果设为非0值，则忽略上传端传递的文件MimeType信息，使用七牛服务器侦测内容后的判断结果。
+	public $FsizeLimit;		// 可选。int类型，超过限制大小的上传内容会被判为上传失败，返回413状态码。
+	public $SaveKey;			// 可选。自定义资源名格式。
+	public $MimeLimit;			// 可选。限定上传的文件类型。
+}
+```
 
 * `scope` 限定客户端的权限。如果 `scope` 是 bucket，则客户端只能新增文件到指定的 bucket，不能修改文件。如果 `scope` 为 bucket:key，则客户端可以修改指定的文件。**注意： key必须采用utf8编码，如使用非utf8编码访问七牛云存储将反馈错误**
 * `callbackUrl` 设定业务服务器的回调地址，这样业务服务器才能感知到上传行为的发生。
@@ -427,8 +418,7 @@ if ($err !== null) {
 ### 1.3 断点续上传
 示例代码如下
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/resumable_io.php');
@@ -469,10 +459,12 @@ if ($err !== null) {
 
 示例代码：
 
-	$key1 = 'file_name_1';
-	$domain = 'phpsdk.qiniudn.com';
-	//$baseUrl 就是您要访问资源的地址
-	$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
+```php
+$key1 = 'file_name_1';
+$domain = 'phpsdk.qiniudn.com';
+//$baseUrl 就是您要访问资源的地址
+$baseUrl = Qiniu_RS_MakeBaseUrl($domain, $key1);
+```
 
 其中\<domain\>是bucket所对应的域名。七牛云存储为每一个bucket提供一个默认域名。默认域名可以到[七牛云存储开发者平台](https://portal.qiniu.com/)中，空间设置的域名设置一节查询。用户也可以将自有的域名绑定到bucket上，通过自有域名访问七牛云存储。
 
@@ -487,8 +479,7 @@ if ($err !== null) {
 注意，尖括号不是必需，代表替换项。
 私有下载链接可以使用 SDK 提供的如下方法生成：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -517,8 +508,7 @@ echo $privateUrl . "\n";
 <a name=fop-image-info></a>
 #### 1.1 查看图像属性
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
@@ -549,8 +539,7 @@ echo $imgInfoPrivateUrl . "\n";
 <a name=fop-exif></a>
 #### 1.2 查看图片EXIF信息
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
@@ -578,8 +567,7 @@ echo $imgExifPrivateUrl . "\n";
 <a name=fop-image-view></a>
 #### 1.3 生成图片预览
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
