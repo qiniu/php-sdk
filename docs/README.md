@@ -59,8 +59,7 @@ SDK源码地址：<https://github.com/qiniu/php-sdk/tags>
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -85,8 +84,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -112,8 +110,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -139,8 +136,7 @@ if ($err !== null) {
 
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -167,8 +163,7 @@ if ($err !== null) {
 #### 5.1 批量获取文件属性信息
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -196,8 +191,7 @@ if ($err !== null) {
 #### 5.2 批量复制文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -227,8 +221,7 @@ if ($err !== null) {
 #### 5.3 批量删除文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -257,8 +250,7 @@ if ($err !== null) {
 #### 5.4 批量移动文件
 示例代码如下：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -318,8 +310,7 @@ if ($err !== null) {
 
 服务端生成 [uptoken](http://docs.qiniu.com/api/put.html#uploadToken) 代码如下:
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -336,8 +327,7 @@ $upToken = $putPolicy->Token(null);
 
 上传字符串
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/io.php');
@@ -362,8 +352,7 @@ if ($err !== null) {
 
 上传本地文件
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/io.php');
@@ -427,8 +416,7 @@ if ($err !== null) {
 ### 1.3 断点续上传
 示例代码如下
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/resumable_io.php');
@@ -487,8 +475,7 @@ if ($err !== null) {
 注意，尖括号不是必需，代表替换项。
 私有下载链接可以使用 SDK 提供的如下方法生成：
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 
@@ -517,8 +504,7 @@ echo $privateUrl . "\n";
 <a name=fop-image-info></a>
 #### 1.1 查看图像属性
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
@@ -549,8 +535,7 @@ echo $imgInfoPrivateUrl . "\n";
 <a name=fop-exif></a>
 #### 1.2 查看图片EXIF信息
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
@@ -578,8 +563,7 @@ echo $imgExifPrivateUrl . "\n";
 <a name=fop-image-view></a>
 #### 1.3 生成图片预览
 
-```
-{php}
+```php
 
 require_once('qiniu/rs.php');
 require_once('qiniu/fop.php');
