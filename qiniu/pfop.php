@@ -11,6 +11,7 @@ class Qiniu_Pfop {
     public $Fops;
     public $NotifyURL;
     public $Force;
+    public $Pipeline;
 
     public function MakeRequest($self)
     {
@@ -22,7 +23,8 @@ class Qiniu_Pfop {
             'key' => $this->Key,
             'fops' => $this->Fops,
             'notifyURL' => $this->NotifyURL,
-            'force' => $this->Force
+            'force' => $this->Force,
+	    'pipeline' => $this->Pipeline
         );
 
         $url = $QINIU_API_HOST . '/pfop/';
