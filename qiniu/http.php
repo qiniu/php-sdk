@@ -157,13 +157,11 @@ function Qiniu_Client_do($req) // => ($resp, $error)
 	$respHeader = $responseArray[$responseArraySize-2];
 	$respBody = $responseArray[$responseArraySize-1];
 
-	var_dump($respHeader);
 	list($reqid, $xLog) = getReqInfo($respHeader);
 
 	$resp = new Qiniu_Response($code, $respBody);
 	$resp->Header['Content-Type'] = $contentType;
 	$resp->Header["X-Reqid"] = $reqid;
-
 	return array($resp, null);
 }
 
@@ -206,7 +204,6 @@ class Qiniu_MacHttpClient
 		$incbody = Qiniu_Client_incBody($req);
 		$token = $this->Mac->SignRequest($req, $incbody);
 		$req->Header['Authorization'] = "QBox $token";
-
 		return Qiniu_Client_do($req);
 	}
 }
@@ -238,7 +235,6 @@ function Qiniu_Client_Call($self, $url) // => ($data, $error)
 	$u = array('path' => $url);
 	$req = new Qiniu_Request($u, null);
 	list($resp, $err) = $self->RoundTrip($req);
-
 	if ($err !== null) {
 		return array(null, $err);
 	}
