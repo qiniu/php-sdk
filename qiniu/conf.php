@@ -16,6 +16,10 @@ $QINIU_RSF_HOST	= 'http://rsf.qbox.me';
 $QINIU_API_HOST = 'http://api.qiniu.com';
 $QINIU_IOVIP_HOST = 'http://iovip.qbox.me';
 
-$QINIU_ACCESS_KEY	= '<Please apply your access key>';
-$QINIU_SECRET_KEY	= '<Dont send your secret key to anyone>';
+// $QINIU_ACCESS_KEY	= '<Please apply your access key>';
+// $QINIU_SECRET_KEY	= '<Dont send your secret key to anyone>';
+
+//rwifeng@126.com
+$QINIU_ACCESS_KEY   = 'Vhiv6a22kVN_zhtetbPNeG9sY3JUL1HG597EmBwQ';
+$QINIU_SECRET_KEY   = 'b5b5vNg5nnkwkPfW5ayicPE_pj6hqgKMQEaWQ6JD';
 

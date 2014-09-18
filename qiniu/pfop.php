@@ -2,7 +2,7 @@
 require_once('auth_digest.php');
 
 // --------------------------------------------------------------------------------
-// class Qiniu_ImageView
+// class Qiniu_Pfop
 
 class Qiniu_Pfop {
 
@@ -24,7 +24,7 @@ class Qiniu_Pfop {
             'fops' => $this->Fops,
             'notifyURL' => $this->NotifyURL,
             'force' => $this->Force,
-	    'pipeline' => $this->Pipeline
+    	    'pipeline' => $this->Pipeline
         );
 
         $url = $QINIU_API_HOST . '/pfop/';
@@ -39,7 +39,7 @@ function Qiniu_PfopStatus($client, $id)
     global $QINIU_API_HOST;
 
     $url = $QINIU_API_HOST . '/status/get/prefop?';
-    $params = array("id" => $id);
+    $params = array('id' => $id);
 
     return Qiniu_Client_CallWithForm($client, $url, $params);
 }
