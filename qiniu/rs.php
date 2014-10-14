@@ -91,8 +91,8 @@ class Qiniu_RS_PutPolicy
 		if (!empty($this->EndUser)) {
 			$policy['endUser'] = $this->EndUser;
 		}
-		if (!empty($this->InsertOnly)) {
-			$policy['exclusive'] = $this->InsertOnly;
+		if (isset($this->InsertOnly)) {
+			$policy['insertOnly'] = $this->InsertOnly;
 		}
 		if (!empty($this->DetectMime)) {
 			$policy['detectMime'] = $this->DetectMime;
