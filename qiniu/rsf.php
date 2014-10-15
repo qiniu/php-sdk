@@ -1,6 +1,6 @@
 <?php
 
-require_once("http.php");
+require_once(__DIR__."/http.php");
 
 define('Qiniu_RSF_EOF', 'EOF');
 
