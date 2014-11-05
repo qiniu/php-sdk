@@ -5,7 +5,7 @@ require_once('../qiniu/rs.php');
 
 $bucket = 'rwxf';
 $key = 'up.php';
-$file = __FILE__;  //path to local file
+$file = <path_to_local_file>;
 
 
 $client = new Qiniu_MacHttpClient(null);

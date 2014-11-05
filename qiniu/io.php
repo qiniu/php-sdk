@@ -70,10 +70,7 @@ function Qiniu_PutFile($upToken, $key, $localFile, $putExtra) // => ($putRet, $e
 	}
 
 	$fields = array('token' => $upToken, 'file' => createFile($localFile, $putExtra->MimeType));
-	if ($key === null) {
-		$fname = '?';
-	} else {
-		$fname = $key;
+	if ($key !== null) {
 		$fields['key'] = $key;
 	}
 	if ($putExtra->CheckCrc) {
