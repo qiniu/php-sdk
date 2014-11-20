@@ -116,6 +116,20 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 
 	$progresses = array();
 	$uploaded = 0;
+	$blkIdx = 0;
+
+	$notify = function($blkIdx, $blkSize, $ret) {};
+	if (is_callable($putExtra->Notify))
+	{
+		$notify = $putExtra->Notify;
+	}
+
+	$notifyErr = function($blkIdx, $blkSize, $err) {};
+	if (is_callable($putExtra->Notify))
+	{
+		$notifyErr = $putExtra->NotifyErr;
+	}
+
 	while ($uploaded < $fsize) {
 		$tried = 0;
 		$tryTimes = ($putExtra->TryTimes > 0) ? $putExtra->TryTimes : 1;
@@ -131,16 +145,22 @@ function Qiniu_Rio_Put($upToken, $key, $body, $fsize, $putExtra) // => ($putRet,
 			if ($err === null) {
 				break;
 			}
+
 			$tried += 1;
 			continue;
 		}
 		if ($err !== null) {
+			$notifyErr($blkIdx, $bsize, $err);
 			return array(null, $err);
 		}
 		if ($blkputRet === null ) {
 			$err = new Qiniu_Error(0, "rio: uploaded without ret");
+			$notifyErr($blkIdx, $bsize, $err);
 			return array(null, $err);
 		}
+
+		$notify($blkIdx, $bsize, $blkputRet);
+		$blkIdx++;
 		$uploaded += $bsize;
 		$progresses []= $blkputRet;
 	}
