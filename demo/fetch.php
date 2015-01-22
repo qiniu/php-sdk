@@ -7,7 +7,6 @@ $client = new Qiniu_MacHttpClient(null);
 $ret = Qiniu_RS_Fetch($client, 'http://upload.wikimedia.org/wikipedia/commons/b/b0/NewTux.svg', 'rwxf', 'qiniu.svg');
 
 
-echo 'ret1====================';
 var_dump($ret);
 
 
