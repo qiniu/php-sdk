@@ -63,7 +63,6 @@ Qiniu_RS_Delete($client, $bucket, $key1);
 
 # @gist putfile
 $putExtra = new Qiniu_PutExtra();
-$putExtra->Crc32 = 1;
 list($ret, $err) = Qiniu_PutFile($upToken, $key1, $file, $putExtra);
 echo "\n\n====> Qiniu_PutFile result: \n";
 if ($err !== null) {
@@ -201,7 +200,7 @@ if ($err != null) {
 	if ($err === Qiniu_RSF_EOF) {
 		var_dump($iterms);
 	} else {
-		var_dump(err);
+		var_dump($err);
 	}
 } else {
 	var_dump($iterms);
