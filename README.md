@@ -1,8 +1,8 @@
 # Qiniu PHP SDK
 [![@qiniu on weibo](http://img.shields.io/badge/weibo-%40qiniutek-blue.svg)](http://weibo.com/qiniutek)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/qiniu/php-sdk.svg)](https://travis-ci.org/qiniu/php-sdk)
-[![Latest Stable Version](https://img.shields.io/pypi/v/qiniu.svg)](https://pypi.python.org/pypi/qiniu)
+[![Latest Stable Version](https://img.shields.io/packagist/v/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
 [![Total Downloads](https://img.shields.io/packagist/dt/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
