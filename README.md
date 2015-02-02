@@ -1,41 +1,69 @@
-# Qiniu Resource Storage SDK for PHP
+# Qiniu PHP SDK
+[![@qiniu on weibo](http://img.shields.io/badge/weibo-%40qiniutek-blue.svg)](http://weibo.com/qiniutek)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+[![Build Status](https://travis-ci.org/qiniu/php-sdk.svg)](https://travis-ci.org/qiniu/php-sdk)
+[![Latest Stable Version](https://img.shields.io/pypi/v/qiniu.svg)](https://pypi.python.org/pypi/qiniu)
+[![Total Downloads](https://img.shields.io/packagist/dt/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
+## 安装
 
-[![Build Status](https://api.travis-ci.org/qiniu/php-sdk.png?branch=master)](https://travis-ci.org/qiniu/php-sdk)
+1. 通过composer
+```bash
+$ composer require qiniu/php-sdk
+```
+2. 直接下载安装，SDK 没有依赖其他第三方库，但需要使用composer的autoload
 
-[![Qiniu Logo](http://qiniu-brand.qiniudn.com/5/logo-white-195x105.png)](http://www.qiniu.com/)
+## 运行环境
 
+| Qiniu SDK版本 | PHP 版本 |
+|:--------------------:|:---------------------------:|
+|          7.x         |  cURL extension,   5.3 - 5.6 |
+|          6.x         |  cURL extension,   5.2 - 5.6 |
 
-## 下载
+## 使用方法
 
-### 从 release 版本下载
+### 上传
+```php
+use Qiniu\Storage\UploadManager;
+use Qiniu\Auth;
+...
+    $upManager = new UploadManager();
+    $auth = new Auth($accessKey, $secretKey);
+    $token = $auth->uploadToken($bucketName);
+    list($ret, $error) = $upManager->put($token, 'formput', 'hello world');
+...
+```
 
-下载地址：https://github.com/qiniu/php-sdk/releases
+## 测试
 
-这是我们建议的方式，release 版本有版本号，有 [CHANGELOG](https://github.com/qiniu/php-sdk/blob/develop/CHANGELOG.md)，使用规格也会比较稳定。
+``` bash
+$ ./vendor/bin/phpunit tests/Qiniu/Tests/
+```
 
-### 从 git 库下载
+## 常见问题
 
-你可以直接用 git clone 下载源代码来使用。但是请注意非 master 分支的代码在规格上可能承受变更，应谨慎使用。
+- $error保留了请求响应的信息，失败情况下ret 为none, 将$error可以打印出来，提交给我们。
+- API 的使用 demo 可以参考 [单元测试](https://github.com/qiniu/php-sdk/blob/master/tests)。
 
+## 代码贡献
 
-## 使用
+详情参考[代码提交指南](https://github.com/qiniu/php-sdk/blob/master/CONTRIBUTING.md)。
 
-参考文档：[七牛云存储 PHP SDK 使用指南](https://github.com/qiniu/php-sdk/tree/develop/docs)
+## 贡献记录
 
+- [所有贡献者](https://github.com/qiniu/php-sdk/contributors)
 
-## 贡献代码
+## 联系我们
 
-1. Fork
-2. 创建您的特性分支 (`git checkout -b my-new-feature`)
-3. 提交您的改动 (`git commit -am 'Added some feature'`)
-4. 将您的修改记录提交到远程 `git` 仓库 (`git push origin my-new-feature`)
-5. 然后到 github 网站的该 `git` 远程仓库的 `my-new-feature` 分支下发起 Pull Request
+- 如果需要帮助，请提交工单（在portal右侧点击咨询和建议提交工单，或者直接向 support@qiniu.com 发送邮件）
+- 如果有什么问题，可以到问答社区提问，[问答社区](http://qiniu.segmentfault.com/)
+- 更详细的文档，见[官方文档站](http://developer.qiniu.com/)
+- 如果发现了bug， 欢迎提交 [issue](https://github.com/qiniu/php-sdk/issues)
+- 如果有功能需求，欢迎提交 [issue](https://github.com/qiniu/php-sdk/issues)
+- 如果要提交代码，欢迎提交 pull request
+- 欢迎关注我们的[微信](http://www.qiniu.com/#weixin) [微博](http://weibo.com/qiniutek)，及时获取动态信息。
 
+## 代码许可
 
-## 许可证
-
-Copyright (c) 2012-2014 qiniu.com
-
-基于 MIT 协议发布:
-
-* [www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
+The MIT License (MIT).详情见 [License文件](https://github.com/qiniu/php-sdk/blob/master/LICENSE).

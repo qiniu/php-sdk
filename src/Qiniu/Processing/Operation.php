@@ -3,7 +3,7 @@ namespace Qiniu\Processing;
 
 final class Operation
 {
-    public static function buildOp($cmd, $first_arg, array $args)
+    public static function buildOp($cmd, $first_arg, array $args = array())
     {
         $op = array($cmd);
         if (!empty($first_arg)) {
