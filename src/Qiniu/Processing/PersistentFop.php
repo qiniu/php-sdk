@@ -27,7 +27,7 @@ final class PersistentFop
         if (!empty($this->pipeline)) {
             $params['pipeline'] = $this->pipeline;
         }
-        if (!empty($this->notify_url)){
+        if (!empty($this->notify_url)) {
             $params['notifyURL'] = $this->notify_url;
         }
         if ($force) {

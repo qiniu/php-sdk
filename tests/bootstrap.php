@@ -1,5 +1,5 @@
 <?php
-
+// @codingStandardsIgnoreFile
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Qiniu\Auth;
