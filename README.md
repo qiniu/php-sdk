@@ -8,11 +8,11 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
 ## 安装
 
-1. 通过composer
+* 通过composer
 ```bash
 $ composer require qiniu/php-sdk
 ```
-2. 直接下载安装，SDK 没有依赖其他第三方库，但需要使用composer的autoload
+* 直接下载安装，SDK 没有依赖其他第三方库，但需要使用composer的autoload
 
 ## 运行环境
 
