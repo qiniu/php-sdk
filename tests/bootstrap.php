@@ -1,58 +1,37 @@
 <?php
 
-require_once("../qiniu/fop.php");
-require_once("../qiniu/rs_utils.php");
-require_once("../qiniu/rsf.php");
+require_once __DIR__.'/../vendor/autoload.php';
 
-$accessKey = getenv("QINIU_ACCESS_KEY");
-$secretKey = getenv("QINIU_SECRET_KEY");
+use Qiniu\Auth;
 
-$tid = getenv("TRAVIS_JOB_NUMBER");
+$accessKey = getenv('QINIU_ACCESS_KEY');
+$secretKey = getenv('QINIU_SECRET_KEY');
+$testAuth = new Auth($accessKey, $secretKey);
+$bucketName = getenv('QINIU_BUCKET_NAME');
+$key = getenv('QINIU_KEY_NAME');
 
-$testEnv = getenv("QINIU_TEST_ENV");
+$dummyAccessKey = 'abcdefghklmnopq';
+$dummySecretKey = '1234567890';
+$dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
+
+$tid = getenv('TRAVIS_JOB_NUMBER');
+
+$testEnv = getenv('QINIU_TEST_ENV');
 
 if (!empty($tid)) {
-	$pid = getmypid();
-	$tid = strstr($tid, ".");
-	$tid .= "." . $pid;
+    $pid = getmypid();
+    $tid = strstr($tid, '.');
+    $tid .= '.' . $pid;
 }
 
-function initKeys() {
-	global $accessKey, $secretKey;
-	if (!empty($accessKey) && !empty($secretKey)) {
-		Qiniu_SetKeys($accessKey, $secretKey);
-	}
-}
-
-function getTid() {
-	global $tid;
-	return $tid;
-}
-
-function getTestEnv() {
-	global $testEnv;
-	return $testEnv;
-}
-
-class MockReader
+function qiniuTempFile($size)
 {
-	private $off = 0;
-
-	public function __construct($off = 0)
-	{
-		$this->off = $off;
-	}
-
-	public function Read($bytes) // => ($data, $err)
-	{
-		$off = $this->off;
-		$data = '';
-		for ($i = 0; $i < $bytes; $i++) {
-			$data .= chr(65 + ($off % 26)); // ord('A') = 65
-			$off++;
-		}
-		$this->off = $off;
-		return array($data, null);
-	}
+    $fileName = tempnam(sys_get_temp_dir() , 'qiniu_');
+    $file = fopen($fileName, 'wb');
+    if ($size > 0) {
+        fseek($file, $size-1);
+        fwrite($file, ' ');
+    }
+    fclose($file);
+    return $fileName;
 }
-
