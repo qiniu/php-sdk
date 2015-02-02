@@ -14,4 +14,4 @@ before_script:
 script:
   - ./vendor/bin/phpcs --standard=PSR2 src
   - ./vendor/bin/phpcs --standard=PSR2 tests
-  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpunit tests/Qiniu/Tests/

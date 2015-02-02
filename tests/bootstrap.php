@@ -26,7 +26,7 @@ if (!empty($tid)) {
 
 function qiniuTempFile($size)
 {
-    $fileName = tempnam(sys_get_temp_dir() , 'qiniu_');
+    $fileName = tempnam(sys_get_temp_dir(), 'qiniu_');
     $file = fopen($fileName, 'wb');
     if ($size > 0) {
         fseek($file, $size-1);

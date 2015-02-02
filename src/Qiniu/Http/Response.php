@@ -160,7 +160,7 @@ final class Response
     public function needRetry()
     {
         $code = $this->statusCode;
-        if ( $code< 0 || ($code / 100 == 5 and $code != 579) || $code == 996) {
+        if ($code< 0 || ($code / 100 == 5 and $code != 579) || $code == 996) {
             return true;
         }
     }
