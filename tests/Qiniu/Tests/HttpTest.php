@@ -20,7 +20,6 @@ class HttpTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($response->body);
         $this->assertNotNull($response->xReqId());
         $this->assertNotNull($response->xLog());
-        $this->assertNotNull($response->json()['error']);
         $this->assertNotNull($response->error);
     }
 
@@ -39,7 +38,6 @@ class HttpTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($response->body);
         $this->assertNotNull($response->xReqId());
         $this->assertNotNull($response->xLog());
-        $this->assertNotNull($response->json()['error']);
         $this->assertNotNull($response->error);
     }
 }
