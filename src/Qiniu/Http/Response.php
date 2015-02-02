@@ -76,7 +76,7 @@ final class Response
         511 => 'Network Authentication Required',
     );
 
-    public function __construct($code, $duration, array $headers = [], $body = null, $error = null)
+    public function __construct($code, $duration, array $headers = array(), $body = null, $error = null)
     {
         $this->statusCode = $code;
         $this->duration = $duration;
@@ -117,7 +117,7 @@ final class Response
         }
     }
 
-    public function json(array $config = [])
+    public function json(array $config =array())
     {
         if ($this->jsonData != null) {
             return $this->jsonData;
@@ -125,7 +125,7 @@ final class Response
         return self::bodyJson($this->body);
     }
 
-    private static function bodyJson($body, array $config = [])
+    private static function bodyJson($body, array $config = array())
     {
         return \Qiniu\json_decode(
             (string) $body,

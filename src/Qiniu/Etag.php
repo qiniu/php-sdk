@@ -46,7 +46,7 @@ final class Etag
         $sha1Buf = array();
 
         if ($blockCnt <= 1) {
-            $sha1Buf[] = 0x16;
+            array_push($sha1Buf, 0x16);
             $fdata = fread($fhandler, Config::BLOCK_SIZE);
             if ($err != null) {
                 fclose($fhandler);
@@ -55,7 +55,7 @@ final class Etag
             list($sha1Code, $err) = calSha1($fdata);
             $sha1Buf = array_merge($sha1Buf, $sha1Code);
         } else {
-            $sha1Buf[] = 0x96;
+            array_push($sha1Buf, 0x96);
             $sha1BlockBuf = array();
             for ($i=0; $i < $blockCnt; $i++) {
                 $fdata = fread($fhandler, Config::BLOCK_SIZE);

@@ -7,13 +7,13 @@ use Qiniu\Http\Response;
 
 final class Client
 {
-    public static function get($url, array $headers = [])
+    public static function get($url, array $headers = array())
     {
         $request = new Request('GET', $url, $headers);
         return self::sendRequest($request);
     }
 
-    public static function post($url, $body, array $headers = [])
+    public static function post($url, $body, array $headers = array())
     {
         $request = new Request('POST', $url, $headers, $body);
         return self::sendRequest($request);
@@ -26,7 +26,7 @@ final class Client
         $fileName,
         $fileBody,
         $mimeType = null,
-        array $headers = []
+        array $headers = array()
     ) {
         $data = array();
         $mimeBoundary = md5(microtime());
@@ -88,7 +88,7 @@ final class Client
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
-                $headers[] = "$key: $val";
+                array_push($headers, "$key: $val");
             }
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
