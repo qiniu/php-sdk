@@ -43,13 +43,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param bool $assoc     When true, returned objects will be converted
      *                        into associative arrays.
      * @param int    $depth   User specified recursion depth.
-     * @param int    $options Bitmask of JSON decode options.
      *
      * @return mixed
      * @throws \InvalidArgumentException if the JSON cannot be parsed.
      * @link http://www.php.net/manual/en/function.json-decode.php
      */
-    function json_decode($json, $assoc = false, $depth = 512, $options = 0)
+    function json_decode($json, $assoc = false, $depth = 512)
     {
         static $jsonErrors = array(
             JSON_ERROR_DEPTH => 'JSON_ERROR_DEPTH - Maximum stack depth exceeded',
@@ -59,7 +58,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
             JSON_ERROR_UTF8 => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded'
         );
 
-        $data = \json_decode($json, $assoc, $depth, $options);
+        $data = \json_decode($json, $assoc, $depth);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             $last = json_last_error();

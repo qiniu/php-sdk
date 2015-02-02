@@ -65,7 +65,6 @@ final class ResumeUploader
                 fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
-            var_dump($ret);
             array_push($this->contexts, $ret['ctx']);
             $uploaded += $blockSize;
         }
