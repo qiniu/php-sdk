@@ -90,7 +90,7 @@ final class Response
 
         if ($body == null) {
             if ($code != 200) {
-                $this->error = self::statusTexts[$code];
+                $this->error = self::$statusTexts[$code];
             }
             return;
         }
