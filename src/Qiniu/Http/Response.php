@@ -117,7 +117,7 @@ final class Response
         }
     }
 
-    public function json(array $config =array())
+    public function json(array $config = array())
     {
         if ($this->jsonData != null) {
             return $this->jsonData;
