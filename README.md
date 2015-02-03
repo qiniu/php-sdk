@@ -6,7 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
-+[![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qiniu/php-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qiniu/php-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ## 安装
 
 * 通过composer，这是推荐的方式，可以使用composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`qiniu/php-sdk`][install-packagist] 。
