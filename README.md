@@ -9,11 +9,11 @@
 +[![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qiniu/php-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ## 安装
 
-* 通过composer
+* 通过composer，这是推荐的方式，可以使用composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到�]这里 [`qiniu/php-sdk`][install-packagist] 。
 ```bash
 $ composer require qiniu/php-sdk
 ```
-* 直接下载安装，SDK 没有依赖其他第三方库，但需要使用composer的autoload
+* 直接下载安装，SDK 没有依赖其他第三方库，但需要参照 composer的autoloader，增加一个自己的autoloader程序。
 
 ## 运行环境
 
@@ -68,3 +68,6 @@ $ ./vendor/bin/phpunit tests/Qiniu/Tests/
 ## 代码许可
 
 The MIT License (MIT).详情见 [License文件](https://github.com/qiniu/php-sdk/blob/master/LICENSE).
+
+[packagist]: http://packagist.org
+[install-packagist]: https://packagist.org/packages/qiniu/php-sdk
