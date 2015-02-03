@@ -13,8 +13,12 @@ before_script:
   - export QINIU_BUCKET_NAME="phpsdk"
   - export QINIU_KEY_NAME="php-logo.png"
   - export QINIU_TEST_ENV="travis"
-  - composer install --prefer-source
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source --dev
 script:
   - ./vendor/bin/phpcs --standard=PSR2 src
   - ./vendor/bin/phpcs --standard=PSR2 tests
-  - ./vendor/bin/phpunit tests/Qiniu/Tests/
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
