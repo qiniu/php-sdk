@@ -92,15 +92,19 @@ final class PersistentFop
         return $this->execute($key, $ops);
     }
 
-    public function mkzip($dummy_key, $urls_and_alias,
-        $to_bucket = null, $to_key = null, $mode = 2)
-    {
+    public function mkzip(
+        $dummy_key,
+        $urls_and_alias,
+        $to_bucket = null,
+        $to_key = null,
+        $mode = 2
+    ) {
         $base = 'mkzip/' . $mode;
         $op = array($base);
         foreach ($urls_and_alias as $key => $value) {
             if (is_int($key)) {
                 array_push($op, 'url/' . \Qiniu\base64_urlSafeEncode($value));
-            }else{
+            } else {
                 array_push($op, 'url/' . \Qiniu\base64_urlSafeEncode($key));
                 array_push($op, 'alias/' . \Qiniu\base64_urlSafeEncode($key));
             }
