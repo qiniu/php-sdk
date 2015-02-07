@@ -49,19 +49,18 @@ final class ResumeUploader
             $crc = \Qiniu\crc32_data($data);
             $response = $this->makeBlock($data, $blockSize);
             $ret = null;
-            if ($response->statusCode == 200 && $response->error == null
-                && $response->json() != null) {
+            if ($response->ok() && $response->json() != null) {
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
                 $this->host = Config::UPBACKUP_HOST;
             }
-            if ($response->needRetry() || $crc != $ret['crc32']) {
+            if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
                 $ret = $response->json();
             }
 
-            if ($response->statusCode != 200 || $crc != $ret['crc32']) {
+            if (! $response->ok() || !isset($ret['crc32'])|| $crc != $ret['crc32']) {
                 fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
@@ -102,7 +101,7 @@ final class ResumeUploader
         if ($response->needRetry()) {
             $response = $this->post($url, $body);
         }
-        if ($response->statusCode != 200) {
+        if (! $response->ok()) {
             return array(null, new Error($this->currentUrl, $response));
         }
         return array($response->json(), null);
