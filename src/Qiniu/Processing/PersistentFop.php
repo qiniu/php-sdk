@@ -91,4 +91,25 @@ final class PersistentFop
         array_push($ops, $pfop);
         return $this->execute($key, $ops);
     }
+
+    public function mkzip($dummy_key, $urls_and_alias,
+        $to_bucket = null, $to_key = null, $mode = 2)
+    {
+        $base = 'mkzip/' . $mode;
+        $op = array($base);
+        foreach ($urls_and_alias as $key => $value) {
+            if (is_int($key)) {
+                array_push($op, 'url/' . \Qiniu\base64_urlSafeEncode($value));
+            }else{
+                array_push($op, 'url/' . \Qiniu\base64_urlSafeEncode($key));
+                array_push($op, 'alias/' . \Qiniu\base64_urlSafeEncode($key));
+            }
+        }
+        $fop = implode('/', $op);
+        if ($to_bucket != null) {
+            $op = Operation::saveas($fop, $to_bucket, $to_key);
+        }
+        $ops =array($op);
+        return $this->execute($dummy_key, $ops);
+    }
 }

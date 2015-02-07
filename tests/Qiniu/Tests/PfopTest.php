@@ -36,7 +36,7 @@ class PfopTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($error);
     }
 
-    public function testMkzip()
+    public function testExecute2()
     {
         global $testAuth;
         $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
@@ -49,6 +49,21 @@ class PfopTest extends \PHPUnit_Framework_TestCase
         $ops = array();
         array_push($ops, $op);
         list($id, $error) = $pfop->execute('sintel_trailer.mp4', $ops);
+        $this->assertNull($error);
+        list($status, $error) = PersistentFop::status($id);
+        $this->assertNotNull($status);
+        $this->assertNull($error);
+    }
+
+    public function testMkzip()
+    {
+        global $testAuth;
+        $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
+        $urls = array(
+            'http://testres.qiniudn.com/gogopher.jpg' => 'g.jpg',
+            'http://testres.qiniudn.com/gogopher.jpg'
+        );
+        list($id, $error) = $pfop->mkzip('sintel_trailer.mp4', $urls, 'phpsdk', 'mkziptest2.zip');
         $this->assertNull($error);
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
