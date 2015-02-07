@@ -32,10 +32,10 @@ final class FormUploader
         }
 
         $response = Client::multipartPost(Config::$defaultHost, $fields, 'file', $fname, $data, $mime);
-        if ($response->statusCode == 200 && $response->json() != null) {
-            return array($response->json(), null);
+        if (!$response->ok()) {
+            return array(null, new Error(Config::$defaultHost, $response));
         }
-        return array(null, new Error(Config::$defaultHost, $response));
+        return array($response->json(), null);
     }
 
     public static function putFile(
@@ -64,10 +64,10 @@ final class FormUploader
         }
         $headers =array('Content-Type' => 'multipart/form-data');
         $response = client::post(Config::$defaultHost, $fields, $headers);
-        if ($response->statusCode == 200 && $response->json() != null) {
-            return array($response->json(), null);
+        if (!$response->ok()) {
+            return array(null, new Error(Config::$defaultHost, $response));
         }
-        return array(null, new Error(Config::$defaultHost, $response));
+        return array($response->json(), null);
     }
 
     private static function createFile($filename, $mime)

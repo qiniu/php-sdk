@@ -75,6 +75,10 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
 
     function entry($bucket, $key)
     {
-        return base64_urlSafeEncode($bucket . ':' . $key);
+        $en = $bucket;
+        if (!empty($key)) {
+            $en = $bucket . ':' . $key;
+        }
+        return base64_urlSafeEncode($en);
     }
 }

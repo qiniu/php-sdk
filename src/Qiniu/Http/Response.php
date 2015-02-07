@@ -89,12 +89,12 @@ final class Response
         }
 
         if ($body == null) {
-            if ($code != 200) {
+            if ($code >= 400) {
                 $this->error = self::$statusTexts[$code];
             }
             return;
         }
-        if ($headers['Content-Type'] == 'application/json') {
+        if (self::isJson($headers)) {
             try {
                 $jsonData = self::bodyJson($body);
                 if ($code >=400) {
@@ -117,12 +117,9 @@ final class Response
         }
     }
 
-    public function json(array $config = array())
+    public function json()
     {
-        if ($this->jsonData != null) {
-            return $this->jsonData;
-        }
-        return self::bodyJson($this->body);
+        return $this->jsonData;
     }
 
     private static function bodyJson($body, array $config = array())
@@ -157,11 +154,21 @@ final class Response
         return $this->headers['X-Reqid'];
     }
 
+    public function ok()
+    {
+        return $this->statusCode >= 200 && $this->statusCode < 300 && $this->error == null;
+    }
+
     public function needRetry()
     {
         $code = $this->statusCode;
         if ($code< 0 || ($code / 100 == 5 and $code != 579) || $code == 996) {
             return true;
         }
+    }
+
+    private static function isJson($headers)
+    {
+        return isset($headers['Content-Type']) && $headers['Content-Type'] == 'application/json';
     }
 }

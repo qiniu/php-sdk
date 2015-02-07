@@ -134,21 +134,21 @@ final class BucketManager
     {
         $headers = $this->auth->authorization($url);
         $ret = Client::get($url, $headers);
-        if ($ret->statusCode == 200 && $ret->error == null) {
-            return array($ret->json(), null);
+        if (!$ret->ok()) {
+            return array(null, new Error($url, $ret));
         }
-        return array(null, new Error($url, $ret));
+        return array($ret->json(), null);
     }
 
     private function post($url, $body)
     {
         $headers = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
         $ret = Client::post($url, $body, $headers);
-        if ($ret->statusCode == 200 && $ret->error == null) {
-            $r = $ret->body == null ? array() : $ret->json();
-            return array($r, null);
+        if (!$ret->ok()) {
+            return array(null, new Error($url, $ret));
         }
-        return array(null, new Error($url, $ret));
+        $r = $ret->body == null ? array() : $ret->json();
+        return array($r, null);
     }
 
     public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket)
