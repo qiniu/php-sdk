@@ -10,7 +10,7 @@ global $QINIU_IOVIP_HOST;
 global $QINIU_ACCESS_KEY;
 global $QINIU_SECRET_KEY;
 
-$SDK_VER = "6.1.9";
+$SDK_VER = "6.1.13";
 
 $QINIU_UP_HOST	= 'http://upload.qiniu.com';
 $QINIU_RS_HOST	= 'http://rs.qbox.me';
