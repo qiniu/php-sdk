@@ -4,6 +4,8 @@ global $SDK_VER;
 global $QINIU_UP_HOST;
 global $QINIU_RS_HOST;
 global $QINIU_RSF_HOST;
+global $QINIU_API_HOST;
+global $QINIU_IOVIP_HOST;
 
 global $QINIU_ACCESS_KEY;
 global $QINIU_SECRET_KEY;
