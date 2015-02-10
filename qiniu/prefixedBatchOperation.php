@@ -5,13 +5,17 @@ require_once(dirname(__FILE__) . "/rsf.php");
 function prefixBatch($op, $bucket, $prefix, $destBucket = '', $marker = '') {
   $allItems = array();
   $allResults = array();
+  $itemCount = 0;
   while(true){
     $self = new Qiniu_MacHttpClient(null);
     $result = Qiniu_RSF_ListPrefix($self, $bucket, $prefix, $marker);
-    $allItems = array_merge($allItems, $result[0]);
+    if($op === 'list') {
+      $allItems = array_merge($allItems, $result[0]);
+    }
     $marker = $result[1];
 
-    if(count($allItems) === 0) { // 无满足条件的文件时，不要进入后面的Qiniu_RS_BatchXXXX，否则浪费时间且报错
+    $itemCount += count($result[0]);
+    if($itemCount === 0) { // 无满足条件的文件时，不要进入后面的Qiniu_RS_BatchXXXX，否则浪费时间且报错
       return array(
         'result' => 0,
         'itemCount' => 0
