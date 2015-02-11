@@ -32,6 +32,12 @@ function prefixBatch($op, $bucket, $prefix, $destBucket = '', $marker = '') {
         $destBucket = '';
       case 'move':
       case 'copy':
+        if($bucket === $destBucket) {
+          return array(
+            'result' => 0,
+            'error' => 'Source and destination shouldn\'t be same.'
+          );
+        }
         $entries = genEntries($bucket, $result[0], $destBucket);
         break;
     }
