@@ -6,8 +6,8 @@ function prefixBatch($op, $bucket, $prefix, $destBucket = '', $marker = '') {
   $allItems = array();
   $allResults = array();
   $itemCount = 0;
+  $self = new Qiniu_MacHttpClient(null);
   while(true){
-    $self = new Qiniu_MacHttpClient(null);
     $result = Qiniu_RSF_ListPrefix($self, $bucket, $prefix, $marker);
     if($op === 'list') {
       $allItems = array_merge($allItems, $result[0]);
