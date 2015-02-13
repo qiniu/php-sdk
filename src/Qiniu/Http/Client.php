@@ -96,6 +96,7 @@ final class Client
         if (!empty($request->body)) {
             $options[CURLOPT_POSTFIELDS] = $request->body;
         }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         $t2 = microtime(true);
