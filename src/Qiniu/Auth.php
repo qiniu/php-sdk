@@ -79,8 +79,10 @@ final class Auth
         if ($key != null) {
             $scope .= ':' . $key;
         }
-        $args = array('scope' => $scope, 'deadline' => $deadline);
-        self::copyPolicy($args, $policy, $strictPolicy);
+        $args = array();
+        $args = self::copyPolicy($args, $policy, $strictPolicy);
+        $args['scope'] = $scope;
+        $args['deadline'] = $deadline;
         $b = json_encode($args);
         return $this->tokenWithData($b);
     }
@@ -125,6 +127,7 @@ final class Auth
                 $policy[$key] = $value;
             }
         }
+        return $policy;
     }
 
     public function authorization($url, $body = null, $contentType = null)
