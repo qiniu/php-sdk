@@ -71,7 +71,9 @@ namespace Qiniu\Tests
             global $dummyAuth;
             $_SERVER['override_qiniu_auth_time'] = true;
             $token = $dummyAuth->uploadToken('1', '2', 3600, array('endUser'=> 'y'));
+            // @codingStandardsIgnoreStart
             $exp = 'abcdefghklmnopq:yyeexeUkPOROoTGvwBjJ0F0VLEo=:eyJlbmRVc2VyIjoieSIsInNjb3BlIjoiMToyIiwiZGVhZGxpbmUiOjEyMzQ1NzE0OTB9';
+            // @codingStandardsIgnoreEnd
             $this->assertEquals($exp, $token);
             unset($_SERVER['override_qiniu_auth_time']);
         }
