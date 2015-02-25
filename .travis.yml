@@ -10,8 +10,8 @@ php:
 before_script:
   - export QINIU_ACCESS_KEY="QWYn5TFQsLLU1pL5MFEmX3s5DmHdUThav9WyOWOm"
   - export QINIU_SECRET_KEY="Bxckh6FA-Fbs9Yt3i3cbKVK22UPBmAOHJcL95pGz"
-  - export QINIU_BUCKET_NAME="phpsdk"
-  - export QINIU_KEY_NAME="php-logo.png"
+  - export QINIU_TEST_BUCKET="phpsdk"
+  - export QINIU_TEST_KEY="php-logo.png"
   - export QINIU_TEST_ENV="travis"
   - composer install --prefer-source
 script:

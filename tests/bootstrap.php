@@ -7,8 +7,8 @@ use Qiniu\Auth;
 $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 $testAuth = new Auth($accessKey, $secretKey);
-$bucketName = getenv('QINIU_BUCKET_NAME');
-$key = getenv('QINIU_KEY_NAME');
+$bucketName = getenv('QINIU_TEST_BUCKET');
+$key = getenv('QINIU_TEST_KEY');
 
 $dummyAccessKey = 'abcdefghklmnopq';
 $dummySecretKey = '1234567890';

@@ -117,7 +117,7 @@ final class ResumeUploader
     private function blockSize($uploaded)
     {
         if ($this->size < $uploaded + Config::BLOCK_SIZE) {
-            return $bsize = $this->size - $uploaded;
+            return $this->size - $uploaded;
         }
         return  Config::BLOCK_SIZE;
     }
