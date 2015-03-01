@@ -22,27 +22,27 @@ namespace Qiniu\Tests
     class AuthTest extends \PHPUnit_Framework_TestCase
     {
 
-        public function testToken()
+        public function testSign()
         {
             global $dummyAuth;
-            $token = $dummyAuth->token('test');
+            $token = $dummyAuth->sign('test');
             $this->assertEquals('abcdefghklmnopq:mSNBTR7uS2crJsyFr2Amwv1LaYg=', $token);
         }
 
-        public function testTokenWithData()
+        public function testSignWithData()
         {
             global $dummyAuth;
-            $token = $dummyAuth->tokenWithData('test');
+            $token = $dummyAuth->signWithData('test');
             $this->assertEquals('abcdefghklmnopq:-jP8eEV9v48MkYiBGs81aDxl60E=:dGVzdA==', $token);
         }
 
-        public function testTokenOfRequest()
+        public function testSignRequest()
         {
             global $dummyAuth;
-            $token = $dummyAuth->tokenOfRequest('http://www.qiniu.com?go=1', 'test', '');
+            $token = $dummyAuth->signRequest('http://www.qiniu.com?go=1', 'test', '');
             $this->assertEquals('abcdefghklmnopq:cFyRVoWrE3IugPIMP5YJFTO-O-Y=', $token);
             $ctype = 'application/x-www-form-urlencoded';
-            $token = $dummyAuth->tokenOfRequest('http://www.qiniu.com?go=1', 'test', $ctype);
+            $token = $dummyAuth->signRequest('http://www.qiniu.com?go=1', 'test', $ctype);
             $this->assertEquals($token, 'abcdefghklmnopq:svWRNcacOE-YMsc70nuIYdaa1e4=');
         }
 
