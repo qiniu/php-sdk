@@ -14,19 +14,19 @@ final class Auth
         $this->secretKey = $secretKey;
     }
 
-    public function token($data)
+    public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
         return $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
     }
 
-    public function tokenWithData($data)
+    public function signWithData($data)
     {
         $data = \Qiniu\base64_urlSafeEncode($data);
-        return $this->token($data) . ':' . $data;
+        return $this->sign($data) . ':' . $data;
     }
 
-    public function tokenOfRequest($urlString, $body, $contentType = null)
+    public function signRequest($urlString, $body, $contentType = null)
     {
         $url = parse_url($urlString);
         $data = '';
@@ -42,12 +42,12 @@ final class Auth
             ($contentType == 'application/x-www-form-urlencoded') ||  $contentType == 'application/json') {
             $data .= $body;
         }
-        return $this->token($data);
+        return $this->sign($data);
     }
 
     public function verifyCallback($contentType, $originAuthorization, $url, $body)
     {
-        $authorization = 'QBox ' . $this->tokenOfRequest($url, $body, $contentType);
+        $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return $originAuthorization === $authorization;
     }
 
@@ -63,7 +63,7 @@ final class Auth
         }
         $baseUrl .= $deadline;
 
-        $token = $this->token($baseUrl);
+        $token = $this->sign($baseUrl);
         return "$baseUrl&token=$token";
     }
 
@@ -84,7 +84,7 @@ final class Auth
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
         $b = json_encode($args);
-        return $this->tokenWithData($b);
+        return $this->signWithData($b);
     }
 
     private static $policyFields = array(
@@ -132,7 +132,7 @@ final class Auth
 
     public function authorization($url, $body = null, $contentType = null)
     {
-        $authorization = 'QBox ' . $this->tokenOfRequest($url, $body, $contentType);
+        $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return array('Authorization' => $authorization);
     }
 }
