@@ -106,6 +106,7 @@ final class Auth
         'persistentOps',
         'persistentNotifyUrl',
         'persistentPipeline',
+        'checksum',
     );
 
     private static $deprecatedPolicyFields = array(
