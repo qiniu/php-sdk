@@ -58,8 +58,23 @@ final class PersistentFop
         return array($response->json(), null);
     }
 
+    private static $pfops = array(
+        'avthumb',
+        'vframe',
+        'segtime',
+        'vsample',
+        'vwatermark',
+        'avconcat',
+
+        'concat',
+    );
+
     public function __call($method, $args)
     {
+
+        if (!in_array($method, self::$pfops)) {
+            throw new \InvalidArgumentException("pfop {$method} isn't support");
+        }
         $key = $args[0];
         $cmd = $method;
         $mod = null;

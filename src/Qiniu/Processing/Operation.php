@@ -49,10 +49,28 @@ final class Operation
         return $url;
     }
 
+    private static $fops = array(
+        'imageView2',
+        'imageMogr2',
+        'imageInfo',
+        'exif',
+        'watermark',
+        'imageAve',
+
+        'avinfo',
+        'pm3u8',
+        
+        'qrcode',
+        'md2html',
+    );
+
     public function __call($method, $args)
     {
+
+        if (!in_array($method, self::$fops)) {
+            throw new \InvalidArgumentException("fop {$method} isn't supported");
+        }
         $key = $args[0];
-        $cmd = $method;
         $mode = null;
         if (count($args)>1) {
             $mode = $args[1];
@@ -62,7 +80,7 @@ final class Operation
             $options = $args[2];
         }
         $options = array();
-        $url = $this->buildUrl($key, $cmd, $mode, $options);
+        $url = $this->buildUrl($key, $method, $mode, $options);
         $r = Client::get($url);
         if (!$r->ok()) {
             return array(null, new Error($url, $r));
