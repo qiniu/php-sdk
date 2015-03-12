@@ -85,6 +85,7 @@ final class Client
             CURLOPT_CUSTOMREQUEST  => $request->method,
             CURLOPT_URL => $request->url
         );
+        
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
@@ -92,11 +93,11 @@ final class Client
             }
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
 
         if (!empty($request->body)) {
             $options[CURLOPT_POSTFIELDS] = $request->body;
         }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         $t2 = microtime(true);
