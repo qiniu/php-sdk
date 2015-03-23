@@ -6,11 +6,31 @@ use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 use Qiniu\Processing\Operation;
 
+/**
+ * 持久化处理类,该类用于主动触发异步持久化操作.
+ *
+ * @link http://developer.qiniu.com/docs/v6/api/reference/fop/pfop/pfop.html
+ */
 final class PersistentFop
 {
+    /**
+     * @var 账号管理密钥对，Auth对象
+     */
     private $auth;
+
+    /**
+     * @var 操作资源所在空间
+     */
     private $bucket;
+
+    /**
+     * @var 多媒体处理队列，详见 https://portal.qiniu.com/mps/pipeline
+     */
     private $pipeline;
+
+    /**
+     * @var 持久化处理结果通知URL
+     */
     private $notify_url;
 
     public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
@@ -22,6 +42,16 @@ final class PersistentFop
         $this->force = $force;
     }
 
+    /**
+     * 列取空间的文件列表
+     *
+     * @param $key     待处理的源文件
+     * @param $fops    处理详细操作，规格详见 http://developer.qiniu.com/docs/v6/api/reference/fop/
+     * 
+     * @return array[] 返回持久化处理的persistentId，类似{"persistentId": 5476bedf7823de4068253bae}
+     * 
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
+     */
     public function execute($key, array $fops)
     {
         $ops = implode(';', $fops);
