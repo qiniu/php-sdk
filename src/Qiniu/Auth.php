@@ -118,7 +118,7 @@ final class Auth
         'asyncOps',
     );
 
-    private static function copyPolicy($policy, $originPolicy, $strictPolicy)
+    private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
     {
         if ($originPolicy == null) {
             return;
