@@ -58,10 +58,24 @@ final class PersistentFop
         return array($response->json(), null);
     }
 
+    private static $pfops = array(
+        'avthumb',
+        'vframe',
+        'segtime',
+        'vsample',
+        'vwatermark',
+        'avconcat',
+
+        'concat',
+    );
+
     public function __call($method, $args)
     {
+
+        if (!in_array($method, self::$pfops)) {
+            throw new \InvalidArgumentException("pfop {$method} isn't supported");
+        }
         $key = $args[0];
-        $cmd = $method;
         $mod = null;
         if (count($args)>1) {
             $mod = $args[1];
@@ -82,7 +96,7 @@ final class PersistentFop
             $target_key = $args[4];
         }
 
-        $pfop = Operation::buildOp($cmd, $mod, $options);
+        $pfop = Operation::buildOp($method, $mod, $options);
         if ($target_bucket != null) {
             $pfop = Operation::saveas($pfop, $target_bucket, $target_key);
         }

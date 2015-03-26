@@ -115,6 +115,7 @@ final class Response
         } elseif ($code >=400) {
             $this->error = $body;
         }
+        return;
     }
 
     public function json()
