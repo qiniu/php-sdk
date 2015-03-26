@@ -23,9 +23,9 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
 
    /**
      * 计算输入流的crc32检验码
-     * 
+     *
      * @param $data 待计算校验码的字符串
-     * 
+     *
      * @return 输入字符串的crc32校验码
      */
     function crc32_data($data)
@@ -37,9 +37,9 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
 
    /**
      * 对提供的数据进行urlsafe的base64编码。
-     * 
+     *
      * @param string $data 待编码的数据，一般为字符串
-     * 
+     *
      * @return string 编码后的字符串
      * @link http://developer.qiniu.com/docs/v6/api/overview/appendix.html#urlsafe-base64
      */
@@ -52,9 +52,9 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
 
    /**
      * 对提供的urlsafe的base64编码的数据进行解码
-     * 
+     *
      * @param string $data 待解码的数据，一般为字符串
-     * 
+     *
      * @return string 解码后的字符串
      */
     function base64_urlSafeDecode($str)

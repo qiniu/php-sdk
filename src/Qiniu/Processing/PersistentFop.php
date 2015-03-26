@@ -47,9 +47,9 @@ final class PersistentFop
      *
      * @param $key     待处理的源文件
      * @param $fops    处理详细操作，规格详见 http://developer.qiniu.com/docs/v6/api/reference/fop/
-     * 
+     *
      * @return array[] 返回持久化处理的persistentId，类似{"persistentId": 5476bedf7823de4068253bae}
-     * 
+     *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
      */
     public function execute($key, array $fops)

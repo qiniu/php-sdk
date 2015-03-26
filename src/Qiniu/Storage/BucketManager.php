@@ -13,8 +13,8 @@ use Qiniu\Http\Error;
  */
 final class BucketManager
 {
-    /** 
-     * @var Qiniu\Auth 账号管理密钥对 
+    /**
+     * @var Qiniu\Auth 账号管理密钥对
      */
     private $auth;
 
@@ -23,9 +23,9 @@ final class BucketManager
         $this->auth = $auth;
     }
 
-    /** 
+    /**
      * 获取指定账号下所有的空间名。
-     * 
+     *
      * @return string[] 包含所有空间名
      */
     public function buckets()
@@ -41,14 +41,14 @@ final class BucketManager
      * @param $marker     列举标识符
      * @param $limit      单次列举个数限制
      * @param $delimiter  指定目录分隔符
-     * 
+     *
      * @return array[]    包含文件信息的数组，类似：[
      *                                              {
-     *                                                  "hash" => "<Hash string>", 
+     *                                                 "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
      *                                                  "fsize" => "<file size>",
      *                                                  "putTime" => "<file modify time>"
-     *                                              }, 
+     *                                              },
      *                                              ...
      *                                            ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
@@ -82,15 +82,15 @@ final class BucketManager
      *
      * @param $bucket     待获取信息资源所在的空间
      * @param $key        待获取资源的文件名
-     * 
+     *
      * @return array[]    包含文件信息的数组，类似：
      *                                              [
-     *                                                  "hash" => "<Hash string>", 
+     *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
      *                                                  "fsize" => "<file size>",
      *                                                  "putTime" => "<file modify time>"
-     *                                              ] 
-     *                                            
+     *                                              ]
+     *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
      */
     public function stat($bucket, $key)
@@ -104,7 +104,7 @@ final class BucketManager
      *
      * @param $bucket     待删除资源所在的空间
      * @param $key        待删除资源的文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
      */
@@ -122,7 +122,7 @@ final class BucketManager
      * @param $bucket     待操作资源所在空间
      * @param $oldname    待操作资源文件名
      * @param $newname    目标资源文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      */
     public function rename($bucket, $oldname, $newname)
@@ -137,7 +137,7 @@ final class BucketManager
      * @param $from_key        待操作资源文件名
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
@@ -157,7 +157,7 @@ final class BucketManager
      * @param $from_key        待操作资源文件名
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
@@ -176,7 +176,7 @@ final class BucketManager
      * @param $bucket     待操作资源所在空间
      * @param $key        待操作资源文件名
      * @param $mime       待操作文件目标mimeType
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/chgm.html
      */
@@ -195,7 +195,7 @@ final class BucketManager
      * @param $url        指定的URL
      * @param $bucket     目标资源空间
      * @param $key        目标资源文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
      */
@@ -213,7 +213,7 @@ final class BucketManager
      *
      * @param $bucket     待获取资源所在的空间
      * @param $key        代获取资源文件名
-     * 
+     *
      * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/prefetch.html
      */
@@ -229,7 +229,7 @@ final class BucketManager
      * 在单次请求中进行多个资源管理操作
      *
      * @param $operations     资源管理操作数组
-     * 
+     *
      * @return   每个资源的处理情况，结果类似：
      *              [
      *                   { "code" => <HttpCode int>, "data" => <Data> },
