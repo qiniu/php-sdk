@@ -239,7 +239,7 @@ final class BucketManager
      *                   { "code" => <HttpCode int>, "data" => { "error": "<ErrorMessage string>" } },
      *                   ...
      *               ]
-     * @link http://developer.qiniu.com/docs/v6/api/reference/rs/batch.html 
+     * @link http://developer.qiniu.com/docs/v6/api/reference/rs/batch.html
      */
     public function batch($operations)
     {
