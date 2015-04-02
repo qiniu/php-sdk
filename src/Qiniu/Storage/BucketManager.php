@@ -196,16 +196,28 @@ final class BucketManager
      * @param $bucket     目标资源空间
      * @param $key        目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return array[]    包含已拉取的文件信息。
+     *                         成功时：  [
+     *                                          [
+     *                                              "hash" => "<Hash string>",
+     *                                              "key" => "<Key string>"
+     *                                          ], 
+     *                                          null 
+     *                                  ]
+     *
+     *                         失败时：  [
+     *                                          null,
+     *                                 			Qiniu/Http/Error
+     *                                  ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
      */
     public function fetch($url, $bucket, $key)
     {
+
         $resource = \Qiniu\base64_urlSafeEncode($url);
         $to = \Qiniu\entry($bucket, $key);
         $path = '/fetch/' . $resource . '/to/' . $to;
-        list($_, $error) = $this->ioPost($path);
-        return $error;
+        return $this->ioPost($path);
     }
 
     /**
