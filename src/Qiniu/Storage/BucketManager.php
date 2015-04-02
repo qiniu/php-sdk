@@ -201,13 +201,13 @@ final class BucketManager
      *                                          [
      *                                              "hash" => "<Hash string>",
      *                                              "key" => "<Key string>"
-     *                                          ], 
-     *                                          null 
+     *                                          ],
+     *                                          null
      *                                  ]
      *
      *                         失败时：  [
      *                                          null,
-     *                                 			Qiniu/Http/Error
+     *                                         Qiniu/Http/Error
      *                                  ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
      */
