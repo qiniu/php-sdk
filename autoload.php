@@ -1,45 +1,12 @@
 <?php
 
-class AutoloaderInit
-{
-    private static $loader;
+spl_autoload_register(function ($class) {
 
-    public static function loadClassLoader($class)
-    {
-        if ('ClassLoader' === $class) {
-            require __DIR__ . '/ClassLoader.php';
-        }
+    $baseDir = dirname(__FILE__) . '/src';
+
+    require_once $baseDir . '/Qiniu/functions.php';
+    $file = $baseDir . DIRECTORY_SEPARATOR . strtr($class, '\\', DIRECTORY_SEPARATOR) . '.php';
+    if (file_exists($file)) {
+        require $file;
     }
-
-    public static function getLoader()
-    {
-        if (null !== self::$loader) {
-            return self::$loader;
-        }
-
-        spl_autoload_register(array('AutoloaderInit', 'loadClassLoader'), true, true);
-        self::$loader = $loader = new ClassLoader();
-        spl_autoload_unregister(array('AutoloaderInit', 'loadClassLoader'));
-
-        $baseDir = dirname(__FILE__);
-
-        $map = array(
-            'Qiniu\\' => array($baseDir . '/src/Qiniu'),
-        );
-        foreach ($map as $namespace => $path) {
-            $loader->setPsr4($namespace, $path);
-        }
-        $loader->register(true);
-
-        $includeFiles = array(
-            $baseDir . '/src/Qiniu/functions.php',
-        );
-        foreach ($includeFiles as $file) {
-            require $file;
-        }
-
-        return $loader;
-    }
-}
-
-return AutoloaderInit::getLoader();
+}, true);
