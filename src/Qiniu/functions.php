@@ -7,6 +7,13 @@ use Qiniu\Config;
 if (!defined('QINIU_FUNCTIONS_VERSION')) {
     define('QINIU_FUNCTIONS_VERSION', Config::SDK_VER);
 
+   /**
+     * 计算文件的crc32检验码:
+     *
+     * @param $file string  待计算校验码的文件路径
+     *
+     * @return 文件内容的crc32校验码
+     */
     function crc32_file($file)
     {
         $hash = hash_file('crc32b', $file);
@@ -14,6 +21,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return sprintf('%u', $array[1]);
     }
 
+   /**
+     * 计算输入流的crc32检验码
+     *
+     * @param $data 待计算校验码的字符串
+     *
+     * @return 输入字符串的crc32校验码
+     */
     function crc32_data($data)
     {
         $hash = hash('crc32b', $data);
@@ -21,6 +35,14 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return sprintf('%u', $array[1]);
     }
 
+   /**
+     * 对提供的数据进行urlsafe的base64编码。
+     *
+     * @param string $data 待编码的数据，一般为字符串
+     *
+     * @return string 编码后的字符串
+     * @link http://developer.qiniu.com/docs/v6/api/overview/appendix.html#urlsafe-base64
+     */
     function base64_urlSafeEncode($data)
     {
         $find = array('+', '/');
@@ -28,6 +50,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return str_replace($find, $replace, base64_encode($data));
     }
 
+   /**
+     * 对提供的urlsafe的base64编码的数据进行解码
+     *
+     * @param string $data 待解码的数据，一般为字符串
+     *
+     * @return string 解码后的字符串
+     */
     function base64_urlSafeDecode($str)
     {
         $find = array('-', '_');
@@ -73,6 +102,15 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return $data;
     }
 
+   /**
+     * 计算七牛API中的数据格式
+     *
+     * @param $bucket 待操作的空间名
+     * @param $key 待操作的文件名
+     *
+     * @return 符合七牛API规格的数据格式
+     * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
+     */
     function entry($bucket, $key)
     {
         $en = $bucket;

@@ -6,11 +6,31 @@ use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 use Qiniu\Processing\Operation;
 
+/**
+ * 持久化处理类,该类用于主动触发异步持久化操作.
+ *
+ * @link http://developer.qiniu.com/docs/v6/api/reference/fop/pfop/pfop.html
+ */
 final class PersistentFop
 {
+    /**
+     * @var 账号管理密钥对，Auth对象
+     */
     private $auth;
+
+    /**
+     * @var 操作资源所在空间
+     */
     private $bucket;
+
+    /**
+     * @var 多媒体处理队列，详见 https://portal.qiniu.com/mps/pipeline
+     */
     private $pipeline;
+
+    /**
+     * @var 持久化处理结果通知URL
+     */
     private $notify_url;
 
     public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
@@ -22,6 +42,14 @@ final class PersistentFop
         $this->force = $force;
     }
 
+    /**
+     * 列取空间的文件列表
+     *
+     * @param $key     待处理的源文件
+     * @param $fops    处理详细操作，规格详见 http://developer.qiniu.com/docs/v6/api/reference/fop/
+     *
+     * @return array[] 返回持久化处理的persistentId, 和返回的错误。
+     */
     public function execute($key, array $fops)
     {
         $ops = implode(';', $fops);
@@ -58,10 +86,24 @@ final class PersistentFop
         return array($response->json(), null);
     }
 
+    private static $pfops = array(
+        'avthumb',
+        'vframe',
+        'segtime',
+        'vsample',
+        'vwatermark',
+        'avconcat',
+
+        'concat',
+    );
+
     public function __call($method, $args)
     {
+
+        if (!in_array($method, self::$pfops)) {
+            throw new \InvalidArgumentException("pfop {$method} isn't supported");
+        }
         $key = $args[0];
-        $cmd = $method;
         $mod = null;
         if (count($args)>1) {
             $mod = $args[1];
@@ -82,7 +124,7 @@ final class PersistentFop
             $target_key = $args[4];
         }
 
-        $pfop = Operation::buildOp($cmd, $mod, $options);
+        $pfop = Operation::buildOp($method, $mod, $options);
         if ($target_bucket != null) {
             $pfop = Operation::saveas($pfop, $target_bucket, $target_key);
         }

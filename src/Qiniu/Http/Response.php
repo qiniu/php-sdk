@@ -115,6 +115,7 @@ final class Response
         } elseif ($code >=400) {
             $this->error = $body;
         }
+        return;
     }
 
     public function json()
@@ -169,6 +170,7 @@ final class Response
 
     private static function isJson($headers)
     {
-        return isset($headers['Content-Type']) && $headers['Content-Type'] == 'application/json';
+        return isset($headers['Content-Type']) &&
+        strpos($headers['Content-Type'], 'application/json') === 0;
     }
 }

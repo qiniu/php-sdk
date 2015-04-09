@@ -6,8 +6,16 @@ use Qiniu\Config;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
+/**
+ * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
+ *
+ * @link http://developer.qiniu.com/docs/v6/api/reference/rs/
+ */
 final class BucketManager
 {
+    /**
+     * @var Qiniu\Auth 账号管理密钥对
+     */
     private $auth;
 
     public function __construct(Auth $auth)
@@ -15,11 +23,36 @@ final class BucketManager
         $this->auth = $auth;
     }
 
+    /**
+     * 获取指定账号下所有的空间名。
+     *
+     * @return string[] 包含所有空间名
+     */
     public function buckets()
     {
         return $this->rsget('/buckets');
     }
 
+    /**
+     * 列取空间的文件列表
+     *
+     * @param $bucket     空间名
+     * @param $prefix     列举前缀
+     * @param $marker     列举标识符
+     * @param $limit      单次列举个数限制
+     * @param $delimiter  指定目录分隔符
+     *
+     * @return array[]    包含文件信息的数组，类似：[
+     *                                              {
+     *                                                 "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>",
+     *                                                  "fsize" => "<file size>",
+     *                                                  "putTime" => "<file modify time>"
+     *                                              },
+     *                                              ...
+     *                                            ]
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
+     */
     public function listFiles($bucket, $prefix = null, $marker = null, $limit = 1000, $delimiter = null)
     {
         $query = array('bucket' => $bucket);
@@ -44,12 +77,37 @@ final class BucketManager
         return array($ret['items'], $marker, null);
     }
 
+    /**
+     * 获取资源的元信息，但不返回文件内容
+     *
+     * @param $bucket     待获取信息资源所在的空间
+     * @param $key        待获取资源的文件名
+     *
+     * @return array[]    包含文件信息的数组，类似：
+     *                                              [
+     *                                                  "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>",
+     *                                                  "fsize" => "<file size>",
+     *                                                  "putTime" => "<file modify time>"
+     *                                              ]
+     *
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
+     */
     public function stat($bucket, $key)
     {
         $path = '/stat/' . \Qiniu\entry($bucket, $key);
         return $this->rsGet($path);
     }
 
+    /**
+     * 删除指定资源
+     *
+     * @param $bucket     待删除资源所在的空间
+     * @param $key        待删除资源的文件名
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
+     */
     public function delete($bucket, $key)
     {
         $path = '/delete/' . \Qiniu\entry($bucket, $key);
@@ -57,11 +115,32 @@ final class BucketManager
         return $error;
     }
 
+
+    /**
+     * 给资源进行重命名，本质为move操作。
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $oldname    待操作资源文件名
+     * @param $newname    目标资源文件名
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     */
     public function rename($bucket, $oldname, $newname)
     {
         return $this->move($bucket, $oldname, $bucket, $newname);
     }
 
+    /**
+     * 给资源进行重命名，本质为move操作。
+     *
+     * @param $from_bucket     待操作资源所在空间
+     * @param $from_key        待操作资源文件名
+     * @param $to_bucket       目标资源空间名
+     * @param $to_key          目标资源文件名
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
+     */
     public function copy($from_bucket, $from_key, $to_bucket, $to_key)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
@@ -71,6 +150,17 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * 将资源从一个空间到另一个空间
+     *
+     * @param $from_bucket     待操作资源所在空间
+     * @param $from_key        待操作资源文件名
+     * @param $to_bucket       目标资源空间名
+     * @param $to_key          目标资源文件名
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
+     */
     public function move($from_bucket, $from_key, $to_bucket, $to_key)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
@@ -80,6 +170,16 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * 主动修改指定资源的文件类型
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $mime       待操作文件目标mimeType
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/chgm.html
+     */
     public function changeMime($bucket, $key, $mime)
     {
         $resource = \Qiniu\entry($bucket, $key);
@@ -89,15 +189,46 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * 从指定URL抓取资源，并将该资源存储到指定空间中
+     *
+     * @param $url        指定的URL
+     * @param $bucket     目标资源空间
+     * @param $key        目标资源文件名
+     *
+     * @return array[]    包含已拉取的文件信息。
+     *                         成功时：  [
+     *                                          [
+     *                                              "hash" => "<Hash string>",
+     *                                              "key" => "<Key string>"
+     *                                          ],
+     *                                          null
+     *                                  ]
+     *
+     *                         失败时：  [
+     *                                          null,
+     *                                         Qiniu/Http/Error
+     *                                  ]
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
+     */
     public function fetch($url, $bucket, $key)
     {
+
         $resource = \Qiniu\base64_urlSafeEncode($url);
         $to = \Qiniu\entry($bucket, $key);
         $path = '/fetch/' . $resource . '/to/' . $to;
-        list($_, $error) = $this->ioPost($path);
-        return $error;
+        return $this->ioPost($path);
     }
 
+    /**
+     * 从镜像源站抓取资源到空间中，如果空间中已经存在，则覆盖该资源
+     *
+     * @param $bucket     待获取资源所在的空间
+     * @param $key        代获取资源文件名
+     *
+     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/prefetch.html
+     */
     public function prefetch($bucket, $key)
     {
         $resource = \Qiniu\entry($bucket, $key);
@@ -106,6 +237,22 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * 在单次请求中进行多个资源管理操作
+     *
+     * @param $operations     资源管理操作数组
+     *
+     * @return   每个资源的处理情况，结果类似：
+     *              [
+     *                   { "code" => <HttpCode int>, "data" => <Data> },
+     *                   { "code" => <HttpCode int> },
+     *                   { "code" => <HttpCode int> },
+     *                   { "code" => <HttpCode int> },
+     *                   { "code" => <HttpCode int>, "data" => { "error": "<ErrorMessage string>" } },
+     *                   ...
+     *               ]
+     * @link http://developer.qiniu.com/docs/v6/api/reference/rs/batch.html
+     */
     public function batch($operations)
     {
         $params = 'op=' . implode('&op=', $operations);
