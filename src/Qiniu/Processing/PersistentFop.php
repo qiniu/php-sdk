@@ -43,10 +43,10 @@ final class PersistentFop
     }
 
     /**
-     * 列取空间的文件列表
+     * 对资源文件进行异步持久化处理
      *
      * @param $key   待处理的源文件
-     * @param $fops  string|array  待处理的pfop操作，多个操作已array的形式传入。 
+     * @param $fops  string|array  待处理的pfop操作，多个pfop操作以array的形式传入。 
      *                eg. avthumb/mp3/ab/192k, vframe/jpg/offset/7/w/480/h/360
      *
      * @return array[] 返回持久化处理的persistentId, 和返回的错误。
