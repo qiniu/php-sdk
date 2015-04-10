@@ -46,20 +46,20 @@ final class PersistentFop
      * 对资源文件进行异步持久化处理
      *
      * @param $key   待处理的源文件
-     * @param $fops  string|array  待处理的pfop操作，多个pfop操作以array的形式传入。 
+     * @param $fops  string|array  待处理的pfop操作，多个pfop操作以array的形式传入。
      *                eg. avthumb/mp3/ab/192k, vframe/jpg/offset/7/w/480/h/360
      *
      * @return array[] 返回持久化处理的persistentId, 和返回的错误。
-     * 
+     *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */
     public function execute($key, $fops)
     {
         if (is_array($fops)) {
-            $ops = implode(';', $fops);
+            $fops = implode(';', $fops);
         }
 
-        $params = array('bucket' => $this->bucket, 'key' => $key, 'fops' => $ops);
+        $params = array('bucket' => $this->bucket, 'key' => $key, 'fops' => $fops);
         if (!empty($this->pipeline)) {
             $params['pipeline'] = $this->pipeline;
         }
