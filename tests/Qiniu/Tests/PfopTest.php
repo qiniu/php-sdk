@@ -34,7 +34,6 @@ class PfopTest extends \PHPUnit_Framework_TestCase
         $pfop = new PersistentFop($testAuth, $bucket);
 
         list($id, $error) = $pfop->execute($key, $fops);
-        var_dump($id);
         $this->assertNull($error);
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
