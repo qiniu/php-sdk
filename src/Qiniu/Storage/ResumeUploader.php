@@ -67,7 +67,7 @@ final class ResumeUploader
             $data = fread($this->inputStream, $blockSize);
             if ($data === false) {
                 fclose($this->inputStream);
-                throw new Exception("file read failed", 1);
+                throw new \Exception("file read failed", 1);
             }
             $crc = \Qiniu\crc32_data($data);
             $response = $this->makeBlock($data, $blockSize);

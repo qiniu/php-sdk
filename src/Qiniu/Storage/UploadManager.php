@@ -81,7 +81,7 @@ final class UploadManager
     ) {
         $file = fopen($filePath, 'rb');
         if ($file === false) {
-            throw new Exception("file can not open", 1);
+            throw new \Exception("file can not open", 1);
         }
         $params = self::trimParams($params);
         $stat = fstat($file);
@@ -90,7 +90,7 @@ final class UploadManager
             $data = fread($file, $size);
             fclose($file);
             if ($data === false) {
-                throw new Exception("file can not read", 1);
+                throw new \Exception("file can not read", 1);
             }
             return FormUploader::put(
                 $upToken,
