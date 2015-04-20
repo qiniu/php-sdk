@@ -1,26 +1,27 @@
 {
-    "name": "qiniu/php-sdk",
+    "name": "zgldh/qiniu-laravel-storage",
     "type": "library",
-    "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
-    "keywords": ["qiniu", "storage", "sdk", "cloud"],
+    "description": "Qiniu Resource (Cloud) Storage SDK for Laravel 5",
+    "keywords": ["qiniu", "storage", "sdk", "cloud", "laravel"],
     "homepage": "http://developer.qiniu.com/",
     "license": "MIT",
     "authors": [
         {
-            "name": "Qiniu",
-            "email": "sdk@qiniu.com",
-            "homepage": "http://www.qiniu.com"
+            "name": "zgldh",
+            "email": "zgldh@hotmail.com"
         }
     ],
     "require": {
         "php": ">=5.3.3",
-        "squizlabs/php_codesniffer": "~2.3"
+        "qiniu/php-sdk": "~7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {
-        "psr-4": {"Qiniu\\": "src/Qiniu"},
+		"psr-4": {
+			"zgldh\\QiniuStorage\\": "src/"
+		},
         "files": ["src/Qiniu/functions.php"]
     }
 }
