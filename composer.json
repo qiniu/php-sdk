@@ -21,7 +21,6 @@
     "autoload": {
 		"psr-4": {
 			"zgldh\\QiniuStorage\\": "src/"
-		},
-        "files": ["src/Qiniu/functions.php"]
+		}
     }
 }
