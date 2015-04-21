@@ -1,26 +1,41 @@
 <?php namespace zgldh\QiniuStorage;
 
-use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
+use League\Flysystem\Adapter\Polyfill\StreamedCopyTrait;
+use League\Flysystem\Adapter\Polyfill\StreamedReadingTrait;
+use League\Flysystem\Adapter\Polyfill\StreamedWritingTrait;
 use League\Flysystem\Config;
 use Qiniu\Auth;
+use Qiniu\Http\Error;
+use Qiniu\Processing\Operation;
+use Qiniu\Processing\PersistentFop;
+use Qiniu\Storage\BucketManager;
+use Qiniu\Storage\UploadManager;
 
 class QiniuAdapter extends AbstractAdapter {
+
+    use NotSupportingVisibilityTrait, StreamedWritingTrait, StreamedReadingTrait;
+
 
     private $access_key = null;
     private $secret_key = null;
     private $bucket = null;
+    private $domain = null;
 
     private $auth = null;
+    private $upload_manager = null;
+    private $bucket_manager = null;
+    private $operation = null;
 
-    public function __construct($accessKey, $secretKey, $bucket)
+    public function __construct($access_key, $secret_key, $bucket, $domain)
     {
-        $this->access_key = $accessKey;
-        $this->secret_key = $secretKey;
+        $this->access_key = $access_key;
+        $this->secret_key = $secret_key;
         $this->bucket     = $bucket;
-        Storage::put()
+        $this->domain     = $domain;
+        $this->setPathPrefix('http://' . $this->domain);
     }
-
 
     private function getAuth()
     {
@@ -30,6 +45,41 @@ class QiniuAdapter extends AbstractAdapter {
         }
 
         return $this->auth;
+    }
+
+    private function getUploadManager()
+    {
+        if ($this->upload_manager == null)
+        {
+            $this->upload_manager = new UploadManager();
+        }
+
+        return $this->upload_manager;
+    }
+
+    private function getBucketManager()
+    {
+        if ($this->bucket_manager == null)
+        {
+            $this->bucket_manager = new BucketManager($this->getAuth());
+        }
+
+        return $this->bucket_manager;
+    }
+
+    private function getOperation()
+    {
+        if ($this->operation == null)
+        {
+            $this->operation = new Operation($this->domain);
+        }
+
+        return $this->operation;
+    }
+
+    private function logQiniuError(Error $error)
+    {
+        \Log::error('Qiniu: ' . $error->message());
     }
 
     /**
@@ -43,21 +93,26 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function write($path, $contents, Config $config)
     {
-        // TODO: Implement write() method.
-    }
+        $auth  = $this->getAuth();
+        $token = $auth->uploadToken($this->bucket, $path);
 
-    /**
-     * Write a new file using a stream.
-     *
-     * @param string $path
-     * @param resource $resource
-     * @param Config $config Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function writeStream($path, $resource, Config $config)
-    {
-        // TODO: Implement writeStream() method.
+        $params   = $config->get('params', null);
+        $mime     = $config->get('mime', 'application/octet-stream');
+        $checkCrc = $config->get('checkCrc', false);
+
+        $upload_manager = $this->getUploadManager();
+        list($ret, $error) = $upload_manager->put($token, $path, $contents, $params, $mime, $checkCrc);
+
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return $ret;
+        }
     }
 
     /**
@@ -71,21 +126,7 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function update($path, $contents, Config $config)
     {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     * Update a file using a stream.
-     *
-     * @param string $path
-     * @param resource $resource
-     * @param Config $config Config object
-     *
-     * @return array|false false on failure file meta data on success
-     */
-    public function updateStream($path, $resource, Config $config)
-    {
-        // TODO: Implement updateStream() method.
+        return $this->write($path, $contents, $config);
     }
 
     /**
@@ -98,7 +139,19 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function rename($path, $newpath)
     {
-        // TODO: Implement rename() method.
+        $bucketMgr = $this->getBucketManager();
+
+        list($ret, $error) = $bucketMgr->move($this->bucket, $path, $this->bucket, $newpath);
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     /**
@@ -111,7 +164,19 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function copy($path, $newpath)
     {
-        // TODO: Implement copy() method.
+        $bucketMgr = $this->getBucketManager();
+
+        list($ret, $error) = $bucketMgr->copy($this->bucket, $path, $this->bucket, $newpath);
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     /**
@@ -123,7 +188,19 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function delete($path)
     {
-        // TODO: Implement delete() method.
+        $bucketMgr = $this->getBucketManager();
+
+        $error = $bucketMgr->delete($this->bucket, $path);
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     /**
@@ -135,7 +212,13 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function deleteDir($dirname)
     {
-        // TODO: Implement deleteDir() method.
+        $files = $this->listContents($dirname);
+        foreach ($files as $file)
+        {
+            $this->delete($file['path']);
+        }
+
+        return true;
     }
 
     /**
@@ -148,20 +231,7 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function createDir($dirname, Config $config)
     {
-        // TODO: Implement createDir() method.
-    }
-
-    /**
-     * Set the visibility for a file.
-     *
-     * @param string $path
-     * @param string $visibility
-     *
-     * @return array|false file meta data
-     */
-    public function setVisibility($path, $visibility)
-    {
-        // TODO: Implement setVisibility() method.
+        return ['path' => $dirname];
     }
 
     /**
@@ -173,7 +243,13 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function has($path)
     {
-        // TODO: Implement has() method.
+        $meta = $this->getMetadata($path);
+        if ($meta)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -185,19 +261,9 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function read($path)
     {
-        // TODO: Implement read() method.
-    }
+        $location = $this->applyPathPrefix($path);
 
-    /**
-     * Read a file as a stream.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function readStream($path)
-    {
-        // TODO: Implement readStream() method.
+        return array('contents' => file_get_contents($location));
     }
 
     /**
@@ -210,7 +276,36 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function listContents($directory = '', $recursive = false)
     {
-        // TODO: Implement listContents() method.
+        $bucketMgr = $this->getBucketManager();
+
+        list($items, $marker, $error) = $bucketMgr->listFiles($this->bucket, $directory);
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return array();
+        }
+        else
+        {
+            $contents = array();
+            foreach ($items as $item)
+            {
+                $normalized = [
+                    'type'      => 'file',
+                    'path'      => $item['key'],
+                    'timestamp' => $item['putTime']
+                ];
+
+                if ($normalized['type'] === 'file')
+                {
+                    $normalized['size'] = $item['fsize'];
+                }
+
+                array_push($contents, $normalized);
+            }
+
+            return $contents;
+        }
     }
 
     /**
@@ -222,7 +317,19 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function getMetadata($path)
     {
-        // TODO: Implement getMetadata() method.
+        $bucketMgr = $this->getBucketManager();
+
+        list($ret, $error) = $bucketMgr->stat($this->bucket, $path);
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return $ret;
+        }
     }
 
     /**
@@ -234,7 +341,13 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function getSize($path)
     {
-        // TODO: Implement getSize() method.
+        $stat = $this->getMetadata($path);
+        if ($stat)
+        {
+            return array('size' => $stat['fsize']);
+        }
+
+        return false;
     }
 
     /**
@@ -246,7 +359,13 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function getMimetype($path)
     {
-        // TODO: Implement getMimetype() method.
+        $stat = $this->getMetadata($path);
+        if ($stat)
+        {
+            return array('mimetype' => $stat['mimeType']);
+        }
+
+        return false;
     }
 
     /**
@@ -258,18 +377,116 @@ class QiniuAdapter extends AbstractAdapter {
      */
     public function getTimestamp($path)
     {
-        // TODO: Implement getTimestamp() method.
+        $stat = $this->getMetadata($path);
+        if ($stat)
+        {
+            return array('timestamp' => $stat['putTime']);
+        }
+
+        return false;
     }
 
-    /**
-     * Get the visibility of a file.
-     *
-     * @param string $path
-     *
-     * @return array|false
-     */
-    public function getVisibility($path)
+    public function privateDownloadUrl($path)
     {
-        // TODO: Implement getVisibility() method.
+        $auth     = $this->getAuth();
+        $location = $this->applyPathPrefix($path);
+        $authUrl  = $auth->privateDownloadUrl($location);
+
+        return $authUrl;
+    }
+
+    public function persistentFop($path = null, $fops = null)
+    {
+        $auth = $this->getAuth();
+
+        $pfop = New PersistentFop($auth, $this->bucket);
+
+        list($id, $error) = $pfop->execute($path, $fops);
+
+        if ($error != null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return $id;
+        }
+    }
+
+    public function persistentStatus($id)
+    {
+        return PersistentFop::status($id);
+    }
+
+    public function downloadUrl($path = null)
+    {
+        $location = $this->applyPathPrefix($path);
+
+        return $location;
+    }
+
+    public function imageInfo($path = null)
+    {
+        $operation = $this->getOperation();
+
+        list($ret, $error) = $operation->execute($path, 'imageInfo');
+
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return $ret;
+        }
+    }
+
+    public function imageExif($path = null)
+    {
+        $operation = $this->getOperation();
+
+        list($ret, $error) = $operation->execute($path, 'exif');
+
+        if ($error !== null)
+        {
+            $this->logQiniuError($error);
+
+            return false;
+        }
+        else
+        {
+            return $ret;
+        }
+    }
+
+    public function imagePreviewUrl($path = null, $ops = null)
+    {
+        $operation = $this->getOperation();
+        $url       = $operation->buildUrl($path, $ops);
+
+        return $url;
+    }
+
+    public function uploadToken(
+        $path = null,
+        $expires = 3600,
+        $policy = null,
+        $strictPolicy = true
+    ) {
+        $auth = $this->getAuth();
+
+        $token = $auth->uploadToken(
+            $this->bucket,
+            $path,
+            $expires,
+            $policy,
+            $strictPolicy
+        );
+
+        return $token;
     }
 }
