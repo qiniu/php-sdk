@@ -3,7 +3,6 @@
     "type": "library",
     "description": "Qiniu Resource (Cloud) Storage SDK for Laravel 5",
     "keywords": ["qiniu", "storage", "sdk", "cloud", "laravel"],
-    "homepage": "http://developer.qiniu.com/",
     "license": "MIT",
     "authors": [
         {
