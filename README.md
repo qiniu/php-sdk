@@ -2,6 +2,8 @@
 
 基于 https://github.com/qiniu/php-sdk 开发
 
+符合Laravel 5 的Storage用法。
+
 
 ## 安装
 
