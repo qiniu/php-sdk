@@ -11,7 +11,7 @@
  - ```config/app.php``` 里面的 ```providers``` 数组， 加上一行 ```zgldh\QiniuStorage\QiniuFilesystemServiceProvider```
  - ```config/filesystem.php``` 里面的 ```disks```数组加上：
  
-```
+```php
 
     'disks' => [
         ... ,
@@ -32,7 +32,7 @@
 
 第一种用法
 
-```
+```php
 
     $disk = \Storage::disk('qiniu');
     $disk->exists('file.jpg');                      //文件是否存在
@@ -66,7 +66,7 @@
 
 第二种用法 （就是省略了一个getDriver）
 
-```
+```php
 
     use zgldh\QiniuStorage\QiniuStorage;
 
