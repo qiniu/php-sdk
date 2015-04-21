@@ -17,7 +17,7 @@
         ... ,
         'qiniu' => [
             'driver' => 'qiniu',
-            'domain' => '7xigj9.com1.z0.glb.clouddn.com',   //你的七牛域名
+            'domain' => 'xxxxx.com1.z0.glb.clouddn.com',   //你的七牛域名
             'access_key'    => '',                          //AccessKey
             'secret_key' => '',                             //SecretKey
             'bucket' => '',                                 //Bucket名字
