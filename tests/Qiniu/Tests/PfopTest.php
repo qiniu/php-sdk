@@ -6,7 +6,7 @@ use Qiniu\Processing\PersistentFop;
 
 class PfopTest extends \PHPUnit_Framework_TestCase
 {
-    public function testExecute1()
+    public function testPfop()
     {
         global $testAuth;
         $bucket = 'testres';
@@ -22,7 +22,7 @@ class PfopTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function testExecute2()
+    public function testPfops()
     {
         global $testAuth;
         $bucket = 'testres';
@@ -35,6 +35,30 @@ class PfopTest extends \PHPUnit_Framework_TestCase
 
         list($id, $error) = $pfop->execute($key, $fops);
         $this->assertNull($error);
+
+        list($status, $error) = PersistentFop::status($id);
+        $this->assertNotNull($status);
+        $this->assertNull($error);
+    }
+
+    public function testMkzip()
+    {
+        global $testAuth;
+        $bucket = 'phpsdk';
+        $key = 'php-logo.png';
+        $pfop = new PersistentFop($testAuth, $bucket);
+
+        $url1 = 'http://phpsdk.qiniudn.com/php-logo.png';
+        $url2 = 'http://phpsdk.qiniudn.com/php-sdk.html';
+        $zipKey = 'test.zip';
+
+        $fops = 'mkzip/2/url/' . \Qiniu\base64_urlSafeEncode($url1);
+        $fops .= '/url/' . \Qiniu\base64_urlSafeEncode($url2);
+        $fops .= '|saveas/' . \Qiniu\base64_urlSafeEncode("$bucket:$zipKey");
+
+        list($id, $error) = $pfop->execute($key, $fops);
+        $this->assertNull($error);
+
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
         $this->assertNull($error);
