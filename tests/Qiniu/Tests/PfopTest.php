@@ -35,7 +35,7 @@ class PfopTest extends \PHPUnit_Framework_TestCase
 
         list($id, $error) = $pfop->execute($key, $fops);
         $this->assertNull($error);
-        
+
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
         $this->assertNull($error);
@@ -44,8 +44,6 @@ class PfopTest extends \PHPUnit_Framework_TestCase
     public function testMkzip()
     {
         global $testAuth;
-        $testAuth = new Auth($accessKey, $secretKey);
-
         $bucket = 'phpsdk';
         $key = 'php-logo.png';
         $pfop = new PersistentFop($testAuth, $bucket);
