@@ -33,6 +33,12 @@ final class PersistentFop
      */
     private $notify_url;
 
+    /**
+     * @var 是否强制覆盖已有的重名文件
+     */
+    private $force;
+
+
     public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
     {
         $this->auth = $auth;

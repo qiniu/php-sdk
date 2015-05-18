@@ -105,7 +105,7 @@ final class BucketManager
      * @param $bucket     待删除资源所在的空间
      * @param $key        待删除资源的文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
      */
     public function delete($bucket, $key)
@@ -123,7 +123,7 @@ final class BucketManager
      * @param $oldname    待操作资源文件名
      * @param $newname    目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function rename($bucket, $oldname, $newname)
     {
@@ -138,7 +138,7 @@ final class BucketManager
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
     public function copy($from_bucket, $from_key, $to_bucket, $to_key)
@@ -158,7 +158,7 @@ final class BucketManager
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
     public function move($from_bucket, $from_key, $to_bucket, $to_key)
@@ -177,7 +177,7 @@ final class BucketManager
      * @param $key        待操作资源文件名
      * @param $mime       待操作文件目标mimeType
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/chgm.html
      */
     public function changeMime($bucket, $key, $mime)
@@ -226,7 +226,7 @@ final class BucketManager
      * @param $bucket     待获取资源所在的空间
      * @param $key        代获取资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed 	  成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/prefetch.html
      */
     public function prefetch($bucket, $key)
@@ -242,7 +242,7 @@ final class BucketManager
      *
      * @param $operations     资源管理操作数组
      *
-     * @return   每个资源的处理情况，结果类似：
+     * @return array[] 每个资源的处理情况，结果类似：
      *              [
      *                   { "code" => <HttpCode int>, "data" => <Data> },
      *                   { "code" => <HttpCode int> },
