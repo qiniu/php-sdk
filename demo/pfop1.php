@@ -13,8 +13,8 @@ $key = '1.mp4';
 $pipeline = 'abc';
 $pfop = New PersistentFop($auth, $bucket, $pipeline);
 
-$key1 = 'saved.mp4';
-$entry1 = \Qiniu\base64_urlSafeEncode("$bucket:$key1");
+$savedkey = 'saved.mp4';
+$entry = \Qiniu\base64_urlSafeEncode("$bucket:$savedkey");
 $fops = "avthumb/mp4/ss/60/t/60|saveas/$entry";
 
 
