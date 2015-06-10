@@ -146,7 +146,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -166,7 +166,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/move/' . $from . '/' . $to;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -185,7 +185,7 @@ final class BucketManager
         $resource = \Qiniu\entry($bucket, $key);
         $encode_mime = \Qiniu\base64_urlSafeEncode($mime);
         $path = '/chgm/' . $resource . '/mime/' .$encode_mime;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -233,7 +233,7 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/prefetch/' . $resource;
-        list($_, $error) = $this->ioPost($path);
+        list(, $error) = $this->ioPost($path);
         return $error;
     }
 
