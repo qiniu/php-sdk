@@ -33,6 +33,12 @@ final class PersistentFop
      */
     private $notify_url;
 
+    /**
+     * @var 是否强制覆盖已有的重名文件
+     */
+    private $force;
+
+
     public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
     {
         $this->auth = $auth;
@@ -49,7 +55,7 @@ final class PersistentFop
      * @param $fops  string|array  待处理的pfop操作，多个pfop操作以array的形式传入。
      *                eg. avthumb/mp3/ab/192k, vframe/jpg/offset/7/w/480/h/360
      *
-     * @return array[] 返回持久化处理的persistentId, 和返回的错误。
+     * @return array 返回持久化处理的persistentId, 和返回的错误。
      *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */

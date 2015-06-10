@@ -42,7 +42,7 @@ final class BucketManager
      * @param $limit      单次列举个数限制
      * @param $delimiter  指定目录分隔符
      *
-     * @return array[]    包含文件信息的数组，类似：[
+     * @return array    包含文件信息的数组，类似：[
      *                                              {
      *                                                 "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
@@ -83,7 +83,7 @@ final class BucketManager
      * @param $bucket     待获取信息资源所在的空间
      * @param $key        待获取资源的文件名
      *
-     * @return array[]    包含文件信息的数组，类似：
+     * @return array    包含文件信息的数组，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
@@ -105,13 +105,13 @@ final class BucketManager
      * @param $bucket     待删除资源所在的空间
      * @param $key        待删除资源的文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/delete.html
      */
     public function delete($bucket, $key)
     {
         $path = '/delete/' . \Qiniu\entry($bucket, $key);
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -123,7 +123,7 @@ final class BucketManager
      * @param $oldname    待操作资源文件名
      * @param $newname    目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function rename($bucket, $oldname, $newname)
     {
@@ -138,7 +138,7 @@ final class BucketManager
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
     public function copy($from_bucket, $from_key, $to_bucket, $to_key)
@@ -146,7 +146,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -158,7 +158,7 @@ final class BucketManager
      * @param $to_bucket       目标资源空间名
      * @param $to_key          目标资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
     public function move($from_bucket, $from_key, $to_bucket, $to_key)
@@ -166,7 +166,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/move/' . $from . '/' . $to;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -177,7 +177,7 @@ final class BucketManager
      * @param $key        待操作资源文件名
      * @param $mime       待操作文件目标mimeType
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/chgm.html
      */
     public function changeMime($bucket, $key, $mime)
@@ -185,7 +185,7 @@ final class BucketManager
         $resource = \Qiniu\entry($bucket, $key);
         $encode_mime = \Qiniu\base64_urlSafeEncode($mime);
         $path = '/chgm/' . $resource . '/mime/' .$encode_mime;
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -196,7 +196,7 @@ final class BucketManager
      * @param $bucket     目标资源空间
      * @param $key        目标资源文件名
      *
-     * @return array[]    包含已拉取的文件信息。
+     * @return array    包含已拉取的文件信息。
      *                         成功时：  [
      *                                          [
      *                                              "hash" => "<Hash string>",
@@ -226,14 +226,14 @@ final class BucketManager
      * @param $bucket     待获取资源所在的空间
      * @param $key        代获取资源文件名
      *
-     * @return 成功返回NULL，失败返回对象{"error" => "<errMsg string>", ...}
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/prefetch.html
      */
     public function prefetch($bucket, $key)
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/prefetch/' . $resource;
-        list($_, $error) = $this->ioPost($path);
+        list(, $error) = $this->ioPost($path);
         return $error;
     }
 
@@ -242,7 +242,7 @@ final class BucketManager
      *
      * @param $operations     资源管理操作数组
      *
-     * @return   每个资源的处理情况，结果类似：
+     * @return array 每个资源的处理情况，结果类似：
      *              [
      *                   { "code" => <HttpCode int>, "data" => <Data> },
      *                   { "code" => <HttpCode int> },

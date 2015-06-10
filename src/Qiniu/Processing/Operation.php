@@ -27,7 +27,7 @@ final class Operation
      * @param $fops   string|array  fop操作，多次fop操作以array的形式传入。
      *                eg. imageView2/1/w/200/h/200, imageMogr2/thumbnail/!75px
      *
-     * @return array[] 文件处理后的结果及错误。
+     * @return array 文件处理后的结果及错误。
      *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */

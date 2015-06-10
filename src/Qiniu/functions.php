@@ -12,7 +12,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      *
      * @param $file string  待计算校验码的文件路径
      *
-     * @return 文件内容的crc32校验码
+     * @return string 文件内容的crc32校验码
      */
     function crc32_file($file)
     {
@@ -26,7 +26,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      *
      * @param $data 待计算校验码的字符串
      *
-     * @return 输入字符串的crc32校验码
+     * @return string 输入字符串的crc32校验码
      */
     function crc32_data($data)
     {
@@ -53,7 +53,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
    /**
      * 对提供的urlsafe的base64编码的数据进行解码
      *
-     * @param string $data 待解码的数据，一般为字符串
+     * @param string $str 待解码的数据，一般为字符串
      *
      * @return string 解码后的字符串
      */
@@ -108,7 +108,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param $bucket 待操作的空间名
      * @param $key 待操作的文件名
      *
-     * @return 符合七牛API规格的数据格式
+     * @return string  符合七牛API规格的数据格式
      * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
      */
     function entry($bucket, $key)
