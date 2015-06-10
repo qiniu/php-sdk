@@ -53,7 +53,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
    /**
      * 对提供的urlsafe的base64编码的数据进行解码
      *
-     * @param string $data 待解码的数据，一般为字符串
+     * @param string $str 待解码的数据，一般为字符串
      *
      * @return string 解码后的字符串
      */

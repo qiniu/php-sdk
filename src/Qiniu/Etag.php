@@ -52,7 +52,7 @@ final class Etag
                 fclose($fhandler);
                 return array(null, $err);
             }
-            list($sha1Code, $err) = calSha1($fdata);
+            list($sha1Code, ) = calSha1($fdata);
             $sha1Buf = array_merge($sha1Buf, $sha1Code);
         } else {
             array_push($sha1Buf, 0x96);
@@ -67,7 +67,7 @@ final class Etag
                 $sha1BlockBuf = array_merge($sha1BlockBuf, $sha1Code);
             }
             $tmpData = self::packArray('C*', $sha1BlockBuf);
-            list($sha1Final, $_err) = self::calcSha1($tmpData);
+            list($sha1Final, ) = self::calcSha1($tmpData);
             $sha1Buf = array_merge($sha1Buf, $sha1Final);
         }
         $etag = \Qiniu\base64_urlSafeEncode(self::packArray('C*', $sha1Buf));
