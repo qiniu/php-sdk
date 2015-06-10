@@ -42,7 +42,7 @@ final class BucketManager
      * @param $limit      单次列举个数限制
      * @param $delimiter  指定目录分隔符
      *
-     * @return array[]    包含文件信息的数组，类似：[
+     * @return array    包含文件信息的数组，类似：[
      *                                              {
      *                                                 "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
@@ -83,7 +83,7 @@ final class BucketManager
      * @param $bucket     待获取信息资源所在的空间
      * @param $key        待获取资源的文件名
      *
-     * @return array[]    包含文件信息的数组，类似：
+     * @return array    包含文件信息的数组，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
@@ -111,7 +111,7 @@ final class BucketManager
     public function delete($bucket, $key)
     {
         $path = '/delete/' . \Qiniu\entry($bucket, $key);
-        list($_, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -196,7 +196,7 @@ final class BucketManager
      * @param $bucket     目标资源空间
      * @param $key        目标资源文件名
      *
-     * @return array[]    包含已拉取的文件信息。
+     * @return array    包含已拉取的文件信息。
      *                         成功时：  [
      *                                          [
      *                                              "hash" => "<Hash string>",
@@ -242,7 +242,7 @@ final class BucketManager
      *
      * @param $operations     资源管理操作数组
      *
-     * @return array[] 每个资源的处理情况，结果类似：
+     * @return array 每个资源的处理情况，结果类似：
      *              [
      *                   { "code" => <HttpCode int>, "data" => <Data> },
      *                   { "code" => <HttpCode int> },
