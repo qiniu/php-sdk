@@ -13,8 +13,14 @@ use Qiniu\Storage\FormUploader;
  */
 final class UploadManager
 {
-    public function __construct()
+    public $config;
+
+    public function __construct($config = null)
     {
+        if ($config === null) {
+            $config = new Config(); 
+        }
+        $this->config = $config;
     }
 
     /**
@@ -47,6 +53,7 @@ final class UploadManager
             $upToken,
             $key,
             $data,
+            $this->config,
             $params,
             $mime,
             $checkCrc
@@ -96,6 +103,7 @@ final class UploadManager
                 $upToken,
                 $key,
                 $data,
+                $this->config,
                 $params,
                 $mime,
                 $checkCrc

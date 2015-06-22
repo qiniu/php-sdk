@@ -11,6 +11,7 @@ final class FormUploader
         $upToken,
         $key,
         $data,
+        $config,
         $params,
         $mime,
         $checkCrc
@@ -31,9 +32,9 @@ final class FormUploader
             }
         }
 
-        $response = Client::multipartPost(Config::$defaultHost, $fields, 'file', $fname, $data, $mime);
+        $response = Client::multipartPost($config::$upHost, $fields, 'file', $fname, $data, $mime);
         if (!$response->ok()) {
-            return array(null, new Error(Config::$defaultHost, $response));
+            return array(null, new Error($config::$upHost, $response));
         }
         return array($response->json(), null);
     }
@@ -42,6 +43,7 @@ final class FormUploader
         $upToken,
         $key,
         $filePath,
+        $config,
         $params,
         $mime,
         $checkCrc
@@ -63,9 +65,9 @@ final class FormUploader
             }
         }
         $headers =array('Content-Type' => 'multipart/form-data');
-        $response = client::post(Config::$defaultHost, $fields, $headers);
+        $response = client::post($config::$upHost, $fields, $headers);
         if (!$response->ok()) {
-            return array(null, new Error(Config::$defaultHost, $response));
+            return array(null, new Error($config::$upHost, $response));
         }
         return array($response->json(), null);
     }
