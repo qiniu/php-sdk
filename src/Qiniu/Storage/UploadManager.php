@@ -18,7 +18,7 @@ final class UploadManager
     public function __construct($config = null)
     {
         if ($config === null) {
-            $config = new Config(); 
+            $config = new Config();
         }
         $this->config = $config;
     }

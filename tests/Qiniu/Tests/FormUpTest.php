@@ -9,7 +9,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
 {
     protected $bucketName;
     protected $auth;
-    protected $config;
+    protected $cfg;
 
     protected function setUp()
     {
@@ -24,7 +24,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     public function testData()
     {
         $token = $this->auth->uploadToken($this->bucketName);
-        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', $this->config, null, 'text/plain', true);
+        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', $this->cfg, null, 'text/plain', true);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
