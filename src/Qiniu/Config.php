@@ -14,19 +14,15 @@ final class Config
 
     public static $upHost;                              // 上传Host
     public static $upHostBackup;                        // 上传备用Host
-    public static $zone;                                // 设置上传的Zone
 
     public function __construct()                       // 构造函数，默认为zone0
     {
         self::setZone(Zone::zone0());
-        return;
     }
     
     public static function setZone(Zone $z)
     {
-        self::$zone = $z;
         self::$upHost = $z::$upHost;
         self::$upHostBackup = $z::$upHostBackup;
-        return;
     }
 }

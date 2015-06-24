@@ -3,33 +3,22 @@ namespace Qiniu;
 
 final class Zone
 {
-    public static $upHost = 'http://up.qiniu.com';
-    public static $upHostBackup = 'http://upload.qiniu.com';
+    public static $upHost;
+    public static $upHostBackup;
 
-    public function __construct()
+    public function __construct($upHost, $upHostBackup)
     {
-    }
-
-    public function setUpHost($host)
-    {
-        self::$upHost = $host;
-    }
-
-    public function setUpBackupHost($host)
-    {
-        self::$upHostBackup = $host;
+        self::$upHost = $upHost;
+        self::$upHostBackup = $upHostBackup;
     }
 
     public static function zone0()
     {
-        return new self;
+        return new self('http://up.qiniu.com', 'http://upload.qiniu.com');
     }
 
     public static function zone1()
     {
-        $z1 = new self;
-        $z1->setUpHost('http://up-z1.qiniu.com');
-        $z1->setUpBackupHost('http://upload-z1.qiniu.com');
-        return $z1;
+        return new self('http://up-z1.qiniu.com', 'http://upload-z1.qiniu.com');
     }
 }
