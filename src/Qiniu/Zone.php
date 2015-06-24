@@ -4,7 +4,7 @@ namespace Qiniu;
 final class Zone
 {
     public static $upHost = 'http://up.qiniu.com';
-    public static $upBackupHost = 'http://upload.qiniu.com';
+    public static $upHostBackup = 'http://upload.qiniu.com';
 
     public function __construct()
     {
@@ -17,7 +17,7 @@ final class Zone
 
     public function setUpBackupHost($host)
     {
-        self::$upBackupHost = $host;
+        self::$upHostBackup = $host;
     }
 
     public static function zone0()

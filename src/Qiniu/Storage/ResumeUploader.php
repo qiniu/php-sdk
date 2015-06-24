@@ -77,7 +77,7 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = $confg::$upBackupHost;
+                $this->host = $config::$upHostBackup;
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
