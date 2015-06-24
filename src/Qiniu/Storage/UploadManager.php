@@ -116,7 +116,7 @@ final class UploadManager
             $size,
             $params,
             $mime,
-            $checkCrc
+            $this->config
         );
         return $up->upload();
     }

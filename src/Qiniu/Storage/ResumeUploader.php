@@ -43,7 +43,8 @@ final class ResumeUploader
         $inputStream,
         $size,
         $params,
-        $mime
+        $mime,
+        $config
     ) {
         $this->upToken = $upToken;
         $this->key = $key;
@@ -51,7 +52,7 @@ final class ResumeUploader
         $this->size = $size;
         $this->params = $params;
         $this->mime = $mime;
-        $this->host = Config::$defaultHost;
+        $this->host = $config::$upHost;
         $this->contexts = array();
     }
 
