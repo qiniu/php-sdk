@@ -13,6 +13,7 @@ final class Config
     const API_HOST = 'http://api.qiniu.com';            // 数据处理操作Host
 
     public static $upHost;                              // 上传Host
+    public static $upBackupHost;                        // 上传备用Host
     public static $zone;                                // 设置上传的Zone
 
     public function __construct()                       // 构造函数，默认为zone0
@@ -25,6 +26,7 @@ final class Config
     {
         self::$zone = $z;
         self::$upHost = $z::$upHost;
+        self::$upBackupHost = $z::$upBackupHost;
         return;
     }
 }
