@@ -3,13 +3,13 @@ namespace Qiniu;
 
 final class Zone
 {
-    public static $upHost;
-    public static $upHostBackup;
+    public $upHost;
+    public $upHostBackup;
 
     public function __construct($upHost, $upHostBackup)
     {
-        self::$upHost = $upHost;
-        self::$upHostBackup = $upHostBackup;
+        $this->upHost = $upHost;
+        $this->upHostBackup = $upHostBackup;
     }
 
     public static function zone0()

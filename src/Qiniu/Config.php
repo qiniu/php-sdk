@@ -22,7 +22,7 @@ final class Config
     
     public static function setZone(Zone $z)
     {
-        self::$upHost = $z::$upHost;
-        self::$upHostBackup = $z::$upHostBackup;
+        self::$upHost = $z->upHost;
+        self::$upHostBackup = $z->upHostBackup;
     }
 }
