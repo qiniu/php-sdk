@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "qiniu/php-sdk": "~7.0"
+        "qiniu/php-sdk": "~7.0",
+        "league/flysystem": "^1.0"
     },
     "autoload": {
 		"psr-4": {
