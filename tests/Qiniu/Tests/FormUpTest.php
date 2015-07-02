@@ -3,11 +3,14 @@ namespace Qiniu\Tests;
 
 use Qiniu\Storage\FormUploader;
 use Qiniu\Storage\UploadManager;
+use Qiniu\Config;
 
 class FormUpTest extends \PHPUnit_Framework_TestCase
 {
     protected $bucketName;
     protected $auth;
+    protected $cfg;
+
     protected function setUp()
     {
         global $bucketName;
@@ -15,11 +18,13 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
 
         global $testAuth;
         $this->auth = $testAuth;
+        $this->cfg = new Config();
     }
+
     public function testData()
     {
         $token = $this->auth->uploadToken($this->bucketName);
-        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', null, 'text/plain', true);
+        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', $this->cfg, null, 'text/plain', true);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
@@ -37,7 +42,7 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     {
         $key = 'formPutFile';
         $token = $this->auth->uploadToken($this->bucketName, $key);
-        list($ret, $error) = FormUploader::putFile($token, $key, __file__, null, 'text/plain', true);
+        list($ret, $error) = FormUploader::putFile($token, $key, __file__, $this->cfg, null, 'text/plain', true);
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
