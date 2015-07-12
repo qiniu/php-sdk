@@ -1,5 +1,5 @@
 # Qiniu Resource Storage SDK for PHP
-[![@qiniu on weibo](http://img.shields.io/badge/weibo-%40qiniutek-blue.svg)](http://weibo.com/qiniutek)
+[![doxygen.io](http://doxygen.io/github.com/qiniu/php-sdk/?status.svg)](http://doxygen.io/github.com/qiniu/php-sdk/)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/qiniu/php-sdk.svg)](https://travis-ci.org/qiniu/php-sdk)
 [![Latest Stable Version](https://img.shields.io/packagist/v/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
@@ -56,6 +56,8 @@ $ ./vendor/bin/phpunit tests/Qiniu/Tests/
 - [所有贡献者](https://github.com/qiniu/php-sdk/contributors)
 
 ## 联系我们
+
+[![@qiniu on weibo](http://img.shields.io/badge/weibo-%40qiniutek-blue.svg)](http://weibo.com/qiniutek)
 
 - 如果需要帮助，请提交工单（在portal右侧点击咨询和建议提交工单，或者直接向 support@qiniu.com 发送邮件）
 - 如果有什么问题，可以到问答社区提问，[问答社区](http://qiniu.segmentfault.com/)
