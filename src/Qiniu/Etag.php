@@ -20,7 +20,7 @@ final class Etag
     {
         $sha1Str = sha1($data, true);
         $err = error_get_last();
-        if ($err != null) {
+        if ($err !== null) {
             return array(null, $err);
         }
         $byteArray = unpack('C*', $sha1Str);
@@ -32,7 +32,7 @@ final class Etag
     {
         $fhandler = fopen($filename, 'r');
         $err = error_get_last();
-        if ($err != null) {
+        if ($err !== null) {
             return array(null, $err);
         }
 
@@ -48,7 +48,7 @@ final class Etag
         if ($blockCnt <= 1) {
             array_push($sha1Buf, 0x16);
             $fdata = fread($fhandler, Config::BLOCK_SIZE);
-            if ($err != null) {
+            if ($err !== null) {
                 fclose($fhandler);
                 return array(null, $err);
             }
@@ -60,7 +60,7 @@ final class Etag
             for ($i=0; $i < $blockCnt; $i++) {
                 $fdata = fread($fhandler, Config::BLOCK_SIZE);
                 list($sha1Code, $err) = self::calcSha1($fdata);
-                if ($err != null) {
+                if ($err !== null) {
                     fclose($fhandler);
                     return array(null, $err);
                 }
