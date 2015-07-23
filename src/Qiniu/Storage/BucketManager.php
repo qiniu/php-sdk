@@ -13,9 +13,6 @@ use Qiniu\Http\Error;
  */
 final class BucketManager
 {
-    /**
-     * @var Qiniu\Auth 账号管理密钥对
-     */
     private $auth;
 
     public function __construct(Auth $auth)
