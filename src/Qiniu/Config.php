@@ -12,17 +12,25 @@ final class Config
     const RSF_HOST = 'http://rsf.qbox.me';              // 列举操作Host
     const API_HOST = 'http://api.qiniu.com';            // 数据处理操作Host
 
-    public static $upHost;                              // 上传Host
-    public static $upHostBackup;                        // 上传备用Host
+    private $upHost;                                    // 上传Host
+    private $upHostBackup;                              // 上传备用Host
 
-    public function __construct()                       // 构造函数，默认为zone0
+    public function __construct(Zone $z = null)         // 构造函数，默认为zone0
     {
-        self::setZone(Zone::zone0());
+        if ($z === null) {
+            $z = Zone::zone0();
+        }
+        $this->upHost = $z->upHost;
+        $this->upHostBackup = $z->upHostBackup;
     }
-    
-    public static function setZone(Zone $z)
+
+    public function getUpHost()
     {
-        self::$upHost = $z->upHost;
-        self::$upHostBackup = $z->upHostBackup;
+        return $this->upHost;
+    }
+
+    public function getUpHostBackup()
+    {
+        return $this->upHostBackup;
     }
 }
