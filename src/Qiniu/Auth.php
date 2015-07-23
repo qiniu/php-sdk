@@ -121,7 +121,7 @@ final class Auth
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
     {
         if ($originPolicy === null) {
-            return [];
+            return array();
         }
         foreach ($originPolicy as $key => $value) {
             if (in_array((string) $key, self::$deprecatedPolicyFields, true)) {
