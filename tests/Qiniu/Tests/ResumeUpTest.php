@@ -3,6 +3,8 @@ namespace Qiniu\Tests;
 
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
+use Qiniu\Config;
+use Qiniu\Zone;
 
 class ResumeUpTest extends \PHPUnit_Framework_TestCase
 {
