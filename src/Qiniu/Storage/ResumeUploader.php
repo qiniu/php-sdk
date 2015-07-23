@@ -34,6 +34,7 @@ final class ResumeUploader
      * @param $size       上传流的大小
      * @param $params     自定义变量
      * @param $mime       上传数据的mimeType
+     * @param $config
      *
      * @link http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
      */
@@ -77,7 +78,7 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = $config::$upHostBackup;
+                $this->host = Config::$upHostBackup;
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
