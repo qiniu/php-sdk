@@ -24,6 +24,7 @@ final class ResumeUploader
     private $contexts;
     private $host;
     private $currentUrl;
+    private $config;
 
     /**
      * 上传二进制流到七牛
@@ -52,10 +53,10 @@ final class ResumeUploader
         $this->size = $size;
         $this->params = $params;
         $this->mime = $mime;
-        $this->host = $config::$upHost;
         $this->contexts = array();
+        $this->config = $config;
+        $this->host = $config->getUpHost();
     }
-
 
     /**
      * 上传操作
@@ -77,7 +78,7 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = $config::$upHostBackup;
+                $this->host = $this->config->getUpHostBackup();
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);

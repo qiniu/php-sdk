@@ -13,9 +13,9 @@ use Qiniu\Storage\FormUploader;
  */
 final class UploadManager
 {
-    public $config;
+    private $config;
 
-    public function __construct($config = null)
+    public function __construct(Conifg $config = null)
     {
         if ($config === null) {
             $config = new Config();
