@@ -155,7 +155,7 @@ final class Response
 
     public function ok()
     {
-        return $this->statusCode >= 200 && $this->statusCode < 300 && $this->error === null;
+        return ($this->statusCode >= 200 && $this->statusCode < 300 && $this->error === null);
     }
 
     public function needRetry()

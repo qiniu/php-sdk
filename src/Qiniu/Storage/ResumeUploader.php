@@ -74,18 +74,18 @@ final class ResumeUploader
             $crc = \Qiniu\crc32_data($data);
             $response = $this->makeBlock($data, $blockSize);
             $ret = null;
-            if ($response->ok() && $response->json() != null) {
+            if ($response->ok() && $response->json() !== null) {
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
                 $this->host = $this->config->getUpHostBackup();
             }
-            if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
+            if ($response->needRetry() || !isset($ret['crc32']) || $crc !== $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
                 $ret = $response->json();
             }
 
-            if (! $response->ok() || !isset($ret['crc32'])|| $crc != $ret['crc32']) {
+            if (! $response->ok() || !isset($ret['crc32']) || $crc !== $ret['crc32']) {
                 fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
@@ -109,7 +109,7 @@ final class ResumeUploader
     {
         $url = $this->host . '/mkfile/' . $this->size;
         $url .= '/mimeType/' . \Qiniu\base64_urlSafeEncode($this->mime);
-        if ($this->key != null) {
+        if ($this->key !== null) {
             $url .= '/key/' . \Qiniu\base64_urlSafeEncode($this->key);
         }
         if (!empty($this->params)) {
@@ -147,7 +147,7 @@ final class ResumeUploader
 
     private function blockSize($uploaded)
     {
-        if ($this->size < $uploaded + Config::BLOCK_SIZE) {
+        if ($this->size < ($uploaded + Config::BLOCK_SIZE)) {
             return $this->size - $uploaded;
         }
         return  Config::BLOCK_SIZE;
