@@ -38,7 +38,7 @@ final class Operation
         if (!$resp->ok()) {
             return array(null, new Error($url, $resp));
         }
-        if ($resp->json() != null) {
+        if ($resp->json() !== null) {
             return array($resp->json(), null);
         }
         return array($resp->body, null);
