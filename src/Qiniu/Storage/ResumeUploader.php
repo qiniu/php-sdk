@@ -80,18 +80,12 @@ final class ResumeUploader
             if ($response->statusCode < 0) {
                 $this->host = $this->config->getUpHostBackup();
             }
-            if ((is_array($ret) && (!array_key_exists('crc32', $ret)
-                || (array_key_exists('crc32', $ret) && $crc !== $ret['crc32'])))
-                || $response->needRetry()
-            ) {
+            if ($response->needRetry() || !isset($ret['crc32']) || $crc !== $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
                 $ret = $response->json();
             }
 
-            if ((is_array($ret) && (!array_key_exists('crc32', $ret)
-                || (array_key_exists('crc32', $ret) && $crc !== $ret['crc32'])))
-                || ! $response->ok()
-            ) {
+            if (! $response->ok() || !isset($ret['crc32']) || $crc !== $ret['crc32']) {
                 fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
