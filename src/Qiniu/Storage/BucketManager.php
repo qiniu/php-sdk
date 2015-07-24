@@ -27,7 +27,7 @@ final class BucketManager
      */
     public function buckets()
     {
-        return $this->rsget('/buckets');
+        return $this->rsGet('/buckets');
     }
 
     /**
@@ -67,10 +67,10 @@ final class BucketManager
         }
         $url = Config::RSF_HOST . '/list?' . http_build_query($query);
         list($ret, $error) = $this->get($url);
-        if ($ret == null) {
+        if ($ret === null) {
             return array(null, null, $error);
         }
-        $marker = isset($ret['marker']) ? $ret['marker'] : null;
+        $marker = array_key_exists('marker', $ret) ? $ret['marker'] : null;
         return array($ret['items'], $marker, null);
     }
 
@@ -291,7 +291,7 @@ final class BucketManager
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
-        $r = $ret->body == null ? array() : $ret->json();
+        $r = ($ret->body === null) ? array() : $ret->json();
         return array($r, null);
     }
 
@@ -335,7 +335,7 @@ final class BucketManager
 
     private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket)
     {
-        if ($target_bucket == null) {
+        if ($target_bucket === null) {
             $target_bucket = $source_bucket;
         }
         $data = array();
