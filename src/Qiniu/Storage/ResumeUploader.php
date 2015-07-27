@@ -53,11 +53,10 @@ final class ResumeUploader
         $this->size = $size;
         $this->params = $params;
         $this->mime = $mime;
-        $this->config = $config;
-        $this->host = $config::$upHost;
         $this->contexts = array();
+        $this->config = $config;
+        $this->host = $config->getUpHost();
     }
-
 
     /**
      * 上传操作
@@ -79,7 +78,7 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = $this->config::$upHostBackup;
+                $this->host = $this->config->getUpHostBackup();
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);

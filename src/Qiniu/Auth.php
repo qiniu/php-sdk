@@ -30,16 +30,16 @@ final class Auth
     {
         $url = parse_url($urlString);
         $data = '';
-        if (isset($url['path'])) {
+        if (array_key_exists('path', $url)) {
             $data = $url['path'];
         }
-        if (isset($url['query'])) {
+        if (array_key_exists('query', $url)) {
             $data .= '?' . $url['query'];
         }
         $data .= "\n";
 
-        if ($body != null &&
-            ($contentType == 'application/x-www-form-urlencoded') ||  $contentType == 'application/json') {
+        if ($body !== null &&
+            in_array((string) $contentType, array('application/x-www-form-urlencoded', 'application/json'), true)) {
             $data .= $body;
         }
         return $this->sign($data);
@@ -76,7 +76,7 @@ final class Auth
     ) {
         $deadline = time() + $expires;
         $scope = $bucket;
-        if ($key != null) {
+        if ($key !== null) {
             $scope .= ':' . $key;
         }
         $args = array();
@@ -120,14 +120,14 @@ final class Auth
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
     {
-        if ($originPolicy == null) {
-            return;
+        if ($originPolicy === null) {
+            return array();
         }
         foreach ($originPolicy as $key => $value) {
-            if (in_array($key, self::$deprecatedPolicyFields)) {
+            if (in_array((string) $key, self::$deprecatedPolicyFields, true)) {
                 throw new \InvalidArgumentException("{$key} has deprecated");
             }
-            if (!$strictPolicy || in_array($key, self::$policyFields)) {
+            if (!$strictPolicy || in_array((string) $key, self::$policyFields, true)) {
                 $policy[$key] = $value;
             }
         }

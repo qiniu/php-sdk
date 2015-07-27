@@ -3,8 +3,8 @@ namespace Qiniu\Tests;
 
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
-use Qiniu\Zone;
 use Qiniu\Config;
+use Qiniu\Zone;
 
 class ResumeUpTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($ret['hash']);
         unlink($tempFile);
     }
-
     // public function test8M()
     // {
     //     $key = 'resumePutFile8M';
