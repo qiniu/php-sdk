@@ -15,4 +15,3 @@ $baseUrl = 'http://sslayer.qiniudn.com/1.jpg?imageView2/1/h/500';
 $signedUrl = $auth->privateDownloadUrl($baseUrl);
 
 echo $signedUrl;
-

@@ -3,7 +3,6 @@ require_once '../autoload.php';
 
 use Qiniu\Auth;
 
-
 $accessKey = 'QWYn5TFQsLLU1pL5MFEmX3s5DmHdUThav9WyOWOm';
 $secretKey = 'Bxckh6FA-Fbs9Yt3i3cbKVK22UPBmAOHJcL95pGz';
 $auth = new Auth($accessKey, $secretKey);
@@ -23,9 +22,9 @@ $url = 'http://172.30.251.210/callback.php';
 $isQiniuCallback = $auth->verifyCallback($contentType, $authorization, $url, $callbackBody);
 
 if ($isQiniuCallback) {
-	$resp = array('ret' => 'success');
+    $resp = array('ret' => 'success');
 } else {
-	$resp = array('ret' => 'failed');
+    $resp = array('ret' => 'failed');
 }
 
 echo json_encode($resp);

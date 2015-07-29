@@ -11,4 +11,3 @@ $bucket = 'devtest';
 $upToken = $auth->uploadToken($bucket);
 
 echo $upToken;
-
