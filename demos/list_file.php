@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once '../autoload.php';
 
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;

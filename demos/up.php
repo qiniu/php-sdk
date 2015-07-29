@@ -1,6 +1,5 @@
 <?php
-// require_once '../vendor/autoload.php';
-require_once '../src/autoload.php';
+require_once '../autoload.php';
 
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
@@ -26,8 +25,8 @@ if ($err !== null) {
 
 //----------------------------------------upload demo2 ----------------------------------------
 // 上传文件到七牛
-$filePath = __file__;
-$key = 'up.php';
+$filePath = './php-logo.png';
+$key = 'php-logo.png';
 list($ret, $err) = $uploadMgr->putFile($token, $key, $filePath);
 echo "\n====> putFile result: \n";
 if ($err !== null) {

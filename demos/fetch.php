@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once '../autoload.php';
 
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
@@ -15,11 +15,11 @@ $bucket = 'rwxf';
 $key = time() . '.ico';
 
 list($ret, $err) = $bmgr->fetch($url, $bucket, $key);
-echo "fetch $url to bucket: $bucket  key: $key\n";
+echo "=====> fetch $url to bucket: $bucket  key: $key\n";
 if ($err !== null) 
 {
 	var_dump($err);
 } else {
-	var_dump($ret);
+	echo 'Success';
 }
 
