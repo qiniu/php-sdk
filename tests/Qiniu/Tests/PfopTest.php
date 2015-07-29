@@ -6,50 +6,36 @@ use Qiniu\Processing\PersistentFop;
 
 class PfopTest extends \PHPUnit_Framework_TestCase
 {
-    public function testExecute1()
+    public function testPfop()
     {
         global $testAuth;
-        $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
-        $op = Operation::saveas('avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240', 'phpsdk', 'pfoptest');
-        $ops = array();
-        array_push($ops, $op);
-        list($id, $error) = $pfop->execute('sintel_trailer.mp4', $ops);
+        $bucket = 'testres';
+        $key = 'sintel_trailer.mp4';
+        $pfop = new PersistentFop($testAuth, $bucket);
+        
+        $fops = 'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240';
+        list($id, $error) = $pfop->execute($key, $fops);
         $this->assertNull($error);
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
         $this->assertNull($error);
     }
 
-    public function testAvthumb()
-    {
-        global $testAuth;
-        $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
-        $options = array(
-            'segtime' => 10,
-            'vcodec' => 'libx264',
-            's' => '320x240'
-        );
-        list($id, $error) = $pfop->avthumb('sintel_trailer.mp4', 'm3u8', $options, 'phpsdk', 'avthumtest');
-        $this->assertNull($error);
-        list($status, $error) = PersistentFop::status($id);
-        $this->assertNotNull($status);
-        $this->assertNull($error);
-    }
 
-    public function testExecute2()
+    public function testPfops()
     {
         global $testAuth;
-        $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
-        $url_src1 =  'http://testres.qiniudn.com/gogopher.jpg';
-        $url_en1 = \Qiniu\base64_urlSafeEncode($url_src1);
-        $url_alias_en1 = \Qiniu\base64_urlSafeEncode('g.jpg');
-        $url_en2 = $url_en1;
-        $fop = "mkzip/2/url/$url_en1/alias/$url_alias_en1/url/$url_en2";
-        $op = Operation::saveas($fop, 'phpsdk', 'mkziptest');
-        $ops = array();
-        array_push($ops, $op);
-        list($id, $error) = $pfop->execute('sintel_trailer.mp4', $ops);
+        $bucket = 'testres';
+        $key = 'sintel_trailer.mp4';
+        $fops = array(
+                'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240',
+                'vframe/jpg/offset/7/w/480/h/360',
+            );
+        $pfop = new PersistentFop($testAuth, $bucket);
+
+        list($id, $error) = $pfop->execute($key, $fops);
         $this->assertNull($error);
+
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
         $this->assertNull($error);
@@ -58,13 +44,21 @@ class PfopTest extends \PHPUnit_Framework_TestCase
     public function testMkzip()
     {
         global $testAuth;
-        $pfop = new PersistentFop($testAuth, 'testres', 'sdktest', true);
-        $urls = array(
-            'http://testres.qiniudn.com/gogopher.jpg' => 'g.jpg',
-            'http://testres.qiniudn.com/gogopher.jpg'
-        );
-        list($id, $error) = $pfop->mkzip('sintel_trailer.mp4', $urls, 'phpsdk', 'mkziptest2.zip');
+        $bucket = 'phpsdk';
+        $key = 'php-logo.png';
+        $pfop = new PersistentFop($testAuth, $bucket);
+
+        $url1 = 'http://phpsdk.qiniudn.com/php-logo.png';
+        $url2 = 'http://phpsdk.qiniudn.com/php-sdk.html';
+        $zipKey = 'test.zip';
+
+        $fops = 'mkzip/2/url/' . \Qiniu\base64_urlSafeEncode($url1);
+        $fops .= '/url/' . \Qiniu\base64_urlSafeEncode($url2);
+        $fops .= '|saveas/' . \Qiniu\base64_urlSafeEncode("$bucket:$zipKey");
+
+        list($id, $error) = $pfop->execute($key, $fops);
         $this->assertNull($error);
+
         list($status, $error) = PersistentFop::status($id);
         $this->assertNotNull($status);
         $this->assertNull($error);

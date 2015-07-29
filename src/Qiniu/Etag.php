@@ -20,7 +20,7 @@ final class Etag
     {
         $sha1Str = sha1($data, true);
         $err = error_get_last();
-        if ($err != null) {
+        if ($err !== null) {
             return array(null, $err);
         }
         $byteArray = unpack('C*', $sha1Str);
@@ -32,7 +32,7 @@ final class Etag
     {
         $fhandler = fopen($filename, 'r');
         $err = error_get_last();
-        if ($err != null) {
+        if ($err !== null) {
             return array(null, $err);
         }
 
@@ -48,11 +48,11 @@ final class Etag
         if ($blockCnt <= 1) {
             array_push($sha1Buf, 0x16);
             $fdata = fread($fhandler, Config::BLOCK_SIZE);
-            if ($err != null) {
+            if ($err !== null) {
                 fclose($fhandler);
                 return array(null, $err);
             }
-            list($sha1Code, $err) = calSha1($fdata);
+            list($sha1Code, ) = calSha1($fdata);
             $sha1Buf = array_merge($sha1Buf, $sha1Code);
         } else {
             array_push($sha1Buf, 0x96);
@@ -60,14 +60,14 @@ final class Etag
             for ($i=0; $i < $blockCnt; $i++) {
                 $fdata = fread($fhandler, Config::BLOCK_SIZE);
                 list($sha1Code, $err) = self::calcSha1($fdata);
-                if ($err != null) {
+                if ($err !== null) {
                     fclose($fhandler);
                     return array(null, $err);
                 }
                 $sha1BlockBuf = array_merge($sha1BlockBuf, $sha1Code);
             }
             $tmpData = self::packArray('C*', $sha1BlockBuf);
-            list($sha1Final, $_err) = self::calcSha1($tmpData);
+            list($sha1Final, ) = self::calcSha1($tmpData);
             $sha1Buf = array_merge($sha1Buf, $sha1Final);
         }
         $etag = \Qiniu\base64_urlSafeEncode(self::packArray('C*', $sha1Buf));

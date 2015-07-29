@@ -16,7 +16,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     public function testGetQiniu()
     {
         $response = Client::get('up.qiniu.com');
-        $this->assertEquals($response->statusCode, 405);
+        $this->assertEquals(405, $response->statusCode);
         $this->assertNotNull($response->body);
         $this->assertNotNull($response->xReqId());
         $this->assertNotNull($response->xLog());
