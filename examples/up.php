@@ -4,8 +4,8 @@ require_once '../autoload.php';
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 
-$accessKey = 'QWYn5TFQsLLU1pL5MFEmX3s5DmHdUThav9WyOWOm';
-$secretKey = 'Bxckh6FA-Fbs9Yt3i3cbKVK22UPBmAOHJcL95pGz';
+$accessKey = 'Access Key';
+$secretKey = 'Secret Key';
 $auth = new Auth($accessKey, $secretKey);
 
 $bucket = 'phpsdk';
