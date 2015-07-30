@@ -5,7 +5,7 @@ use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 
 $accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$secretKey = '9WTmIAiwKQ2Nq6o93mfKd6VQqq56HjjLZonMWLJl';
 
 //初始化Auth状态：
 $auth = new Auth($accessKey, $secretKey);

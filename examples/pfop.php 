@@ -7,7 +7,7 @@ use Qiniu\Processing\PersistentFop;
 //对已经上传到七牛的视频发起异步转码操作 
 
 $accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$secretKey = '9WTmIAiwKQ2Nq6o93mfKd6VQqq56HjjLZonMWLJl';
 $auth = new Auth($accessKey, $secretKey);
 
 //要转码的文件所在的空间和文件名。

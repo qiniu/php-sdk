@@ -4,7 +4,7 @@ require_once '../autoload.php';
 use Qiniu\Auth;
 
 $accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$secretKey = '9WTmIAiwKQ2Nq6o93mfKd6VQqq56HjjLZonMWLJl';
 
 // 构建Auth对象
 $auth = new Auth($accessKey, $secretKey);

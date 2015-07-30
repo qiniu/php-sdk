@@ -9,7 +9,7 @@ $accessKey = 'access key';
 $secretKey = 'secret key';
 
 $accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$secretKey = '9WTmIAiwKQ2Nq6o93mfKd6VQqq56HjjLZonMWLJl';
 $auth = new Auth($accessKey, $secretKey);
 
 
