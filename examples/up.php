@@ -4,11 +4,11 @@ require_once '../autoload.php';
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
-$bucket = 'phpsdk';
+$bucket = 'Bucket_Name';
 $token = $auth->uploadToken($bucket);
 $uploadMgr = new UploadManager();
 
@@ -59,7 +59,7 @@ if ($err !== null) {
 
 //----------------------------------------upload demo4 ----------------------------------------
 //上传视频，上传完成后进行m3u8的转码， 并给视频打水印
-$wmImg = Qiniu\base64_urlSafeEncode('http://rwxf.qiniudn.com/logo-s.png');
+$wmImg = Qiniu\base64_urlSafeEncode('http://Bucket_Name.qiniudn.com/logo-s.png');
 $pfop = "avthumb/m3u8/wmImage/$wmImg";
 
 //转码完成后回调到业务服务器。（公网可以访问，并相应200 OK）

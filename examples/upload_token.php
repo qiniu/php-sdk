@@ -3,11 +3,11 @@ require_once '../autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
-$bucket = 'devtest';
+$bucket = 'Bucket_Name';
 $upToken = $auth->uploadToken($bucket);
 
 echo $upToken;

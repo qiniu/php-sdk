@@ -3,8 +3,8 @@ require_once '../autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
 //获取回调的body信息

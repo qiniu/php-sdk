@@ -4,12 +4,12 @@ require_once '../autoload.php';
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 $bucketMgr = new BucketManager($auth);
 
-$bucket = 'rwxf';
+$bucket = 'Bucket_Name';
 $prefix = '';
 $marker = '';
 $limit = 3;

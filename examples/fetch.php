@@ -4,14 +4,14 @@ require_once '../autoload.php';
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 
 $auth = new Auth($accessKey, $secretKey);
 $bmgr = new BucketManager($auth);
 
 $url = 'http://php.net/favicon.ico';
-$bucket = 'rwxf';
+$bucket = 'Bucket_Name';
 $key = time() . '.ico';
 
 list($ret, $err) = $bmgr->fetch($url, $bucket, $key);

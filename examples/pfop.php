@@ -6,12 +6,12 @@ use Qiniu\Processing\PersistentFop;
 
 //对已经上传到七牛的视频发起异步转码操作 
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
 //要转码的文件所在的空间和文件名。
-$bucket = 'rwxf';
+$bucket = 'Bucket_Name';
 $key = '1.mp4';
 
 //转码是使用的队列名称。 https://portal.qiniu.com/mps/pipeline

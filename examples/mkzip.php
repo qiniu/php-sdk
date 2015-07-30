@@ -8,12 +8,12 @@ use Qiniu\Processing\PersistentFop;
 $accessKey = 'access key';
 $secretKey = 'secret key';
 
-$accessKey = 'Access Key';
-$secretKey = 'Secret Key';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
 
-$bucket = 'rwxf';
+$bucket = 'Bucket_Name';
 $key = '1.png';
 
 // 异步任务的队列， 去后台新建： https://portal.qiniu.com/mps/pipeline
@@ -22,8 +22,8 @@ $pipeline = 'abc';
 $pfop = new PersistentFop($auth, $bucket, $pipeline);
 
 // 进行zip压缩的url
-$url1 = 'http://phpsdk.qiniudn.com/php-logo.png';
-$url2 = 'http://phpsdk.qiniudn.com/php-sdk.html';
+$url1 = 'http://Bucket_Name.qiniudn.com/php-logo.png';
+$url2 = 'http://Bucket_Name.qiniudn.com/php-sdk.html';
 
 //压缩后的key
 $zipKey = 'test.zip';
