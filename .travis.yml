@@ -13,7 +13,7 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-source --dev
 script:
   - ./vendor/bin/phpcs --standard=PSR2 src
-  - ./vendor/bin/phpcs --standard=PSR2 demos
+  - ./vendor/bin/phpcs --standard=PSR2 examples
   - ./vendor/bin/phpcs --standard=PSR2 tests
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
 after_script:
