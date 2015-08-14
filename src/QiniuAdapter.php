@@ -23,17 +23,23 @@ class QiniuAdapter extends AbstractAdapter {
     private $bucket = null;
     private $domain = null;
 
+    private $pipeline = null;  //新增qiniu持久处理时的私有队列
+    private $notify_url = null; //持久化处理后的回调地址
+
     private $auth = null;
     private $upload_manager = null;
     private $bucket_manager = null;
     private $operation = null;
 
-    public function __construct($access_key, $secret_key, $bucket, $domain)
+    public function __construct($access_key, $secret_key, $bucket, $domain, $pipeline, $notify_url)
     {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
         $this->bucket     = $bucket;
         $this->domain     = $domain;
+        $this->pipeline   = $pipeline;
+        $this->notify_url = $notify_url;
+
         $this->setPathPrefix('http://' . $this->domain);
     }
 
@@ -399,7 +405,7 @@ class QiniuAdapter extends AbstractAdapter {
     {
         $auth = $this->getAuth();
 
-        $pfop = New PersistentFop($auth, $this->bucket);
+        $pfop = New PersistentFop($auth, $this->bucket, $this->pipeline, $this->notify_url);
 
         list($id, $error) = $pfop->execute($path, $fops);
 
