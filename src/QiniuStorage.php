@@ -1,14 +1,14 @@
 <?php namespace zgldh\QiniuStorage;
 
 
-class QiniuStorage {
+class QiniuStorage
+{
     private $storage = null;
     private static $instance = null;
 
     public static function disk($name)
     {
-        if (self::$instance == null)
-        {
+        if (self::$instance == null) {
             self::$instance = new self($name);
         }
 
@@ -165,9 +165,9 @@ class QiniuStorage {
      * @param $key
      * @return mixed
      */
-    public function downloadUrl($key)
+    public function downloadUrl($key, $domainType = 'default')
     {
-        return $this->storage->getDriver()->downloadUrl($key);
+        return $this->storage->getDriver()->downloadUrl($key, $domainType);
     }
 
     /**
@@ -175,9 +175,9 @@ class QiniuStorage {
      * @param $key
      * @return mixed
      */
-    public function privateDownloadUrl($key)
+    public function privateDownloadUrl($key, $domainType = 'default')
     {
-        return $this->storage->getDriver()->privateDownloadUrl($key);
+        return $this->storage->getDriver()->privateDownloadUrl($key, $domainType);
     }
 
     /**
