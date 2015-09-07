@@ -11,21 +11,30 @@ use zgldh\QiniuStorage\Plugins\PersistentStatus;
 use zgldh\QiniuStorage\Plugins\PrivateDownloadUrl;
 use zgldh\QiniuStorage\Plugins\UploadToken;
 
-class QiniuFilesystemServiceProvider extends ServiceProvider {
+class QiniuFilesystemServiceProvider extends ServiceProvider
+{
 
     public function boot()
     {
         \Storage::extend(
             'qiniu',
-            function ($app, $config)
-            {
+            function ($app, $config) {
+                if (isset($config['domains'])) {
+                    $domains = $config['domains'];
+                } else {
+                    $domains = [
+                        'default' => $config['domain'],
+                        'https'   => null,
+                        'custom'  => null
+                    ];
+                }
                 $qiniu_adapter = new QiniuAdapter(
                     $config['access_key'],
                     $config['secret_key'],
                     $config['bucket'],
-                    $config['domain']
+                    $domains
                 );
-                $file_system   = new Filesystem($qiniu_adapter);
+                $file_system = new Filesystem($qiniu_adapter);
                 $file_system->addPlugin(new PrivateDownloadUrl());
                 $file_system->addPlugin(new DownloadUrl());
                 $file_system->addPlugin(new ImageInfo());

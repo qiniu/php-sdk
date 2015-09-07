@@ -4,6 +4,29 @@
 
 符合Laravel 5 的Storage用法。
 
+## 更新
+
+ v1.0 提供了对多域名的支持。这是为了配合七牛的默认域名、HTTPS域名和自定义域名而添加的功能。
+ 您只需要将```config/filesystem.php```文件内您的七牛disk的domain属性稍加调整即可。具体如下：
+
+ 添加```domains```数组：
+
+```php
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'domains' => [
+                'default'=>'xxxxx.com1.z0.glb.clouddn.com',     //你的七牛默认域名
+                'https' => 'dn-yourdomain.qbox.me',             //你的HTTPS域名
+                'custom' => 'static.abc.com',                   //你的自定义域名
+             ],
+            'access_key'    => '',                          //AccessKey
+            'secret_key' => '',                             //SecretKey
+            'bucket' => '',                                 //Bucket名字
+        ],
+```
+
+ 然后填写好你的七牛默认域名、HTTPS域名和自定义域名即可。 如果没有HTTPS域名和自定义域名，留空即可。
+
 
 ## 安装
 
@@ -17,7 +40,11 @@
         ... ,
         'qiniu' => [
             'driver' => 'qiniu',
-            'domain' => 'xxxxx.com1.z0.glb.clouddn.com',   //你的七牛域名
+            'domains' => [
+                'default'=>'xxxxx.com1.z0.glb.clouddn.com',     //你的七牛域名
+                'https' => 'dn-yourdomain.qbox.me',             //你的HTTPS域名
+                'custom' => 'static.abc.com',                   //你的自定义域名
+             ],
             'access_key'    => '',                          //AccessKey
             'secret_key' => '',                             //SecretKey
             'bucket' => '',                                 //Bucket名字
