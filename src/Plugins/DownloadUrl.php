@@ -1,38 +1,38 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ZhangWB
- * Date: 2015/4/21
- * Time: 16:42
- */
+    /**
+     * Created by PhpStorm.
+     * User: ZhangWB
+     * Date: 2015/4/21
+     * Time: 16:42
+     */
 
-namespace zgldh\QiniuStorage\Plugins;
+    namespace zgldh\QiniuStorage\Plugins;
 
-use League\Flysystem\Plugin\AbstractPlugin;
-
-/**
- * Class PrivateDownloadUrl
- * 得到公有资源下载地址 <br>
- * $disk        = \Storage::disk('qiniu'); <br>
- * $re          = $disk->getDriver()->downloadUrl('foo/bar1.css'); <br>
- * @package zgldh\QiniuStorage\Plugins
- */
-class DownloadUrl extends AbstractPlugin {
+    use League\Flysystem\Plugin\AbstractPlugin;
 
     /**
-     * Get the method name.
-     *
-     * @return string
+     * Class PrivateDownloadUrl
+     * 得到公有资源下载地址 <br>
+     * $disk        = \Storage::disk('qiniu'); <br>
+     * $re          = $disk->getDriver()->downloadUrl('foo/bar1.css'); <br>
+     * @package zgldh\QiniuStorage\Plugins
      */
-    public function getMethod()
+    class DownloadUrl extends AbstractPlugin
     {
-        return 'downloadUrl';
-    }
 
-    public function handle($path = null)
-    {
-        $location = $this->filesystem->getAdapter()->downloadUrl($path);
+        /**
+         * Get the method name.
+         *
+         * @return string
+         */
+        public function getMethod()
+        {
+            return 'downloadUrl';
+        }
 
-        return $location;
+        public function handle($path = null, $domainType = 'default')
+        {
+            $adapter = $this->filesystem->getAdapter();
+            return $adapter->downloadUrl($path, $domainType);
+        }
     }
-}

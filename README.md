@@ -80,11 +80,13 @@
     $disk->makeDirectory($directory);               //这个其实没有任何作用
     $disk->deleteDirectory($directory);             //删除目录，包括目录下所有子文件子目录
     
-    $disk->getDriver()->uploadToken('file.jpg');            //获取上传Token
-    $disk->getDriver()->downloadUrl('file.jpg');            //获取下载地址
-    $disk->getDriver()->privateDownloadUrl('file.jpg');     //获取私有bucket下载地址
-    $disk->getDriver()->imageInfo('file.jpg');              //获取图片信息
-    $disk->getDriver()->imageExif('file.jpg');              //获取图片EXIF信息
+    $disk->getDriver()->uploadToken('file.jpg');                //获取上传Token
+    $disk->getDriver()->downloadUrl('file.jpg');                //获取下载地址
+    $disk->getDriver()->downloadUrl('file.jpg', 'https');        //获取HTTPS下载地址
+    $disk->getDriver()->privateDownloadUrl('file.jpg');         //获取私有bucket下载地址
+    $disk->getDriver()->privateDownloadUrl('file.jpg', 'https'); //获取私有bucket的HTTPS下载地址
+    $disk->getDriver()->imageInfo('file.jpg');                  //获取图片信息
+    $disk->getDriver()->imageExif('file.jpg');                  //获取图片EXIF信息
     $disk->getDriver()->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');              //获取图片预览URL
     $disk->getDriver()->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');   //执行持久化数据处理
     $disk->getDriver()->persistentStatus($persistent_fop_id);          //查看持久化数据处理的状态。
