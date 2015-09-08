@@ -105,3 +105,6 @@
 
  - https://github.com/qiniu/php-sdk
  - http://developer.qiniu.com/docs/v6/sdk/php-sdk.html
+
+## 说明
+在原有基础上增加了对PIPE以及回调地址参数的配置
