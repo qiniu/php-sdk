@@ -21,6 +21,8 @@
             'access_key'    => '',                          //AccessKey
             'secret_key' => '',                             //SecretKey
             'bucket' => '',                                 //Bucket名字
+            'pipeline' => '',                               //pipeline名字
+            'notify_url' => '',                             //持久化处理回调地址
         ],
     ],
     
