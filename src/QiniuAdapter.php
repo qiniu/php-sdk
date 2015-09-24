@@ -91,7 +91,7 @@ class QiniuAdapter extends AbstractAdapter
     private function getOperation()
     {
         if ($this->operation == null) {
-            $this->operation = new Operation($this->domain);
+            $this->operation = new Operation($this->domains['default']);
         }
 
         return $this->operation;
