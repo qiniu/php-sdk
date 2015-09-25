@@ -29,8 +29,8 @@ class PersistentFop extends AbstractPlugin {
         return 'persistentFop';
     }
 
-    public function handle($path = null, $fops = null)
+    public function handle($path = null, $fops = null, $pipline = null, $force = false)
     {
-        return $this->filesystem->getAdapter()->persistentFop($path, $fops);
+        return $this->filesystem->getAdapter()->persistentFop($path, $fops, $pipline, $force);
     }
 }

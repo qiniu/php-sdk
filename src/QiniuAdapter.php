@@ -22,6 +22,7 @@ class QiniuAdapter extends AbstractAdapter
     private $secret_key = null;
     private $bucket = null;
     private $domains = null;
+    private $notify_url = null; //持久化处理后的回调地址
 
     private $auth = null;
     private $upload_manager = null;
@@ -30,7 +31,7 @@ class QiniuAdapter extends AbstractAdapter
 
     private $prefixedDomains = [];
 
-    public function __construct($access_key, $secret_key, $bucket, $domains)
+    public function __construct($access_key, $secret_key, $bucket, $domains,$notify_url = null)
     {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
@@ -40,6 +41,7 @@ class QiniuAdapter extends AbstractAdapter
         $this->setDomainPrefix('http://' . $this->domains['default'], 'default');
         $this->setDomainPrefix('https://' . $this->domains['https'], 'https');
         $this->setDomainPrefix('http://' . $this->domains['custom'], 'custom');
+        $this->notify_url = $notify_url;
     }
 
     /**
@@ -399,11 +401,11 @@ class QiniuAdapter extends AbstractAdapter
         return $authUrl;
     }
 
-    public function persistentFop($path = null, $fops = null)
+    public function persistentFop($path = null, $fops = null, $pipline = null, $force = false)
     {
         $auth = $this->getAuth();
 
-        $pfop = New PersistentFop($auth, $this->bucket);
+        $pfop = New PersistentFop($auth, $this->bucket, $pipline, $this->notify_url, $force);
 
         list($id, $error) = $pfop->execute($path, $fops);
 

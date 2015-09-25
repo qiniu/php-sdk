@@ -6,27 +6,9 @@
 
 ## 更新
 
+ v0.3 增加了对PIPE以及回调地址参数的配置。 感谢abcsun提供的灵感。
+
  v0.2 提供了对多域名的支持。这是为了配合七牛的默认域名、HTTPS域名和自定义域名而添加的功能。
- 您只需要将```config/filesystem.php```文件内您的七牛disk的domain属性稍加调整即可。具体如下：
-
- 添加```domains```数组：
-
-```php
-        'qiniu' => [
-            'driver' => 'qiniu',
-            'domains' => [
-                'default'=>'xxxxx.com1.z0.glb.clouddn.com',     //你的七牛默认域名
-                'https' => 'dn-yourdomain.qbox.me',             //你的HTTPS域名
-                'custom' => 'static.abc.com',                   //你的自定义域名
-             ],
-            'access_key'    => '',                          //AccessKey
-            'secret_key' => '',                             //SecretKey
-            'bucket' => '',                                 //Bucket名字
-        ],
-```
-
- 然后填写好你的七牛默认域名、HTTPS域名和自定义域名即可。 如果没有HTTPS域名和自定义域名，留空即可。
-
 
 ## 安装
 
@@ -39,15 +21,16 @@
     'disks' => [
         ... ,
         'qiniu' => [
-            'driver' => 'qiniu',
+            'driver'  => 'qiniu',
             'domains' => [
-                'default'=>'xxxxx.com1.z0.glb.clouddn.com',     //你的七牛域名
-                'https' => 'dn-yourdomain.qbox.me',             //你的HTTPS域名
-                'custom' => 'static.abc.com',                   //你的自定义域名
+                'default'   => 'xxxxx.com1.z0.glb.clouddn.com', //你的七牛域名
+                'https'     => 'dn-yourdomain.qbox.me',         //你的HTTPS域名
+                'custom'    => 'static.abc.com',                //你的自定义域名
              ],
-            'access_key'    => '',                          //AccessKey
-            'secret_key' => '',                             //SecretKey
-            'bucket' => '',                                 //Bucket名字
+            'access_key'=> '',  //AccessKey
+            'secret_key'=> '',  //SecretKey
+            'bucket'    => '',  //Bucket名字
+            'notify_url'=> '',  //持久化处理回调地址
         ],
     ],
     
@@ -82,14 +65,15 @@
     
     $disk->getDriver()->uploadToken('file.jpg');                //获取上传Token
     $disk->getDriver()->downloadUrl('file.jpg');                //获取下载地址
-    $disk->getDriver()->downloadUrl('file.jpg', 'https');        //获取HTTPS下载地址
+    $disk->getDriver()->downloadUrl('file.jpg', 'https');       //获取HTTPS下载地址
     $disk->getDriver()->privateDownloadUrl('file.jpg');         //获取私有bucket下载地址
-    $disk->getDriver()->privateDownloadUrl('file.jpg', 'https'); //获取私有bucket的HTTPS下载地址
+    $disk->getDriver()->privateDownloadUrl('file.jpg', 'https');//获取私有bucket的HTTPS下载地址
     $disk->getDriver()->imageInfo('file.jpg');                  //获取图片信息
     $disk->getDriver()->imageExif('file.jpg');                  //获取图片EXIF信息
-    $disk->getDriver()->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');              //获取图片预览URL
+    $disk->getDriver()->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');                         //获取图片预览URL
     $disk->getDriver()->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');   //执行持久化数据处理
-    $disk->getDriver()->persistentStatus($persistent_fop_id);          //查看持久化数据处理的状态。
+    $disk->getDriver()->persistentFop('file.flv','fop','管道名');   //使用私有队列执行持久化数据处理
+    $disk->getDriver()->persistentStatus($persistent_fop_id);       //查看持久化数据处理的状态。
 
 ```
 
@@ -125,9 +109,10 @@
     $disk->privateDownloadUrl('file.jpg', 'https');     //获取私有bucket的HTTPS下载地址
     $disk->imageInfo('file.jpg');                       //获取图片信息
     $disk->imageExif('file.jpg');                       //获取图片EXIF信息
-    $disk->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');              //获取图片预览URL
-    $disk->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');   //执行持久化数据处理
-    $disk->persistentStatus($persistent_fop_id);          //查看持久化数据处理的状态。
+    $disk->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');                          //获取图片预览URL
+    $disk->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');    //执行持久化数据处理
+    $disk->persistentFop('file.flv','fop','管道名');    //使用私有队列执行持久化数据处理
+    $disk->persistentStatus($persistent_fop_id);        //查看持久化数据处理的状态。
 
 ```
 
