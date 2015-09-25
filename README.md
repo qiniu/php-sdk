@@ -72,7 +72,7 @@
     $disk->getDriver()->imageExif('file.jpg');                  //获取图片EXIF信息
     $disk->getDriver()->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');                         //获取图片预览URL
     $disk->getDriver()->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');   //执行持久化数据处理
-    $disk->getDriver()->persistentFop('file.flv','fop','管道名');   //使用私有队列执行持久化数据处理
+    $disk->getDriver()->persistentFop('file.flv','fop','队列名');   //使用私有队列执行持久化数据处理
     $disk->getDriver()->persistentStatus($persistent_fop_id);       //查看持久化数据处理的状态。
 
 ```
@@ -111,7 +111,7 @@
     $disk->imageExif('file.jpg');                       //获取图片EXIF信息
     $disk->imagePreviewUrl('file.jpg','imageView2/0/w/100/h/200');                          //获取图片预览URL
     $disk->persistentFop('file.flv','avthumb/m3u8/segtime/40/vcodec/libx264/s/320x240');    //执行持久化数据处理
-    $disk->persistentFop('file.flv','fop','管道名');    //使用私有队列执行持久化数据处理
+    $disk->persistentFop('file.flv','fop','队列名');    //使用私有队列执行持久化数据处理
     $disk->persistentStatus($persistent_fop_id);        //查看持久化数据处理的状态。
 
 ```
