@@ -1,9 +1,14 @@
 <?php
 
-$path = __DIR__ . DIRECTORY_SEPARATOR . 'src';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+function classLoader($class)
+{
+    $path = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+    $file = __DIR__ . '/src/' . $path . '.php';
 
-spl_autoload_extensions('.php');
-spl_autoload_register();
+    if (file_exists($file)) {
+        require_once $file;
+    }
+}
+spl_autoload_register('classLoader');
 
-require_once 'src/Qiniu/functions.php';
+require_once  __DIR__ . '/src/Qiniu/functions.php';
