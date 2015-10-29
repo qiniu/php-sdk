@@ -107,6 +107,7 @@ final class Auth
 
         'detectMime',
         'mimeLimit',
+        'fsizeMin',
         'fsizeLimit',
 
         'persistentOps',
