@@ -38,7 +38,7 @@ final class Etag
 
         $fstat = fstat($fhandler);
         $fsize = $fstat['size'];
-        if ($fsize == 0) {
+        if ((int) $fsize === 0) {
             fclose($fhandler);
             return array('Fto5o-5ea0sNMlW_75VgGJCv2AcJ', null);
         }
