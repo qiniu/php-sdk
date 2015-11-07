@@ -123,7 +123,7 @@ final class UploadManager
 
     public static function trimParams($params)
     {
-        if ($params == null) {
+        if ($params === null) {
             return null;
         }
         $ret = array();
