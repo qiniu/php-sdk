@@ -83,9 +83,14 @@ final class Client
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST  => $request->method,
-            CURLOPT_FOLLOWLOCATION => 1,
             CURLOPT_URL => $request->url
         );
+
+        // Handle open_basedir & safe mode
+        if (!ini_get('safe_mode') && !ini_get('open_basedir'))
+        {
+            $options[CURLOPT_FOLLOWLOCATION] = true;
+        }
         
         if (!empty($request->headers)) {
             $headers = array();
