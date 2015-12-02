@@ -31,7 +31,7 @@ class QiniuAdapter extends AbstractAdapter
 
     private $prefixedDomains = [];
 
-    public function __construct($access_key, $secret_key, $bucket, $domains,$notify_url = null)
+    public function __construct($access_key, $secret_key, $bucket, $domains, $notify_url = null)
     {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
@@ -99,9 +99,9 @@ class QiniuAdapter extends AbstractAdapter
         return $this->operation;
     }
 
-    private function logQiniuError(Error $error)
+    private function logQiniuError(Error $error, $extra = null)
     {
-        \Log::error('Qiniu: ' . $error->message());
+        \Log::error('Qiniu: ' . $error->message() . '. ' . $extra);
     }
 
     /**
@@ -205,7 +205,7 @@ class QiniuAdapter extends AbstractAdapter
 
         $error = $bucketMgr->delete($this->bucket, $path);
         if ($error !== null) {
-            $this->logQiniuError($error);
+            $this->logQiniuError($error, $this->bucket . '/' . $path);
 
             return false;
         } else {
