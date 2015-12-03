@@ -131,6 +131,13 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertArrayHasKey('key', $ret);
         $this->assertNull($error);
+ 
+        list($ret, $error) = $this->bucketManager->fetch(
+            'http://developer.qiniu.com/docs/v6/sdk/php-sdk.html',
+            $this->bucketName
+        );
+        $this->assertArrayHasKey('key', $ret);
+        $this->assertNull($error);
     }
 
     public function testBatchCopy()
