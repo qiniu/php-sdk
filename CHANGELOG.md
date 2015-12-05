@@ -1,10 +1,15 @@
 #Changelog
 
-## 7.0.5 (2015-12-05)
+## 7.0.6 (2015-12-05)
 ### 修正
 * php7.0 Json 对空字符串解析单元测试报错
 * 开启安全模式或者设置可操作目录树时，设置CURLOPT_FOLLOWLOCATION报错, by @twocabbages
 * fetch 支持不指定key, by @sinkcup
+
+## 7.0.5 (2015-10-29)
+### 增加
+* 增加上传策略最小文件大小限制 fsizeMin
+* 增加常见examples
 
 ## 7.0.4 (2015-07-23)
 ### 修正
