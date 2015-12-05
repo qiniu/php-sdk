@@ -87,11 +87,10 @@ final class Client
         );
 
         // Handle open_basedir & safe mode
-        if (!ini_get('safe_mode') && !ini_get('open_basedir'))
-        {
+        if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
             $options[CURLOPT_FOLLOWLOCATION] = true;
         }
-        
+
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
