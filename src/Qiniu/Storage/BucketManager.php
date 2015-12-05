@@ -208,7 +208,7 @@ final class BucketManager
      *                                  ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/fetch.html
      */
-    public function fetch($url, $bucket, $key)
+    public function fetch($url, $bucket, $key = null)
     {
 
         $resource = \Qiniu\base64_urlSafeEncode($url);
