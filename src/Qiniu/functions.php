@@ -87,6 +87,9 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
             JSON_ERROR_UTF8 => 'JSON_ERROR_UTF8 - Malformed UTF-8 characters, possibly incorrectly encoded'
         );
 
+        if (empty($json)) {
+            return null;
+        }
         $data = \json_decode($json, $assoc, $depth);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
