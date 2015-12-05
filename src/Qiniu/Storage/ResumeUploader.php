@@ -20,7 +20,6 @@ final class ResumeUploader
     private $size;
     private $params;
     private $mime;
-    private $progressHandler;
     private $contexts;
     private $host;
     private $currentUrl;

@@ -76,6 +76,13 @@ final class Response
         511 => 'Network Authentication Required',
     );
 
+    /**
+     * @param int $code 状态码
+     * @param double $duration 请求时长
+     * @param array $headers 响应头部
+     * @param string $body 响应内容
+     * @param string $error 错误描述
+     */
     public function __construct($code, $duration, array $headers = array(), $body = null, $error = null)
     {
         $this->statusCode = $code;
@@ -121,14 +128,9 @@ final class Response
         return $this->jsonData;
     }
 
-    private static function bodyJson($body, array $config = array())
+    private static function bodyJson($body)
     {
-        return \Qiniu\json_decode(
-            (string) $body,
-            array_key_exists('object', $config) ? !$config['object'] : true,
-            512,
-            array_key_exists('big_int_strings', $config) ? JSON_BIGINT_AS_STRING : 0
-        );
+        return \Qiniu\json_decode((string) $body, true, 512);
     }
 
     public function xVia()
