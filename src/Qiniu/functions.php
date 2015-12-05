@@ -122,4 +122,21 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         }
         return base64_urlSafeEncode($en);
     }
+
+    /**
+     * array 辅助方法，无值时不set
+     *
+     * @param $array 待操作array
+     * @param $key key
+     * @param $value value 为null时 不设置
+     *
+     * @return array 原来的array，便于连续操作
+     */
+    function setWithoutEmpty(&$array, $key, $value)
+    {
+        if (!empty($value)) {
+            $array[$key] = $value;
+        }
+        return $array;
+    }
 }

@@ -53,18 +53,10 @@ final class BucketManager
     public function listFiles($bucket, $prefix = null, $marker = null, $limit = 1000, $delimiter = null)
     {
         $query = array('bucket' => $bucket);
-        if (!empty($prefix)) {
-            $query['prefix'] = $prefix;
-        }
-        if (!empty($marker)) {
-            $query['marker'] = $marker;
-        }
-        if (!empty($limit)) {
-            $query['limit'] = $limit;
-        }
-        if (!empty($delimiter)) {
-            $query['delimiter'] = $delimiter;
-        }
+        \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
+        \Qiniu\setWithoutEmpty($query, 'marker', $marker);
+        \Qiniu\setWithoutEmpty($query, 'limit', $limit);
+        \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
         $url = Config::RSF_HOST . '/list?' . http_build_query($query);
         list($ret, $error) = $this->get($url);
         if ($ret === null) {
