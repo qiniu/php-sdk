@@ -1,5 +1,11 @@
 #Changelog
 
+## 7.0.5 (2015-12-05)
+### 修正
+* php7.0 Json 对空字符串解析单元测试报错
+* 开启安全模式或者设置可操作目录树时，设置CURLOPT_FOLLOWLOCATION报错, by @twocabbages
+* fetch 支持不指定key, by @sinkcup
+
 ## 7.0.4 (2015-07-23)
 ### 修正
 * 一些地方的严格比较检查
