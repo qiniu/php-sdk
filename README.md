@@ -21,7 +21,7 @@ $ composer require qiniu/php-sdk
 
 | Qiniu SDK版本 | PHP 版本 |
 |:--------------------:|:---------------------------:|
-|          7.x         |  cURL extension,   5.3 - 5.6 |
+|          7.x         |  cURL extension,   5.3 - 5.6,7.0 |
 |          6.x         |  cURL extension,   5.2 - 5.6 |
 
 ## 使用方法
