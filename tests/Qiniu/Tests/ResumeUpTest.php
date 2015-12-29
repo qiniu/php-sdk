@@ -34,7 +34,7 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
     public function test4ML2()
     {
         $key = 'resumePutFile4ML';
-        $zone = new Zone('http://up.fake.com', 'http://up.qiniu.com');
+        $zone = new Zone('http://up.fake.qiniu.com', 'http://up.qiniu.com');
         $cfg = new Config($zone);
         $upManager = new UploadManager($cfg);
         $token = $this->auth->uploadToken($this->bucketName, $key);
