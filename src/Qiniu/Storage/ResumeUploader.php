@@ -67,7 +67,6 @@ final class ResumeUploader
             $blockSize = $this->blockSize($uploaded);
             $data = fread($this->inputStream, $blockSize);
             if ($data === false) {
-                fclose($this->inputStream);
                 throw new \Exception("file read failed", 1);
             }
             $crc = \Qiniu\crc32_data($data);
@@ -85,13 +84,11 @@ final class ResumeUploader
             }
 
             if (! $response->ok() || !isset($ret['crc32'])|| $crc != $ret['crc32']) {
-                fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
             array_push($this->contexts, $ret['ctx']);
             $uploaded += $blockSize;
         }
-        fclose($this->inputStream);
         return $this->makeFile();
     }
 
