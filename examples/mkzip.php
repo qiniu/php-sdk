@@ -5,16 +5,16 @@ use Qiniu\Auth;
 use Qiniu\Processing\PersistentFop;
 
 // 去我们的portal 后台来获取AK, SK
-$accessKey = '4brtJLyWA3bplJKlkn7ZypPbzKcS-58MsF1cnsF4';
-$secretKey = 'jt8qbHTrBFAl6HZNt9Mmd2pcx122aJlJ-5mgS-7g';
+$accessKey = 'Access_Key';
+$secretKey = 'Secret_Key';
 $auth = new Auth($accessKey, $secretKey);
 
 
-$bucket = 'rwxf';
+$bucket = 'Bucket_Name';
 $key = '1.png';
 
 // 异步任务的队列， 去后台新建： https://portal.qiniu.com/mps/pipeline
-$pipeline = 'abc';
+$pipeline = 'pipeline_name';
 
 $pfop = new PersistentFop($auth, $bucket, $pipeline);
 
