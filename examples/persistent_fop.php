@@ -12,14 +12,17 @@ $auth = new Auth($accessKey, $secretKey);
 
 //要转码的文件所在的空间和文件名。
 $bucket = 'Bucket_Name';
-$key = '1.mp4';
+$key = 'File_Name_On_Qiniu';
 
 //转码是使用的队列名称。 https://portal.qiniu.com/mps/pipeline
-$pipeline = 'abc';
-$pfop = new PersistentFop($auth, $bucket, $pipeline);
+$pipeline = 'pipeline_name';
+
+//转码完成后通知到你的业务服务器。
+$notifyUrl = 'http://375dec79.ngrok.com/notify.php';
+$pfop = new PersistentFop($auth, $bucket, $pipeline, $notifyUrl);
 
 //要进行转码的转码操作。 http://developer.qiniu.com/docs/v6/api/reference/fop/av/avthumb.html
-$fops = "avthumb/mp4/s/640x360/vb/1.25m";
+$fops = "avthumb/mp4/s/640x360/vb/1.4m";
 
 list($id, $err) = $pfop->execute($key, $fops);
 echo "\n====> pfop avthumb result: \n";
