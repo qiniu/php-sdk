@@ -44,7 +44,7 @@ final class Operation
         return array($resp->body, null);
     }
 
-    public function buildUrl($key, $fops，$protocol = 'http')
+    public function buildUrl($key, $fops, $protocol = 'http')
     {
         if (is_array($fops)) {
             $fops = implode('|', $fops);
