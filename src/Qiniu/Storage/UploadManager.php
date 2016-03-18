@@ -106,7 +106,8 @@ final class UploadManager
                 $this->config,
                 $params,
                 $mime,
-                $checkCrc
+                $checkCrc,
+                $filePath
             );
         }
         $up = new ResumeUploader(
@@ -116,7 +117,8 @@ final class UploadManager
             $size,
             $params,
             $mime,
-            $this->config
+            $this->config,
+            $filePath
         );
         $ret = $up->upload();
         fclose($file);

@@ -31,13 +31,14 @@ final class FormUploader
         $config,
         $params,
         $mime,
-        $checkCrc
+        $checkCrc,
+        $filePath
     ) {
         $fields = array('token' => $upToken);
         if ($key === null) {
             $fname = 'filename';
         } else {
-            $fname = $key;
+            $fname = basename($filePath);
             $fields['key'] = $key;
         }
         if ($checkCrc) {
