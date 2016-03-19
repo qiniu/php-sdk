@@ -46,7 +46,8 @@ final class UploadManager
         $data,
         $params = null,
         $mime = 'application/octet-stream',
-        $checkCrc = false
+        $checkCrc = false,
+        $filePath=null
     ) {
         $params = self::trimParams($params);
         return FormUploader::put(
@@ -56,7 +57,8 @@ final class UploadManager
             $this->config,
             $params,
             $mime,
-            $checkCrc
+            $checkCrc,
+            $filePath
         );
     }
 
