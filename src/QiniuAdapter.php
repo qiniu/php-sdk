@@ -461,6 +461,16 @@ class QiniuAdapter extends AbstractAdapter
         return $url;
     }
 
+    public function privateImagePreviewUrl($path = null, $ops = null)
+    {
+        $auth = $this->getAuth();
+        $operation = $this->getOperation();
+        $url = $operation->buildUrl($path, $ops);
+        $authUrl = $auth->privateDownloadUrl($url);
+
+        return $authUrl;
+    }
+
     public function uploadToken(
         $path = null,
         $expires = 3600,

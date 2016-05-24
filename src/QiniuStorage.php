@@ -212,6 +212,17 @@ class QiniuStorage
     }
 
     /**
+     * 获取私有bucket图片预览URL
+     * @param $key
+     * @param $opts
+     * @return mixed
+     */
+    public function privateImagePreviewUrl($key, $opts)
+    {
+        return $this->storage->getDriver()->privateImagePreviewUrl($key, $opts);
+    }
+
+    /**
      * 执行持久化数据处理
      * @param $key
      * @param $opts

@@ -10,6 +10,7 @@ use zgldh\QiniuStorage\Plugins\PersistentFop;
 use zgldh\QiniuStorage\Plugins\PersistentStatus;
 use zgldh\QiniuStorage\Plugins\PrivateDownloadUrl;
 use zgldh\QiniuStorage\Plugins\UploadToken;
+use zgldh\QiniuStorage\Plugins\PrivateImagePreviewUrl;
 
 class QiniuFilesystemServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,8 @@ class QiniuFilesystemServiceProvider extends ServiceProvider
                 $file_system->addPlugin(new PersistentFop());
                 $file_system->addPlugin(new PersistentStatus());
                 $file_system->addPlugin(new UploadToken());
+                $file_system->addPlugin(new UploadToken());
+                $file_system->addPlugin(new PrivateImagePreviewUrl());
 
                 return $file_system;
             }
