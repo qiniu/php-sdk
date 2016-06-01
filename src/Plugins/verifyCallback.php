@@ -17,7 +17,7 @@ use League\Flysystem\Plugin\AbstractPlugin;
  * $re          = $disk->getDriver()->verifyCallback('application/x-www-form-urlencoded', $request->header('Authorization'), 'callback url', $request->getContent()); <br>
  * @package zgldh\QiniuStorage\Plugins
  */
-class verifyCallback extends AbstractPlugin
+class VerifyCallback extends AbstractPlugin
 {
 
     /**
@@ -30,7 +30,7 @@ class verifyCallback extends AbstractPlugin
         return 'verifyCallback';
     }
 
-    public function handle($contentType, $originAuthorization, $url, $body)
+    public function handle($contentType = null, $originAuthorization = null, $url = null, $body = null)
     {
         return $this->filesystem->getAdapter()->verifyCallback($contentType, $originAuthorization, $url, $body);
     }

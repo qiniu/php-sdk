@@ -11,7 +11,7 @@ use zgldh\QiniuStorage\Plugins\PersistentStatus;
 use zgldh\QiniuStorage\Plugins\PrivateDownloadUrl;
 use zgldh\QiniuStorage\Plugins\UploadToken;
 use zgldh\QiniuStorage\Plugins\PrivateImagePreviewUrl;
-use zgldh\QiniuStorage\Plugins\verifyCallback;
+use zgldh\QiniuStorage\Plugins\VerifyCallback;
 
 class QiniuFilesystemServiceProvider extends ServiceProvider
 {
@@ -47,7 +47,7 @@ class QiniuFilesystemServiceProvider extends ServiceProvider
                 $file_system->addPlugin(new PersistentStatus());
                 $file_system->addPlugin(new UploadToken());
                 $file_system->addPlugin(new PrivateImagePreviewUrl());
-                $file_system->addPlugin(new verifyCallback());
+                $file_system->addPlugin(new VerifyCallback());
 
                 return $file_system;
             }
