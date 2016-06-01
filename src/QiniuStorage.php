@@ -242,4 +242,14 @@ class QiniuStorage
     {
         return $this->storage->getDriver()->persistentStatus($id);
     }
+
+    /**
+     * 验证回调是否合法
+     * @param $id
+     * @return boolean
+     */
+    public function verifyCallback($contentType, $originAuthorization, $url, $body)
+    {
+        return $this->storage->getDriver()->verifyCallback($contentType, $originAuthorization, $url, $body);
+    }
 }
