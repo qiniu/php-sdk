@@ -489,4 +489,11 @@ class QiniuAdapter extends AbstractAdapter
 
         return $token;
     }
+
+    public function verifyCallback($contentType, $originAuthorization, $url, $body)
+    {
+        $auth = $this->getAuth();
+
+        return $auth->verifyCallback($contentType, $originAuthorization, $url, $body);
+    }
 }
