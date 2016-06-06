@@ -48,6 +48,7 @@
     $disk->exists('file.jpg');                      //文件是否存在
     $disk->get('file.jpg');                         //获取文件内容
     $disk->put('file.jpg',$contents);               //上传文件
+    $disk->put('file.jpg',fopen('path/to/big.jpg','r+')); //分段上传文件。建议大文件>10Mb使用。 
     $disk->prepend('file.log', 'Prepended Text');   //附加内容到文件开头
     $disk->append('file.log', 'Appended Text');     //附加内容到文件结尾
     $disk->delete('file.jpg');                      //删除文件
@@ -89,6 +90,7 @@
     $disk->exists('file.jpg');                      //文件是否存在
     $disk->get('file.jpg');                         //获取文件内容
     $disk->put('file.jpg',$contents);               //上传文件
+    $disk->put('file.jpg',fopen('path/to/big.jpg','r+')); //分段上传文件。建议大文件>10Mb使用。
     $disk->prepend('file.log', 'Prepended Text');   //附加内容到文件开头
     $disk->append('file.log', 'Appended Text');     //附加内容到文件结尾
     $disk->delete('file.jpg');                      //删除文件

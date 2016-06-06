@@ -2,21 +2,22 @@
 
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
-use League\Flysystem\Adapter\Polyfill\StreamedCopyTrait;
 use League\Flysystem\Adapter\Polyfill\StreamedReadingTrait;
-use League\Flysystem\Adapter\Polyfill\StreamedWritingTrait;
 use League\Flysystem\Config;
 use Qiniu\Auth;
 use Qiniu\Http\Error;
 use Qiniu\Processing\Operation;
 use Qiniu\Processing\PersistentFop;
 use Qiniu\Storage\BucketManager;
+use Qiniu\Storage\FormUploader;
+use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
+use Qiniu\Config as QiniuConfig;
 
 class QiniuAdapter extends AbstractAdapter
 {
 
-    use NotSupportingVisibilityTrait, StreamedWritingTrait, StreamedReadingTrait;
+    use NotSupportingVisibilityTrait, StreamedReadingTrait;
 
     private $access_key = null;
     private $secret_key = null;
@@ -147,6 +148,106 @@ class QiniuAdapter extends AbstractAdapter
     {
         return $this->write($path, $contents, $config);
     }
+
+    /**
+     * Write using a stream.
+     *
+     * @param string $path
+     * @param resource $resource
+     * @param Config $config
+     *
+     * @return mixed false or file metadata
+     */
+    public function writeStream($path, $resource, Config $config)
+    {
+        $auth = $this->getAuth();
+        $token = $auth->uploadToken($this->bucket, $path);
+
+        $params = $config->get('params', null);
+        $mime = $config->get('mime', 'application/octet-stream');
+        $checkCrc = $config->get('checkCrc', false);
+
+        list($ret, $error) = $this->qiniuPutFile($token, $path, $resource, $params, $mime, $checkCrc);
+
+        if ($error !== null) {
+            $this->logQiniuError($error);
+
+            return false;
+        } else {
+            return $ret;
+        }
+    }
+
+    /**
+     * Rewrite Qiniu\Storage\UploadManager::putFile
+     * @param $upToken
+     * @param $key
+     * @param $fileResource
+     * @param null $params
+     * @param string $mime
+     * @param bool $checkCrc
+     * @return mixed
+     * @throws \Exception
+     */
+    private function qiniuPutFile(
+        $upToken,
+        $key,
+        $fileResource,
+        $params = null,
+        $mime = 'application/octet-stream',
+        $checkCrc = false
+    ) {
+        if ($fileResource === false) {
+            throw new \Exception("file can not open", 1);
+        }
+        $file = $fileResource;
+        $params = UploadManager::trimParams($params);
+        $stat = fstat($file);
+        $size = $stat['size'];
+        if ($size <= QiniuConfig::BLOCK_SIZE) {
+            $data = fread($file, $size);
+            fclose($file);
+            if ($data === false) {
+                throw new \Exception("file can not read", 1);
+            }
+            return FormUploader::put(
+                $upToken,
+                $key,
+                $data,
+                new QiniuConfig(),
+                $params,
+                $mime,
+                $checkCrc
+            );
+        }
+        $up = new ResumeUploader(
+            $upToken,
+            $key,
+            $file,
+            $size,
+            $params,
+            $mime,
+            new QiniuConfig()
+        );
+        $ret = $up->upload();
+        fclose($file);
+        return $ret;
+    }
+
+    /**
+     * Update a file using a stream.
+     *
+     * @param string $path
+     * @param resource $resource
+     * @param Config $config Config object or visibility setting
+     *
+     * @return mixed false of file metadata
+     */
+    public function updateStream($path, $resource, Config $config)
+    {
+        return $this->writeStream($path, $resource, $config);
+    }
+
 
     /**
      * Rename a file.
