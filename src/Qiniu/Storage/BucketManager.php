@@ -53,7 +53,10 @@ final class BucketManager
     public function listFiles($bucket, $prefix = null, $marker = null, $limit = 1000, $delimiter = null)
     {
         $query = array('bucket' => $bucket);
-        \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
+
+        if ($prefix !== '') {
+            $query['prefix'] = $prefix;
+        }
         \Qiniu\setWithoutEmpty($query, 'marker', $marker);
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
