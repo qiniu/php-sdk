@@ -83,7 +83,8 @@ final class Client
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST  => $request->method,
-            CURLOPT_URL => $request->url
+            CURLOPT_URL => $request->url,
+            CURLOPT_TIMEOUT => 5
         );
 
         // Handle open_basedir & safe mode
