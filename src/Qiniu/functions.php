@@ -134,7 +134,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      */
     function setWithoutEmpty(&$array, $key, $value)
     {
-        if (!empty($value)) {
+        if (!empty($value) || $value === '0') {
             $array[$key] = $value;
         }
         return $array;

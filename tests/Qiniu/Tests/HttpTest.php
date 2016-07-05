@@ -25,8 +25,8 @@ class HttpTest extends \PHPUnit_Framework_TestCase
 
     public function testPost()
     {
-        $response = Client::post('baidu.com', null);
-        $this->assertEquals($response->statusCode, 405);
+        $response = Client::post('www.qiniu.com', null);
+        $this->assertEquals($response->statusCode, 404);
         $this->assertNotNull($response->body);
         $this->assertNotNull($response->error);
     }
