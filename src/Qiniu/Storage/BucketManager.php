@@ -54,9 +54,7 @@ final class BucketManager
     {
         $query = array('bucket' => $bucket);
 
-        if ($prefix !== '') {
-            $query['prefix'] = $prefix;
-        }
+        \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
         \Qiniu\setWithoutEmpty($query, 'marker', $marker);
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
