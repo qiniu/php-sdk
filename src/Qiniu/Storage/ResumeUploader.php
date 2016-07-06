@@ -24,7 +24,7 @@ final class ResumeUploader
     private $host;
     private $currentUrl;
     private $config;
-    private $filePath;
+    private $fname;
 
     /**
      * 上传二进制流到七牛
@@ -57,7 +57,7 @@ final class ResumeUploader
         $this->contexts = array();
         $this->config = $config;
         $this->host = $config->getUpHost();
-        $this->filePath=basename($filePath);
+        $this->fname=basename($filePath);
     }
 
     /**
