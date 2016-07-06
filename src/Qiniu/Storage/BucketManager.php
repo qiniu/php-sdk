@@ -130,11 +130,11 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
-    public function copy($from_bucket, $from_key, $to_bucket, $to_key)
+    public function copy($from_bucket, $from_key, $to_bucket, $to_key, $force = 1)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
-        $path = '/copy/' . $from . '/' . $to;
+        $path = '/copy/' . $from . '/' . $to.'/force/'.$force;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -150,11 +150,11 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
-    public function move($from_bucket, $from_key, $to_bucket, $to_key)
+    public function move($from_bucket, $from_key, $to_bucket, $to_key, $force = 1)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
-        $path = '/move/' . $from . '/' . $to;
+        $path = '/move/' . $from . '/' . $to.'/force/'.$force;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -325,7 +325,7 @@ final class BucketManager
         return $data;
     }
 
-    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket)
+    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket, $force = 1)
     {
         if ($target_bucket === null) {
             $target_bucket = $source_bucket;
@@ -334,7 +334,7 @@ final class BucketManager
         foreach ($key_pairs as $from_key => $to_key) {
             $from = \Qiniu\entry($source_bucket, $from_key);
             $to = \Qiniu\entry($target_bucket, $to_key);
-            array_push($data, $operation . '/' . $from . '/' . $to);
+            array_push($data, $operation . '/' . $from . '/' . $to.'/force/'.$force);
         }
         return $data;
     }

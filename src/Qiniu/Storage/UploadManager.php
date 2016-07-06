@@ -116,7 +116,8 @@ final class UploadManager
             $size,
             $params,
             $mime,
-            $this->config
+            $this->config,
+            $filePath
         );
         $ret = $up->upload();
         fclose($file);

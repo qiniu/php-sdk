@@ -24,6 +24,7 @@ final class ResumeUploader
     private $host;
     private $currentUrl;
     private $config;
+    private $fname;
 
     /**
      * 上传二进制流到七牛
@@ -44,7 +45,8 @@ final class ResumeUploader
         $size,
         $params,
         $mime,
-        $config
+        $config,
+        $filePath = null
     ) {
         $this->upToken = $upToken;
         $this->key = $key;
@@ -55,6 +57,7 @@ final class ResumeUploader
         $this->contexts = array();
         $this->config = $config;
         $this->host = $config->getUpHost();
+        $this->fname = basename($filePath);
     }
 
     /**
@@ -107,6 +110,11 @@ final class ResumeUploader
         $url .= '/mimeType/' . \Qiniu\base64_urlSafeEncode($this->mime);
         if ($this->key != null) {
             $url .= '/key/' . \Qiniu\base64_urlSafeEncode($this->key);
+        }
+        if ($this->fname != null) {
+            $url .= '/fname/'. \Qiniu\base64_urlSafeEncode($this->fname);
+        } else {
+            $url .= '/fname/'. \Qiniu\base64_urlSafeEncode($this->key);
         }
         if (!empty($this->params)) {
             foreach ($this->params as $key => $value) {
