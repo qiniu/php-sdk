@@ -46,7 +46,7 @@ final class ResumeUploader
         $params,
         $mime,
         $config,
-        $filePath=null
+        $filePath = null
     ) {
         $this->upToken = $upToken;
         $this->key = $key;
@@ -57,7 +57,7 @@ final class ResumeUploader
         $this->contexts = array();
         $this->config = $config;
         $this->host = $config->getUpHost();
-        $this->fname=basename($filePath);
+        $this->fname = basename($filePath);
     }
 
     /**
@@ -111,10 +111,10 @@ final class ResumeUploader
         if ($this->key != null) {
             $url .= '/key/' . \Qiniu\base64_urlSafeEncode($this->key);
         }
-        if($this->fname!=null){
-            $url.='/fname/'.  \Qiniu\base64_urlSafeEncode($this->fname);
-        }else{
-            $url.='/fname/'.  \Qiniu\base64_urlSafeEncode($this->key);
+        if ($this->fname != null) {
+            $url .= '/fname/'. \Qiniu\base64_urlSafeEncode($this->fname);
+        } else {
+            $url .= '/fname/'. \Qiniu\base64_urlSafeEncode($this->key);
         }
         if (!empty($this->params)) {
             foreach ($this->params as $key => $value) {

@@ -130,7 +130,7 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
-    public function copy($from_bucket, $from_key, $to_bucket, $to_key , $force=1)
+    public function copy($from_bucket, $from_key, $to_bucket, $to_key, $force = 1)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
@@ -150,7 +150,7 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
-    public function move($from_bucket, $from_key, $to_bucket, $to_key , $force=1)
+    public function move($from_bucket, $from_key, $to_bucket, $to_key, $force = 1)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
@@ -325,7 +325,7 @@ final class BucketManager
         return $data;
     }
 
-    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket,$force=1)
+    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket, $force = 1)
     {
         if ($target_bucket === null) {
             $target_bucket = $source_bucket;
