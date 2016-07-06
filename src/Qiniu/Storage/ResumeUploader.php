@@ -24,7 +24,7 @@ final class ResumeUploader
     private $host;
     private $currentUrl;
     private $config;
-    private $filePath
+    private $filePath;
 
     /**
      * 上传二进制流到七牛
