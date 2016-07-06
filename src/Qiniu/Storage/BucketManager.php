@@ -134,7 +134,7 @@ final class BucketManager
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
-        $path = '/copy/' . $from . '/' . $to.'/force/'.urlencode($force);
+        $path = '/copy/' . $from . '/' . $to.'/force/'.$force;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -154,7 +154,7 @@ final class BucketManager
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
-        $path = '/move/' . $from . '/' . $to.'/force/'.urlencode($force);
+        $path = '/move/' . $from . '/' . $to.'/force/'.$force;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -334,7 +334,7 @@ final class BucketManager
         foreach ($key_pairs as $from_key => $to_key) {
             $from = \Qiniu\entry($source_bucket, $from_key);
             $to = \Qiniu\entry($target_bucket, $to_key);
-            array_push($data, $operation . '/' . $from . '/' . $to.'/force/'.urlencode($force));
+            array_push($data, $operation . '/' . $from . '/' . $to.'/force/'.$force);
         }
         return $data;
     }
