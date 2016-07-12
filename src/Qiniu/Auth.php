@@ -112,6 +112,8 @@ final class Auth
         'persistentOps',
         'persistentNotifyUrl',
         'persistentPipeline',
+        
+        'deleteAfterDays',
     );
 
     private static $deprecatedPolicyFields = array(
