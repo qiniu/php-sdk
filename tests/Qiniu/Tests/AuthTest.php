@@ -80,7 +80,6 @@ namespace Qiniu\Tests
 
         public function testVerifyCallback()
         {
-
         }
     }
 }
