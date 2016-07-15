@@ -261,7 +261,7 @@ final class ImageUrlBuilder
         $urlArr = parse_url($url);
 
         return $urlArr['scheme']
-            && in_array($urlArr['scheme'], ['http', 'https'])
+            && in_array($urlArr['scheme'], array('http', 'https'))
             && $urlArr['host']
             && $urlArr['path'];
     }
