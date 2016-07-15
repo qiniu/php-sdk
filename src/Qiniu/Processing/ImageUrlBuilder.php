@@ -15,21 +15,22 @@ final class ImageUrlBuilder
      *
      * @var array
      */
-    protected $modeArr = [0, 1, 2, 3, 4, 5];
+    protected $modeArr = array(0, 1, 2, 3, 4, 5);
 
     /**
      * format合法值
      *
      * @var array
      */
-    protected $formatArr = ['psd', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'bmp'];
+    protected $formatArr = array('psd', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'bmp');
 
     /**
      * 水印图片位置合法值
      *
      * @var array
      */
-    protected $gravityArr = ['NorthWest', 'North', 'NorthEast', 'West', 'Center', 'East', 'SouthWest', 'South', 'SouthEast'];
+    protected $gravityArr = array('NorthWest', 'North', 'NorthEast',
+        'West', 'Center', 'East', 'SouthWest', 'South', 'SouthEast');
 
     /**
      * 缩略图链接拼接
@@ -82,7 +83,7 @@ final class ImageUrlBuilder
 
         // 拼接渐进显示
         if (! is_null($interlace)
-            && in_array(intval($interlace), [0, 1], true)
+            && in_array(intval($interlace), array(0, 1), true)
         ) {
             $thumbStr .= 'interlace/' . $interlace . '/';
         }
