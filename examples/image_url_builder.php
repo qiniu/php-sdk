@@ -22,7 +22,7 @@ $waterImage = 'http://developer.qiniu.com/resource/logo-2.jpg';
  * @param  int $quality 图片质量 [可选]
  * @param  int $interlace 是否支持渐进显示 [可选]
  * @param  int $ignoreError 忽略结果 [可选]
- * @return string 
+ * @return string
  * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */
@@ -45,7 +45,7 @@ var_dump($thumbLink, $thumbLink2);
  * @link   http://developer.qiniu.com/code/v6/api/kodo-api/image/watermark.html
  * @return string
  * @author Sherlock Ren <sherlock_ren@icloud.com>
- */ 
+ */
 $waterLink = $imageUrlBuilder->waterImg($url, $waterImage);
 // 函数调用方法
 //$waterLink = \Qiniu\waterImg($url, $waterImage);

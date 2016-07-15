@@ -151,15 +151,15 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param  int $quality 图片质量
      * @param  int $interlace 是否支持渐进显示
      * @param  int $ignoreError 忽略结果
-     * @return string 
+     * @return string
      * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function thumbnail(
-        $url, 
-        $mode, 
-        $width, 
-        $height, 
+        $url,
+        $mode,
+        $width,
+        $height,
         $format = null,
         $quality = null,
         $interlace = null,
@@ -188,11 +188,11 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function waterImg(
-        $url, 
-        $image, 
+        $url,
+        $image,
         $dissolve = 100,
-        $gravity = 'SouthEast', 
-        $dx = null, 
+        $gravity = 'SouthEast',
+        $dx = null,
         $dy = null,
         $watermarkScale = null
     ) {
@@ -221,14 +221,14 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @author Sherlock Ren <sherlock_ren@icloud.com>
      */
     function waterText(
-        $url, 
-        $text, 
-        $font = '黑体', 
-        $fontSize = 0, 
-        $fontColor = null, 
+        $url,
+        $text,
+        $font = '黑体',
+        $fontSize = 0,
+        $fontColor = null,
         $dissolve = 100,
-        $gravity = 'SouthEast', 
-        $dx = null, 
+        $gravity = 'SouthEast',
+        $dx = null,
         $dy = null
     ) {
         static $imageUrlBuilder = null;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Qiniu\Tests;
 
@@ -64,26 +64,26 @@ class ImageUrlBuilderTest extends \PHPUnit_Framework_TestCase
         $image = 'http://developer.qiniu.com/resource/logo-2.jpg';
 
         // 水印简单测试
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterImg($url, $image));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/gravity/SouthEast/', $imageUrlBuilder->waterImg($url, $image, 101));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/', $imageUrlBuilder->waterImg($url, $image, 101, 'sdfsd'));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image));       
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterImg($url, $image));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/gravity/SouthEast/', $imageUrlBuilder->waterImg($url, $image, 101));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/', $imageUrlBuilder->waterImg($url, $image, 101, 'sdfsd'));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image));
         
         // 横轴边距测试
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad'));       
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad'));
         
         // 纵轴边距测试
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/dy/10/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10, 10));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad', 'asdf'));       
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/dy/10/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10, 10));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad', 'asdf'));
         
         // 自适应原图的短边比例测试
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/dy/10/ws/0.5/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10, 10, 0.5));       
-        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad', 'asdf', 2));       
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/dx/10/dy/10/ws/0.5/', $imageUrlBuilder->waterImg($url, $image, 100, 'SouthEast', 10, 10, 0.5));
+        $this->assertEquals($url . '?watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url, $image, 100, 'SouthEast', 'sad', 'asdf', 2));
     
         // 多参数测试
-        $this->assertEquals($url2 . '|watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterImg($url2, $image));       
-        $this->assertEquals($url2 . '|watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url2, $image));       
+        $this->assertEquals($url2 . '|watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterImg($url2, $image));
+        $this->assertEquals($url2 . '|watermark/1/image/aHR0cDovL2RldmVsb3Blci5xaW5pdS5jb20vcmVzb3VyY2UvbG9nby0yLmpwZw==/dissolve/100/gravity/SouthEast/', \Qiniu\waterImg($url2, $image));
     }
 
     /**
@@ -104,30 +104,30 @@ class ImageUrlBuilderTest extends \PHPUnit_Framework_TestCase
         $fontColor = '#FF0000';
 
         // 水印简单测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf'));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf'));
 
         // 字体颜色测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor));
         
         // 透明度测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/SouthEast/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/gravity/SouthEast/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101));
         
         // 水印位置测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East'));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf'));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East'));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf'));
 
         // 横轴距离测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/dx/10/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East', 10));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf', 'sdfs'));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/dx/10/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East', 10));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf', 'sdfs'));
 
         // 纵轴距离测试
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/dx/10/dy/10/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East', 10, 10));       
-        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf', 'sdfs', 'ssdf'));       
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/I0ZGMDAwMA==/dissolve/80/gravity/East/dx/10/dy/10/', $imageUrlBuilder->waterText($url, $text, $font, 500, $fontColor, 80, 'East', 10, 10));
+        $this->assertEquals($url . '?watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fill/I0ZGMDAwMA==/', \Qiniu\waterText($url, $text, $font, 'sdf', $fontColor, 101, 'sdfsdf', 'sdfs', 'ssdf'));
         // 多参数测试
-        $this->assertEquals($url2 . '|watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url2, $text, $font, 500));       
-        $this->assertEquals($url2 . '|watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url2, $text, $font, 500));       
+        $this->assertEquals($url2 . '|watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', $imageUrlBuilder->waterText($url2, $text, $font, 500));
+        $this->assertEquals($url2 . '|watermark/2/text/5rWL6K-V5LiA5LiL/font/5b6u6L2v6ZuF6buR/fontsize/500/dissolve/100/gravity/SouthEast/', \Qiniu\waterText($url2, $text, $font, 500));
     }
 }
