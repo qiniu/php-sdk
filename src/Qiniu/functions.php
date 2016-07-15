@@ -165,12 +165,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $interlace = null,
         $ignoreError = 1
     ) {
-        static $imageProcess = null;
-        if (is_null($imageProcess)) {
-            $imageProcess = new \Qiniu\Processing\ImageProcess;
+        static $imageUrlBuilder = null;
+        if (is_null($imageUrlBuilder)) {
+            $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
         }
 
-        return call_user_func_array(array($imageProcess, 'thumbnail'), func_get_args());
+        return call_user_func_array(array($imageUrlBuilder, 'thumbnail'), func_get_args());
     }
 
     /**
@@ -196,12 +196,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dy = null,
         $watermarkScale = null
     ) {
-        static $imageProcess = null;
-        if (is_null($imageProcess)) {
-            $imageProcess = new \Qiniu\Processing\ImageProcess;
+        static $imageUrlBuilder = null;
+        if (is_null($imageUrlBuilder)) {
+            $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
         }
 
-        return call_user_func_array(array($imageProcess, 'waterImg'), func_get_args());
+        return call_user_func_array(array($imageUrlBuilder, 'waterImg'), func_get_args());
     }
 
     /**
@@ -231,11 +231,11 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dx = null, 
         $dy = null
     ) {
-        static $imageProcess = null;
-        if (is_null($imageProcess)) {
-            $imageProcess = new \Qiniu\Processing\ImageProcess;
+        static $imageUrlBuilder = null;
+        if (is_null($imageUrlBuilder)) {
+            $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
         }
 
-        return call_user_func_array(array($imageProcess, 'waterText'), func_get_args());
+        return call_user_func_array(array($imageUrlBuilder, 'waterText'), func_get_args());
     }
 }

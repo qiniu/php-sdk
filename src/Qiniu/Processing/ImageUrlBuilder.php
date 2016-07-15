@@ -4,11 +4,11 @@ namespace Qiniu\Processing;
 use Qiniu;
 
 /**
- * 主要涉及图片的处理
+ * 主要涉及图片链接拼接
  *
  * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
  */
-final class ImageProcess
+final class ImageUrlBuilder
 {
     /**
      * mode合法范围值

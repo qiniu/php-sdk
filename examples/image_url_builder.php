@@ -2,9 +2,9 @@
 require_once __DIR__ . '/../autoload.php';
 
 // 引入图片处理类
-use Qiniu\Processing\ImageProcess;
+use Qiniu\Processing\ImageUrlBuilder;
 
-$imageProcess = new ImageProcess();
+$imageUrlBuilder = new ImageUrlBuilder();
 
 // 要处理图片
 $url = 'http://78re52.com1.z0.glb.clouddn.com/resource/gogopher.jpg';
@@ -26,7 +26,7 @@ $waterImage = 'http://developer.qiniu.com/resource/logo-2.jpg';
  * @link http://developer.qiniu.com/code/v6/api/kodo-api/image/imageview2.html
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */
-$thumbLink = $imageProcess->thumbnail($url, 1, 100, 100);
+$thumbLink = $imageUrlBuilder->thumbnail($url, 1, 100, 100);
 
 // 函数方式调用 也可拼接多个操作参数 图片+水印
 $thumbLink2 = \Qiniu\thumbnail($url2, 1, 100, 100);
@@ -46,7 +46,7 @@ var_dump($thumbLink, $thumbLink2);
  * @return string
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */ 
-$waterLink = $imageProcess->waterImg($url, $waterImage);
+$waterLink = $imageUrlBuilder->waterImg($url, $waterImage);
 // 函数调用方法
 //$waterLink = \Qiniu\waterImg($url, $waterImage);
 var_dump($waterLink);
@@ -67,7 +67,7 @@ var_dump($waterLink);
  * @return string
  * @author Sherlock Ren <sherlock_ren@icloud.com>
  */
-$textLink = $imageProcess->waterText($url, '你瞅啥', '微软雅黑', 300);
+$textLink = $imageUrlBuilder->waterText($url, '你瞅啥', '微软雅黑', 300);
 // 函数调用方法
 // $textLink = \Qiniu\waterText($url, '你瞅啥', '微软雅黑', 300);
 var_dump($textLink);
