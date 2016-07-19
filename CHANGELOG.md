@@ -1,5 +1,17 @@
 #Changelog
 
+## 7.0.8 (2016-07-19)
+### 增加
+* demo
+* https url 支持
+* deleteAfterDays 策略
+* 添加图片处理链接统一拼接方法 by @SherlockRen
+
+## 7.0.7 (2016-01-12)
+### 修正
+* PersistentFop参数pipeline和notify_url失效
+* resume 模式 close file inputstream
+
 ## 7.0.6 (2015-12-05)
 ### 修正
 * php7.0 Json 对空字符串解析单元测试报错
