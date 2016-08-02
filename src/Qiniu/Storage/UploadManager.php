@@ -2,6 +2,7 @@
 namespace Qiniu\Storage;
 
 use Qiniu\Config;
+use Qiniu\Zone;
 use Qiniu\Http\HttpClient;
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\FormUploader;

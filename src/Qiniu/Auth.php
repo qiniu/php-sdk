@@ -2,6 +2,7 @@
 namespace Qiniu;
 
 use Qiniu;
+use Qiniu\Zone;
 
 final class Auth
 {
@@ -82,6 +83,9 @@ final class Auth
         $args = self::copyPolicy($args, $policy, $strictPolicy);
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
+
+        $zone = new Zone();
+        $args['upHosts'] = $zone->getUpHosts($this->accessKey, $bucket);
         $b = json_encode($args);
         return $this->signWithData($b);
     }
@@ -114,6 +118,8 @@ final class Auth
         'persistentPipeline',
         
         'deleteAfterDays',
+
+        'upHosts',
     );
 
     private static $deprecatedPolicyFields = array(
