@@ -15,6 +15,11 @@ final class Auth
         $this->secretKey = $secretKey;
     }
 
+    public function getAccessKey()
+    {
+        return $this->accessKey;
+    }
+
     public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
@@ -72,7 +77,8 @@ final class Auth
         $key = null,
         $expires = 3600,
         $policy = null,
-        $strictPolicy = true
+        $strictPolicy = true,
+        Zone $zone = null
     ) {
         $deadline = time() + $expires;
         $scope = $bucket;
@@ -84,7 +90,10 @@ final class Auth
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
 
-        $zone = new Zone();
+        if ($zone === null) 
+        {
+            $zone = new Zone();
+        }
         $args['upHosts'] = $zone->getUpHosts($this->accessKey, $bucket);
         $b = json_encode($args);
         return $this->signWithData($b);

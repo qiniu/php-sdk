@@ -99,7 +99,7 @@ final class FormUploader
         $fields['key'] = $key;
         $headers =array('Content-Type' => 'multipart/form-data');
 
-        $upHost = $config->zone->getBucketHostsByUpToken($upToken);
+        $upHost = $config->zone->getUpHostByToken($upToken);
         $response = client::post($upHost, $fields, $headers);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));

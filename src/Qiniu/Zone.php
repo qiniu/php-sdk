@@ -25,28 +25,34 @@ final class Zone
     public function getUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        $upHosts = $this->getUpHosts($ak, $bucket);
+        list($upHosts,) = $this->getUpHosts($ak, $bucket);
         return $upHosts[0];
     }
 
     public function getBackupUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        $upHosts = $this->getUpHosts($ak, $bucket);
+        list($upHosts,) = $this->getUpHosts($ak, $bucket);
         return $upHosts[1];
+    }
+
+    public function getIoHost($ak, $bucket)
+    {
+        list($bucketHosts, ) = $this->getBucketHosts($ak, $bucket);
+        $ioHost = $bucketHosts['ioHost'];
+        return $upHost;
     }
 
     public function getUpHosts($ak, $bucket)
     {
-        $bucketHosts = $this->getBucketHosts($ak, $bucket);
-        $upHosts = $bucketHosts['upHosts'];
-        return $upHosts;
-    }
+        list($bucketHosts, $err) = $this->getBucketHosts($ak, $bucket);
+        if ($err !== null)
+        {
+            return array(null, $err);
+        }
 
-    public function getBucketHostsByUpToken($uptoken) 
-    {
-        list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        return $this->getBucketHosts($ak, $bucket);
+        $upHosts = $bucketHosts['upHosts'];
+        return array($upHosts, null);
     }
 
     private function unmarshalUpToken($uptoken)
@@ -61,7 +67,11 @@ final class Zone
         $policy = base64_urlSafeDecode($token[2]);
         $policy = json_decode($policy, true);
 
-        list($bucket, $_) = split(':', $policy['scope']);
+        $bucket = $policy['scope'];
+        if (strpos($bucket, ':'))
+        {
+            $bucket = split(':', $bucket)[0];
+        }
          
         return array($ak, $bucket);
     }
@@ -81,14 +91,17 @@ final class Zone
             return $this->hostCache[$key];
         }
 
-        list($hosts, $_) = $this->bucketHosts($ak, $bucket);
+        list($hosts, $err) = $this->bucketHosts($ak, $bucket);
+        if ($err !== null) 
+        {
+            return array(null , $err);
+        }
 
-        var_dump($hosts);
         $schemeHosts = $hosts[$this->scheme];
         $bucketHosts = array('upHosts' => $schemeHosts['up'], 'ioHost' => $schemeHosts['io'], 'deadline' => time() + $hosts['ttl']);
 
         $this->hostCache[$key] = $bucketHosts;
-        return $bucketHosts;
+        return array($bucketHosts, null);
     }
 
 
