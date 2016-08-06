@@ -11,8 +11,8 @@ final class Zone
     public $upHostBackup;
 
     //array(
-    //     <scheme>:<ak>:<bucket> ==>
-    //          array('deadline' => 'xxx', 'upHosts' => array(), 'ioHost' => 'xxx.com')
+    //    <scheme>:<ak>:<bucket> ==>
+    //        array('deadline' => 'xxx', 'upHosts' => array(), 'ioHost' => 'xxx.com')
     //)
     public $hostCache;
     public $scheme = 'http';
