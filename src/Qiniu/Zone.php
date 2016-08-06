@@ -16,8 +16,7 @@ final class Zone
     public function __construct($scheme = null)
     {
         $this->hostCache = array();
-        if ($scheme != null) 
-        {
+        if ($scheme != null) {
             $this->scheme = $scheme;
         }
     }
@@ -39,15 +38,13 @@ final class Zone
     public function getIoHost($ak, $bucket)
     {
         list($bucketHosts, ) = $this->getBucketHosts($ak, $bucket);
-        $ioHost = $bucketHosts['ioHost'];
-        return $upHost;
+        return $bucketHosts['ioHost'][0];
     }
 
     public function getUpHosts($ak, $bucket)
     {
         list($bucketHosts, $err) = $this->getBucketHosts($ak, $bucket);
-        if ($err !== null)
-        {
+        if ($err !== null) {
             return array(null, $err);
         }
 
@@ -58,8 +55,7 @@ final class Zone
     private function unmarshalUpToken($uptoken)
     {
         $token = split(':', $uptoken);
-        if (count($token) !== 3)
-        {
+        if (count($token) !== 3) {
             throw new \Exception("Invalid Uptoken", 1);
         }
 
@@ -68,8 +64,7 @@ final class Zone
         $policy = json_decode($policy, true);
 
         $bucket = $policy['scope'];
-        if (strpos($bucket, ':'))
-        {
+        if (strpos($bucket, ':')) {
             $bucket = split(':', $bucket)[0];
         }
          
@@ -81,19 +76,16 @@ final class Zone
         $key = $ak . $bucket;
 
         $exist = false;
-        if (count($this->hostCache) > 0) 
-        {
+        if (count($this->hostCache) > 0) {
             $exist = array_key_exists($key, $this->hostCache) && $this->hostCache[$key]['deadline'] > time();
         }
 
-        if ($exist) 
-        {
+        if ($exist) {
             return $this->hostCache[$key];
         }
 
         list($hosts, $err) = $this->bucketHosts($ak, $bucket);
-        if ($err !== null) 
-        {
+        if ($err !== null) {
             return array(null , $err);
         }
 
@@ -121,10 +113,10 @@ final class Zone
      *    }
      *  }
      **/
-    private function bucketHosts($ak, $bucket) 
+    private function bucketHosts($ak, $bucket)
     {
-        $path = '/v1/query' . "?ak=$ak&bucket=$bucket";
-        $ret = Client::Get(Config::UC_HOST . $path);
+        $url = Config::UC_HOST . '/v1/query' . "?ak=$ak&bucket=$bucket";
+        $ret = Client::Get($url);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

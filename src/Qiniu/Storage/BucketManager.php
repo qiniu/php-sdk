@@ -20,8 +20,7 @@ final class BucketManager
     public function __construct(Auth $auth, Zone $zone = null)
     {
         $this->auth = $auth;
-        if ($zone === null)
-        {
+        if ($zone === null) {
             $this->zone = new Zone();
         }
     }
@@ -216,7 +215,7 @@ final class BucketManager
         $ak = $this->auth->getAccessKey();
         $ioHost = $this->zone->getIoHost($ak, $bucket);
 
-        $url = $ioPost . $path;
+        $url = $ioHost . $path;
         return $this->post($url, null);
     }
 
@@ -237,7 +236,7 @@ final class BucketManager
         $ak = $this->auth->getAccessKey();
         $ioHost = $this->zone->getIoHost($ak, $bucket);
 
-        $url = $ioPost . $path;
+        $url = $ioHost . $path;
         list(, $error) = $this->post($url, null);
         return $error;
     }

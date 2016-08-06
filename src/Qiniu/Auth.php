@@ -90,8 +90,7 @@ final class Auth
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
 
-        if ($zone === null) 
-        {
+        if ($zone === null) {
             $zone = new Zone();
         }
         $args['upHosts'] = $zone->getUpHosts($this->accessKey, $bucket);
