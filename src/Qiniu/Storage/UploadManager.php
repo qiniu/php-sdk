@@ -109,6 +109,7 @@ final class UploadManager
                 $checkCrc
             );
         }
+
         $up = new ResumeUploader(
             $upToken,
             $key,

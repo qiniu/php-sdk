@@ -10,7 +10,11 @@ final class Zone
     public $upHost;
     public $upHostBackup;
 
-    public $hostCache; //<scheme>:<ak>:<bucket> ==> array('deadline' => 'xxx', 'upHosts' => array(), 'ioHost' => 'xxx.com')
+    //array(
+    //     <scheme>:<ak>:<bucket> ==>
+    //          array('deadline' => 'xxx', 'upHosts' => array(), 'ioHost' => 'xxx.com')
+    //)
+    public $hostCache;
     public $scheme = 'http';
 
     public function __construct($scheme = null)
@@ -37,8 +41,13 @@ final class Zone
 
     public function getIoHost($ak, $bucket)
     {
-        list($bucketHosts, ) = $this->getBucketHosts($ak, $bucket);
-        return $bucketHosts['ioHost'][0];
+        list($bucketHosts,) = $this->getBucketHosts($ak, $bucket);
+        $ioHosts = $bucketHosts['ioHost'];
+        if (count($ioHosts) === 0) {
+            return "";
+        }
+
+        return $ioHosts[0];
     }
 
     public function getUpHosts($ak, $bucket)
@@ -73,15 +82,11 @@ final class Zone
 
     public function getBucketHosts($ak, $bucket)
     {
-        $key = $ak . $bucket;
+        $key = $this->scheme . $ak . $bucket;
 
-        $exist = false;
-        if (count($this->hostCache) > 0) {
-            $exist = array_key_exists($key, $this->hostCache) && $this->hostCache[$key]['deadline'] > time();
-        }
-
-        if ($exist) {
-            return $this->hostCache[$key];
+        $bucketHosts = $this->getBucketHostsFromCache($key);
+        if (count($bucketHosts) > 0) {
+            return array($bucketHosts, null);
         }
 
         list($hosts, $err) = $this->bucketHosts($ak, $bucket);
@@ -90,12 +95,39 @@ final class Zone
         }
 
         $schemeHosts = $hosts[$this->scheme];
-        $bucketHosts = array('upHosts' => $schemeHosts['up'], 'ioHost' => $schemeHosts['io'], 'deadline' => time() + $hosts['ttl']);
+        $bucketHosts = array(
+            'upHosts' => $schemeHosts['up'],
+            'ioHost' => $schemeHosts['io'],
+            'deadline' => time() + $hosts['ttl']
+        );
 
-        $this->hostCache[$key] = $bucketHosts;
+        $this->setBucketHostsToCache($key, $bucketHosts);
         return array($bucketHosts, null);
     }
 
+    private function getBucketHostsFromCache($key)
+    {
+        $ret = array();
+        if (count($this->hostCache) === 0) {
+            return $ret;
+        }
+
+        if (!array_key_exists($key, $this->hostCache)) {
+            return $ret;
+        }
+
+        if ($this->hostCache[$key]['deadline'] > time()) {
+            $ret = $this->hostCache[$key];
+        }
+
+        return $ret;
+    }
+
+    private function setBucketHostsToCache($key, $val)
+    {
+        $this->hostCache[$key] = $val;
+        return;
+    }
 
     /*  请求包：
      *   GET /v1/query?ak=<ak>&&bucket=<bucket>

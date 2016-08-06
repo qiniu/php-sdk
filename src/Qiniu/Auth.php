@@ -93,7 +93,12 @@ final class Auth
         if ($zone === null) {
             $zone = new Zone();
         }
-        $args['upHosts'] = $zone->getUpHosts($this->accessKey, $bucket);
+
+        list($upHosts, $err) = $zone->getUpHosts($this->accessKey, $bucket);
+        if ($err === null) {
+            $args['upHosts'] = $upHosts;
+        }
+        
         $b = json_encode($args);
         return $this->signWithData($b);
     }

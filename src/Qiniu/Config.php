@@ -18,8 +18,8 @@ final class Config
 
     public function __construct(Zone $z = null)         // 构造函数，默认为zone0
     {
-        if ($z === null) {
+        // if ($z === null) {
             $this->zone = new Zone();
-        }
+        // }
     }
 }
