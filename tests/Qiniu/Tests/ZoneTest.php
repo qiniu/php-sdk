@@ -32,21 +32,21 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
     public function testUpHosts()
     {
 
-    	list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketName);
+        list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketName);
         $this->assertNull($err);
         $this->assertEquals('http://up.qiniu.com', $upHosts[0]);
         $this->assertEquals('http://upload.qiniu.com', $upHosts[1]);
 
-    	list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketNameBC);
+        list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketNameBC);
         $this->assertNull($err);
         $this->assertEquals('http://up-z1.qiniu.com', $upHosts[0]);
         $this->assertEquals('http://upload-z1.qiniu.com', $upHosts[1]);
 
-    	list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketName);
+        list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketName);
         $this->assertNull($err);
         $this->assertEquals('https://up.qbox.me', $upHosts[0]);
 
-    	list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketNameBC);
+        list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketNameBC);
         $this->assertNull($err);
         $this->assertEquals('https://up-z1.qbox.me', $upHosts[0]);
     }
