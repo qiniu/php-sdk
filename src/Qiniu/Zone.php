@@ -78,7 +78,7 @@ final class Zone
         if (strpos($scope, ':')) {
             $scopes = explode(':', $scope);
             $bucket = $scopes[0];
-        } 
+        }
 
         return array($ak, $bucket);
     }
