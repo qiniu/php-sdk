@@ -72,11 +72,14 @@ final class Zone
         $policy = base64_urlSafeDecode($token[2]);
         $policy = json_decode($policy, true);
 
-        $bucket = $policy['scope'];
-        if (strpos($bucket, ':')) {
-            $bucket = split(':', $bucket)[0];
-        }
-         
+        $scope = $policy['scope'];
+        $bucket = $scope;
+
+        if (strpos($scope, ':')) {
+            $scopes = split(':', $scope);
+            $bucket = $scopes[0];
+        } 
+
         return array($ak, $bucket);
     }
 
