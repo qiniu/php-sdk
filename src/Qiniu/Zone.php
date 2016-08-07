@@ -63,7 +63,7 @@ final class Zone
 
     private function unmarshalUpToken($uptoken)
     {
-        $token = split(':', $uptoken);
+        $token = explode(':', $uptoken);
         if (count($token) !== 3) {
             throw new \Exception("Invalid Uptoken", 1);
         }
@@ -76,7 +76,7 @@ final class Zone
         $bucket = $scope;
 
         if (strpos($scope, ':')) {
-            $scopes = split(':', $scope);
+            $scopes = explode(':', $scope);
             $bucket = $scopes[0];
         } 
 
