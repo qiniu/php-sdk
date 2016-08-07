@@ -2,6 +2,7 @@
 namespace Qiniu;
 
 use Qiniu;
+use Qiniu\Zone;
 
 final class Auth
 {
@@ -12,6 +13,11 @@ final class Auth
     {
         $this->accessKey = $accessKey;
         $this->secretKey = $secretKey;
+    }
+
+    public function getAccessKey()
+    {
+        return $this->accessKey;
     }
 
     public function sign($data)
@@ -71,7 +77,8 @@ final class Auth
         $key = null,
         $expires = 3600,
         $policy = null,
-        $strictPolicy = true
+        $strictPolicy = true,
+        Zone $zone = null
     ) {
         $deadline = time() + $expires;
         $scope = $bucket;
@@ -82,6 +89,16 @@ final class Auth
         $args = self::copyPolicy($args, $policy, $strictPolicy);
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
+
+        if ($zone === null) {
+            $zone = new Zone();
+        }
+
+        list($upHosts, $err) = $zone->getUpHosts($this->accessKey, $bucket);
+        if ($err === null) {
+            $args['upHosts'] = $upHosts;
+        }
+        
         $b = json_encode($args);
         return $this->signWithData($b);
     }
@@ -114,6 +131,8 @@ final class Auth
         'persistentPipeline',
         
         'deleteAfterDays',
+
+        'upHosts',
     );
 
     private static $deprecatedPolicyFields = array(

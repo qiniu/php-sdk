@@ -21,7 +21,8 @@ $pipeline = 'pipeline_name';
 $notifyUrl = 'http://375dec79.ngrok.com/notify.php';
 $pfop = new PersistentFop($auth, $bucket, $pipeline, $notifyUrl);
 
-//需要添加水印的图片UrlSafeBase64,可以参考http://developer.qiniu.com/code/v6/api/dora-api/av/video-watermark.html
+//需要添加水印的图片UrlSafeBase64
+//可以参考http://developer.qiniu.com/code/v6/api/dora-api/av/video-watermark.html
 $base64URL = Qiniu\base64_urlSafeEncode('http://developer.qiniu.com/resource/logo-2.jpg');
 
 //水印参数

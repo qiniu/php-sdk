@@ -3,6 +3,7 @@ namespace Qiniu\Storage;
 
 use Qiniu\Auth;
 use Qiniu\Config;
+use Qiniu\Zone;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
@@ -14,10 +15,14 @@ use Qiniu\Http\Error;
 final class BucketManager
 {
     private $auth;
+    private $zone;
 
-    public function __construct(Auth $auth)
+    public function __construct(Auth $auth, Zone $zone = null)
     {
         $this->auth = $auth;
+        if ($zone === null) {
+            $this->zone = new Zone();
+        }
     }
 
     /**
@@ -206,7 +211,12 @@ final class BucketManager
         $resource = \Qiniu\base64_urlSafeEncode($url);
         $to = \Qiniu\entry($bucket, $key);
         $path = '/fetch/' . $resource . '/to/' . $to;
-        return $this->ioPost($path);
+
+        $ak = $this->auth->getAccessKey();
+        $ioHost = $this->zone->getIoHost($ak, $bucket);
+
+        $url = $ioHost . $path;
+        return $this->post($url, null);
     }
 
     /**
@@ -222,7 +232,12 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/prefetch/' . $resource;
-        list(, $error) = $this->ioPost($path);
+
+        $ak = $this->auth->getAccessKey();
+        $ioHost = $this->zone->getIoHost($ak, $bucket);
+
+        $url = $ioHost . $path;
+        list(, $error) = $this->post($url, null);
         return $error;
     }
 
