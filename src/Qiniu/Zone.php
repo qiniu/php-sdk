@@ -183,8 +183,6 @@ final class Zone
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        echo '----------------------->>>>>>>>>>>';
-        var_dump($r);
         return array($r, null);
     }
 }
