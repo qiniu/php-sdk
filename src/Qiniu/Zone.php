@@ -36,7 +36,9 @@ final class Zone
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
         list($upHosts,) = $this->getUpHosts($ak, $bucket);
-        return $upHosts[1];
+
+        $upHost = isset($upHosts[1]) ? $upHosts[1] : $upHosts[0];
+        return $upHost;
     }
 
     public function getIoHost($ak, $bucket)
