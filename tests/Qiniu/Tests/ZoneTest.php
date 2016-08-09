@@ -50,4 +50,20 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($err);
         $this->assertEquals('https://up-z1.qbox.me', $upHosts[0]);
     }
+
+    public function testIoHosts()
+    {
+
+        $ioHost = $this->zone->getIoHost($this->ak, $this->bucketName);
+        $this->assertEquals('http://iovip.qbox.me', $ioHost);
+
+        $ioHost = $this->zone->getIoHost($this->ak, $this->bucketNameBC);
+        $this->assertEquals('http://iovip-z1.qbox.me', $ioHost);
+
+        $ioHost = $this->zoneHttps->getIoHost($this->ak, $this->bucketName);
+        $this->assertEquals('https://iovip.qbox.me', $ioHost);
+
+        $ioHost = $this->zoneHttps->getIoHost($this->ak, $this->bucketNameBC);
+        $this->assertEquals('https://iovip-z1.qbox.me', $ioHost);
+    }
 }
