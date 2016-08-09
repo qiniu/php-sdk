@@ -145,7 +145,7 @@ final class Zone
     private function hostCacheToFile()
     {
         $path = $this->hostCacheFilePath();
-        file_put_contents($path, json_encode($this->hostCache));
+        file_put_contents($path, json_encode($this->hostCache), LOCK_EX);
         return;
     }
 
