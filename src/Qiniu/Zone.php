@@ -43,10 +43,6 @@ final class Zone
     {
         list($bucketHosts,) = $this->getBucketHosts($ak, $bucket);
         $ioHosts = $bucketHosts['ioHost'];
-        if (count($ioHosts) === 0) {
-            return "";
-        }
-
         return $ioHosts[0];
     }
 
