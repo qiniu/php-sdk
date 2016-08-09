@@ -85,7 +85,7 @@ final class Zone
 
     public function getBucketHosts($ak, $bucket)
     {
-        $key = $this->scheme . $ak . $bucket;
+        $key = $this->scheme . ":$ak:$bucket";
 
         $bucketHosts = $this->getBucketHostsFromCache($key);
         if (count($bucketHosts) > 0) {
@@ -112,7 +112,7 @@ final class Zone
     {
         $ret = array();
         if (count($this->hostCache) === 0) {
-            return $ret;
+            $this->hostCacheFromFile();
         }
 
         if (!array_key_exists($key, $this->hostCache)) {
@@ -129,7 +129,34 @@ final class Zone
     private function setBucketHostsToCache($key, $val)
     {
         $this->hostCache[$key] = $val;
+        $this->hostCacheToFile();
         return;
+    }
+
+    private function hostCacheFromFile()
+    {
+
+        $path = $this->hostCacheFilePath();
+        if (!file_exists($path)) {
+            return;
+        }
+
+        $bucketHosts = file_get_contents($path);
+        $this->hostCache = json_decode($bucketHosts, true);
+        return;
+    }
+
+    private function hostCacheToFile()
+    {
+        $path = $this->hostCacheFilePath();
+        file_put_contents($path, json_encode($this->hostCache));
+        return;
+    }
+
+    private function hostCacheFilePath()
+    {
+        $home = getenv('HOME');
+        return $home . '/.qiniu_phpsdk_hostscache.json';
     }
 
     /*  请求包：
@@ -156,6 +183,8 @@ final class Zone
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
+        echo '----------------------->>>>>>>>>>>';
+        var_dump($r);
         return array($r, null);
     }
 }
