@@ -7,9 +7,10 @@ use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
 /**
- * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
+ * 主要涉及了CDN 缓存的刷新和预取
  *
- * @link http://developer.qiniu.com/docs/v6/api/reference/rs/
+ * @link http://developer.qiniu.com/article/fusion/api/refresh.html
+ * @link http://developer.qiniu.com/article/fusion/api/prefetch.html
  */
 final class CacheManager
 {
