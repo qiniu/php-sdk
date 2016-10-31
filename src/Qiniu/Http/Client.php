@@ -71,7 +71,7 @@ final class Client
         return $ua;
     }
 
-    private static function sendRequest($request)
+    public static function sendRequest($request)
     {
         $t1 = microtime(true);
         $ch = curl_init();
