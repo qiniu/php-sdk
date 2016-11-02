@@ -153,8 +153,7 @@ final class Zone
 
     private function hostCacheFilePath()
     {
-        $home = getenv('HOME');
-        return $home . '/.qiniu_phpsdk_hostscache.json';
+        return sys_get_temp_dir() . '/.qiniu_phpsdk_hostscache.json';
     }
 
     /*  请求包：
