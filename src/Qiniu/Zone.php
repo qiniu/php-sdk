@@ -28,17 +28,19 @@ final class Zone
     public function getUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        list($upHosts,) = $this->getUpHosts($ak, $bucket);
-        return $upHosts[0];
+        // sssssssssssssssssssssssssss
+        list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
+        return array($upHosts[0], $err);
     }
 
     public function getBackupUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        list($upHosts,) = $this->getUpHosts($ak, $bucket);
+        // sssssssssssssssssssssssssss
+        list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
 
         $upHost = isset($upHosts[1]) ? $upHosts[1] : $upHosts[0];
-        return $upHost;
+        return array($upHost, $err);
     }
 
     public function getIoHost($ak, $bucket)

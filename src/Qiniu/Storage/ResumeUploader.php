@@ -54,7 +54,12 @@ final class ResumeUploader
         $this->mime = $mime;
         $this->contexts = array();
         $this->config = $config;
-        $this->host = $config->zone->getUpHostByToken($upToken);
+
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            throw new \Exception($err, 1);
+        }
+        $this->host = $upHost;
     }
 
     /**
@@ -76,7 +81,11 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = $this->config->zone->getBackupUpHostByToken($this->upToken);
+                list($bakHost, $err) = $this->config->zone->getBackupUpHostByToken($this->upToken);
+                if ($err != null) {
+                    return array(null, $err);
+                }
+                $this->host = $bakHost;
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
