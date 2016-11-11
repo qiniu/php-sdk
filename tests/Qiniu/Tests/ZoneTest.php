@@ -12,6 +12,7 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
 
     protected $bucketName;
     protected $bucketNameBC;
+    protected $bucketNameNA;
 
 
     protected function setUp()
@@ -21,6 +22,9 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
 
         global $bucketNameBC;
         $this->bucketNameBC = $bucketNameBC;
+
+        global $bucketNameNA;
+        $this->bucketNameNA = $bucketNameNA;
 
         global $accessKey;
         $this->ak = $accessKey;
@@ -32,23 +36,37 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
     public function testUpHosts()
     {
 
+        // test nb http
         list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketName);
         $this->assertNull($err);
         $this->assertEquals('http://up.qiniu.com', $upHosts[0]);
         $this->assertEquals('http://upload.qiniu.com', $upHosts[1]);
 
+        // test bc http
         list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketNameBC);
         $this->assertNull($err);
         $this->assertEquals('http://up-z1.qiniu.com', $upHosts[0]);
         $this->assertEquals('http://upload-z1.qiniu.com', $upHosts[1]);
 
+        // test na http
+        list($upHosts, $err) = $this->zone->getUpHosts($this->ak, $this->bucketNameNA);
+        $this->assertNull($err);
+        $this->assertEquals('http://up-na0.qiniu.com', $upHosts[0]);
+
+        // test nb https
         list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketName);
         $this->assertNull($err);
         $this->assertEquals('https://up.qbox.me', $upHosts[0]);
 
+        // test bc https
         list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketNameBC);
         $this->assertNull($err);
         $this->assertEquals('https://up-z1.qbox.me', $upHosts[0]);
+
+        // test na https
+        list($upHosts, $err) = $this->zoneHttps->getUpHosts($this->ak, $this->bucketNameNA);
+        $this->assertNull($err);
+        $this->assertEquals('https://up-na0.qbox.me', $upHosts[0]);
     }
 
     public function testUpHostByToken()
@@ -82,16 +100,28 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
     public function testIoHosts()
     {
 
+        // test nb http
         $ioHost = $this->zone->getIoHost($this->ak, $this->bucketName);
         $this->assertEquals('http://iovip.qbox.me', $ioHost);
 
+        // test bc http
         $ioHost = $this->zone->getIoHost($this->ak, $this->bucketNameBC);
         $this->assertEquals('http://iovip-z1.qbox.me', $ioHost);
 
+        // test na http
+        $ioHost = $this->zone->getIoHost($this->ak, $this->bucketNameNA);
+        $this->assertEquals('http://iovip-na0.qbox.me', $ioHost);
+
+        // test nb https
         $ioHost = $this->zoneHttps->getIoHost($this->ak, $this->bucketName);
         $this->assertEquals('https://iovip.qbox.me', $ioHost);
 
+        // test bc https
         $ioHost = $this->zoneHttps->getIoHost($this->ak, $this->bucketNameBC);
         $this->assertEquals('https://iovip-z1.qbox.me', $ioHost);
+
+        // test na https
+        $ioHost = $this->zoneHttps->getIoHost($this->ak, $this->bucketNameNA);
+        $this->assertEquals('https://iovip-na0.qbox.me', $ioHost);
     }
 }
