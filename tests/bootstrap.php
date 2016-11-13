@@ -10,6 +10,7 @@ $testAuth = new Auth($accessKey, $secretKey);
 $bucketName = 'phpsdk';
 $key = 'php-logo.png';
 $bucketNameBC = 'phpsdk-bc';
+$bucketNameNA = 'phpsdk-na';
 
 $dummyAccessKey = 'abcdefghklmnopq';
 $dummySecretKey = '1234567890';

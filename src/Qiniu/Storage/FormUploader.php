@@ -49,7 +49,11 @@ final class FormUploader
             }
         }
 
-        $upHost = $config->zone->getUpHostByToken($upToken);
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
         $response = Client::multipartPost($upHost, $fields, 'file', $fname, $data, $mime);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));
@@ -99,7 +103,11 @@ final class FormUploader
         $fields['key'] = $key;
         $headers =array('Content-Type' => 'multipart/form-data');
 
-        $upHost = $config->zone->getUpHostByToken($upToken);
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            return array(null, $err);
+        }
+        
         $response = client::post($upHost, $fields, $headers);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));
