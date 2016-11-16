@@ -108,7 +108,7 @@ final class FormUploader
             return array(null, $err);
         }
         
-        $response = client::post($upHost, $fields, $headers);
+        $response = Client::post($upHost, $fields, $headers);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));
         }
