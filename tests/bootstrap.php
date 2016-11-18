@@ -11,6 +11,7 @@ $bucketName = 'phpsdk';
 $key = 'php-logo.png';
 $key2 = 'niu.jpg';
 $bucketNameBC = 'phpsdk-bc';
+$bucketNameNA = 'phpsdk-na';
 
 $dummyAccessKey = 'abcdefghklmnopq';
 $dummySecretKey = '1234567890';

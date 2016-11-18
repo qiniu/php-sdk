@@ -28,17 +28,17 @@ final class Zone
     public function getUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        list($upHosts,) = $this->getUpHosts($ak, $bucket);
-        return $upHosts[0];
+        list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
+        return array($upHosts[0], $err);
     }
 
     public function getBackupUpHostByToken($uptoken)
     {
         list($ak, $bucket) = $this->unmarshalUpToken($uptoken);
-        list($upHosts,) = $this->getUpHosts($ak, $bucket);
+        list($upHosts, $err) = $this->getUpHosts($ak, $bucket);
 
         $upHost = isset($upHosts[1]) ? $upHosts[1] : $upHosts[0];
-        return $upHost;
+        return array($upHost, $err);
     }
 
     public function getIoHost($ak, $bucket)
@@ -153,8 +153,7 @@ final class Zone
 
     private function hostCacheFilePath()
     {
-        $home = getenv('HOME');
-        return $home . '/.qiniu_phpsdk_hostscache.json';
+        return sys_get_temp_dir() . '/.qiniu_phpsdk_hostscache.json';
     }
 
     /*  请求包：
