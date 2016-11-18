@@ -135,11 +135,14 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/copy.html
      */
-    public function copy($from_bucket, $from_key, $to_bucket, $to_key)
+    public function copy($from_bucket, $from_key, $to_bucket, $to_key, $force = false)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
+        if ($force) {
+            $path .= '/force/true';
+        }
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -155,11 +158,14 @@ final class BucketManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/move.html
      */
-    public function move($from_bucket, $from_key, $to_bucket, $to_key)
+    public function move($from_bucket, $from_key, $to_bucket, $to_key, $force = false)
     {
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/move/' . $from . '/' . $to;
+        if ($force) {
+            $path .= '/force/true';
+        }
         list(, $error) = $this->rsPost($path);
         return $error;
     }

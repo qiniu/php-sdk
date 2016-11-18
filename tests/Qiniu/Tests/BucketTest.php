@@ -9,12 +9,15 @@ class BucketTest extends \PHPUnit_Framework_TestCase
     protected $dummyBucketManager;
     protected $bucketName;
     protected $key;
+    protected $key2;
     protected function setUp()
     {
         global $bucketName;
         global $key;
+        global $key2;
         $this->bucketName = $bucketName;
         $this->key = $key;
+        $this->key2 = $key2;
 
         global $testAuth;
         $this->bucketManager = new BucketManager($testAuth);
@@ -83,6 +86,8 @@ class BucketTest extends \PHPUnit_Framework_TestCase
     public function testCopy()
     {
         $key = 'copyto' . rand();
+        $this->bucketManager->delete($this->bucketName, $key);
+
         $error = $this->bucketManager->copy(
             $this->bucketName,
             $this->key,
@@ -90,6 +95,23 @@ class BucketTest extends \PHPUnit_Framework_TestCase
             $key
         );
         $this->assertNull($error);
+
+        //test force copy
+        $error = $this->bucketManager->copy(
+            $this->bucketName,
+            $this->key2,
+            $this->bucketName,
+            $key,
+            true
+        );
+        $this->assertNull($error);
+
+        list($key2Stat,) = $this->bucketManager->stat($this->bucketName, $this->key2);
+        list($key2CopiedStat,) = $this->bucketManager->stat($this->bucketName, $key);
+
+        var_dump($key2Stat);
+        $this->assertEquals($key2Stat['hash'], $key2CopiedStat['hash']);
+
         $error = $this->bucketManager->delete($this->bucketName, $key);
         $this->assertNull($error);
     }

@@ -5,7 +5,7 @@ use Qiniu\Zone;
 
 final class Config
 {
-    const SDK_VER = '7.1.2';
+    const SDK_VER = '7.1.3';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
