@@ -97,7 +97,7 @@ $testFileName2 = '2017/01/07/test.png';
 $queryString = 'name=七牛&year=2017';
 
 //带访问协议的域名
-$host = 'http://video.51gonggui.com';
+$host = 'http://video.example.com';
 
 //unix时间戳
 $deadline = time() + 3600;
