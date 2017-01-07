@@ -5,6 +5,13 @@ use Qiniu\Config;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
+/**
+ * 断点续上传类, 该类主要实现了断点续上传中的分块上传,
+ * 以及相应地创建块和创建文件过程.
+ *
+ * @link http://developer.qiniu.com/docs/v6/api/reference/up/mkblk.html
+ * @link http://developer.qiniu.com/docs/v6/api/reference/up/mkfile.html
+ */
 final class ResumeUploader
 {
     private $upToken;
@@ -13,18 +20,31 @@ final class ResumeUploader
     private $size;
     private $params;
     private $mime;
-    private $progressHandler;
     private $contexts;
     private $host;
     private $currentUrl;
+    private $config;
 
+    /**
+     * 上传二进制流到七牛
+     *
+     * @param $upToken    上传凭证
+     * @param $key        上传文件名
+     * @param $inputStream 上传二进制流
+     * @param $size       上传流的大小
+     * @param $params     自定义变量
+     * @param $mime       上传数据的mimeType
+     *
+     * @link http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
+     */
     public function __construct(
         $upToken,
         $key,
         $inputStream,
         $size,
         $params,
-        $mime
+        $mime,
+        $config
     ) {
         $this->upToken = $upToken;
         $this->key = $key;
@@ -32,10 +52,19 @@ final class ResumeUploader
         $this->size = $size;
         $this->params = $params;
         $this->mime = $mime;
-        $this->host = Config::$defaultHost;
         $this->contexts = array();
+        $this->config = $config;
+
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            throw new \Exception($err, 1);
+        }
+        $this->host = $upHost;
     }
 
+    /**
+     * 上传操作
+     */
     public function upload()
     {
         $uploaded = 0;
@@ -43,8 +72,7 @@ final class ResumeUploader
             $blockSize = $this->blockSize($uploaded);
             $data = fread($this->inputStream, $blockSize);
             if ($data === false) {
-                fclose($this->inputStream);
-                throw new Exception("file read failed", 1);
+                throw new \Exception("file read failed", 1);
             }
             $crc = \Qiniu\crc32_data($data);
             $response = $this->makeBlock($data, $blockSize);
@@ -53,7 +81,11 @@ final class ResumeUploader
                 $ret = $response->json();
             }
             if ($response->statusCode < 0) {
-                $this->host = Config::UPBACKUP_HOST;
+                list($bakHost, $err) = $this->config->zone->getBackupUpHostByToken($this->upToken);
+                if ($err != null) {
+                    return array(null, $err);
+                }
+                $this->host = $bakHost;
             }
             if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                 $response = $this->makeBlock($data, $blockSize);
@@ -61,16 +93,17 @@ final class ResumeUploader
             }
 
             if (! $response->ok() || !isset($ret['crc32'])|| $crc != $ret['crc32']) {
-                fclose($this->inputStream);
                 return array(null, new Error($this->currentUrl, $response));
             }
             array_push($this->contexts, $ret['ctx']);
             $uploaded += $blockSize;
         }
-        fclose($this->inputStream);
         return $this->makeFile();
     }
 
+    /**
+     * 创建块
+     */
     private function makeBlock($block, $blockSize)
     {
         $url = $this->host . '/mkblk/' . $blockSize;
@@ -93,6 +126,9 @@ final class ResumeUploader
         return $url;
     }
 
+    /**
+     * 创建文件
+     */
     private function makeFile()
     {
         $url = $this->fileUrl();
@@ -117,7 +153,7 @@ final class ResumeUploader
     private function blockSize($uploaded)
     {
         if ($this->size < $uploaded + Config::BLOCK_SIZE) {
-            return $bsize = $this->size - $uploaded;
+            return $this->size - $uploaded;
         }
         return  Config::BLOCK_SIZE;
     }

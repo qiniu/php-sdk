@@ -76,6 +76,13 @@ final class Response
         511 => 'Network Authentication Required',
     );
 
+    /**
+     * @param int $code 状态码
+     * @param double $duration 请求时长
+     * @param array $headers 响应头部
+     * @param string $body 响应内容
+     * @param string $error 错误描述
+     */
     public function __construct($code, $duration, array $headers = array(), $body = null, $error = null)
     {
         $this->statusCode = $code;
@@ -84,11 +91,11 @@ final class Response
         $this->body = $body;
         $this->error = $error;
         $this->jsonData = null;
-        if ($error != null) {
+        if ($error !== null) {
             return;
         }
 
-        if ($body == null) {
+        if ($body === null) {
             if ($code >= 400) {
                 $this->error = self::$statusTexts[$code];
             }
@@ -98,23 +105,22 @@ final class Response
             try {
                 $jsonData = self::bodyJson($body);
                 if ($code >=400) {
-                    if ($jsonData['error'] != null) {
+                    $this->error = $body;
+                    if ($jsonData['error'] !== null) {
                         $this->error = $jsonData['error'];
-                    } else {
-                        $this->error = $body;
                     }
                 }
                 $this->jsonData = $jsonData;
             } catch (\InvalidArgumentException $e) {
+                $this->error = $body;
                 if ($code >= 200 && $code < 300) {
                     $this->error = $e->getMessage();
-                } else {
-                    $this->error = $body;
                 }
             }
         } elseif ($code >=400) {
             $this->error = $body;
         }
+        return;
     }
 
     public function json()
@@ -122,23 +128,18 @@ final class Response
         return $this->jsonData;
     }
 
-    private static function bodyJson($body, array $config = array())
+    private static function bodyJson($body)
     {
-        return \Qiniu\json_decode(
-            (string) $body,
-            isset($config['object']) ? !$config['object'] : true,
-            512,
-            isset($config['big_int_strings']) ? JSON_BIGINT_AS_STRING : 0
-        );
+        return \Qiniu\json_decode((string) $body, true, 512);
     }
 
     public function xVia()
     {
         $via = $this->headers['X-Via'];
-        if ($via == null) {
+        if ($via === null) {
             $via = $this->headers['X-Px'];
         }
-        if ($via == null) {
+        if ($via === null) {
             $via = $this->headers['Fw-Via'];
         }
         return $via;
@@ -156,19 +157,20 @@ final class Response
 
     public function ok()
     {
-        return $this->statusCode >= 200 && $this->statusCode < 300 && $this->error == null;
+        return $this->statusCode >= 200 && $this->statusCode < 300 && $this->error === null;
     }
 
     public function needRetry()
     {
         $code = $this->statusCode;
-        if ($code< 0 || ($code / 100 == 5 and $code != 579) || $code == 996) {
+        if ($code< 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
             return true;
         }
     }
 
     private static function isJson($headers)
     {
-        return isset($headers['Content-Type']) && $headers['Content-Type'] == 'application/json';
+        return array_key_exists('Content-Type', $headers) &&
+        strpos($headers['Content-Type'], 'application/json') === 0;
     }
 }

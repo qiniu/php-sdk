@@ -2,6 +2,7 @@
 namespace Qiniu;
 
 use Qiniu;
+use Qiniu\Zone;
 
 final class Auth
 {
@@ -14,40 +15,44 @@ final class Auth
         $this->secretKey = $secretKey;
     }
 
-    public function token($data)
+    public function getAccessKey()
+    {
+        return $this->accessKey;
+    }
+
+    public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
         return $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
     }
 
-    public function tokenWithData($data)
+    public function signWithData($data)
     {
         $data = \Qiniu\base64_urlSafeEncode($data);
-        return $this->token($data) . ':' . $data;
+        return $this->sign($data) . ':' . $data;
     }
 
-    public function tokenOfRequest($urlString, $body, $contentType = null)
+    public function signRequest($urlString, $body, $contentType = null)
     {
         $url = parse_url($urlString);
         $data = '';
-        if (isset($url['path'])) {
+        if (array_key_exists('path', $url)) {
             $data = $url['path'];
         }
-        if (isset($url['query'])) {
+        if (array_key_exists('query', $url)) {
             $data .= '?' . $url['query'];
         }
         $data .= "\n";
 
-        if ($body != null &&
-            ($contentType == 'application/x-www-form-urlencoded') ||  $contentType == 'application/json') {
+        if ($body !== null && $contentType === 'application/x-www-form-urlencoded') {
             $data .= $body;
         }
-        return $this->token($data);
+        return $this->sign($data);
     }
 
     public function verifyCallback($contentType, $originAuthorization, $url, $body)
     {
-        $authorization = 'QBox ' . $this->tokenOfRequest($url, $body, $contentType);
+        $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return $originAuthorization === $authorization;
     }
 
@@ -63,7 +68,7 @@ final class Auth
         }
         $baseUrl .= $deadline;
 
-        $token = $this->token($baseUrl);
+        $token = $this->sign($baseUrl);
         return "$baseUrl&token=$token";
     }
 
@@ -72,19 +77,36 @@ final class Auth
         $key = null,
         $expires = 3600,
         $policy = null,
-        $strictPolicy = true
+        $strictPolicy = true,
+        Zone $zone = null
     ) {
         $deadline = time() + $expires;
         $scope = $bucket;
-        if ($key != null) {
+        if ($key !== null) {
             $scope .= ':' . $key;
         }
-        $args = array('scope' => $scope, 'deadline' => $deadline);
-        self::copyPolicy($args, $policy, $strictPolicy);
+        $args = array();
+        $args = self::copyPolicy($args, $policy, $strictPolicy);
+        $args['scope'] = $scope;
+        $args['deadline'] = $deadline;
+
+        if ($zone === null) {
+            $zone = new Zone();
+        }
+
+        list($upHosts, $err) = $zone->getUpHosts($this->accessKey, $bucket);
+        if ($err === null) {
+            $args['upHosts'] = $upHosts;
+        }
+        
         $b = json_encode($args);
-        return $this->tokenWithData($b);
+        return $this->signWithData($b);
     }
 
+    /**
+     *上传策略，参数规格详见
+     *http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html
+     */
     private static $policyFields = array(
         'callbackUrl',
         'callbackBody',
@@ -101,35 +123,41 @@ final class Auth
 
         'detectMime',
         'mimeLimit',
+        'fsizeMin',
         'fsizeLimit',
 
         'persistentOps',
         'persistentNotifyUrl',
         'persistentPipeline',
+        
+        'deleteAfterDays',
+
+        'upHosts',
     );
 
     private static $deprecatedPolicyFields = array(
         'asyncOps',
     );
 
-    private static function copyPolicy($policy, $originPolicy, $strictPolicy)
+    private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
     {
-        if ($originPolicy == null) {
-            return;
+        if ($originPolicy === null) {
+            return array();
         }
         foreach ($originPolicy as $key => $value) {
-            if (in_array($key, self::$deprecatedPolicyFields)) {
+            if (in_array((string) $key, self::$deprecatedPolicyFields, true)) {
                 throw new \InvalidArgumentException("{$key} has deprecated");
             }
-            if (!$strictPolicy || in_array($key, self::$policyFields)) {
+            if (!$strictPolicy || in_array((string) $key, self::$policyFields, true)) {
                 $policy[$key] = $value;
             }
         }
+        return $policy;
     }
 
     public function authorization($url, $body = null, $contentType = null)
     {
-        $authorization = 'QBox ' . $this->tokenOfRequest($url, $body, $contentType);
+        $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
         return array('Authorization' => $authorization);
     }
 }

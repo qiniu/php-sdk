@@ -1,16 +1,34 @@
 <?php
 namespace Qiniu\Storage;
 
-use Qiniu\Config;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
 final class FormUploader
 {
+
+    /**
+     * 上传二进制流到七牛, 内部使用
+     *
+     * @param $upToken    上传凭证
+     * @param $key        上传文件名
+     * @param $data       上传二进制流
+     * @param $params     自定义变量，规格参考
+     *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
+     * @param $mime       上传数据的mimeType
+     * @param $checkCrc   是否校验crc32
+     *
+     * @return array    包含已上传文件的信息，类似：
+     *                                              [
+     *                                                  "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>"
+     *                                              ]
+     */
     public static function put(
         $upToken,
         $key,
         $data,
+        $config,
         $params,
         $mime,
         $checkCrc
@@ -31,27 +49,47 @@ final class FormUploader
             }
         }
 
-        $response = Client::multipartPost(Config::$defaultHost, $fields, 'file', $fname, $data, $mime);
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        $response = Client::multipartPost($upHost, $fields, 'file', $fname, $data, $mime);
         if (!$response->ok()) {
-            return array(null, new Error(Config::$defaultHost, $response));
+            return array(null, new Error($upHost, $response));
         }
         return array($response->json(), null);
     }
 
+    /**
+     * 上传文件到七牛，内部使用
+     *
+     * @param $upToken    上传凭证
+     * @param $key        上传文件名
+     * @param $filePath   上传文件的路径
+     * @param $params     自定义变量，规格参考
+     *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
+     * @param $mime       上传数据的mimeType
+     * @param $checkCrc   是否校验crc32
+     *
+     * @return array    包含已上传文件的信息，类似：
+     *                                              [
+     *                                                  "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>"
+     *                                              ]
+     */
     public static function putFile(
         $upToken,
         $key,
         $filePath,
+        $config,
         $params,
         $mime,
         $checkCrc
     ) {
 
         $fields = array('token' => $upToken, 'file' => self::createFile($filePath, $mime));
-        if ($key === null) {
-            $fname = 'filename';
-        } else {
-            $fname = $key;
+        if ($key !== null) {
             $fields['key'] = $key;
         }
         if ($checkCrc) {
@@ -62,10 +100,17 @@ final class FormUploader
                 $fields[$k] = $v;
             }
         }
+        $fields['key'] = $key;
         $headers =array('Content-Type' => 'multipart/form-data');
-        $response = client::post(Config::$defaultHost, $fields, $headers);
+
+        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        if ($err != null) {
+            return array(null, $err);
+        }
+        
+        $response = client::post($upHost, $fields, $headers);
         if (!$response->ok()) {
-            return array(null, new Error(Config::$defaultHost, $response));
+            return array(null, new Error($upHost, $response));
         }
         return array($response->json(), null);
     }

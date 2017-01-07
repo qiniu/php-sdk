@@ -71,7 +71,7 @@ final class Client
         return $ua;
     }
 
-    private static function sendRequest($request)
+    public static function sendRequest($request)
     {
         $t1 = microtime(true);
         $ch = curl_init();
@@ -85,6 +85,12 @@ final class Client
             CURLOPT_CUSTOMREQUEST  => $request->method,
             CURLOPT_URL => $request->url
         );
+
+        // Handle open_basedir & safe mode
+        if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
+            $options[CURLOPT_FOLLOWLOCATION] = true;
+        }
+
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
@@ -92,11 +98,11 @@ final class Client
             }
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
 
         if (!empty($request->body)) {
             $options[CURLOPT_POSTFIELDS] = $request->body;
         }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         $t2 = microtime(true);
