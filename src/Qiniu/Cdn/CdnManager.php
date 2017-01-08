@@ -147,11 +147,11 @@ final class CdnManager
     /**
      * 构建时间戳防盗链鉴权的访问外链
      *
-     * @param string $host        带访问协议的域名
-     * @param string $fileName    原始文件名，不需要urlencode
+     * @param string $host             带访问协议的域名
+     * @param string $fileName         原始文件名，不需要urlencode
      * @param string $queryStringArray 查询参数命名数组，不需要urlencode
-     * @param string $encryptKey  时间戳防盗链密钥
-     * @param string $deadline    链接有效期时间戳（以秒为单位）
+     * @param string $encryptKey       时间戳防盗链密钥
+     * @param string $deadline         链接有效期时间戳（以秒为单位）
      *
      * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager.php 代码
      */
