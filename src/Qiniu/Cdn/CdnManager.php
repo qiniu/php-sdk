@@ -149,16 +149,21 @@ final class CdnManager
      *
      * @param string $host        带访问协议的域名
      * @param string $fileName    原始文件名，不需要urlencode
-     * @param string $queryString 查询参数，不需要urlencode
+     * @param string $queryStringArray 查询参数命名数组，不需要urlencode
      * @param string $encryptKey  时间戳防盗链密钥
      * @param string $deadline    链接有效期时间戳（以秒为单位）
      *
      * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager.php 代码
      */
-    public static function createTimestampAntiLeechUrl($host, $fileName, $queryString, $encryptKey, $deadline)
+    public static function createTimestampAntiLeechUrl($host, $fileName, $queryStringArray, $encryptKey, $deadline)
     {
-        if (!empty($queryString)) {
-            $urlToSign = $host . '/' . urlencode($fileName) . '?' . urlencode($queryString);
+        if (!empty($queryStringArray)) {
+            $queryStrings = array();
+            foreach ($queryStringArray as $key => $value) {
+                array_push($queryStrings, urlencode($key) . '=' . urlencode($value));
+            }
+            $queryString = implode('&', $queryStrings);
+            $urlToSign = $host . '/' . urlencode($fileName) . '?' . $queryString;
         } else {
             $urlToSign = $host . '/' . urlencode($fileName);
         }
