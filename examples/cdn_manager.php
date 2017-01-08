@@ -102,22 +102,18 @@ $host = 'http://video.example.com';
 //unix时间戳
 $deadline = time() + 3600;
 
-$signedUrl1 = CdnManager::createStandardAntileechUrlBasedOnTimestamp($host, 
-        $testFileName1, $queryString, $encryptKey, $deadline);
+$signedUrl1 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName1, $queryString, $encryptKey, $deadline);
 print($signedUrl1);
 print("\n");
 
-$signedUrl2 = CdnManager::createStandardAntileechUrlBasedOnTimestamp($host, 
-        $testFileName2, $queryString, $encryptKey, $deadline);
+$signedUrl2 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName2, $queryString, $encryptKey, $deadline);
 print($signedUrl2);
 print("\n");
 
-$signedUrl3 = CdnManager::createStandardAntileechUrlBasedOnTimestamp($host, 
-        $testFileName1, null, $encryptKey, $deadline);
+$signedUrl3 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName1, null, $encryptKey, $deadline);
 print($signedUrl3);
 print("\n");
 
-$signedUrl4 = CdnManager::createStandardAntileechUrlBasedOnTimestamp($host, 
-        $testFileName2, $queryString, $encryptKey, $deadline);
+$signedUrl4 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName2, null, $encryptKey, $deadline);
 print($signedUrl4);
 print("\n");

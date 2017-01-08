@@ -6,31 +6,36 @@ use Qiniu\Auth;
 use Qiniu\Http\Error;
 use Qiniu\Http\Client;
 
-final Class CdnManager {
+final class CdnManager
+{
 
     private $auth;
     private $server;
 
-    public function __construct(Auth $auth) {
+    public function __construct(Auth $auth)
+    {
         $this->auth = $auth;
         $this->server = 'http://fusion.qiniuapi.com';
     }
 
-    public function refreshUrls($urls) {
+    public function refreshUrls($urls)
+    {
         return $this->refreshUrlsAndDirs($urls, null);
     }
 
-    public function refreshDirs($dirs) {
+    public function refreshDirs($dirs)
+    {
         return $this->refreshUrlsAndDirs(null, $dirs);
     }
 
     /**
      * @param array $urls 待刷新的文件链接数组
-     * 
+     *
      * @return array 刷新的请求回复和错误，参考 examples/cdn_manager.php 代码
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
      */
-    public function refreshUrlsAndDirs($urls, $dirs) {
+    public function refreshUrlsAndDirs($urls, $dirs)
+    {
         $req = array();
         if (!empty($urls)) {
             $req['urls'] = $urls;
@@ -46,12 +51,13 @@ final Class CdnManager {
 
     /**
      * @param array $urls 待预取的文件链接数组
-     * 
+     *
      * @return array 预取的请求回复和错误，参考 examples/cdn_manager.php 代码
-     *                                         
+     *
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
      */
-    public function prefetchUrls($urls) {
+    public function prefetchUrls($urls)
+    {
         $req = array(
             'urls' => $urls,
         );
@@ -66,12 +72,13 @@ final Class CdnManager {
      * @param string $startDate   开始的日期，格式类似 2017-01-01
      * @param string $endDate     结束的日期，格式类似 2017-01-01
      * @param string $granularity 获取数据的时间间隔，可以是 5min, hour 或者 day
-     * 
+     *
      * @return array 带宽数据和错误信息，参考 examples/cdn_manager.php 代码
-     * 
+     *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getBandwidthData($domains, $startDate, $endDate, $granularity) {
+    public function getBandwidthData($domains, $startDate, $endDate, $granularity)
+    {
         $req = array();
         $req['domains'] = implode(';', $domains);
         $req['startDate'] = $startDate;
@@ -88,12 +95,13 @@ final Class CdnManager {
      * @param string $startDate   开始的日期，格式类似 2017-01-01
      * @param string $endDate     结束的日期，格式类似 2017-01-01
      * @param string $granularity 获取数据的时间间隔，可以是 5min, hour 或者 day
-     * 
+     *
      * @return array 流量数据和错误信息，参考 examples/cdn_manager.php 代码
-     * 
+     *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getFluxData($domains, $startDate, $endDate, $granularity) {
+    public function getFluxData($domains, $startDate, $endDate, $granularity)
+    {
         $req = array();
         $req['domains'] = implode(';', $domains);
         $req['startDate'] = $startDate;
@@ -108,12 +116,13 @@ final Class CdnManager {
     /**
      * @param array  $domains 待获取日志下载链接的域名数组
      * @param string $logDate 获取指定日期的日志下载链接，格式类似 2017-01-01
-     * 
+     *
      * @return array 日志下载链接数据和错误信息，参考 examples/cdn_manager.php 代码
-     * 
+     *
      * @link http://developer.qiniu.com/article/fusion/api/log.html
      */
-    public function getCdnLogList($domains, $logDate) {
+    public function getCdnLogList($domains, $logDate)
+    {
         $req = array();
         $req['domains'] = implode(';', $domains);
         $req['day'] = $logDate;
@@ -123,7 +132,8 @@ final Class CdnManager {
         return $this->post($url, $body);
     }
 
-    private function post($url, $body) {
+    private function post($url, $body)
+    {
         $headers = $this->auth->authorization($url, $body, 'application/json');
         $headers['Content-Type'] = 'application/json';
         $ret = Client::post($url, $body, $headers);
@@ -136,17 +146,17 @@ final Class CdnManager {
 
     /**
      * 构建时间戳防盗链鉴权的访问外链
-     *      
+     *
      * @param string $host        带访问协议的域名
      * @param string $fileName    原始文件名，不需要urlencode
      * @param string $queryString 查询参数，不需要urlencode
      * @param string $encryptKey  时间戳防盗链密钥
-     * @param string $deadline    链接有效期时间戳（以秒为单位） 
-     * 
+     * @param string $deadline    链接有效期时间戳（以秒为单位）
+     *
      * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager.php 代码
      */
-    public static function createStandardAntileechUrlBasedOnTimestamp($host,
-            $fileName, $queryString, $encryptKey, $deadline) {
+    public static function createTimestampAntiLeechUrl($host, $fileName, $queryString, $encryptKey, $deadline)
+    {
         if (!empty($queryString)) {
             $urlToSign = $host . '/' . urlencode($fileName) . '?' . urlencode($queryString);
         } else {
@@ -167,5 +177,4 @@ final Class CdnManager {
 
         return $signedUrl;
     }
-
 }
