@@ -140,7 +140,8 @@ final class Zone
         }
 
         $bucketHosts = file_get_contents($path);
-        $this->hostCache = json_decode($bucketHosts, true);
+        $hostCache = json_decode($bucketHosts, true);
+        $this->hostCache = is_null($hostCache) ? [] : $hostCache;
         return;
     }
 
