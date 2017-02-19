@@ -189,4 +189,15 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
     }
+
+    public function testDeleteAfterDays()
+    {
+        $key = rand();
+        $err = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
+        $this->assertEquals(612, $err->code());
+
+        $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
+        $err = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
+        $this->assertEquals(null, $err);
+    }
 }
