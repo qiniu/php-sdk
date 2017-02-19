@@ -1,6 +1,8 @@
 <?php
 namespace Qiniu\Storage;
 
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Mixed;
 use Qiniu\Auth;
 use Qiniu\Config;
 use Qiniu\Zone;
@@ -261,6 +263,23 @@ final class BucketManager
     {
         $params = 'op=' . implode('&op=', $operations);
         return $this->rsPost('/batch', $params);
+    }
+
+    /**
+     * 设置文件的生命周期
+     *
+     * @param $bucket 设置文件生命周期文件所在的空间
+     * @param $key    设置文件生命周期文件的文件名
+     * @param $days   设置该文件多少天后删除，当$days设置为0时表示取消该文件的生命周期
+     *
+     * @return Mixed
+     */
+    public function deleteAfterDays($bucket, $key, $days)
+    {
+        $entry = \Qiniu\entry($bucket, $key);
+        $url = "/deleteAfterDays/$entry/$days";
+        list(, $error) = $this->rsPost($url);
+        return $error;
     }
 
     private function rsPost($path, $body = null)
