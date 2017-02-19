@@ -273,6 +273,7 @@ final class BucketManager
      * @param $days   设置该文件多少天后删除，当$days设置为0时表示取消该文件的生命周期
      *
      * @return Mixed
+     * @link https://developer.qiniu.com/kodo/api/update-file-lifecycle
      */
     public function deleteAfterDays($bucket, $key, $days)
     {
