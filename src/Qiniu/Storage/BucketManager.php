@@ -1,8 +1,6 @@
 <?php
 namespace Qiniu\Storage;
 
-use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\Mixed;
 use Qiniu\Auth;
 use Qiniu\Config;
 use Qiniu\Zone;
