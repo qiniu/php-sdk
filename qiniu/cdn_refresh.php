@@ -9,7 +9,7 @@
 require_once("http.php");
 
 // ----------------------------------------------------------
-function Qiniu_CDN_Refresh($self, $urls, $dirs) // => ($statRet, $error)
+function Qiniu_CDN_Refresh($self, $urls, $dirs = null) // => ($statRet, $error)
 {
     global $QINIU_CDN_HOST;
     $uri = "/v2/tune/refresh";
