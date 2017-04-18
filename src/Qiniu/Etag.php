@@ -13,7 +13,7 @@ final class Etag
 
     private static function blockCount($fsize)
     {
-        return (($fsize + (Config::BLOCK_SIZE - 1)) / Config::BLOCK_SIZE);
+        return intval(($fsize + (Config::BLOCK_SIZE - 1)) / Config::BLOCK_SIZE);
     }
 
     private static function calcSha1($data)
