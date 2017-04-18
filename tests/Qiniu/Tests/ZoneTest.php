@@ -93,7 +93,7 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $err);
 
         list($upHostBackup, $err) = $this->zoneHttps->getBackupUpHostByToken($uptoken_bc_https);
-        $this->assertEquals('https://up-z1.qbox.me', $upHostBackup);
+        $this->assertEquals('https://upload-z1.qbox.me', $upHostBackup);
         $this->assertEquals(null, $err);
     }
 
