@@ -18,19 +18,27 @@ final class CdnManager
         $this->server = 'http://fusion.qiniuapi.com';
     }
 
+    /**
+     * @param string|array $urls
+     * @return array
+     */
     public function refreshUrls($urls)
     {
         return $this->refreshUrlsAndDirs($urls, null);
     }
 
+    /**
+     * @param string|array $dirs
+     * @return array
+     */
     public function refreshDirs($dirs)
     {
         return $this->refreshUrlsAndDirs(null, $dirs);
     }
 
     /**
-     * @param array $urls 待刷新的文件链接数组
-     *
+     * @param string|array $urls 待刷新的文件链接数组
+     * @param string|array $dirs 待刷新的文件夹链接数组
      * @return array 刷新的请求回复和错误，参考 examples/cdn_manager.php 代码
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
      */
@@ -141,6 +149,11 @@ final class CdnManager
         return $this->post($url, $body);
     }
 
+    /**
+     * @param $url
+     * @param $body
+     * @return array
+     */
     private function post($url, $body)
     {
         $headers = $this->auth->authorization($url, $body, 'application/json');
