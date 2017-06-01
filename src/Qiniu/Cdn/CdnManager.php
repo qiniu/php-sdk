@@ -38,9 +38,15 @@ final class CdnManager
     {
         $req = array();
         if (!empty($urls)) {
+            if (!is_array($urls)){
+                $urls = array($urls);
+            }
             $req['urls'] = $urls;
         }
         if (!empty($dirs)) {
+            if (!is_array($dirs)){
+                $dirs = array($dirs);
+            }
             $req['dirs'] = $dirs;
         }
 
@@ -54,10 +60,13 @@ final class CdnManager
      *
      * @return array 预取的请求回复和错误，参考 examples/cdn_manager.php 代码
      *
-     * @link http://developer.qiniu.com/article/fusion/api/refresh.html
+     * @link https://developer.qiniu.com/fusion/api/1227/file-prefetching
      */
     public function prefetchUrls($urls)
     {
+        if (!is_array($urls)){
+            $urls = array($urls);
+        }
         $req = array(
             'urls' => $urls,
         );
