@@ -81,8 +81,9 @@ final class BucketManager
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>",
-     *                                                  "fsize" => "<file size>",
+     *                                                  "fsize" => <file size>,
      *                                                  "putTime" => "<file modify time>"
+     *                                                  "fileType" => <file type>
      *                                              ]
      *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
@@ -188,6 +189,26 @@ final class BucketManager
         list(, $error) = $this->rsPost($path);
         return $error;
     }
+
+
+    /**
+     * 修改指定资源的存储类型
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $fileType       待操作文件目标文件类型
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/kodo/api/3710/modify-the-file-type
+     */
+    public function changeType($bucket, $key, $fileType)
+    {
+        $resource=\Qiniu\entry($bucket, $key);
+        $path='/chtype/'.$resource.'/type/'.$fileType;
+        list(,$error)=$this->rsPost($path);
+        return $error;
+    }
+
 
     /**
      * 从指定URL抓取资源，并将该资源存储到指定空间中

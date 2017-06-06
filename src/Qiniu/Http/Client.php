@@ -39,10 +39,10 @@ final class Client
         }
 
         array_push($data, '--' . $mimeBoundary);
-        $mimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
-        $fileName = self::escapeQuotes($fileName);
-        array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$fileName\"");
-        array_push($data, "Content-Type: $mimeType");
+        $finalMimeType = empty($mimeType) ? 'application/octet-stream' : $mimeType;
+        $finalFileName = self::escapeQuotes($fileName);
+        array_push($data, "Content-Disposition: form-data; name=\"$name\"; filename=\"$finalFileName\"");
+        array_push($data, "Content-Type: $finalMimeType");
         array_push($data, '');
         array_push($data, $fileBody);
 
