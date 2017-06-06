@@ -56,16 +56,6 @@ namespace Qiniu\Tests
             unset($_SERVER['override_qiniu_auth_time']);
         }
 
-        /**
-        * @expectedException        InvalidArgumentException
-        * @expectedExceptionMessage asyncOps has deprecated
-        */
-        public function testDeprecatedPolicy()
-        {
-            global $dummyAuth;
-            $token = $dummyAuth->uploadToken('1', null, 3600, array('asyncOps'=> 1));
-        }
-
         public function testUploadToken()
         {
             global $dummyAuth;
