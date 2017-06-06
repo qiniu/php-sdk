@@ -12,7 +12,7 @@ final class Config
     const RS_HOST  = 'http://rs.qbox.me';               // 文件元信息管理操作Host
     const RSF_HOST = 'http://rsf.qbox.me';              // 列举操作Host
     const API_HOST = 'http://api.qiniu.com';            // 数据处理操作Host
-    const UC_HOST  = 'http://uc.qbox.me';              // Host
+    const FUSION_HOST  = 'http://fusion.qiniuapi.com';  // Host
 
     public $zone;
 
