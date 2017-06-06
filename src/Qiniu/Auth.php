@@ -28,7 +28,7 @@ final class Auth
     public function signWithData($data)
     {
         $encodedData = \Qiniu\base64_urlSafeEncode($data);
-        return $this->sign($data) . ':' . $encodedData;
+        return $this->sign($encodedData) . ':' . $encodedData;
     }
 
     public function signRequest($urlString, $body, $contentType = null)
