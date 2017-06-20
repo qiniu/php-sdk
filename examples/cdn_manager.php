@@ -85,39 +85,3 @@ if ($getLogErr != null) {
     print_r($logListData);
 }
 
-//创建时间戳防盗链
-//时间戳防盗链密钥，后台获取
-$encryptKey = 'xxx';
-
-//原始文件名
-$testFileName1 = '基本概括.mp4';
-$testFileName2 = '2017/01/07/test.png';
-
-//查询参数列表
-$queryStringArray = array(
-    'name'=>'七牛',
-    'year'=>2017,
-    '年龄'=>28,
-);
-
-//带访问协议的域名
-$host = 'http://video.example.com';
-
-//unix时间戳
-$deadline = time() + 3600;
-
-$signedUrl1 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName1, $queryStringArray, $encryptKey, $deadline);
-print($signedUrl1);
-print("\n");
-
-$signedUrl2 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName2, $queryStringArray, $encryptKey, $deadline);
-print($signedUrl2);
-print("\n");
-
-$signedUrl3 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName1, null, $encryptKey, $deadline);
-print($signedUrl3);
-print("\n");
-
-$signedUrl4 = CdnManager::createTimestampAntiLeechUrl($host, $testFileName2, null, $encryptKey, $deadline);
-print($signedUrl4);
-print("\n");

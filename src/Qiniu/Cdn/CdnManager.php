@@ -147,38 +147,32 @@ final class CdnManager
     /**
      * 构建时间戳防盗链鉴权的访问外链
      *
-     * @param string $host             带访问协议的域名
-     * @param string $fileName         原始文件名，不需要urlencode
-     * @param string $queryStringArray 查询参数命名数组，不需要urlencode
-     * @param string $encryptKey       时间戳防盗链密钥
-     * @param string $deadline         链接有效期时间戳（以秒为单位）
+     * @param string $rawUrl                   需要签名的资源url
+     * @param string $encryptKey               时间戳防盗链密钥
+     * @param string $durationInSeconds        链接的有效期（以秒为单位）
      *
-     * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager.php 代码
+     * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager_timestamp_antileech.php 代码
      */
-    public static function createTimestampAntiLeechUrl($host, $fileName, $queryStringArray, $encryptKey, $deadline)
+    public static function createTimestampAntiLeechUrl($rawUrl, $encryptKey, $durationInSeconds)
     {
-        $encodedFileName= str_replace("+", "%20", urlencode($fileName));
-        if (!empty($queryStringArray)) {
-            $queryStrings = array();
-            foreach ($queryStringArray as $key => $value) {
-                array_push($queryStrings, urlencode($key) . '=' . urlencode($value));
-            }
-            $queryString = implode('&', $queryStrings);
-            $urlToSign = $host . '/' . $encodedFileName . '?' . $queryString;
-        } else {
-            $urlToSign = $host . '/' . $encodedFileName;
-        }
 
-        $path = '/' . $encodedFileName;
+        $parsedUrl = parse_url($rawUrl);
+        var_dump($parsedUrl);
+
+        $deadline = time() + $durationInSeconds;
         $expireHex = dechex($deadline);
 
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
+
         $strToSign = $encryptKey . $path . $expireHex;
+        var_dump($strToSign);
+
         $signStr = md5($strToSign);
 
-        if (!empty($queryString)) {
-            $signedUrl = $urlToSign . '&sign=' . $signStr . '&t=' . $expireHex;
+        if (isset($parsedUrl['query'])) {
+            $signedUrl = $rawUrl . '&sign=' . $signStr . '&t=' . $expireHex;
         } else {
-            $signedUrl = $urlToSign . '?sign=' . $signStr . '&t=' . $expireHex;
+            $signedUrl = $rawUrl . '?sign=' . $signStr . '&t=' . $expireHex;
         }
 
         return $signedUrl;
