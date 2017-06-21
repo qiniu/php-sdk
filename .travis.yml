@@ -1,22 +1,25 @@
-# using docker container
 sudo: false
-
 language: php
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
+- 5.3
+- 5.4
+- 5.5
+- 5.6
+- 7.0
 before_script:
-  - export QINIU_TEST_ENV="travis"
-  - travis_retry composer self-update
-  - travis_retry composer install --no-interaction --prefer-source --dev
+- export QINIU_TEST_ENV="travis"
+- travis_retry composer self-update
+- travis_retry composer install --no-interaction --prefer-source --dev
 script:
-  - ./vendor/bin/phpcs --standard=PSR2 src
-  - ./vendor/bin/phpcs --standard=PSR2 examples
-  - ./vendor/bin/phpcs --standard=PSR2 tests
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
+- ./vendor/bin/phpcs --standard=PSR2 src
+- ./vendor/bin/phpcs --standard=PSR2 examples
+- ./vendor/bin/phpcs --standard=PSR2 tests
+- ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+- wget https://scrutinizer-ci.com/ocular.phar
+- php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+env:
+  global:
+  - secure: Z2zrib/+Mh24BWlEu+6kQAAphd9Fj3WiOENywrQgyOplEoOv0LPE7gWiGlfWyFLhFcqMEci0OHPLrTMasCO9py51E2ACwb/Dm1KHuOEQm1XzzIVQ7fmt+ci/cbL7HXEz5SUfRl7xYbjrEHMmTxPPXTRTNvedZ5GYh4RBXMiHDo8=
+  - secure: FMMu6FC8qbVWV/A8+by47XEYA0XUVIypFy+I/angL+2SGbzGiO+Eq5rIIxGfSdSVe47SeP4ZKV/PdPmUOPEwevUdlFObfHkuFL3tt4pAZTyNAIqhg8kZKw6flXcBimaxRB/MeVl9yQlJe3gS3bPOWFxYiM6/uMmbn9PxiwnH9YI=
+  - secure: NMEgCktJi+qBUODY+7IvtRwntHV0W+IubrYm3y00kz/sVowcClqkUAuD9JOkKMKkEEC7SSO0NSarxUsdClfRyNz7PBw1v5Ki9k4yvYuQzZHAZepL8pKns9r+cNFxLl4hnhu6eGEyJ9CVTk0e5pq+C+8J1fcziNRoDLUPBwOXP8w=
