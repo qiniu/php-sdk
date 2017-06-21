@@ -28,6 +28,8 @@ $customDomain = "http://phpsdk.qiniuts.com";
 var_dump($accessKey);
 var_dump($secretKey);
 var_dump($timestampAntiLeechEncryptKey);
+$vars = getenv('TRAVIS_SECURE_ENV_VARS');
+var_dump($vars);
 var_dump($_SERVER);
 
 $testEnv = getenv('QINIU_TEST_ENV');
