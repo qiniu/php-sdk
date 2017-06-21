@@ -8,6 +8,9 @@ php:
 - 7.0
 before_script:
 - export QINIU_TEST_ENV="travis"
+- export QINIU_SDK_ENV_ACCESSKEY=[secure]
+- export QINIU_SDK_ENV_SECRETKEY=[secure]
+- export QINIU_SDK_ENV_TIMESTAMP_ENCRPTKEY=[secure]
 - travis_retry composer self-update
 - travis_retry composer install --no-interaction --prefer-source --dev
 script:
