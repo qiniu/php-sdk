@@ -25,6 +25,10 @@ $tid = getenv('TRAVIS_JOB_NUMBER');
 $timestampAntiLeechEncryptKey = getenv('QINIU_SDK_ENV_TIMESTAMP_ENCRPTKEY');
 $customDomain = "http://phpsdk.qiniuts.com";
 
+var_dump($accessKey);
+var_dump($secretKey);
+var_dump($timestampAntiLeechEncryptKey);
+
 $testEnv = getenv('QINIU_TEST_ENV');
 
 if (!empty($tid)) {
@@ -44,6 +48,3 @@ function qiniuTempFile($size)
     fclose($file);
     return $fileName;
 }
-
-
-
