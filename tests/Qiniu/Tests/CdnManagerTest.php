@@ -47,5 +47,4 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($imgInfo['size'], 2196145);
         $this->assertNull($response->error);
     }
-
 }
