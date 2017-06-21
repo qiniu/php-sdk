@@ -22,7 +22,6 @@ after_script:
 - wget https://scrutinizer-ci.com/ocular.phar
 - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 env:
-  global:
-  - secure: g6HrlivUd4b9wrHgeMEuYhf4ow0Jd+oasfU5TRFVngLYpgWPzHnzUUTkc/5IF+kzy/izoCbeZbkxTH53msshsz4PDprX9rbPJUUJ1Ve4i4fYihO+mn5kah1UKZWT13/fDWprJvxQYbHDjByopujxtaGEennYF1q2cap/FVlg1FI=
-  - secure: NpJUf401jFQXxpqa/kPvBf11clwpaTusqyuIUKaSj/wi9l6z+rl24Owlg6P4Ibz4Z9o2YGZBuJeUAZJHmrrzdc4haQ4FEUi3qubnoXMm4D2FXWZKzjFCMG/ISFyw2tO1Gv4wiQiMjMtHMNHqvsJdrlw2OsbxzOu/M9GqfJTYHEE=
-  - secure: ftap5/rKY4bOL2jXOmN7yp7miKsLDo8QJS8Gw0fF3rmcvITw/2Q+tEzVhCNh/kLRcqLJMHpHywnRF5drRuGH5gute1jt5K2gR/6WG3PZWp/OhoSoEzdPiv1xAkYFnipqIJjVAbGFRnWM7xtQL8gKQn3sUlQSCiOJ6QCzmmD0jGg=
+- secure: g6HrlivUd4b9wrHgeMEuYhf4ow0Jd+oasfU5TRFVngLYpgWPzHnzUUTkc/5IF+kzy/izoCbeZbkxTH53msshsz4PDprX9rbPJUUJ1Ve4i4fYihO+mn5kah1UKZWT13/fDWprJvxQYbHDjByopujxtaGEennYF1q2cap/FVlg1FI=
+- secure: NpJUf401jFQXxpqa/kPvBf11clwpaTusqyuIUKaSj/wi9l6z+rl24Owlg6P4Ibz4Z9o2YGZBuJeUAZJHmrrzdc4haQ4FEUi3qubnoXMm4D2FXWZKzjFCMG/ISFyw2tO1Gv4wiQiMjMtHMNHqvsJdrlw2OsbxzOu/M9GqfJTYHEE=
+- secure: ftap5/rKY4bOL2jXOmN7yp7miKsLDo8QJS8Gw0fF3rmcvITw/2Q+tEzVhCNh/kLRcqLJMHpHywnRF5drRuGH5gute1jt5K2gR/6WG3PZWp/OhoSoEzdPiv1xAkYFnipqIJjVAbGFRnWM7xtQL8gKQn3sUlQSCiOJ6QCzmmD0jGg=
