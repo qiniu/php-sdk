@@ -4,12 +4,14 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = 'QWYn5TFQsLLU1pL5MFEmX3s5DmHdUThav9WyOWOm';
-$secretKey = 'Bxckh6FA-Fbs9Yt3i3cbKVK22UPBmAOHJcL95pGz';
+$accessKey = getenv('QINIU_SDK_ENV_ACCESSKEY');
+$secretKey = getenv('QINIU_SDK_ENV_SECRETKEY');
 $testAuth = new Auth($accessKey, $secretKey);
+
 $bucketName = 'phpsdk';
 $key = 'php-logo.png';
 $key2 = 'niu.jpg';
+
 $bucketNameBC = 'phpsdk-bc';
 $bucketNameNA = 'phpsdk-na';
 
@@ -18,6 +20,10 @@ $dummySecretKey = '1234567890';
 $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
 $tid = getenv('TRAVIS_JOB_NUMBER');
+
+//cdn
+$timestampAntiLeechEncryptKey = getenv('QINIU_SDK_ENV_TIMESTAMP_ENCRPTKEY');
+$customDomain = "http://phpsdk.qiniuts.com";
 
 $testEnv = getenv('QINIU_TEST_ENV');
 
@@ -38,3 +44,6 @@ function qiniuTempFile($size)
     fclose($file);
     return $fileName;
 }
+
+
+

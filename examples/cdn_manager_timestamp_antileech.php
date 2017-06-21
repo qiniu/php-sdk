@@ -18,4 +18,3 @@ $durationInSeconds = 3600;
 $signedUrl = CdnManager::createTimestampAntiLeechUrl($url1, $encryptKey, $durationInSeconds);
 print($signedUrl);
 print("\n");
-

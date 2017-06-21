@@ -157,16 +157,12 @@ final class CdnManager
     {
 
         $parsedUrl = parse_url($rawUrl);
-        var_dump($parsedUrl);
 
         $deadline = time() + $durationInSeconds;
         $expireHex = dechex($deadline);
-
         $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
 
         $strToSign = $encryptKey . $path . $expireHex;
-        var_dump($strToSign);
-
         $signStr = md5($strToSign);
 
         if (isset($parsedUrl['query'])) {

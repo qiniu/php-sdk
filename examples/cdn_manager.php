@@ -84,4 +84,3 @@ if ($getLogErr != null) {
     echo "get cdn log list success\n";
     print_r($logListData);
 }
-
