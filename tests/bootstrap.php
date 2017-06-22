@@ -19,21 +19,11 @@ $dummyAccessKey = 'abcdefghklmnopq';
 $dummySecretKey = '1234567890';
 $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
-$tid = getenv('TRAVIS_JOB_NUMBER');
-
 //cdn
 $timestampAntiLeechEncryptKey = getenv('QINIU_SDK_ENV_TIMESTAMP_ENCRPTKEY');
 $customDomain = "http://phpsdk.qiniuts.com";
 
-var_dump($accessKey);
-var_dump($secretKey);
-var_dump($timestampAntiLeechEncryptKey);
-$vars = getenv('TRAVIS_SECURE_ENV_VARS');
-var_dump($vars);
-var_dump($_SERVER);
-
-$testEnv = getenv('QINIU_TEST_ENV');
-
+$tid = getenv('TRAVIS_JOB_NUMBER');
 if (!empty($tid)) {
     $pid = getmypid();
     $tid = strstr($tid, '.');
