@@ -109,15 +109,16 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * 计算七牛API中的数据格式
      *
      * @param $bucket 待操作的空间名
-     * @param $key 待操作的文件名
+     * @param $key 待操作的文件名，选填。如果为null，则忽略；如果为空字符串，则用作首页。
      *
      * @return string  符合七牛API规格的数据格式
      * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
+     * @link http://kb.qiniu.com/52slk76w
      */
-    function entry($bucket, $key)
+    function entry($bucket, $key = null)
     {
         $en = $bucket;
-        if (!empty($key)) {
+        if (null !== $key) {
             $en = $bucket . ':' . $key;
         }
         return base64_urlSafeEncode($en);
