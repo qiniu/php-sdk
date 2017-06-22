@@ -22,6 +22,9 @@ $dirs = array(
 );
 
 $cdnManager = new CdnManager($auth);
+
+// 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+// 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
 list($refreshResult, $refreshErr) = $cdnManager->refreshUrlsAndDirs($urls, $dirs);
 if ($refreshErr != null) {
     var_dump($refreshErr);
