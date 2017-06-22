@@ -1,28 +1,24 @@
 sudo: false
 language: php
+
 php:
-- 5.3
-- 5.4
-- 5.5
-- 5.6
-- 7.0
-env:
-- secure: g6HrlivUd4b9wrHgeMEuYhf4ow0Jd+oasfU5TRFVngLYpgWPzHnzUUTkc/5IF+kzy/izoCbeZbkxTH53msshsz4PDprX9rbPJUUJ1Ve4i4fYihO+mn5kah1UKZWT13/fDWprJvxQYbHDjByopujxtaGEennYF1q2cap/FVlg1FI=
-- secure: NpJUf401jFQXxpqa/kPvBf11clwpaTusqyuIUKaSj/wi9l6z+rl24Owlg6P4Ibz4Z9o2YGZBuJeUAZJHmrrzdc4haQ4FEUi3qubnoXMm4D2FXWZKzjFCMG/ISFyw2tO1Gv4wiQiMjMtHMNHqvsJdrlw2OsbxzOu/M9GqfJTYHEE=
-- secure: ftap5/rKY4bOL2jXOmN7yp7miKsLDo8QJS8Gw0fF3rmcvITw/2Q+tEzVhCNh/kLRcqLJMHpHywnRF5drRuGH5gute1jt5K2gR/6WG3PZWp/OhoSoEzdPiv1xAkYFnipqIJjVAbGFRnWM7xtQL8gKQn3sUlQSCiOJ6QCzmmD0jGg=
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
 
 before_script:
-- export QINIU_TEST_ENV="travis"
-- export QINIU_SDK_ENV_ACCESSKEY=[secure]
-- export QINIU_SDK_ENV_SECRETKEY=[secure]
-- export QINIU_SDK_ENV_TIMESTAMP_ENCRPTKEY=[secure]
-- travis_retry composer self-update
-- travis_retry composer install --no-interaction --prefer-source --dev
+  - export QINIU_TEST_ENV="travis"
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source --dev
+
 script:
-- ./vendor/bin/phpcs --standard=PSR2 src
-- ./vendor/bin/phpcs --standard=PSR2 examples
-- ./vendor/bin/phpcs --standard=PSR2 tests
-- ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
+  - ./vendor/bin/phpcs --standard=PSR2 src
+  - ./vendor/bin/phpcs --standard=PSR2 examples
+  - ./vendor/bin/phpcs --standard=PSR2 tests
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests/Qiniu/Tests/
+
 after_script:
-- wget https://scrutinizer-ci.com/ocular.phar
-- php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
