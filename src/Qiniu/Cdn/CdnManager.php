@@ -18,16 +18,22 @@ final class CdnManager
         $this->server = 'http://fusion.qiniuapi.com';
     }
 
-    public function refreshUrls($urls)
+    /**
+     * @param array $urls  待刷新的文件链接数组
+     * @return array
+     */
+    public function refreshUrls(array $urls)
     {
         return $this->refreshUrlsAndDirs($urls, null);
     }
 
-    /*
-     *  目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
-     *  需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
+    /**
+     * @param array $dirs  待刷新的文件链接数组
+     * @return array
+     * 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+     * 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
      */
-    public function refreshDirs($dirs)
+    public function refreshDirs(array $dirs)
     {
         return $this->refreshUrlsAndDirs(null, $dirs);
     }
@@ -42,7 +48,7 @@ final class CdnManager
      * 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
      * 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
      */
-    public function refreshUrlsAndDirs($urls, $dirs)
+    public function refreshUrlsAndDirs(array $urls, array  $dirs)
     {
         $req = array();
         if (!empty($urls)) {
@@ -64,7 +70,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
      */
-    public function prefetchUrls($urls)
+    public function prefetchUrls(array $urls)
     {
         $req = array(
             'urls' => $urls,
@@ -85,7 +91,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getBandwidthData($domains, $startDate, $endDate, $granularity)
+    public function getBandwidthData(array $domains, $startDate, $endDate, $granularity)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
@@ -108,7 +114,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getFluxData($domains, $startDate, $endDate, $granularity)
+    public function getFluxData(array $domains, $startDate, $endDate, $granularity)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
@@ -129,7 +135,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/log.html
      */
-    public function getCdnLogList($domains, $logDate)
+    public function getCdnLogList(array $domains, $logDate)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
