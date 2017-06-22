@@ -23,6 +23,10 @@ final class CdnManager
         return $this->refreshUrlsAndDirs($urls, null);
     }
 
+    /*
+     *  目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+     *  需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
+     */
     public function refreshDirs($dirs)
     {
         return $this->refreshUrlsAndDirs(null, $dirs);
@@ -30,9 +34,13 @@ final class CdnManager
 
     /**
      * @param array $urls 待刷新的文件链接数组
+     * @param array $dirs 待刷新的目录链接数组
      *
      * @return array 刷新的请求回复和错误，参考 examples/cdn_manager.php 代码
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
+     *
+     * 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+     * 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
      */
     public function refreshUrlsAndDirs($urls, $dirs)
     {
