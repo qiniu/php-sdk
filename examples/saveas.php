@@ -16,7 +16,7 @@
     //使用SecretKey对新的下载URL进行HMAC1-SHA1签名
     $newurl = "78re52.com1.z0.glb.clouddn.com/resource/Ship.jpg?imageView2/2/w/200/h/200|saveas/".$encodedEntryURI;
 
-    $sign = hash_hmac("sha1", $newurl,$secretKey, true);
+    $sign = hash_hmac("sha1", $newurl, $secretKey, true);
 
     //对签名进行URL安全的Base64编码
     $encodedSign = \Qiniu\base64_urlSafeEncode($sign);
@@ -24,5 +24,3 @@
     $finalURL = "http://".$newurl."/sign/".$accessKey.":".$encodedSign;
 
     return $finalURL;
-
-?>
