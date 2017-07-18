@@ -11,6 +11,7 @@ use Qiniu\Http\Error;
  * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
  *
  * @link http://developer.qiniu.com/docs/v6/api/reference/rs/
+ * 这个链接都不存在了
  */
 final class BucketManager
 {
