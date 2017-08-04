@@ -23,4 +23,6 @@
     //最终得到的完整下载URL
     $finalURL = "http://".$newurl."/sign/".$accessKey.":".$encodedSign;
 
-    return $finalURL;
+    $callbackBody = file_get_contents("$finalURL");
+
+    echo $callbackBody;
