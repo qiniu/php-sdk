@@ -57,7 +57,7 @@ final class ResumeUploader
 
         list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
         if ($err != null) {
-            throw new \Exception($err, 1);
+            throw new \Exception($err->message(), 1);
         }
         $this->host = $upHost;
     }

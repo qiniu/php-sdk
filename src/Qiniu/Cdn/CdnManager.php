@@ -18,23 +18,37 @@ final class CdnManager
         $this->server = 'http://fusion.qiniuapi.com';
     }
 
-    public function refreshUrls($urls)
+    /**
+     * @param array $urls  待刷新的文件链接数组
+     * @return array
+     */
+    public function refreshUrls(array $urls)
     {
         return $this->refreshUrlsAndDirs($urls, null);
     }
 
-    public function refreshDirs($dirs)
+    /**
+     * @param array $dirs  待刷新的文件链接数组
+     * @return array
+     * 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+     * 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
+     */
+    public function refreshDirs(array $dirs)
     {
         return $this->refreshUrlsAndDirs(null, $dirs);
     }
 
     /**
      * @param array $urls 待刷新的文件链接数组
+     * @param array $dirs 待刷新的目录链接数组
      *
      * @return array 刷新的请求回复和错误，参考 examples/cdn_manager.php 代码
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
+     *
+     * 目前客户默认没有目录刷新权限，刷新会有400038报错，参考：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+     * 需要刷新目录请工单联系技术支持 https://support.qiniu.com/tickets/category
      */
-    public function refreshUrlsAndDirs($urls, $dirs)
+    public function refreshUrlsAndDirs(array $urls, array  $dirs)
     {
         $req = array();
         if (!empty($urls)) {
@@ -56,7 +70,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/refresh.html
      */
-    public function prefetchUrls($urls)
+    public function prefetchUrls(array $urls)
     {
         $req = array(
             'urls' => $urls,
@@ -77,7 +91,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getBandwidthData($domains, $startDate, $endDate, $granularity)
+    public function getBandwidthData(array $domains, $startDate, $endDate, $granularity)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
@@ -100,7 +114,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/traffic-bandwidth.html
      */
-    public function getFluxData($domains, $startDate, $endDate, $granularity)
+    public function getFluxData(array $domains, $startDate, $endDate, $granularity)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
@@ -121,7 +135,7 @@ final class CdnManager
      *
      * @link http://developer.qiniu.com/article/fusion/api/log.html
      */
-    public function getCdnLogList($domains, $logDate)
+    public function getCdnLogList(array $domains, $logDate)
     {
         $req = array();
         $req['domains'] = implode(';', $domains);
@@ -147,38 +161,28 @@ final class CdnManager
     /**
      * 构建时间戳防盗链鉴权的访问外链
      *
-     * @param string $host             带访问协议的域名
-     * @param string $fileName         原始文件名，不需要urlencode
-     * @param string $queryStringArray 查询参数命名数组，不需要urlencode
-     * @param string $encryptKey       时间戳防盗链密钥
-     * @param string $deadline         链接有效期时间戳（以秒为单位）
+     * @param string $rawUrl                   需要签名的资源url
+     * @param string $encryptKey               时间戳防盗链密钥
+     * @param string $durationInSeconds        链接的有效期（以秒为单位）
      *
-     * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager.php 代码
+     * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager_timestamp_antileech.php 代码
      */
-    public static function createTimestampAntiLeechUrl($host, $fileName, $queryStringArray, $encryptKey, $deadline)
+    public static function createTimestampAntiLeechUrl($rawUrl, $encryptKey, $durationInSeconds)
     {
-        $encodedFileName= str_replace("+", "%20", urlencode($fileName));
-        if (!empty($queryStringArray)) {
-            $queryStrings = array();
-            foreach ($queryStringArray as $key => $value) {
-                array_push($queryStrings, urlencode($key) . '=' . urlencode($value));
-            }
-            $queryString = implode('&', $queryStrings);
-            $urlToSign = $host . '/' . $encodedFileName . '?' . $queryString;
-        } else {
-            $urlToSign = $host . '/' . $encodedFileName;
-        }
 
-        $path = '/' . $encodedFileName;
+        $parsedUrl = parse_url($rawUrl);
+
+        $deadline = time() + $durationInSeconds;
         $expireHex = dechex($deadline);
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
 
         $strToSign = $encryptKey . $path . $expireHex;
         $signStr = md5($strToSign);
 
-        if (!empty($queryString)) {
-            $signedUrl = $urlToSign . '&sign=' . $signStr . '&t=' . $expireHex;
+        if (isset($parsedUrl['query'])) {
+            $signedUrl = $rawUrl . '&sign=' . $signStr . '&t=' . $expireHex;
         } else {
-            $signedUrl = $urlToSign . '?sign=' . $signStr . '&t=' . $expireHex;
+            $signedUrl = $rawUrl . '?sign=' . $signStr . '&t=' . $expireHex;
         }
 
         return $signedUrl;
