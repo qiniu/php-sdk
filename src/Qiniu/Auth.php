@@ -132,7 +132,8 @@ final class Auth
         'deleteAfterDays',
         'fileType',
 
-        'upHosts',
+	'upHosts',
+	'isPrefixalScope',
     );
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
