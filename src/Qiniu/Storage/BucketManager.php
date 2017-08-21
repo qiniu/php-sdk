@@ -34,7 +34,21 @@ final class BucketManager
      */
     public function buckets($shared = true)
     {
-        return $this->rsGet('/buckets?shared=' . $shared);
+        $includeShared = "false";
+        if ($shared === true) {
+            $includeShared = "true";
+        }
+        return $this->rsGet('/buckets?shared=' . $includeShared);
+    }
+
+    /**
+     * 获取指定空间绑定的所有的域名
+     *
+     * @return string[] 包含所有空间域名
+     */
+    public function domains($bucket)
+    {
+        return $this->apiGet('/v6/domain/list?tbl=' . $bucket);
     }
 
     /**
@@ -148,7 +162,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
-        if ($force) {
+        if ($force === true) {
             $path .= '/force/true';
         }
         list(, $error) = $this->rsPost($path);
@@ -310,8 +324,8 @@ final class BucketManager
     public function deleteAfterDays($bucket, $key, $days)
     {
         $entry = \Qiniu\entry($bucket, $key);
-        $url = "/deleteAfterDays/$entry/$days";
-        list(, $error) = $this->rsPost($url);
+        $path = "/deleteAfterDays/$entry/$days";
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -333,10 +347,25 @@ final class BucketManager
         return $scheme . Config::RS_HOST;
     }
 
+    private function getApiHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::API_HOST;
+    }
+
     private function rsPost($path, $body = null)
     {
         $url = $this->getRsHost() . $path;
         return $this->post($url, $body);
+    }
+
+    private function apiGet($path)
+    {
+        $url = $this->getApiHost() . $path;
+        return $this->get($url);
     }
 
     private function rsGet($path)
@@ -344,7 +373,7 @@ final class BucketManager
         $url = $this->getRsHost() . $path;
         return $this->get($url);
     }
-
+    
     private function get($url)
     {
         $headers = $this->auth->authorization($url);
