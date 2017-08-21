@@ -33,6 +33,7 @@ final class FormUploader
         $mime,
         $checkCrc
     ) {
+    
         $fields = array('token' => $upToken);
         if ($key === null) {
             $fname = 'filename';
@@ -49,10 +50,12 @@ final class FormUploader
             }
         }
 
-        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        list($accessKey, $bucket, $err) = \Qiniu\explodeUpToken($upToken);
         if ($err != null) {
             return array(null, $err);
         }
+
+        $upHost = $config->getUpHost($accessKey, $bucket);
 
         $response = Client::multipartPost($upHost, $fields, 'file', $fname, $data, $mime);
         if (!$response->ok()) {
@@ -87,6 +90,7 @@ final class FormUploader
         $mime,
         $checkCrc
     ) {
+    
 
         $fields = array('token' => $upToken, 'file' => self::createFile($filePath, $mime));
         if ($key !== null) {
@@ -101,13 +105,15 @@ final class FormUploader
             }
         }
         $fields['key'] = $key;
-        $headers =array('Content-Type' => 'multipart/form-data');
+        $headers = array('Content-Type' => 'multipart/form-data');
 
-        list($upHost, $err) = $config->zone->getUpHostByToken($upToken);
+        list($accessKey, $bucket, $err) = \Qiniu\explodeUpToken($upToken);
         if ($err != null) {
             return array(null, $err);
         }
-        
+
+        $upHost = $config->getUpHost($accessKey, $bucket);
+
         $response = Client::post($upHost, $fields, $headers);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));

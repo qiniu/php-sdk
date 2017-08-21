@@ -39,13 +39,14 @@ final class PersistentFop
     private $force;
 
 
-    public function __construct($auth, $bucket, $pipeline = null, $notify_url = null, $force = false)
+    public function __construct($auth, $config = null)
     {
         $this->auth = $auth;
-        $this->bucket = $bucket;
-        $this->pipeline = $pipeline;
-        $this->notify_url = $notify_url;
-        $this->force = $force;
+        if ($config = null) {
+            $this->config = new Config();
+        } else {
+            $this->config = $config;
+        }
     }
 
     /**
@@ -59,19 +60,23 @@ final class PersistentFop
      *
      * @link http://developer.qiniu.com/docs/v6/api/reference/fop/
      */
-    public function execute($key, $fops)
+    public function execute($bucket, $key, $fops, $pipeline = null, $notify_url = null, $force = false)
     {
         if (is_array($fops)) {
             $fops = implode(';', $fops);
         }
-        $params = array('bucket' => $this->bucket, 'key' => $key, 'fops' => $fops);
-        \Qiniu\setWithoutEmpty($params, 'pipeline', $this->pipeline);
-        \Qiniu\setWithoutEmpty($params, 'notifyURL', $this->notify_url);
-        if ($this->force) {
+        $params = array('bucket' => $bucket, 'key' => $key, 'fops' => $fops);
+        \Qiniu\setWithoutEmpty($params, 'pipeline', $pipeline);
+        \Qiniu\setWithoutEmpty($params, 'notifyURL', $notify_url);
+        if ($force) {
             $params['force'] = 1;
         }
         $data = http_build_query($params);
-        $url = Config::API_HOST . '/pfop/';
+        $scheme = "http://";
+        if ($this->config->useHTTPS === true) {
+            $scheme = "https://";
+        }
+        $url = $scheme . Config::API_HOST . '/pfop/';
         $headers = $this->auth->authorization($url, $data, 'application/x-www-form-urlencoded');
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
         $response = Client::post($url, $data, $headers);
@@ -83,9 +88,13 @@ final class PersistentFop
         return array($id, null);
     }
 
-    public static function status($id)
+    public function status($id)
     {
-        $url = Config::API_HOST . "/status/get/prefop?id=$id";
+        $scheme = "http://";
+        if ($this->config->useHTTPS === true) {
+            $scheme = "https://";
+        }
+        $url = $scheme . Config::API_HOST . "/status/get/prefop?id=$id";
         $response = Client::get($url);
         if (!$response->ok()) {
             return array(null, new Error($url, $response));
