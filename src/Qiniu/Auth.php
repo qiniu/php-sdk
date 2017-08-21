@@ -133,6 +133,7 @@ final class Auth
         'fileType',
 
         'upHosts',
+        'isPrefixalScope',
     );
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
