@@ -129,7 +129,7 @@ final class Config
             $this->zoneCache[$cacheId] = $zone;
         } else {
             print("from query\n");
-            $zone = Zone::QueryZone($accessKey, $bucket);
+            $zone = Zone::queryZone($accessKey, $bucket);
             $this->zoneCache[$cacheId] = $zone;
         }
         return $zone;
