@@ -14,9 +14,9 @@ $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
 $srcBucket = $bucket;
 $destBucket = $bucket;
-$srcKey = $key;
-$destKey = $key . "_copy";
-$err = $bucketManager->copy($srcBucket, $srcKey, $destBucket, $destKey, true);
+$srcKey = $key . "_copy";
+$destKey = $key . "_move";
+$err = $bucketManager->move($srcBucket, $srcKey, $destBucket, $destKey, true);
 if ($err) {
     print_r($err);
 }

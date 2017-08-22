@@ -12,11 +12,9 @@ $auth = new Auth($accessKey, $secretKey);
 $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
-$srcBucket = $bucket;
-$destBucket = $bucket;
-$srcKey = $key;
-$destKey = $key . "_copy";
-$err = $bucketManager->copy($srcBucket, $srcKey, $destBucket, $destKey, true);
+$fileType = 1;//0 表示普通存储，1表示低频存储
+
+$err = $bucketManager->changeType($bucket, $key, $fileType);
 if ($err) {
     print_r($err);
 }
