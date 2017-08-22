@@ -41,9 +41,9 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
     public function testList()
     {
-        list($items, $marker, $error) = $this->bucketManager->listFiles($this->bucketName, null, null, 2);
-        $this->assertNotNull($items[0]);
-        $this->assertNotNull($marker);
+        list($ret, $error) = $this->bucketManager->listFiles($this->bucketName, null, null, 10);
+        $this->assertNotNull($ret['items'][0]);
+        $this->assertNotNull($ret['marker']);
     }
 
     public function testStat()
