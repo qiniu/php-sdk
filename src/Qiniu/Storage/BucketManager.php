@@ -368,7 +368,7 @@ final class BucketManager
         $url = $this->getRsHost() . $path;
         return $this->get($url);
     }
-    
+
     private function get($url)
     {
         $headers = $this->auth->authorization($url);
@@ -390,21 +390,21 @@ final class BucketManager
         return array($r, null);
     }
 
-    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket, $force)
     {
-        return self::twoKeyBatch('/copy', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/copy', $source_bucket, $key_pairs, $target_bucket, $force);
     }
 
 
-    public static function buildBatchRename($bucket, $key_pairs)
+    public static function buildBatchRename($bucket, $key_pairs, $force)
     {
-        return self::buildBatchMove($bucket, $key_pairs, $bucket);
+        return self::buildBatchMove($bucket, $key_pairs, $bucket, $force);
     }
 
 
-    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket)
+    public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket, $force)
     {
-        return self::twoKeyBatch('/move', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/move', $source_bucket, $key_pairs, $target_bucket, $force);
     }
 
 
@@ -455,16 +455,20 @@ final class BucketManager
         return $data;
     }
 
-    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket)
+    private static function twoKeyBatch($operation, $source_bucket, $key_pairs, $target_bucket, $force)
     {
         if ($target_bucket === null) {
             $target_bucket = $source_bucket;
         }
         $data = array();
+        $forceOp = "false";
+        if ($force) {
+            $forceOp = "true";
+        }
         foreach ($key_pairs as $from_key => $to_key) {
             $from = \Qiniu\entry($source_bucket, $from_key);
             $to = \Qiniu\entry($target_bucket, $to_key);
-            array_push($data, $operation . '/' . $from . '/' . $to);
+            array_push($data, $operation . '/' . $from . '/' . $to . "/force/" . $forceOp);
         }
         return $data;
     }
