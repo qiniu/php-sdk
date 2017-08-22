@@ -20,21 +20,27 @@ $prefix = '';
 $marker = '';
 
 // 本次列举的条目数
-$limit = 100;
+$limit = 200;
 
 $delimiter = '/';
 
 // 列举文件
 do {
-    list($iterms, $nextMarker, $err) = $bucketManager->listFiles($bucket, $prefix, $marker, $limit, $delimiter);
+    list($ret, $err) = $bucketManager->listFiles($bucket, $prefix, $marker, $limit, $delimiter);
     if ($err !== null) {
         echo "\n====> list file err: \n";
         var_dump($err);
     } else {
-        echo "Marker: $nextMarker\n";
-        echo "\nList Iterms====>\n";
-        var_dump($iterms);
-
-        $marker = $nextMarker;
+        $marker = null;
+        if (array_key_exists('marker', $ret)) {
+            $marker = $ret['marker'];
+        }
+        echo "Marker: $marker\n";
+        echo "\nList Items====>\n";
+        //var_dump($ret['items']);
+        print('items count:' . count($ret['items']) . "\n");
+        if (array_key_exists('commonPrefixes', $ret)) {
+            print_r($ret['commonPrefixes']);
+        }
     }
-} while (!empty($nextMarker));
+} while (!empty($marker));

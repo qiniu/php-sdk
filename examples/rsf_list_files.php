@@ -25,12 +25,14 @@ $limit = 100;
 $delimiter = '/';
 
 // 列举文件
-list($iterms, $nextMarker, $err) = $bucketManager->listFiles($bucket, $prefix, $marker, $limit, $delimiter);
+list($ret, $err) = $bucketManager->listFiles($bucket, $prefix, $marker, $limit, $delimiter);
 if ($err !== null) {
     echo "\n====> list file err: \n";
     var_dump($err);
 } else {
-    echo "Marker: $nextMarker\n";
+    if(array_key_exists('marker',$ret)) {
+        echo "Marker:" . $ret["marker"] . "\n";
+    }
     echo "\nList Iterms====>\n";
-    var_dump($iterms);
+    //var_dump($ret['items']);
 }
