@@ -39,7 +39,7 @@ final class Zone
     }
 
     //华东机房
-    public static function Zone0()
+    public static function zone0()
     {
         $Zone_z0 = new Zone(
             array("up.qiniup.com", 'up-nb.qiniup.com', 'up-xs.qiniup.com'),
@@ -53,7 +53,7 @@ final class Zone
     }
 
     //华北机房
-    public static function Zone1()
+    public static function zone1()
     {
         $Zone_z1 = new Zone(
             array('up-z1.qiniup.com'),
@@ -68,7 +68,7 @@ final class Zone
     }
 
     //华南机房
-    public static function Zone2()
+    public static function zone2()
     {
         $Zone_z2 = new Zone(
             array('up-z2.qiniup.com', 'up-gz.qiniup.com', 'up-fs.qiniup.com'),
@@ -82,7 +82,7 @@ final class Zone
     }
 
     //北美机房
-    public static function ZoneNa0()
+    public static function zoneNa0()
     {
         //北美机房
         $Zone_na0 = new Zone(
@@ -99,7 +99,7 @@ final class Zone
     /*
      * GET /v2/query?ak=<ak>&&bucket=<bucket>
      **/
-    public static function QueryZone($ak, $bucket)
+    public static function queryZone($ak, $bucket)
     {
         $zone = new Zone();
         $url = Config::UC_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";

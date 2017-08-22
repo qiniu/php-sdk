@@ -35,26 +35,26 @@ class ZoneTest extends \PHPUnit_Framework_TestCase
 
     public function testUpHosts()
     {
-        $zone = Zone::QueryZone($this->ak, $this->bucketName);
+        $zone = Zone::queryZone($this->ak, $this->bucketName);
         print_r($zone);
         $this->assertContains('upload.qiniup.com', $zone->cdnUpHosts);
 
-        $zone = Zone::QueryZone($this->ak, $this->bucketNameBC);
+        $zone = Zone::queryZone($this->ak, $this->bucketNameBC);
         $this->assertContains('upload-z1.qiniup.com', $zone->cdnUpHosts);
 
-        $zone = Zone::QueryZone($this->ak, $this->bucketNameNA);
+        $zone = Zone::queryZone($this->ak, $this->bucketNameNA);
         $this->assertContains('upload-na0.qiniup.com', $zone->cdnUpHosts);
     }
 
     public function testIoHosts()
     {
-        $zone = Zone::QueryZone($this->ak, $this->bucketName);
+        $zone = Zone::queryZone($this->ak, $this->bucketName);
         $this->assertEquals($zone->iovipHost, 'iovip.qbox.me');
 
-        $zone = Zone::QueryZone($this->ak, $this->bucketNameBC);
+        $zone = Zone::queryZone($this->ak, $this->bucketNameBC);
         $this->assertEquals($zone->iovipHost, 'iovip-z1.qbox.me');
 
-        $zone = Zone::QueryZone($this->ak, $this->bucketNameNA);
+        $zone = Zone::queryZone($this->ak, $this->bucketNameNA);
         $this->assertEquals($zone->iovipHost, 'iovip-na0.qbox.me');
     }
 }
