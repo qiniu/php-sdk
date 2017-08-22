@@ -84,12 +84,7 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
         $url = $this->getRsfHost() . '/list?' . http_build_query($query);
-        list($ret, $error) = $this->get($url);
-        if ($ret === null) {
-            return array(null, null, $error);
-        }
-        $marker = array_key_exists('marker', $ret) ? $ret['marker'] : null;
-        return array($ret, $marker, null);
+        return $this->get($url);
     }
 
     /**
