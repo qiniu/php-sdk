@@ -15,7 +15,7 @@ $domains = array(
     "phpsdk.qiniudn.com"
 );
 
-$logDate='2017-08-20';
+$logDate = '2017-08-20';
 
 //获取日志下载链接
 //参考文档：http://developer.qiniu.com/article/fusion/api/log.html

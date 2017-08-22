@@ -50,4 +50,3 @@ if ($refreshErr != null) {
     echo "refresh request sent\n";
     print_r($refreshResult);
 }
-

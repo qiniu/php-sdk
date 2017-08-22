@@ -10,6 +10,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
     protected $bucketName;
     protected $key;
     protected $key2;
+
     protected function setUp()
     {
         global $bucketName;
@@ -152,7 +153,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertArrayHasKey('key', $ret);
         $this->assertNull($error);
- 
+
         list($ret, $error) = $this->bucketManager->fetch(
             'http://developer.qiniu.com/docs/v6/sdk/php-sdk.html',
             $this->bucketName
@@ -167,7 +168,8 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $ops = BucketManager::buildBatchCopy(
             $this->bucketName,
             array($this->key => $key),
-            $this->bucketName,true
+            $this->bucketName,
+            true
         );
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
@@ -178,13 +180,14 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchMove()
     {
-        $key = 'movefrom'. rand();
+        $key = 'movefrom' . rand();
         $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
         $key2 = $key . 'to';
         $ops = BucketManager::buildBatchMove(
             $this->bucketName,
             array($key => $key2),
-            $this->bucketName,true
+            $this->bucketName,
+            true
         );
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
@@ -197,7 +200,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $key = 'rename' . rand();
         $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
         $key2 = $key . 'to';
-        $ops = BucketManager::buildBatchRename($this->bucketName, array($key => $key2),true);
+        $ops = BucketManager::buildBatchRename($this->bucketName, array($key => $key2), true);
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
         $error = $this->bucketManager->delete($this->bucketName, $key2);

@@ -49,7 +49,7 @@ final class Config
 
     public function getUpBackupHost($accessKey, $bucket)
     {
-        $zone=$this->getZone($accessKey, $bucket);
+        $zone = $this->getZone($accessKey, $bucket);
         if ($this->useHTTPS === true) {
             $scheme = "https://";
         } else {

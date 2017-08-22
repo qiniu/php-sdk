@@ -20,12 +20,13 @@ $pipeline = 'sdktest';
 $notifyUrl = 'http://375dec79.ngrok.com/notify.php';
 $force = false;
 
-$config =new \Qiniu\Config();
-$config->useHTTPS=true;
+$config = new \Qiniu\Config();
+$config->useHTTPS = true;
 $pfop = new PersistentFop($auth, $config);
 
 //要进行视频截图操作
-$fops = "vframe/jpg/offset/1/w/480/h/360/rotate/90|saveas/" . \Qiniu\base64_urlSafeEncode($bucket . ":qiniu_480x360.jpg");
+$fops = "vframe/jpg/offset/1/w/480/h/360/rotate/90|saveas/" .
+    \Qiniu\base64_urlSafeEncode($bucket . ":qiniu_480x360.jpg");
 
 list($id, $err) = $pfop->execute($bucket, $key, $fops, $pipeline, $notifyUrl, $force);
 echo "\n====> pfop avthumb result: \n";

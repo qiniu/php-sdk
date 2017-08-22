@@ -30,7 +30,7 @@ if ($err !== null) {
     echo "\n====> list file err: \n";
     var_dump($err);
 } else {
-    if(array_key_exists('marker',$ret)) {
+    if (array_key_exists('marker', $ret)) {
         echo "Marker:" . $ret["marker"] . "\n";
     }
     echo "\nList Iterms====>\n";

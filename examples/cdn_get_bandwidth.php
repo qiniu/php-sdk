@@ -25,7 +25,13 @@ $endDate = "2017-08-21";
 $granularity = "day";
 
 //获取带宽数据
-list($bandwidthData, $getBandwidthErr) = $cdnManager->getBandwidthData($domains, $startDate, $endDate, $granularity);
+list($bandwidthData, $getBandwidthErr) = $cdnManager->getBandwidthData(
+    $domains,
+    $startDate,
+    $endDate,
+    $granularity
+);
+
 if ($getBandwidthErr != null) {
     var_dump($getBandwidthErr);
 } else {
