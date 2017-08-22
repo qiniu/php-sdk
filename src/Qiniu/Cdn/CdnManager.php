@@ -24,7 +24,7 @@ final class CdnManager
      */
     public function refreshUrls(array $urls)
     {
-        return $this->refreshUrlsAndDirs($urls, null);
+        return $this->refreshUrlsAndDirs($urls, array());
     }
 
     /**
@@ -35,7 +35,7 @@ final class CdnManager
      */
     public function refreshDirs(array $dirs)
     {
-        return $this->refreshUrlsAndDirs(null, $dirs);
+        return $this->refreshUrlsAndDirs(array(), $dirs);
     }
 
     /**
@@ -165,7 +165,7 @@ final class CdnManager
      * @param string $encryptKey               时间戳防盗链密钥
      * @param string $durationInSeconds        链接的有效期（以秒为单位）
      *
-     * @return string 带鉴权信息的资源外链，参考 examples/cdn_manager_timestamp_antileech.php 代码
+     * @return string 带鉴权信息的资源外链，参考 examples/cdn_timestamp_antileech.php 代码
      */
     public static function createTimestampAntiLeechUrl($rawUrl, $encryptKey, $durationInSeconds)
     {

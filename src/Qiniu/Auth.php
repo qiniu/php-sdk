@@ -76,8 +76,7 @@ final class Auth
         $key = null,
         $expires = 3600,
         $policy = null,
-        $strictPolicy = true,
-        Zone $zone = null
+        $strictPolicy = true
     ) {
         $deadline = time() + $expires;
         $scope = $bucket;
@@ -88,15 +87,6 @@ final class Auth
         $args = self::copyPolicy($args, $policy, $strictPolicy);
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
-
-        if ($zone === null) {
-            $zone = new Zone();
-        }
-
-        list($upHosts, $err) = $zone->getUpHosts($this->accessKey, $bucket);
-        if ($err === null) {
-            $args['upHosts'] = $upHosts;
-        }
         
         $b = json_encode($args);
         return $this->signWithData($b);
@@ -131,8 +121,7 @@ final class Auth
         
         'deleteAfterDays',
         'fileType',
-
-        'upHosts',
+        'isPrefixalScope',
     );
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)

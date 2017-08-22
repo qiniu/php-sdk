@@ -10,19 +10,20 @@ use Qiniu\Http\Error;
 /**
  * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
  *
- * @link http://developer.qiniu.com/docs/v6/api/reference/rs/
- * 这个链接都不存在了
+ * @link https://developer.qiniu.com/kodo/api/1274/rs
  */
 final class BucketManager
 {
     private $auth;
-    private $zone;
+    private $config;
 
-    public function __construct(Auth $auth, Zone $zone = null)
+    public function __construct(Auth $auth, Config $config = null)
     {
         $this->auth = $auth;
-        if ($zone === null) {
-            $this->zone = new Zone();
+        if ($config == null) {
+            $this->config = new Config();
+        } else {
+            $this->config = $config;
         }
     }
 
@@ -31,10 +32,29 @@ final class BucketManager
      *
      * @return string[] 包含所有空间名
      */
-    public function buckets()
+    public function buckets($shared = true)
     {
-        return $this->rsGet('/buckets');
+        $includeShared = "false";
+        if ($shared === true) {
+            $includeShared = "true";
+        }
+        return $this->rsGet('/buckets?shared=' . $includeShared);
     }
+
+    /**
+     * 获取指定空间绑定的所有的域名
+     *
+     * @return string[] 包含所有空间域名
+     */
+    public function domains($bucket)
+    {
+        return $this->apiGet('/v6/domain/list?tbl=' . $bucket);
+    }
+
+    /**
+     * 获取空间绑定的域名列表
+     * @return string[] 包含空间绑定的所有域名
+     */
 
     /**
      * 列取空间的文件列表
@@ -63,13 +83,8 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'marker', $marker);
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
-        $url = Config::RSF_HOST . '/list?' . http_build_query($query);
-        list($ret, $error) = $this->get($url);
-        if ($ret === null) {
-            return array(null, null, $error);
-        }
-        $marker = array_key_exists('marker', $ret) ? $ret['marker'] : null;
-        return array($ret['items'], $marker, null);
+        $url = $this->getRsfHost() . '/list?' . http_build_query($query);
+        return $this->get($url);
     }
 
     /**
@@ -142,7 +157,7 @@ final class BucketManager
         $from = \Qiniu\entry($from_bucket, $from_key);
         $to = \Qiniu\entry($to_bucket, $to_key);
         $path = '/copy/' . $from . '/' . $to;
-        if ($force) {
+        if ($force === true) {
             $path .= '/force/true';
         }
         list(, $error) = $this->rsPost($path);
@@ -186,7 +201,7 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $encode_mime = \Qiniu\base64_urlSafeEncode($mime);
-        $path = '/chgm/' . $resource . '/mime/' .$encode_mime;
+        $path = '/chgm/' . $resource . '/mime/' . $encode_mime;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
@@ -204,9 +219,9 @@ final class BucketManager
      */
     public function changeType($bucket, $key, $fileType)
     {
-        $resource=\Qiniu\entry($bucket, $key);
-        $path='/chtype/'.$resource.'/type/'.$fileType;
-        list(,$error)=$this->rsPost($path);
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/chtype/' . $resource . '/type/' . $fileType;
+        list(, $error) = $this->rsPost($path);
         return $error;
     }
 
@@ -241,7 +256,7 @@ final class BucketManager
         $path = '/fetch/' . $resource . '/to/' . $to;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->zone->getIoHost($ak, $bucket);
+        $ioHost = $this->config->getIovipHost($ak, $bucket);
 
         $url = $ioHost . $path;
         return $this->post($url, null);
@@ -262,7 +277,7 @@ final class BucketManager
         $path = '/prefetch/' . $resource;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->zone->getIoHost($ak, $bucket);
+        $ioHost = $this->config->getIovipHost($ak, $bucket);
 
         $url = $ioHost . $path;
         list(, $error) = $this->post($url, null);
@@ -304,29 +319,56 @@ final class BucketManager
     public function deleteAfterDays($bucket, $key, $days)
     {
         $entry = \Qiniu\entry($bucket, $key);
-        $url = "/deleteAfterDays/$entry/$days";
-        list(, $error) = $this->rsPost($url);
+        $path = "/deleteAfterDays/$entry/$days";
+        list(, $error) = $this->rsPost($path);
         return $error;
+    }
+
+    private function getRsfHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::RSF_HOST;
+    }
+
+    private function getRsHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::RS_HOST;
+    }
+
+    private function getApiHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::API_HOST;
     }
 
     private function rsPost($path, $body = null)
     {
-        $url = Config::RS_HOST . $path;
+        $url = $this->getRsHost() . $path;
         return $this->post($url, $body);
+    }
+
+    private function apiGet($path)
+    {
+        $url = $this->getApiHost() . $path;
+        return $this->get($url);
     }
 
     private function rsGet($path)
     {
-        $url = Config::RS_HOST . $path;
+        $url = $this->getRsHost() . $path;
         return $this->get($url);
     }
-
-    private function ioPost($path, $body = null)
-    {
-        $url = Config::IO_HOST . $path;
-        return $this->post($url, $body);
-    }
-
+    
     private function get($url)
     {
         $headers = $this->auth->authorization($url);
@@ -350,7 +392,7 @@ final class BucketManager
 
     public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket)
     {
-        return self::twoKeyBatch('copy', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/copy', $source_bucket, $key_pairs, $target_bucket);
     }
 
 
@@ -362,19 +404,46 @@ final class BucketManager
 
     public static function buildBatchMove($source_bucket, $key_pairs, $target_bucket)
     {
-        return self::twoKeyBatch('move', $source_bucket, $key_pairs, $target_bucket);
+        return self::twoKeyBatch('/move', $source_bucket, $key_pairs, $target_bucket);
     }
 
 
     public static function buildBatchDelete($bucket, $keys)
     {
-        return self::oneKeyBatch('delete', $bucket, $keys);
+        return self::oneKeyBatch('/delete', $bucket, $keys);
     }
 
 
     public static function buildBatchStat($bucket, $keys)
     {
-        return self::oneKeyBatch('stat', $bucket, $keys);
+        return self::oneKeyBatch('/stat', $bucket, $keys);
+    }
+
+    public static function buildBatchDeleteAfterDays($bucket, $key_day_pairs)
+    {
+        $data = array();
+        foreach ($key_day_pairs as $key => $day) {
+            array_push($data, '/deleteAfterDays/' . \Qiniu\entry($bucket, $key) . '/' . $day);
+        }
+        return $data;
+    }
+
+    public static function buildBatchChangeMime($bucket, $key_mime_pairs)
+    {
+        $data = array();
+        foreach ($key_mime_pairs as $key => $mime) {
+            array_push($data, '/chgm/' . \Qiniu\entry($bucket, $key) . '/mime/' . base64_encode($mime));
+        }
+        return $data;
+    }
+
+    public static function buildBatchChangeType($bucket, $key_type_pairs)
+    {
+        $data = array();
+        foreach ($key_type_pairs as $key => $type) {
+            array_push($data, '/chtype/' . \Qiniu\entry($bucket, $key) . '/type/' . $type);
+        }
+        return $data;
     }
 
     private static function oneKeyBatch($operation, $bucket, $keys)
