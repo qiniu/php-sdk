@@ -32,7 +32,7 @@ final class FormUploader
         $params,
         $mime
     ) {
-    
+
         $fields = array('token' => $upToken);
         if ($key === null) {
             $fname = 'filename';
@@ -89,7 +89,7 @@ final class FormUploader
         $params,
         $mime
     ) {
-    
+
 
         $fields = array('token' => $upToken, 'file' => self::createFile($filePath, $mime));
         if ($key !== null) {

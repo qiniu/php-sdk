@@ -31,7 +31,8 @@ $pfop = new PersistentFop($auth, $config);
 $base64URL = Qiniu\base64_urlSafeEncode('http://devtools.qiniu.com/qiniu.png');
 
 //水印参数
-$fops = "avthumb/mp4/s/640x360/vb/1.4m/image/" . $base64URL . "|saveas/" . \Qiniu\base64_urlSafeEncode($bucket . ":qiniu_wm.mp4");
+$fops = "avthumb/mp4/s/640x360/vb/1.4m/image/" . $base64URL . "|saveas/"
+    . \Qiniu\base64_urlSafeEncode($bucket . ":qiniu_wm.mp4");
 
 list($id, $err) = $pfop->execute($bucket, $key, $fops, $pipeline, $notifyUrl, $force);
 echo "\n====> pfop avthumb result: \n";

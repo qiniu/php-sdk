@@ -46,7 +46,7 @@ final class ResumeUploader
         $mime,
         $config
     ) {
-    
+
         $this->upToken = $upToken;
         $this->key = $key;
         $this->inputStream = $inputStream;

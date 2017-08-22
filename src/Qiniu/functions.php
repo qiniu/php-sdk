@@ -165,7 +165,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $interlace = null,
         $ignoreError = 1
     ) {
-    
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -197,7 +197,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dy = null,
         $watermarkScale = null
     ) {
-    
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;
@@ -233,7 +233,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $dx = null,
         $dy = null
     ) {
-    
+
         static $imageUrlBuilder = null;
         if (is_null($imageUrlBuilder)) {
             $imageUrlBuilder = new \Qiniu\Processing\ImageUrlBuilder;

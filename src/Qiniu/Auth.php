@@ -87,7 +87,7 @@ final class Auth
         $args = self::copyPolicy($args, $policy, $strictPolicy);
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
-        
+
         $b = json_encode($args);
         return $this->signWithData($b);
     }
@@ -118,7 +118,7 @@ final class Auth
         'persistentOps',
         'persistentNotifyUrl',
         'persistentPipeline',
-        
+
         'deleteAfterDays',
         'fileType',
         'isPrefixalScope',
@@ -130,7 +130,7 @@ final class Auth
             return array();
         }
         foreach ($originPolicy as $key => $value) {
-            if (!$strictPolicy || in_array((string) $key, self::$policyFields, true)) {
+            if (!$strictPolicy || in_array((string)$key, self::$policyFields, true)) {
                 $policy[$key] = $value;
             }
         }

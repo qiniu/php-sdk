@@ -1,9 +1,7 @@
 <?php
 // Hack to override the time returned from the S3SignatureV4
 // @codingStandardsIgnoreStart
-namespace Qiniu
-
-{
+namespace Qiniu {
     function time()
     {
         return isset($_SERVER['override_qiniu_auth_time'])
@@ -12,9 +10,7 @@ namespace Qiniu
     }
 }
 
-namespace Qiniu\Tests
-
-{
+namespace Qiniu\Tests {
     use Qiniu\Auth;
 
     // @codingStandardsIgnoreEnd
@@ -50,7 +46,7 @@ namespace Qiniu\Tests
         {
             global $dummyAuth;
             $_SERVER['override_qiniu_auth_time'] = true;
-            $url =  $dummyAuth->privateDownloadUrl('http://www.qiniu.com?go=1');
+            $url = $dummyAuth->privateDownloadUrl('http://www.qiniu.com?go=1');
             $expect = 'http://www.qiniu.com?go=1&e=1234571490&token=abcdefghklmnopq:8vzBeLZ9W3E4kbBLFLW0Xe0u7v4=';
             $this->assertEquals($expect, $url);
             unset($_SERVER['override_qiniu_auth_time']);
@@ -60,7 +56,7 @@ namespace Qiniu\Tests
         {
             global $dummyAuth;
             $_SERVER['override_qiniu_auth_time'] = true;
-            $token = $dummyAuth->uploadToken('1', '2', 3600, array('endUser'=> 'y'));
+            $token = $dummyAuth->uploadToken('1', '2', 3600, array('endUser' => 'y'));
             // @codingStandardsIgnoreStart
             $exp = 'abcdefghklmnopq:yyeexeUkPOROoTGvwBjJ0F0VLEo=:eyJlbmRVc2VyIjoieSIsInNjb3BlIjoiMToyIiwiZGVhZGxpbmUiOjEyMzQ1NzE0OTB9';
             // @codingStandardsIgnoreEnd

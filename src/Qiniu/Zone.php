@@ -29,7 +29,7 @@ final class Zone
         $apiHost = "api.qiniu.com",
         $iovipHost = null
     ) {
-    
+
         $this->srcUpHosts = $srcUpHosts;
         $this->cdnUpHosts = $cdnUpHosts;
         $this->rsHost = $rsHost;
