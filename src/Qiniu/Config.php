@@ -121,14 +121,14 @@ final class Config
         $cacheId = "$accessKey:$bucket";
 
         if (isset($this->zoneCache[$cacheId])) {
-            print("from cache\n");
+            //print("from cache\n");
             $zone = $this->zoneCache[$cacheId];
         } elseif (isset($this->zone)) {
-            print("from set\n");
+            //print("from set\n");
             $zone = $this->zone;
             $this->zoneCache[$cacheId] = $zone;
         } else {
-            print("from query\n");
+            //print("from query\n");
             $zone = Zone::queryZone($accessKey, $bucket);
             $this->zoneCache[$cacheId] = $zone;
         }
