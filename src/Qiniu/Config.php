@@ -3,7 +3,7 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.2.0';
+    const SDK_VER = '7.2.1';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
@@ -121,14 +121,11 @@ final class Config
         $cacheId = "$accessKey:$bucket";
 
         if (isset($this->zoneCache[$cacheId])) {
-            //print("from cache\n");
             $zone = $this->zoneCache[$cacheId];
         } elseif (isset($this->zone)) {
-            //print("from set\n");
             $zone = $this->zone;
             $this->zoneCache[$cacheId] = $zone;
         } else {
-            //print("from query\n");
             $zone = Zone::queryZone($accessKey, $bucket);
             $this->zoneCache[$cacheId] = $zone;
         }
