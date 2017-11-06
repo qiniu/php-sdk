@@ -71,13 +71,7 @@ final class Auth
         return "$baseUrl&token=$token";
     }
 
-    public function uploadToken(
-        $bucket,
-        $key = null,
-        $expires = 3600,
-        $policy = null,
-        $strictPolicy = true
-    )
+    public function uploadToken($bucket, $key = null, $expires = 3600, $policy = null, $strictPolicy = true)
     {
         $deadline = time() + $expires;
         $scope = $bucket;
