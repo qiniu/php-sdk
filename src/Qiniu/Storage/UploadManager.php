@@ -56,7 +56,8 @@ final class UploadManager
             $this->config,
             $params,
             $mime,
-            $checkCrc
+            $checkCrc,
+            $filePath
         );
     }
 
@@ -106,7 +107,8 @@ final class UploadManager
                 $this->config,
                 $params,
                 $mime,
-                $checkCrc
+                $checkCrc,
+                $filePath
             );
         }
 
@@ -119,7 +121,7 @@ final class UploadManager
             $mime,
             $this->config
         );
-        $ret = $up->upload();
+        $ret = $up->upload($filePath);
         fclose($file);
         return $ret;
     }
