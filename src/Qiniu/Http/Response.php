@@ -130,7 +130,7 @@ final class Response
 
     private static function bodyJson($body)
     {
-        return \Qiniu\json_decode((string)$body, true, 512);
+        return \Qiniu\json_decode((string) $body, true, 512);
     }
 
     public function xVia()
@@ -170,7 +170,7 @@ final class Response
 
     private static function isJson($headers)
     {
-        return array_key_exists('Content-Type', $headers) &&
-        strpos($headers['Content-Type'], 'application/json') === 0;
+        return array_key_exists('content-type', $headers) &&
+        strpos($headers['content-type'], 'application/json') === 0;
     }
 }

@@ -83,7 +83,7 @@ final class Client
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST => $request->method,
-            CURLOPT_URL => $request->url
+            CURLOPT_URL => $request->url,
         );
 
         // Handle open_basedir & safe mode
@@ -129,7 +129,7 @@ final class Client
             $headerLine = trim($line);
             $kv = explode(':', $headerLine);
             if (count($kv) > 1) {
-                $headers[$kv[0]] = trim($kv[1]);
+                $headers[strtolower($kv[0])] = trim($kv[1]);
             }
         }
         return $headers;
