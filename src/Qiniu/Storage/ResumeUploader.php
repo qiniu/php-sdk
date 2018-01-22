@@ -71,7 +71,7 @@ final class ResumeUploader
     /**
      * 上传操作
      */
-    public function upload($filePath)
+    public function upload($fname)
     {
         $uploaded = 0;
         while ($uploaded < $this->size) {
@@ -106,7 +106,7 @@ final class ResumeUploader
             array_push($this->contexts, $ret['ctx']);
             $uploaded += $blockSize;
         }
-        return $this->makeFile($filePath);
+        return $this->makeFile($fname);
     }
 
     /**
@@ -118,14 +118,14 @@ final class ResumeUploader
         return $this->post($url, $block);
     }
 
-    private function fileUrl($filePath)
+    private function fileUrl($fname)
     {
         $url = $this->host . '/mkfile/' . $this->size;
         $url .= '/mimeType/' . \Qiniu\base64_urlSafeEncode($this->mime);
         if ($this->key != null) {
             $url .= '/key/' . \Qiniu\base64_urlSafeEncode($this->key);
         }
-        $url .= '/fname/' . \Qiniu\base64_urlSafeEncode($filePath);
+        $url .= '/fname/' . \Qiniu\base64_urlSafeEncode($fname);
         if (!empty($this->params)) {
             foreach ($this->params as $key => $value) {
                 $val = \Qiniu\base64_urlSafeEncode($value);
@@ -138,9 +138,9 @@ final class ResumeUploader
     /**
      * 创建文件
      */
-    private function makeFile($filePath)
+    private function makeFile($fname)
     {
-        $url = $this->fileUrl($filePath);
+        $url = $this->fileUrl($fname);
         $body = implode(',', $this->contexts);
         $response = $this->post($url, $body);
         if ($response->needRetry()) {
