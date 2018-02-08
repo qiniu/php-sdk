@@ -96,6 +96,21 @@ final class Zone
         return $Zone_na0;
     }
 
+    //新加坡机房
+    public static function zoneAs0()
+    {
+        //新加坡机房
+        $Zone_na0 = new Zone(
+            array('up-as0.qiniup.com'),
+            array('upload-as0.qiniup.com'),
+            "rs-as0.qiniu.com",
+            "rsf-as0.qiniu.com",
+            "api-as0.qiniu.com",
+            "iovip-as0.qbox.me"
+        );
+        return $Zone_as0;
+    }
+
     /*
      * GET /v2/query?ak=<ak>&&bucket=<bucket>
      **/
@@ -140,6 +155,10 @@ final class Zone
             $zone->rsHost = "rs-na0.qiniu.com";
             $zone->rsfHost = "rsf-na0.qiniu.com";
             $zone->apiHost = "api-na0.qiniu.com";
+        } elseif (strstr($zone->iovipHost, "as0") !== false) {
+            $zone->rsHost = "rs-as0.qiniu.com";
+            $zone->rsfHost = "rsf-as0.qiniu.com";
+            $zone->apiHost = "api-as0.qiniu.com";
         } else {
             $zone->rsHost = "rs.qiniu.com";
             $zone->rsfHost = "rsf.qiniu.com";
@@ -149,3 +168,4 @@ final class Zone
         return $zone;
     }
 }
+
