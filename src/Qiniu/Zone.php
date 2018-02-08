@@ -100,7 +100,7 @@ final class Zone
     public static function zoneAs0()
     {
         //新加坡机房
-        $Zone_na0 = new Zone(
+        $Zone_as0 = new Zone(
             array('up-as0.qiniup.com'),
             array('upload-as0.qiniup.com'),
             "rs-as0.qiniu.com",
