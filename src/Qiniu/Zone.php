@@ -42,8 +42,8 @@ final class Zone
     public static function zone0()
     {
         $Zone_z0 = new Zone(
-            array("up.qiniup.com", 'up-nb.qiniup.com', 'up-xs.qiniup.com'),
-            array('upload.qiniup.com', 'upload-nb.qiniup.com', 'upload-xs.qiniup.com'),
+            array("up.qiniup.com", 'up-jjh.qiniup.com', 'up-xs.qiniup.com'),
+            array('upload.qiniup.com', 'upload-jjh.qiniup.com', 'upload-xs.qiniup.com'),
             'rs.qiniu.com',
             'rsf.qiniu.com',
             'api.qiniu.com',
@@ -71,8 +71,8 @@ final class Zone
     public static function zone2()
     {
         $Zone_z2 = new Zone(
-            array('up-z2.qiniup.com', 'up-gz.qiniup.com', 'up-fs.qiniup.com'),
-            array('upload-z2.qiniup.com', 'upload-gz.qiniup.com', 'upload-fs.qiniup.com'),
+            array('up-z2.qiniup.com', 'up-dg.qiniup.com', 'up-fs.qiniup.com'),
+            array('upload-z2.qiniup.com', 'upload-dg.qiniup.com', 'upload-fs.qiniup.com'),
             "rs-z2.qiniu.com",
             "rsf-z2.qiniu.com",
             "api-z2.qiniu.com",
@@ -123,6 +123,7 @@ final class Zone
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
+        //print_r($ret);
         //parse zone;
 
         $iovipHost = $r['io']['src']['main'][0];
