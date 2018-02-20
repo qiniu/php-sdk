@@ -129,7 +129,8 @@ final class Client
             $headerLine = trim($line);
             $kv = explode(':', $headerLine);
             if (count($kv) > 1) {
-                $headers[strtolower($kv[0])] = trim($kv[1]);
+                $kv[0] = ucwords($kv[0], '-');
+                $headers[$kv[0]] = trim($kv[1]);
             }
         }
         return $headers;
