@@ -170,6 +170,10 @@ final class Response
 
     private static function isJson($headers)
     {
+        if (isset($headers['content-type'])){
+            $headers['Content-Type'] = $headers['content-type'];
+        }
+
         return array_key_exists('Content-Type', $headers) &&
         strpos($headers['Content-Type'], 'application/json') === 0;
     }
