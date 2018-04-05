@@ -8,7 +8,7 @@ $url = 'https://acc.qbox.me/oauth2/token';
 $param = array(
         'grant_type' => 'password',
         'username' => "ts@qiniu.com",
-        'password' => urlencode('xxxx'),
+        'password' => urlencode(''),
 );
 $param = http_build_query($param);
 $headers = array(
@@ -24,10 +24,9 @@ echo '----------------------------token:\n';
 var_dump($res);
 
 
-$res2 = createChildAccount("xxxx@rwifeng.com", 'xxxxxtest', $res['access_token']);
-
-echo '----------------------------create child account:\n';
-var_dump($res2);
+//$res2 = createChildAccount("xxxx@rwifeng.com", 'xxxxxtest', $res['access_token']);
+//echo '----------------------------create child account:\n';
+//var_dump($res2);
 
 //https://developer.qiniu.com/af/manual/1534/create-a-account-user-create-child
 function createChildAccount($email, $pwd, $aToken) {
@@ -38,6 +37,23 @@ function createChildAccount($email, $pwd, $aToken) {
 
     $cli = new \Qiniu\Http\Client();
     $resp = $cli::post('https://acc.qbox.me/user/create_child', $param, $headers);
+
+    return $resp->body;
+}
+
+
+$res3 = getAkSk("1380483031", $res['access_token']);
+echo '----------------------------get ak sk:\n';
+var_dump($res3);
+
+function getAkSk($uid, $aToken) {
+    $headers = array(
+        'Authorization' => 'Bearer ' . $aToken
+    );
+    $param = '';
+
+    $cli = new \Qiniu\Http\Client();
+    $resp = $cli::post('https://acc.qbox.me/user/child_key?uid=' . $uid, $param, $headers);
 
     return $resp->body;
 }
