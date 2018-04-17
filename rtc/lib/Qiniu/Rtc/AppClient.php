@@ -163,9 +163,23 @@ class AppClient
      * limit: int 类型，此次查询的最大长度。
      * GET /v3/apps/<AppID>/rooms?prefix=<RoomNamePrefix>&offset=<Offset>&limit=<Limit>
      */
-    public function listRooms($appId, $prefix, $offset, $limit)
+    public function listRooms($appId, $prefix = null, $offset = null, $limit = null)
     {
-        $url = sprintf("%s/%s/rooms", $this->_baseURL, $appId);
+        if(isset($prefix)){
+            $query['prefix'] = $prefix;
+        }
+        if(isset($offset)){
+            $query['offset'] = $offset;
+        }
+        if(isset($limit)){
+            $query['limit'] = $limit;
+        }
+        if ($query != null) {
+            $query = '?' . http_build_query($query);
+            $url = sprintf("%s/%s/rooms%s", $this->_baseURL, $appId, $query);
+        } else {
+            $url = sprintf("%s/%s/rooms", $this->_baseURL, $appId);
+        }
         try {
             $ret = $this->_transport->send(HttpRequest::GET, $url);
         } catch (\Exception $e) {

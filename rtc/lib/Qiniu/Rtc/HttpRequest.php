@@ -129,7 +129,6 @@ class HttpRequest
         foreach ($finalHeaders as $key => $val) {
             $annexHeaders[] = self::getHeader($key, $val);
         }
-        $lowerCaseFinalHeaders = array_change_key_case($finalHeaders);
         $ch = curl_init();
         if ($httpMethod != self::GET) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpMethod);

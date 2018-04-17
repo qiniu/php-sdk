@@ -3,7 +3,7 @@
 require join(DIRECTORY_SEPARATOR, array(dirname(dirname(__FILE__)), 'lib', 'Rtc_v3.php'));
 
 $ak = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
-$sk = 'xxxx';
+$sk = '9G4isTkVuj5ITPqH1ajhljJMTc2k4m-hZh5r5ZsK';
 
 $mac = new Qiniu\Rtc\Mac($ak, $sk);
 $client = new Qiniu\Rtc\AppClient($mac);
@@ -31,7 +31,7 @@ try {
     $resp=$client->kickingPlayer("deqq25wl9", 'lfx', "qiniu-f6e07b78-4dc8-45fb-a701-a9e158abb8e6");
     print_r($resp);
     // 列举房间
-    $resp=$client->listRooms("deqq25wl9", null, null, null);
+    $resp=$client->listRooms("deqq25wl9", 'lfx', null, null);
     print_r($resp);
     //鉴权的有效时间: 1个小时.
     $resp = $client->appToken("desqva26d", "lfxl", '1111', (time()+3600), 'user');
