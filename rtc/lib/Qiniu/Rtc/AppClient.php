@@ -146,7 +146,7 @@ class AppClient
     */
     public function kickingPlayer($appId, $roomName, $userId)
     {
-        $url = sprintf("%s/%s/rooms/%s/users/%s", $this->_baseURL, $appId, $roomName, $UserId);
+        $url = sprintf("%s/%s/rooms/%s/users/%s", $this->_baseURL, $appId, $roomName, $userId);
         try {
             $ret = $this->_transport->send(HttpRequest::DELETE, $url);
         } catch (\Exception $e) {

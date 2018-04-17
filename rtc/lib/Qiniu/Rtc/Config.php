@@ -3,8 +3,8 @@ namespace Qiniu\Rtc;
 
 final class Config
 {
-    const SDK_VERSION = '2.1.1';
-    const SDK_USER_AGENT = 'pili-sdk-php';
+    const SDK_VERSION = '1.0.0';
+    const SDK_USER_AGENT = 'Rtc-sdk-php';
 
     public $USE_HTTPS = false;
 
