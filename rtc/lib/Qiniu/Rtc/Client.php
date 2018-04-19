@@ -10,9 +10,4 @@ class Client
     {
         $this->_mac=$mac;
     }
-
-    public function hub($hubname)
-    {
-        return new Hub($this->_mac, $hubname);
-    }
 }
