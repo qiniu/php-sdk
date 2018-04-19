@@ -1,8 +1,8 @@
 <?php
-namespace Qiniu\Rtc;
+namespace QiniuRtc;
 
-use \Qiniu\Rtc\Utils;
-use \Qiniu\Rtc\HttpRequest;
+use \QiniuRtc\Utils;
+use \QiniuRtc\HttpRequest;
 
 final class Transport
 {

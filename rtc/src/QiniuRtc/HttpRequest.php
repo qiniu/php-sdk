@@ -1,7 +1,7 @@
 <?php
-namespace Qiniu\Rtc;
+namespace QiniuRtc;
 
-use \Qiniu\Rtc\HttpResponse;
+use \QiniuRtc\HttpResponse;
 
 class HttpRequest
 {

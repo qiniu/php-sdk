@@ -5,8 +5,8 @@ require join(DIRECTORY_SEPARATOR, array(dirname(dirname(__FILE__)), 'src', 'Rtc_
 $ak = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
 $sk = 'xxxx';
 
-$mac = new Qiniu\Rtc\Mac($ak, $sk);
-$client = new Qiniu\Rtc\AppClient($mac);
+$mac = new QiniuRtc\Mac($ak, $sk);
+$client = new QiniuRtc\AppClient($mac);
 $hub = 'lfxlive';
 $title = 'lfxl';
 try {

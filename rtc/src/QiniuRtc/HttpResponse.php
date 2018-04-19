@@ -1,5 +1,5 @@
 <?php
-namespace Qiniu\Rtc;
+namespace QiniuRtc;
 
 class HttpResponse
 {
