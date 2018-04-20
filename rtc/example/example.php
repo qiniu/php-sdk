@@ -3,7 +3,7 @@
 require join(DIRECTORY_SEPARATOR, array(dirname(dirname(__FILE__)), 'src', 'Rtc_v3.php'));
 
 $ak = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
-$sk = '9G4isTkVuj5ITPqH1ajhljJMTc2k4m-hZh5r5ZsK';
+$sk = 'xxxx';
 
 $mac = new QiniuRtc\Mac($ak, $sk);
 $client = new QiniuRtc\AppClient($mac);
