@@ -19,22 +19,15 @@ class AppClient
     /*
      * hub: 直播空间名
      * title: app 的名称  注意，Title 不是唯一标识，重复 create 动作将生成多个 app
-     * NoAutoCloseRoom: bool 类型，可选，禁止自动关闭房间。默认为 false ，即用户退出房间后，房间会被主动清理释放。
-     * NoAutoCreateRoom: bool 类型，可选，禁止自动创建房间。默认为 false ，即不需要主动调用接口创建即可加入房间。
+     * maxUsers：人数限制
      * NoAutoKickUser: bool 类型，可选，禁止自动踢人（抢流）。默认为 false ，即同一个身份的 client (app/room/user) ，新的连麦请求可以成功，旧连接被关闭。
      */
-    public function createApp($hub, $title, $maxUsers = null, $noAutoCloseRoom = null, $noAutoCreateRoom = null, $noAutoKickUser = null)
+    public function createApp($hub, $title, $maxUsers = null, $noAutoKickUser = null)
     {
         $params['hub'] = $hub;
         $params['title'] = $title;
         if (!empty($maxUsers)) {
             $params['maxUsers'] = $maxUsers;
-        }
-        if (!empty($noAutoCloseRoom)) {
-            $params['noAutoCloseRoom'] = $noAutoCloseRoom;
-        }
-        if (!empty($noAutoCreateRoom)) {
-            $params['noAutoCreateRoom'] = $noAutoCreateRoom;
         }
         if (!empty($noAutoKickUser)) {
             $params['noAutoKickUser'] = $noAutoKickUser;
@@ -53,8 +46,6 @@ class AppClient
      * Title: app 的名称， 可选。
      * Hub: 绑定的直播 hub，可选，用于合流后 rtmp 推流。
      * MaxUsers: int 类型，可选，连麦房间支持的最大在线人数。
-     * NoAutoCloseRoom: bool 指针类型，可选，true 表示禁止自动关闭房间。
-     * NoAutoCreateRoom: bool 指针指型，可选，true 表示禁止自动创建房间。
      * NoAutoKickUser: bool 类型，可选，禁止自动踢人。
      * MergePublishRtmp: 连麦合流转推 RTMP 的配置，可选择。其详细配置包括如下
             Enable: 布尔类型，用于开启和关闭所有房间的合流功能。
@@ -65,19 +56,13 @@ class AppClient
             URL: 合流后转推旁路直播的地址，可选，支持魔法变量配置按照连麦房间号生成不同的推流地址。如果是转推到七牛直播云，不建议使用该配置。
             StreamTitle: 转推七牛直播云的流名，可选，支持魔法变量配置按照连麦房间号生成不同的流名。例如，配置 Hub 为 qn-zhibo ，配置 StreamTitle 为 $(roomName) ，则房间 meeting-001 的合流将会被转推到 rtmp://pili-publish.qn-zhibo.***.com/qn-zhibo/meeting-001地址。详细配置细则，请咨询七牛技术支持。
      */
-    public function updateApp($appId, $hub, $title, $maxUsers = null, $mergePublishRtmp = null, $noAutoCloseRoom = null, $noAutoCreateRoom = null, $noAutoKickUser = null)
+    public function updateApp($appId, $hub, $title, $maxUsers = null, $mergePublishRtmp = null, $noAutoKickUser = null)
     {
         $url = $this->_baseURL . '/' . $appId;
         $params['hub'] = $hub;
         $params['title'] = $title;
         if (!empty($maxUsers)) {
             $params['maxUsers'] = $maxUsers;
-        }
-        if (!empty($noAutoCloseRoom)) {
-            $params['noAutoCloseRoom'] = $noAutoCloseRoom;
-        }
-        if (!empty($noAutoCreateRoom)) {
-            $params['noAutoCreateRoom'] = $noAutoCreateRoom;
         }
         if (!empty($noAutoKickUser)) {
             $params['noAutoKickUser'] = $noAutoKickUser;
