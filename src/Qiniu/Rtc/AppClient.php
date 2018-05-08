@@ -192,12 +192,9 @@ class AppClient
     private function get($url)
     {
         $cType = null;
-        $rtcToken = $this->auth->RtcToken("GET", $url, $cType, $body);
-        $headers = array(
-            'Content-Type'  => $cType,
-            'Authorization' => $rtcToken,
-        );
-        $ret = Client::get($url, $headers);
+        $rtcToken = $this->auth->authorizationV2($url, "GET", $body, $cType);
+        $rtcToken['Content-Type'] = $cType;
+        $ret = Client::get($url, $rtcToken);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -207,12 +204,9 @@ class AppClient
     private function delete($url)
     {
         $cType = 'application/json';
-        $rtcToken = $this->auth->RtcToken("DELETE", $url, $cType, $body);
-        $headers = array(
-            'Content-Type'  => $cType,
-            'Authorization' => $rtcToken,
-        );
-        $ret = Client::delete($url, $headers);
+        $rtcToken = $this->auth->authorizationV2($url, "DELETE", $body, $cType);
+        $rtcToken['Content-Type'] = $cType;
+        $ret = Client::delete($url, $rtcToken);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -222,12 +216,9 @@ class AppClient
     private function post($url, $body)
     {
         $cType = 'application/json';
-        $rtcToken = $this->auth->RtcToken("POST", $url, $cType, $body);
-        $headers = array(
-            'Content-Type'  => $cType,
-            'Authorization' => $rtcToken,
-        );
-        $ret = Client::post($url, $body, $headers);
+        $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $cType);
+        $rtcToken['Content-Type'] = $cType;
+        $ret = Client::post($url, $body, $rtcToken);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

@@ -4,7 +4,7 @@ require_once("../../autoload.php");
 use \Qiniu\Auth;
 
 $ak = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
-$sk = 'xxxx';
+$sk = '9G4isTkVuj5ITPqH1ajhljJMTc2k4m-hZh5r5ZsK';
 
 $auth = new Auth($ak, $sk);
 $client = new Qiniu\Rtc\AppClient($auth);
@@ -15,15 +15,15 @@ try {
     $resp = $client->createApp($hub, $title, $maxUsers);
     print_r($resp);exit;
     // 获取app状态
-    $resp = $client->getApp('dgbo3e8f6');
+    $resp = $client->getApp('dgbrj7ghp');
     print_r($resp);exit;
     //修改app状态
     $mergePublishRtmp = null;
     $mergePublishRtmp['enable'] = true;
-    $resp = $client->UpdateApp('dgbgljsxp', $hub, $title, $maxUsers, $mergePublishRtmp);
+    $resp = $client->UpdateApp('dgbrj7ghp', $hub, $title, $maxUsers, $mergePublishRtmp);
     print_r($resp);exit;
     //删除app
-    $resp = $client->deleteApp('dgbo8p9nm');
+    $resp = $client->deleteApp('dgbrj7ghp');
     print_r($resp);exit;
     //获取房间连麦的成员
     $resp=$client->getappUserNum("dgbfvvzid", 'lfxl');

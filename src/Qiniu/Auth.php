@@ -185,31 +185,4 @@ final class Auth
         $auth = 'Qiniu ' . $sign;
         return array('Authorization' => $auth);
     }
-
-    public function RtcToken($method, $url, $contentType, $body)
-    {
-        $url = parse_url($url);
-        $data = '';
-        if (!empty($url['path'])) {
-            $data = $method . ' ' . $url['path'];
-        }
-        if (!empty($url['query'])) {
-            $data .= '?' . $url['query'];
-        }
-        if (!empty($url['host'])) {
-            $data .= "\nHost: " . $url['host'];
-            if (isset($url['port'])) {
-                $data .= ':' . $url['port'];
-            }
-        }
-        if (!empty($contentType)) {
-            $data .= "\nContent-Type: " . $contentType;
-        }
-        $data .= "\n\n";
-        if (!empty($body)) {
-            $data .= $body;
-        }
-        $sign = $this->sign($data);
-        return 'Qiniu ' . $sign;
-    }
 }
