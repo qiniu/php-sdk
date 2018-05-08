@@ -1,23 +1,22 @@
 <?php
-namespace QiniuRtc;
+namespace Qiniu\Rtc;
 
 use Qiniu\Zone;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use Qiniu\Config;
+use Qiniu\Auth;
 
 class AppClient
 {
-    private $_transport;
-    private $_mac;
+    private $auth;
     private $_baseURL;
 
-    public function __construct($mac)
+    public function __construct(Auth $auth)
     {
-        $this->_mac = $mac;
-        $this->_transport = new Transport($mac);
+        $this->auth = $auth;
 
-        $cfg = Config::getInstance();
-        $this->_baseURL = sprintf("%s/%s/apps", $cfg->RTCAPI_HOST, $cfg->RTCAPI_VERSION);
+        $this->_baseURL = sprintf("%s/%s/apps", Config::RTCAPI_HOST, Config::RTCAPI_VERSION);
     }
 
     /*
@@ -37,7 +36,7 @@ class AppClient
             $params['noAutoKickUser'] = $noAutoKickUser;
         }
         $body = json_encode($params);
-        list($ret, $err) = $this->post("POST", $this->_baseURL, $body);
+        list($ret, $err) = $this->post($this->_baseURL, $body);
         if ($err !== null) {
             return $err;
         } else {
@@ -75,7 +74,7 @@ class AppClient
             $params['mergePublishRtmp'] = $mergePublishRtmp;
         }
         $body = json_encode($params);
-        list($ret, $err) = $this->post("POST", $url, $body);
+        list($ret, $err) = $this->post($url, $body);
         if ($err !== null) {
             return $err;
         } else {
@@ -89,7 +88,7 @@ class AppClient
     public function getApp($appId)
     {
         $url = $this->_baseURL . '/' . $appId;
-        list($ret, $err)  = $this->get("GET", $url);
+        list($ret, $err)  = $this->get($url);
         if ($err !== null) {
             return $err;
         } else {
@@ -103,12 +102,8 @@ class AppClient
     public function deleteApp($appId)
     {
         $url = $this->_baseURL . '/' . $appId;
-        list($ret, $err)  = $this->delete("DELETE", $url);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        list(, $err)  = $this->delete($url);
+        return $err;
     }
 
     /*
@@ -119,7 +114,7 @@ class AppClient
     public function getappUserNum($appId, $roomName)
     {
         $url = sprintf("%s/%s/rooms/%s/users", $this->_baseURL, $appId, $roomName);
-        list($ret, $err)  = $this->get("GET", $url);
+        list($ret, $err)  = $this->get($url);
         if ($err !== null) {
             return $err;
         } else {
@@ -136,12 +131,8 @@ class AppClient
     public function kickingPlayer($appId, $roomName, $userId)
     {
         $url = sprintf("%s/%s/rooms/%s/users/%s", $this->_baseURL, $appId, $roomName, $userId);
-        list($ret, $err)  = $this->delete("DELETE", $url);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        list(, $err)  = $this->delete($url);
+        return $err;
     }
 
     /*
@@ -169,7 +160,7 @@ class AppClient
         } else {
             $url = sprintf("%s/%s/rooms", $this->_baseURL, $appId);
         }
-        list($ret, $err)  = $this->get("GET", $url);
+        list($ret, $err)  = $this->get($url);
         if ($err !== null) {
             return $err;
         } else {
@@ -192,23 +183,19 @@ class AppClient
         $params['permission'] = $permission;
         $params['expireAt'] = $expireAt;
         $appAccessString = json_encode($params);
-        $encodedappAccess = Utils::base64UrlEncode($appAccessString);
-        $sign = hash_hmac('sha1', $encodedappAccess, $this->_mac->_secretKey, true);
-        $encodedSign = Utils::base64UrlEncode($sign);
-        return $this->_mac->_accessKey . ":" . $encodedSign . ":" . $encodedappAccess;
+        $encodedappAccess = \Qiniu\base64_urlSafeEncode($appAccessString);
+        $sign = hash_hmac('sha1', $encodedappAccess, $this->auth->secretKey, true);
+        $encodedSign = \Qiniu\base64_urlSafeEncode($sign);
+        return $this->auth->accessKey . ":" . $encodedSign . ":" . $encodedappAccess;
     }
 
-    private function get($method, $url)
+    private function get($url)
     {
-        if ($method != "GET") {
-            $cType = 'application/json';
-        } else {
-            $cType = null;
-        }
-        $macToken = $this->_mac->MACToken($method, $url, $cType, $body);
+        $cType = null;
+        $rtcToken = $this->auth->RtcToken("GET", $url, $cType, $body);
         $headers = array(
             'Content-Type'  => $cType,
-            'Authorization' => $macToken,
+            'Authorization' => $rtcToken,
         );
         $ret = Client::get($url, $headers);
         if (!$ret->ok()) {
@@ -217,17 +204,13 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function delete($method, $url)
+    private function delete($url)
     {
-        if ($method != "GET") {
-            $cType = 'application/json';
-        } else {
-            $cType = null;
-        }
-        $macToken = $this->_mac->MACToken($method, $url, $cType, $body);
+        $cType = 'application/json';
+        $rtcToken = $this->auth->RtcToken("DELETE", $url, $cType, $body);
         $headers = array(
             'Content-Type'  => $cType,
-            'Authorization' => $macToken,
+            'Authorization' => $rtcToken,
         );
         $ret = Client::delete($url, $headers);
         if (!$ret->ok()) {
@@ -236,17 +219,13 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function post($method, $url, $body)
+    private function post($url, $body)
     {
-        if ($method != "GET") {
-            $cType = 'application/json';
-        } else {
-            $cType = null;
-        }
-        $macToken = $this->_mac->MACToken($method, $url, $cType, $body);
+        $cType = 'application/json';
+        $rtcToken = $this->auth->RtcToken("POST", $url, $cType, $body);
         $headers = array(
             'Content-Type'  => $cType,
-            'Authorization' => $macToken,
+            'Authorization' => $rtcToken,
         );
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {

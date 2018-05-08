@@ -5,8 +5,8 @@ use Qiniu\Zone;
 
 final class Auth
 {
-    private $accessKey;
-    private $secretKey;
+    public $accessKey;
+    public $secretKey;
 
     public function __construct($accessKey, $secretKey)
     {
@@ -22,6 +22,7 @@ final class Auth
     public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
+        $aa = $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
         return $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
     }
 
@@ -183,5 +184,32 @@ final class Auth
         $sign = $this->sign($toSignStr);
         $auth = 'Qiniu ' . $sign;
         return array('Authorization' => $auth);
+    }
+
+    public function RtcToken($method, $url, $contentType, $body)
+    {
+        $url = parse_url($url);
+        $data = '';
+        if (!empty($url['path'])) {
+            $data = $method . ' ' . $url['path'];
+        }
+        if (!empty($url['query'])) {
+            $data .= '?' . $url['query'];
+        }
+        if (!empty($url['host'])) {
+            $data .= "\nHost: " . $url['host'];
+            if (isset($url['port'])) {
+                $data .= ':' . $url['port'];
+            }
+        }
+        if (!empty($contentType)) {
+            $data .= "\nContent-Type: " . $contentType;
+        }
+        $data .= "\n\n";
+        if (!empty($body)) {
+            $data .= $body;
+        }
+        $sign = $this->sign($data);
+        return 'Qiniu ' . $sign;
     }
 }
