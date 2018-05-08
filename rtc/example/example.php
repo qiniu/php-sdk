@@ -4,7 +4,7 @@ require_once("../../autoload.php");
 use \Qiniu\Auth;
 
 $ak = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
-$sk = '9G4isTkVuj5ITPqH1ajhljJMTc2k4m-hZh5r5ZsK';
+$sk = 'xxxx';
 
 $auth = new Auth($ak, $sk);
 $client = new Qiniu\Rtc\AppClient($auth);
