@@ -1,7 +1,6 @@
 <?php
 namespace Qiniu\Rtc;
 
-use Qiniu\Zone;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 use Qiniu\Config;
