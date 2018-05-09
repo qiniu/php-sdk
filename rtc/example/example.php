@@ -15,7 +15,7 @@ try {
     $resp = $client->createApp($hub, $title, $maxUsers);
     print_r($resp);exit;
     // 获取app状态
-    $resp = $client->getApp('dgbrj7ghp');
+    $resp = $client->getApp('dgd330nc2');
     print_r($resp);exit;
     //修改app状态
     $mergePublishRtmp = null;

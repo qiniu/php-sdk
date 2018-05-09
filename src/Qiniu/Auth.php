@@ -22,7 +22,6 @@ final class Auth
     public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
-        $aa = $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
         return $this->accessKey . ':' . \Qiniu\base64_urlSafeEncode($hmac);
     }
 

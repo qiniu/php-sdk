@@ -36,12 +36,8 @@ class AppClient
             $params['noAutoKickUser'] = $noAutoKickUser;
         }
         $body = json_encode($params);
-        list($ret, $err) = $this->post($this->_baseURL, $body);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        $ret = $this->post($this->_baseURL, $body);
+        return $ret;
     }
 
     /*
@@ -74,12 +70,8 @@ class AppClient
             $params['mergePublishRtmp'] = $mergePublishRtmp;
         }
         $body = json_encode($params);
-        list($ret, $err) = $this->post($url, $body);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        $ret = $this->post($url, $body);
+        return $ret;
     }
 
     /*
@@ -88,12 +80,8 @@ class AppClient
     public function getApp($appId)
     {
         $url = $this->_baseURL . '/' . $appId;
-        list($ret, $err)  = $this->get($url);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        $ret  = $this->get($url);
+        return $ret;
     }
 
     /*
@@ -114,12 +102,8 @@ class AppClient
     public function getappUserNum($appId, $roomName)
     {
         $url = sprintf("%s/%s/rooms/%s/users", $this->_baseURL, $appId, $roomName);
-        list($ret, $err)  = $this->get($url);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        $ret  = $this->get($url);
+        return $ret;
     }
 
    /*
@@ -160,12 +144,8 @@ class AppClient
         } else {
             $url = sprintf("%s/%s/rooms", $this->_baseURL, $appId);
         }
-        list($ret, $err)  = $this->get($url);
-        if ($err !== null) {
-            return $err;
-        } else {
-            return $ret;
-        }
+        $ret  = $this->get($url);
+        return $ret;
     }
 
     /*
@@ -189,9 +169,8 @@ class AppClient
         return $this->auth->accessKey . ":" . $encodedSign . ":" . $encodedappAccess;
     }
 
-    private function get($url)
+    private function get($url, $cType = null)
     {
-        $cType = null;
         $rtcToken = $this->auth->authorizationV2($url, "GET", $body, $cType);
         $rtcToken['Content-Type'] = $cType;
         $ret = Client::get($url, $rtcToken);
@@ -201,9 +180,8 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function delete($url)
+    private function delete($url, $cType = 'application/json')
     {
-        $cType = 'application/json';
         $rtcToken = $this->auth->authorizationV2($url, "DELETE", $body, $cType);
         $rtcToken['Content-Type'] = $cType;
         $ret = Client::delete($url, $rtcToken);
@@ -213,9 +191,8 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function post($url, $body)
+    private function post($url, $body, $cType = 'application/json')
     {
-        $cType = 'application/json';
         $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $cType);
         $rtcToken['Content-Type'] = $cType;
         $ret = Client::post($url, $body, $rtcToken);
