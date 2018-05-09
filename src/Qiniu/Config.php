@@ -11,6 +11,8 @@ final class Config
     const API_HOST = 'api.qiniu.com';
     const RS_HOST = 'rs.qiniu.com';      //RS Host
     const UC_HOST = 'https://api.qiniu.com';              //UC Host
+    const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
+    const RTCAPI_VERSION = 'v3';
 
     // Zone 空间对应的机房
     public $zone;
