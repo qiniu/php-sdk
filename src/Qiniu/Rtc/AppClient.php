@@ -163,10 +163,7 @@ class AppClient
         $params['permission'] = $permission;
         $params['expireAt'] = $expireAt;
         $appAccessString = json_encode($params);
-        $encodedappAccess = \Qiniu\base64_urlSafeEncode($appAccessString);
-        $sign = hash_hmac('sha1', $encodedappAccess, $this->auth->getSecretKey(), true);
-        $encodedSign = \Qiniu\base64_urlSafeEncode($sign);
-        return $this->auth->getAccessKey() . ":" . $encodedSign . ":" . $encodedappAccess;
+        return $this->auth->signWithData($appAccessString);
     }
 
     private function get($url, $cType = null)

@@ -35,7 +35,7 @@ try {
     $resp=$client->listRooms("dgbfvvzid", 'lfx', null, null);
     print_r($resp);exit;
     //鉴权的有效时间: 1个小时.
-    $resp = $client->appToken("dgd3fky76", "lfxl", '1111', (time()+3600), 'user');
+    $resp = $client->appToken("dgd4vecde", "lfxl", '1111', (time()+3600), 'user');
     print_r($resp);exit;
 } catch (\Exception $e) {
     echo "Error:", $e, "\n";

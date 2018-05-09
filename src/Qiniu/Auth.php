@@ -19,11 +19,6 @@ final class Auth
         return $this->accessKey;
     }
 
-    public function getSecretKey()
-    {
-        return $this->secretKey;
-    }
-
     public function sign($data)
     {
         $hmac = hash_hmac('sha1', $data, $this->secretKey, true);
