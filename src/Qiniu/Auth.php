@@ -5,8 +5,8 @@ use Qiniu\Zone;
 
 final class Auth
 {
-    public $accessKey;
-    public $secretKey;
+    private $accessKey;
+    private $secretKey;
 
     public function __construct($accessKey, $secretKey)
     {
@@ -17,6 +17,11 @@ final class Auth
     public function getAccessKey()
     {
         return $this->accessKey;
+    }
+
+    public function getSecretKey()
+    {
+        return $this->secretKey;
     }
 
     public function sign($data)
