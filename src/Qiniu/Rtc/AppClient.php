@@ -9,20 +9,21 @@ use Qiniu\Auth;
 class AppClient
 {
     private $auth;
-    private $_baseURL;
+    private $baseURL;
 
     public function __construct(Auth $auth)
     {
         $this->auth = $auth;
 
-        $this->_baseURL = sprintf("%s/%s/apps", Config::RTCAPI_HOST, Config::RTCAPI_VERSION);
+        $this->baseURL = sprintf("%s/%s/apps", Config::RTCAPI_HOST, Config::RTCAPI_VERSION);
     }
 
     /*
      * hub: 直播空间名
      * title: app 的名称  注意，Title 不是唯一标识，重复 create 动作将生成多个 app
      * maxUsers：人数限制
-     * NoAutoKickUser: bool 类型，可选，禁止自动踢人（抢流）。默认为 false ，即同一个身份的 client (app/room/user) ，新的连麦请求可以成功，旧连接被关闭。
+     * NoAutoKickUser: bool 类型，可选，禁止自动踢人（抢流）。默认为 false ，
+       即同一个身份的 client (app/room/user) ，新的连麦请求可以成功，旧连接被关闭。
      */
     public function createApp($hub, $title, $maxUsers = null, $noAutoKickUser = null)
     {
@@ -35,7 +36,7 @@ class AppClient
             $params['noAutoKickUser'] = $noAutoKickUser;
         }
         $body = json_encode($params);
-        $ret = $this->post($this->_baseURL, $body);
+        $ret = $this->post($this->baseURL, $body);
         return $ret;
     }
 
@@ -56,7 +57,7 @@ class AppClient
      */
     public function updateApp($appId, $hub, $title, $maxUsers = null, $mergePublishRtmp = null, $noAutoKickUser = null)
     {
-        $url = $this->_baseURL . '/' . $appId;
+        $url = $this->baseURL . '/' . $appId;
         $params['hub'] = $hub;
         $params['title'] = $title;
         if (!empty($maxUsers)) {
@@ -78,7 +79,7 @@ class AppClient
      */
     public function getApp($appId)
     {
-        $url = $this->_baseURL . '/' . $appId;
+        $url = $this->baseURL . '/' . $appId;
         $ret  = $this->get($url);
         return $ret;
     }
@@ -88,7 +89,7 @@ class AppClient
      */
     public function deleteApp($appId)
     {
-        $url = $this->_baseURL . '/' . $appId;
+        $url = $this->baseURL . '/' . $appId;
         list(, $err)  = $this->delete($url);
         return $err;
     }
@@ -100,7 +101,7 @@ class AppClient
      */
     public function listUser($appId, $roomName)
     {
-        $url = sprintf("%s/%s/rooms/%s/users", $this->_baseURL, $appId, $roomName);
+        $url = sprintf("%s/%s/rooms/%s/users", $this->baseURL, $appId, $roomName);
         $ret  = $this->get($url);
         return $ret;
     }
@@ -113,7 +114,7 @@ class AppClient
     */
     public function kickUser($appId, $roomName, $userId)
     {
-        $url = sprintf("%s/%s/rooms/%s/users/%s", $this->_baseURL, $appId, $roomName, $userId);
+        $url = sprintf("%s/%s/rooms/%s/users/%s", $this->baseURL, $appId, $roomName, $userId);
         list(, $err)  = $this->delete($url);
         return $err;
     }
@@ -128,20 +129,20 @@ class AppClient
      */
     public function listRooms($appId, $prefix = null, $offset = null, $limit = null)
     {
-        if(isset($prefix)){
+        if (isset($prefix)) {
             $query['prefix'] = $prefix;
         }
-        if(isset($offset)){
+        if (isset($offset)) {
             $query['offset'] = $offset;
         }
-        if(isset($limit)){
+        if (isset($limit)) {
             $query['limit'] = $limit;
         }
         if ($query != null) {
             $query = '?' . http_build_query($query);
-            $url = sprintf("%s/%s/rooms%s", $this->_baseURL, $appId, $query);
+            $url = sprintf("%s/%s/rooms%s", $this->baseURL, $appId, $query);
         } else {
-            $url = sprintf("%s/%s/rooms", $this->_baseURL, $appId);
+            $url = sprintf("%s/%s/rooms", $this->baseURL, $appId);
         }
         $ret  = $this->get($url);
         return $ret;
@@ -151,14 +152,16 @@ class AppClient
      * appId: app 的唯一标识，创建的时候由系统生成。
      * roomName: 房间名称，需满足规格 ^[a-zA-Z0-9_-]{3,64}$
      * userId: 请求加入房间的用户 ID，需满足规格 ^[a-zA-Z0-9_-]{3,50}$
-     * expireAt: int64 类型，鉴权的有效时间，传入以秒为单位的64位Unix绝对时间，token 将在该时间后失效。
-     * permission: 该用户的房间管理权限，"admin" 或 "user"，默认为 "user" 。当权限角色为 "admin" 时，拥有将其他用户移除出房间等特权.
+     * expireAt: int64 类型，鉴权的有效时间，传入以秒为单位的64位Unix
+       绝对时间，token 将在该时间后失效。
+     * permission: 该用户的房间管理权限，"admin" 或 "user"，默认为 "user" 。
+       当权限角色为 "admin" 时，拥有将其他用户移除出房间等特权.
      */
     public function appToken($appId, $roomName, $userId, $expireAt, $permission)
     {
         $params['appId'] = $appId;
         $params['userId'] = $userId;
-        $params['roomName'] = $roomName;        
+        $params['roomName'] = $roomName;
         $params['permission'] = $permission;
         $params['expireAt'] = $expireAt;
         $appAccessString = json_encode($params);
