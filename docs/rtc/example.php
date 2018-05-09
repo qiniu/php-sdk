@@ -15,15 +15,15 @@ try {
     $resp = $client->createApp($hub, $title, $maxUsers);
     print_r($resp);exit;
     // 获取app状态
-    $resp = $client->getApp('dgd330nc2');
+    $resp = $client->getApp('dgdl5ge8y');
     print_r($resp);exit;
     //修改app状态
     $mergePublishRtmp = null;
     $mergePublishRtmp['enable'] = true;
-    $resp = $client->UpdateApp('dgbrj7ghp', $hub, $title, $maxUsers, $mergePublishRtmp);
+    $resp = $client->updateApp('dgdl5ge8y', $hub, $title, $maxUsers, $mergePublishRtmp);
     print_r($resp);exit;
     //删除app
-    $resp = $client->deleteApp('dgbrj7ghp');
+    $resp = $client->deleteApp('dgdl5ge8y');
     print_r($resp);exit;
     //获取房间连麦的成员
     $resp=$client->listUser("dgbfvvzid", 'lfxl');
