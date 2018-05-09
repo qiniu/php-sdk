@@ -32,7 +32,7 @@ try {
     $resp=$client->kickUser("dgbfvvzid", 'lfx', "qiniu-f6e07b78-4dc8-45fb-a701-a9e158abb8e6");
     print_r($resp);
     // 列举房间
-    $resp=$client->listRooms("dgbfvvzid", 'lfx', null, null);
+    $resp=$client->listActiveRooms("dgbfvvzid", 'lfx', null, null);
     print_r($resp);
     //鉴权的有效时间: 1个小时.
     $resp = $client->appToken("dgd4vecde", "lfxl", '1111', (time()+3600), 'user');

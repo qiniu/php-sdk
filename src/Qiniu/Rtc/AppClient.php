@@ -127,7 +127,7 @@ class AppClient
      * limit: int 类型，此次查询的最大长度。
      * GET /v3/apps/<AppID>/rooms?prefix=<RoomNamePrefix>&offset=<Offset>&limit=<Limit>
      */
-    public function listRooms($appId, $prefix = null, $offset = null, $limit = null)
+    public function listActiveRooms($appId, $prefix = null, $offset = null, $limit = null)
     {
         if (isset($prefix)) {
             $query['prefix'] = $prefix;
