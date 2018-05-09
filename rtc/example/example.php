@@ -26,10 +26,10 @@ try {
     $resp = $client->deleteApp('dgbrj7ghp');
     print_r($resp);exit;
     //获取房间连麦的成员
-    $resp=$client->getappUserNum("dgbfvvzid", 'lfxl');
+    $resp=$client->listUser("dgbfvvzid", 'lfxl');
     print_r($resp);exit;
     //剔除房间的连麦成员
-    $resp=$client->kickingPlayer("dgbfvvzid", 'lfx', "qiniu-f6e07b78-4dc8-45fb-a701-a9e158abb8e6");
+    $resp=$client->kickUser("dgbfvvzid", 'lfx', "qiniu-f6e07b78-4dc8-45fb-a701-a9e158abb8e6");
     print_r($resp);exit;
     // 列举房间
     $resp=$client->listRooms("dgbfvvzid", 'lfx', null, null);

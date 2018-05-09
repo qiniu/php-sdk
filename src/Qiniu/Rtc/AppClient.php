@@ -98,7 +98,7 @@ class AppClient
      * appId: app 的唯一标识，创建的时候由系统生成。
      * roomName: 操作所查询的连麦房间。
      */
-    public function getappUserNum($appId, $roomName)
+    public function listUser($appId, $roomName)
     {
         $url = sprintf("%s/%s/rooms/%s/users", $this->_baseURL, $appId, $roomName);
         $ret  = $this->get($url);
@@ -111,7 +111,7 @@ class AppClient
     * roomName: 连麦房间
     * userId: 请求加入房间的用户ID
     */
-    public function kickingPlayer($appId, $roomName, $userId)
+    public function kickUser($appId, $roomName, $userId)
     {
         $url = sprintf("%s/%s/rooms/%s/users/%s", $this->_baseURL, $appId, $roomName, $userId);
         list(, $err)  = $this->delete($url);
