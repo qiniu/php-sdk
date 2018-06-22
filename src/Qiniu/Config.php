@@ -12,6 +12,7 @@ final class Config
     const RS_HOST = 'rs.qiniu.com';      //RS Host
     const UC_HOST = 'https://api.qiniu.com';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
+    const ARGUS_HOST = 'argus.atlab.ai';
     const RTCAPI_VERSION = 'v3';
 
     // Zone 空间对应的机房
