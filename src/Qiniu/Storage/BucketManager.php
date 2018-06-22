@@ -188,30 +188,6 @@ final class BucketManager
     }
 
     /**
-     * 将资源从一个空间到另一个空间
-     *
-     * @param $reqBody     待操作资源所在空间
-     * @param $from_key        待操作资源文件名
-     * @param $to_bucket       目标资源空间名
-     * @param $to_key          目标资源文件名
-     *
-     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
-     * @link  https://developer.qiniu.com/dora/manual/4258/video-pulp
-     */
-    public function pulpVideo($reqBody, $ops, $vid, $params = null)
-    {
-        $path = '/v1/video/' . $vid;
-        $req = array();
-        $req['data'] = $reqBody;
-        $req['ops'] = $ops;
-        if (isset($params)) {
-            $req['params'] = $params;
-        }
-        $body = json_encode($req);
-        return $this->arPost($path, $body);
-    }
-
-    /**
      * 主动修改指定资源的文件类型
      *
      * @param $bucket     待操作资源所在空间
@@ -383,15 +359,6 @@ final class BucketManager
         return $scheme . Config::RS_HOST;
     }
 
-    private function getArHost()
-    {
-        $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
-            $scheme = "https://";
-        }
-        return $scheme . Config::ARGUS_HOST;
-    }
-
     private function getApiHost()
     {
         $scheme = "http://";
@@ -419,12 +386,6 @@ final class BucketManager
         return $this->get($url);
     }
 
-    private function arPost($path, $body = null)
-    {
-        $url = $this->getArHost() . $path;
-        return $this->pluPost($url, 'POST', $body);
-    }
-
     private function get($url)
     {
         $headers = $this->auth->authorization($url);
@@ -440,19 +401,6 @@ final class BucketManager
         $headers = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
-            return array(null, new Error($url, $ret));
-        }
-        $r = ($ret->body === null) ? array() : $ret->json();
-        return array($r, null);
-    }
-
-    private function pluPost($url, $method, $body)
-    {
-        $headers = $this->auth->authorizationV2($url, $method, $body, 'application/json');
-        $headers['Content-Type']='application/json';
-        $ret = Client::post($url, $body, $headers);
-        if (!$ret->ok()) {
-            print($ret->statusCode);
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
