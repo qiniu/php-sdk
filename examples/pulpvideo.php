@@ -9,7 +9,7 @@ $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 $auth = new Auth($accessKey, $secretKey);
 $config = new \Qiniu\Config();
-$ArgusManager = new \Qiniu\Storage\ArgusManager($auth, $config);
+$argusManager = new \Qiniu\Storage\ArgusManager($auth, $config);
 
 $reqBody = array();
 $reqBody['uri'] = "xxxx";
@@ -46,7 +46,7 @@ $req['params'] = $params;
 $body = json_encode($req);
 
 $vid = "xxxx";
-list($ret, $err) = $ArgusManager->pulpVideo($body, $vid);
+list($ret, $err) = $argusManager->pulpVideo($body, $vid);
 
 if ($err !== null) {
     var_dump($err);
