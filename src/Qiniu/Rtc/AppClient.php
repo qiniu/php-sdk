@@ -138,7 +138,7 @@ class AppClient
         if (isset($limit)) {
             $query['limit'] = $limit;
         }
-        if ($query != null) {
+        if (isset($query) && !empty($query)) {
             $query = '?' . http_build_query($query);
             $url = sprintf("%s/%s/rooms%s", $this->baseURL, $appId, $query);
         } else {
@@ -170,7 +170,7 @@ class AppClient
 
     private function get($url, $cType = null)
     {
-        $rtcToken = $this->auth->authorizationV2($url, "GET", $body, $cType);
+        $rtcToken = $this->auth->authorizationV2($url, "GET", null, $cType);
         $rtcToken['Content-Type'] = $cType;
         $ret = Client::get($url, $rtcToken);
         if (!$ret->ok()) {
@@ -179,10 +179,10 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function delete($url, $cType = 'application/json')
+    private function delete($url, $contentType = 'application/json')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "DELETE", $body, $cType);
-        $rtcToken['Content-Type'] = $cType;
+        $rtcToken = $this->auth->authorizationV2($url, "DELETE", null, $contentType);
+        $rtcToken['Content-Type'] = $contentType;
         $ret = Client::delete($url, $rtcToken);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
@@ -190,10 +190,10 @@ class AppClient
         return array($ret->json(), null);
     }
 
-    private function post($url, $body, $cType = 'application/json')
+    private function post($url, $body, $contentType = 'application/json')
     {
-        $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $cType);
-        $rtcToken['Content-Type'] = $cType;
+        $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $contentType);
+        $rtcToken['Content-Type'] = $contentType;
         $ret = Client::post($url, $body, $rtcToken);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));

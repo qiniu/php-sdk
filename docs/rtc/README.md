@@ -2,11 +2,11 @@
 
 ## Features
 
-- App
-    - [x] 创建房间: App->createApp()
-    - [x] 查看房间: App->getApp()
-    - [x] 删除房间: App->deleteApp()
-    - [x] 生成房间token: App->AppToken()
+- Appclient
+    - [x] 创建房间: client->createApp()
+    - [x] 查看房间: client->getApp()
+    - [x] 删除房间: client->deleteApp()
+    - [x] 生成房间token: client->appToken()
 
 
 
@@ -31,41 +31,41 @@
 ```php
 $ak = "gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5";
 $sk = "xxxx";
-$mac = new QiniuRtc\Mac($ak, $sk);
-$client = new QiniuRtc\AppClient($mac);
+$auth = new Auth($ak, $sk);
+$client = new Qiniu\Rtc\AppClient($auth);
 $resp=$client->createApp("901","testApp");
 print_r($resp);
 ```
 
-#### Get a app
+#### Get an app
 
 ```php
 $ak = "gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5";
 $sk = "xxxx";
-$mac = new QiniuRtc\Mac($ak, $sk);
-$client = new QiniuRtc\AppClient($mac);
+$auth = new Auth($ak, $sk);
+$client = new Qiniu\Rtc\AppClient($auth);
 $resp=$client->getApp("deq02uhb6");
 print_r($resp);
 ```
 
-#### Delete a app
+#### Delete an app
 
 ```php
 $ak = "gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5";
 $sk = "xxxx";
-$mac = new QiniuRtc\Mac($ak, $sk);
-$client = new QiniuRtc\AppClient($mac);
+$auth = new Auth($ak, $sk);
+$client = new Qiniu\Rtc\AppClient($auth);
 $resp=$client->deleteApp("deq02uhb6");
 print_r($resp);
 ```
 
-#### Generate a app token
+#### Generate an app token
 
 ```php
 $ak = "gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5";
 $sk = "xxxx";
-$mac = new QiniuRtc\Mac($ak, $sk);
-$client = new QiniuRtc\AppClient($mac);
+$auth = new Auth($ak, $sk);
+$client = new Qiniu\Rtc\AppClient($auth);
 $resp=$client->appToken("deq02uhb6", "lfx", '1111', (time()+3600), 'user');
 print_r($resp);
 ```
