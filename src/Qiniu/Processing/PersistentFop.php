@@ -80,10 +80,6 @@ final class PersistentFop
     public function status($id)
     {
         $scheme = "http://";
-
-        if ($this->config->useHTTPS === true) {
-            $scheme = "https://";
-        }
         $url = $scheme . Config::API_HOST . "/status/get/prefop?id=$id";
         $response = Client::get($url);
         if (!$response->ok()) {
