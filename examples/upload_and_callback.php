@@ -7,7 +7,7 @@ use Qiniu\Storage\UploadManager;
 // use Qiniu\Zone;
 
 // 指定zone上传
-// $zone = Zone::zonez01(); //华东1
+// $zone = Zone::zoneZ0(); //华东QVM内网上传指定host
 // $config = new Config($zone);
 
 $accessKey = getenv('QINIU_ACCESS_KEY');
