@@ -25,7 +25,7 @@ final class Config
     private $zoneCache;
 
     // 构造函数
-    public function __construct(Zone $z = null)
+    public function __construct($z = null)
     {
         $this->zone = $z;
         $this->useHTTPS = false;

@@ -39,9 +39,9 @@ class Region
     }
 
     //华东机房
-    public static function zone0()
+    public static function Region0()
     {
-        $Zone_z0 = new Region(
+        $Region_z0 = new Region(
             array("up.qiniup.com", 'up-jjh.qiniup.com', 'up-xs.qiniup.com'),
             array('upload.qiniup.com', 'upload-jjh.qiniup.com', 'upload-xs.qiniup.com'),
             'rs.qbox.me',
@@ -49,39 +49,39 @@ class Region
             'api.qiniu.com',
             'iovip.qbox.me'
         );
-        return $Zone_z0;
+        return $Region_z0;
     }
 
     //华东机房内网上传
-    public static function zoneZ0()
+    public static function RegionZ0()
     {
-        $Zone_z01 = new Region(
+        $Region_Z0 = new Region(
             array("free-qvm-z0-xs.qiniup.com"),
             'rs.qbox.me',
             'rsf.qbox.me',
             'api.qiniu.com',
             'iovip.qbox.me'
         );
-        return $Zone_z01;
+        return $Region_Z0;
     }
 
     //华北机房内网上传
-    public static function zoneZ1()
+    public static function RegionZ1()
     {
-        $Zone_z12 = new Region(
+        $Region_Z1 = new Region(
             array("free-qvm-z1-zz.qiniup.com"),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
             "api-z1.qiniu.com",
             "iovip-z1.qbox.me"
         );
-        return $Zone_z12;
+        return $Region_Z1;
     }
 
     //华北机房
-    public static function zone1()
+    public static function Region1()
     {
-        $Zone_z1 = new Region(
+        $Region_z1 = new Region(
             array('up-z1.qiniup.com'),
             array('upload-z1.qiniup.com'),
             "rs-z1.qbox.me",
@@ -90,13 +90,13 @@ class Region
             "iovip-z1.qbox.me"
         );
 
-        return $Zone_z1;
+        return $Region_z1;
     }
 
     //华南机房
-    public static function zone2()
+    public static function Region2()
     {
-        $Zone_z2 = new Region(
+        $Region_z2 = new Region(
             array('up-z2.qiniup.com', 'up-dg.qiniup.com', 'up-fs.qiniup.com'),
             array('upload-z2.qiniup.com', 'upload-dg.qiniup.com', 'upload-fs.qiniup.com'),
             "rs-z2.qbox.me",
@@ -104,14 +104,14 @@ class Region
             "api-z2.qiniu.com",
             "iovip-z2.qbox.me"
         );
-        return $Zone_z2;
+        return $Region_z2;
     }
 
     //北美机房
-    public static function zoneNa0()
+    public static function RegionNa0()
     {
         //北美机房
-        $Zone_na0 = new Region(
+        $Region_na0 = new Region(
             array('up-na0.qiniup.com'),
             array('upload-na0.qiniup.com'),
             "rs-na0.qbox.me",
@@ -119,14 +119,14 @@ class Region
             "api-na0.qiniu.com",
             "iovip-na0.qbox.me"
         );
-        return $Zone_na0;
+        return $Region_na0;
     }
 
     //新加坡机房
-    public static function zoneAs0()
+    public static function RegionAs0()
     {
         //新加坡机房
-        $Zone_as0 = new Region(
+        $Region_as0 = new Region(
             array('up-as0.qiniup.com'),
             array('upload-as0.qiniup.com'),
             "rs-as0.qbox.me",
@@ -134,7 +134,7 @@ class Region
             "api-as0.qiniu.com",
             "iovip-as0.qbox.me"
         );
-        return $Zone_as0;
+        return $Region_as0;
     }
 
     /*
