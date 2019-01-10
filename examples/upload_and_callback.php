@@ -11,9 +11,9 @@ use Qiniu\Storage\UploadManager;
 // $zone = Zone::zoneZ0(); //华东QVM内网上传指定host
 // $config = new Config($zone);
 
-$accessKey = getenv('QINIU_ACCESS_KEY');
-$secretKey = getenv('QINIU_SECRET_KEY');
-$bucket = getenv('QINIU_TEST_BUCKET');
+$accessKey = 'gwd_gV4gPKZZsmEOvAuNU1AcumicmuHooTfu64q5';
+$secretKey = '9G4isTkVuj5ITPqH1ajhljJMTc2k4m-hZh5r5ZsK';
+$bucket = 'file';
 $auth = new Auth($accessKey, $secretKey);
 
 // 上传文件到七牛后， 七牛将文件名和文件大小回调给业务服务器.
@@ -22,7 +22,8 @@ $policy = array(
     'callbackUrl' => 'http://your.domain.com/upload_verify_callback.php',
     'callbackBody' => 'filename=$(fname)&filesize=$(fsize)'
 );
-$uptoken = $auth->uploadToken($bucket, null, 3600, $policy);
+// $uptoken = $auth->uploadToken($bucket, null, 3600, $policy);
+$uptoken = $auth->uploadToken($bucket, null, 3600);
 
 //上传文件的本地路径
 $filePath = './php-logo.png';
