@@ -41,7 +41,7 @@ class Region
     //华东机房
     public static function zone0()
     {
-        $Zone_z0 = new Zone(
+        $Zone_z0 = new Region(
             array("up.qiniup.com", 'up-jjh.qiniup.com', 'up-xs.qiniup.com'),
             array('upload.qiniup.com', 'upload-jjh.qiniup.com', 'upload-xs.qiniup.com'),
             'rs.qbox.me',
@@ -55,7 +55,7 @@ class Region
     //华东机房内网上传
     public static function zoneZ0()
     {
-        $Zone_z01 = new Zone(
+        $Zone_z01 = new Region(
             array("free-qvm-z0-xs.qiniup.com"),
             'rs.qbox.me',
             'rsf.qbox.me',
@@ -68,7 +68,7 @@ class Region
     //华北机房内网上传
     public static function zoneZ1()
     {
-        $Zone_z12 = new Zone(
+        $Zone_z12 = new Region(
             array("free-qvm-z1-zz.qiniup.com"),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
@@ -81,7 +81,7 @@ class Region
     //华北机房
     public static function zone1()
     {
-        $Zone_z1 = new Zone(
+        $Zone_z1 = new Region(
             array('up-z1.qiniup.com'),
             array('upload-z1.qiniup.com'),
             "rs-z1.qbox.me",
@@ -96,7 +96,7 @@ class Region
     //华南机房
     public static function zone2()
     {
-        $Zone_z2 = new Zone(
+        $Zone_z2 = new Region(
             array('up-z2.qiniup.com', 'up-dg.qiniup.com', 'up-fs.qiniup.com'),
             array('upload-z2.qiniup.com', 'upload-dg.qiniup.com', 'upload-fs.qiniup.com'),
             "rs-z2.qbox.me",
@@ -111,7 +111,7 @@ class Region
     public static function zoneNa0()
     {
         //北美机房
-        $Zone_na0 = new Zone(
+        $Zone_na0 = new Region(
             array('up-na0.qiniup.com'),
             array('upload-na0.qiniup.com'),
             "rs-na0.qbox.me",
@@ -126,7 +126,7 @@ class Region
     public static function zoneAs0()
     {
         //新加坡机房
-        $Zone_as0 = new Zone(
+        $Zone_as0 = new Region(
             array('up-as0.qiniup.com'),
             array('upload-as0.qiniup.com'),
             "rs-as0.qbox.me",
@@ -142,7 +142,7 @@ class Region
      **/
     public static function queryZone($ak, $bucket)
     {
-        $zone = new Zone();
+        $Region = new Region();
         $url = Config::UC_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
@@ -150,48 +150,48 @@ class Region
         }
         $r = ($ret->body === null) ? array() : $ret->json();
         //print_r($ret);
-        //parse zone;
+        //parse Region;
 
         $iovipHost = $r['io']['src']['main'][0];
-        $zone->iovipHost = $iovipHost;
+        $Region->iovipHost = $iovipHost;
         $accMain = $r['up']['acc']['main'][0];
-        array_push($zone->cdnUpHosts, $accMain);
+        array_push($Region->cdnUpHosts, $accMain);
         if (isset($r['up']['acc']['backup'])) {
             foreach ($r['up']['acc']['backup'] as $key => $value) {
-                array_push($zone->cdnUpHosts, $value);
+                array_push($Region->cdnUpHosts, $value);
             }
         }
         $srcMain = $r['up']['src']['main'][0];
-        array_push($zone->srcUpHosts, $srcMain);
+        array_push($Region->srcUpHosts, $srcMain);
         if (isset($r['up']['src']['backup'])) {
             foreach ($r['up']['src']['backup'] as $key => $value) {
-                array_push($zone->srcUpHosts, $value);
+                array_push($Region->srcUpHosts, $value);
             }
         }
 
         //set specific hosts
-        if (strstr($zone->iovipHost, "z1") !== false) {
-            $zone->rsHost = "rs-z1.qbox.me";
-            $zone->rsfHost = "rsf-z1.qbox.me";
-            $zone->apiHost = "api-z1.qiniu.com";
-        } elseif (strstr($zone->iovipHost, "z2") !== false) {
-            $zone->rsHost = "rs-z2.qbox.me";
-            $zone->rsfHost = "rsf-z2.qbox.me";
-            $zone->apiHost = "api-z2.qiniu.com";
-        } elseif (strstr($zone->iovipHost, "na0") !== false) {
-            $zone->rsHost = "rs-na0.qbox.me";
-            $zone->rsfHost = "rsf-na0.qbox.me";
-            $zone->apiHost = "api-na0.qiniu.com";
-        } elseif (strstr($zone->iovipHost, "as0") !== false) {
-            $zone->rsHost = "rs-as0.qbox.me";
-            $zone->rsfHost = "rsf-as0.qbox.me";
-            $zone->apiHost = "api-as0.qiniu.com";
+        if (strstr($Region->iovipHost, "z1") !== false) {
+            $Region->rsHost = "rs-z1.qbox.me";
+            $Region->rsfHost = "rsf-z1.qbox.me";
+            $Region->apiHost = "api-z1.qiniu.com";
+        } elseif (strstr($Region->iovipHost, "z2") !== false) {
+            $Region->rsHost = "rs-z2.qbox.me";
+            $Region->rsfHost = "rsf-z2.qbox.me";
+            $Region->apiHost = "api-z2.qiniu.com";
+        } elseif (strstr($Region->iovipHost, "na0") !== false) {
+            $Region->rsHost = "rs-na0.qbox.me";
+            $Region->rsfHost = "rsf-na0.qbox.me";
+            $Region->apiHost = "api-na0.qiniu.com";
+        } elseif (strstr($Region->iovipHost, "as0") !== false) {
+            $Region->rsHost = "rs-as0.qbox.me";
+            $Region->rsfHost = "rsf-as0.qbox.me";
+            $Region->apiHost = "api-as0.qiniu.com";
         } else {
-            $zone->rsHost = "rs.qbox.me";
-            $zone->rsfHost = "rsf.qbox.me";
-            $zone->apiHost = "api.qiniu.com";
+            $Region->rsHost = "rs.qbox.me";
+            $Region->rsfHost = "rsf.qbox.me";
+            $Region->apiHost = "api.qiniu.com";
         }
 
-        return $zone;
+        return $Region;
     }
 }
