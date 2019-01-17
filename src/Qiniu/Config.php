@@ -3,7 +3,7 @@ namespace Qiniu;
 
 final class Config
 {
-    const SDK_VER = '7.2.7';
+    const SDK_VER = '7.3.0';
 
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
@@ -25,7 +25,7 @@ final class Config
     private $zoneCache;
 
     // 构造函数
-    public function __construct($z = null)
+    public function __construct(Region $z = null)
     {
         $this->zone = $z;
         $this->useHTTPS = false;
