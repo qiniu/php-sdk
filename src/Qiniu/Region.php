@@ -149,7 +149,6 @@ class Region
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        //print_r($ret);
         //parse Region;
 
         $iovipHost = $r['io']['src']['main'][0];

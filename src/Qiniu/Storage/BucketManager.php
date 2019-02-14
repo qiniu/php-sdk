@@ -56,7 +56,7 @@ final class BucketManager
     }
 
     /**
-     * 创建空间
+     * 删除空间
      *
      * @param $name     删除的空间名
      *
@@ -398,6 +398,12 @@ final class BucketManager
     private function rsPost($path, $body = null)
     {
         $url = $this->getRsHost() . $path;
+        return $this->post($url, $body);
+    }
+
+    private function apiPost($path, $body = null)
+    {
+        $url = $this->getApiHost() . $path;
         return $this->post($url, $body);
     }
 
