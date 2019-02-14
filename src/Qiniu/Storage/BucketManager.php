@@ -42,6 +42,33 @@ final class BucketManager
     }
 
     /**
+     * 创建空间
+     *
+     * @param $name     创建的空间名
+     * @param $region    创建的区域，默认华东
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function creatBucket($name, $region='z0')
+    {
+        $path = '/mkbucketv2/'.$name.'/region/' . $region;
+        return $this->rsPost($path, null);
+    }
+
+    /**
+     * 创建空间
+     *
+     * @param $name     删除的空间名
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function deleteBucket($name)
+    {
+        $path = '/drop/'.$name;
+        return $this->rsPost($path, null);
+    }
+
+    /**
      * 获取指定空间绑定的所有的域名
      *
      * @return string[] 包含所有空间域名
@@ -188,7 +215,7 @@ final class BucketManager
     }
 
     /**
-     * 主动修改指定资源的文件类型
+     * 主动修改指定资源的文件元信息
      *
      * @param $bucket     待操作资源所在空间
      * @param $key        待操作资源文件名

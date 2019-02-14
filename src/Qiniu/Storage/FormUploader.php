@@ -31,12 +31,12 @@ final class FormUploader
         $config,
         $params,
         $mime,
-        $fname
+        $fname,
+        $checkCrc
     ) {
-
         $fields = array('token' => $upToken);
         if ($key === null) {
-            $fname='nullkey';
+            
         } else {
             $fields['key'] = $key;
         }

@@ -5,19 +5,19 @@ use Qiniu\Region;
 
 class Zone extends Region{
 
-    public static function zone0()
+    public static function zonez0()
     {
-        return parent::Region0();
+        return parent::Regionz0();
     }
 
-    public static function zone1()
+    public static function zonez1()
     {
-        return parent::Region1();
+        return parent::Regionz1();
     }
 
-    public static function zone2()
+    public static function zonez2()
     {
-        return parent::Region2();
+        return parent::Regionz2();
     }
 
     public static function zoneAs0()
@@ -30,13 +30,13 @@ class Zone extends Region{
         return parent::RegionNa0();
     }
 
-    public static function zoneZ0()
+    public static function qvmZonez0()
     {
-        return parent::RegionZ0();
+        return parent::qvmRegionZ0();
     }
 
-    public static function zoneZ1()
+    public static function qvmZonez1()
     {
-        return parent::RegionZ1();
+        return parent::qvmRegionZ1();
     }
 }

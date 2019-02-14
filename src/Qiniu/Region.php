@@ -39,7 +39,7 @@ class Region
     }
 
     //华东机房
-    public static function Region0()
+    public static function Regionz0()
     {
         $Region_z0 = new Region(
             array("up.qiniup.com", 'up-jjh.qiniup.com', 'up-xs.qiniup.com'),
@@ -53,7 +53,7 @@ class Region
     }
 
     //华东机房内网上传
-    public static function RegionZ0()
+    public static function qvmRegionz0()
     {
         $Region_Z0 = new Region(
             array("free-qvm-z0-xs.qiniup.com"),
@@ -66,7 +66,7 @@ class Region
     }
 
     //华北机房内网上传
-    public static function RegionZ1()
+    public static function qvmRegionZ1()
     {
         $Region_Z1 = new Region(
             array("free-qvm-z1-zz.qiniup.com"),
@@ -79,7 +79,7 @@ class Region
     }
 
     //华北机房
-    public static function Region1()
+    public static function Regionz1()
     {
         $Region_z1 = new Region(
             array('up-z1.qiniup.com'),
@@ -94,7 +94,7 @@ class Region
     }
 
     //华南机房
-    public static function Region2()
+    public static function Regionz2()
     {
         $Region_z2 = new Region(
             array('up-z2.qiniup.com', 'up-dg.qiniup.com', 'up-fs.qiniup.com'),
