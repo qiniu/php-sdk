@@ -143,7 +143,7 @@ class Region
     public static function queryZone($ak, $bucket)
     {
         $Region = new Region();
-        $url = Config::UC_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
+        $url = Config::API_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));

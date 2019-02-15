@@ -79,6 +79,33 @@ final class BucketManager
     }
 
     /**
+     * 获取指定空间的相关信息
+     *
+     * @return string[] 包含空间信息
+     */
+    public function bucketInfo($bucket){
+        $path = '/v2/bucketInfo?bucket=' . $bucket;
+        $info = $this->ucPost($path);
+        return $info;
+    }
+
+    /**
+     * 获取指定zone的空间信息列表
+     * 在Region 未指定且Global 不为 true 时(包含未指定的情况,下同)，返回用户的所有空间。
+     * 在指定了 region 参数且 global 不为 true 时，只列举非全局空间。
+     * 在指定了global为 true 时，返回所有全局空间，忽略region 参数
+     * shared 不指定shared参数或指定shared为rw或false时，返回包含具有读写权限空间，指定shared为rd或true时，返回包含具有读权限空间。
+     * fs：如果为 true，会返回每个空间当前的文件数和存储量（实时数据）。
+     *
+     * @return string[] 包含空间信息
+     */
+    public function bucketInfos($region=null, $global='false', $shared='false', $fs='false'){
+        $path = '/v2/bucketInfos?region=' . $region . '&global=' . $global . '&shared=' . $shared . '&fs=' . $fs;
+        $info = $this->ucPost($path);
+        return $info;
+    }
+
+    /**
      * 获取空间绑定的域名列表
      * @return string[] 包含空间绑定的所有域名
      */
@@ -395,6 +422,15 @@ final class BucketManager
         return $scheme . Config::API_HOST;
     }
 
+    private function getUcHost()
+    {
+        $scheme = "http://";
+        if ($this->config->useHTTPS == true) {
+            $scheme = "https://";
+        }
+        return $scheme . Config::UC_HOST;
+    }
+
     private function rsPost($path, $body = null)
     {
         $url = $this->getRsHost() . $path;
@@ -404,6 +440,12 @@ final class BucketManager
     private function apiPost($path, $body = null)
     {
         $url = $this->getApiHost() . $path;
+        return $this->post($url, $body);
+    }
+
+    private function ucPost($path, $body = null)
+    {
+        $url = $this->getUcHost() . $path;
         return $this->post($url, $body);
     }
 

@@ -10,7 +10,7 @@ final class Config
     const RSF_HOST = 'rsf.qiniu.com';
     const API_HOST = 'api.qiniu.com';
     const RS_HOST = 'rs.qiniu.com';      //RS Host
-    const UC_HOST = 'https://api.qiniu.com';              //UC Host
+    const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'argus.atlab.ai';
     const RTCAPI_VERSION = 'v3';
