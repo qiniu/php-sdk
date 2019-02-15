@@ -142,6 +142,121 @@ final class BucketManager
     }
 
     /**
+     * 设置Referer防盗链
+     *
+     * @param $bucket     空间名
+     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值); 1: 表示设置Referer白名单; 2: 表示设置Referer黑名单
+     * @param $norefer     0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
+     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名, 比如 *.bar.com; 一种是完全通配符, 即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
+     * @param $source_enabled  源站是否支持，默认为0只给CDN配置, 设置为1表示开启源站防盗链
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function referAntiLeech(){
+
+    }
+
+    /**
+     * 增加bucket生命规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $prefix     同一个 bucket 里面前缀不能重复
+     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除，需大于 to_line_after_days
+     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，小于0表示上传的文件立即变低频存储
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days){
+        $path = '/rules/add';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        if ($prefix) {
+            $params['prefix'] = $prefix;
+        }
+        if ($delete_after_days) {
+            $params['delete_after_days'] = $delete_after_days;
+        }
+        if ($to_line_after_days) {
+            $params['to_line_after_days'] = $to_line_after_days;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
+     * 更新bucket生命规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $prefix     同一个 bucket 里面前缀不能重复
+     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除，需大于 to_line_after_days
+     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，小于0表示上传的文件立即变低频存储
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function updateBucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days){
+        $path = '/rules/update';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        if ($prefix) {
+            $params['prefix'] = $prefix;
+        }
+        if ($delete_after_days) {
+            $params['delete_after_days'] = $delete_after_days;
+        }
+        if ($to_line_after_days) {
+            $params['to_line_after_days'] = $to_line_after_days;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
+     * 获取bucket生命规则
+     *
+     * @param $bucket     空间名
+     * 
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function getBucketLifecycleRules($bucket){
+        $path = '/rules/get?bucket=' . $bucket;
+        $info = $this->ucGet($path);
+        return $info;
+    }
+
+    /**
+     * 删除bucket生命规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * 
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function deleteBucketLifecycleRule($bucket, $name){
+        $path = '/rules/delete';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间
@@ -447,6 +562,12 @@ final class BucketManager
     {
         $url = $this->getUcHost() . $path;
         return $this->post($url, $body);
+    }
+
+    private function ucGet($path)
+    {
+        $url = $this->getUcHost() . $path;
+        return $this->get($url);
     }
 
     private function apiGet($path)
