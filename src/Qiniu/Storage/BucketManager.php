@@ -257,6 +257,130 @@ final class BucketManager
     }
 
     /**
+     * 增加bucket事件通知规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $prefix     同一个 bucket 里面前缀不能重复
+     * @param $suffix      可选，文件配置的后缀
+     * @param $event  事件类型，可以指定多个，包括 put,mkfile,delete,copy,move,append,disable,enable,deleteMarkerCreate
+     * @param $callbackURL 通知URL，可以指定多个，失败依次重试
+     * @param $access_key 可选，设置的话会对通知请求用对应的ak、sk进行签名
+     * @param $host 可选，通知请求的host
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function putBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL, $access_key=null, $host=null){
+        $path = '/events/add';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        if ($prefix) {
+            $params['prefix'] = $prefix;
+        }
+        if ($suffix) {
+            $params['suffix'] = $suffix;
+        }
+        if ($event) {
+            $params['event'] = $event;
+        }
+        if ($callbackURL) {
+            $params['callbackURL'] = $callbackURL;
+        }
+        if ($access_key) {
+            $params['access_key'] = $access_key;
+        }
+        if ($host) {
+            $params['host'] = $host;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
+     * 更新bucket事件通知规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $prefix     同一个 bucket 里面前缀不能重复
+     * @param $suffix      可选，文件配置的后缀
+     * @param $event  事件类型，可以指定多个，包括 put,mkfile,delete,copy,move,append,disable,enable,deleteMarkerCreate
+     * @param $callbackURL 通知URL，可以指定多个，失败依次重试
+     * @param $access_key 可选，设置的话会对通知请求用对应的ak、sk进行签名
+     * @param $host 可选，通知请求的host
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function updateBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL, $access_key=null, $host=null){
+        $path = '/events/update';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        if ($prefix) {
+            $params['prefix'] = $prefix;
+        }
+        if ($suffix) {
+            $params['suffix'] = $suffix;
+        }
+        if ($event) {
+            $params['event'] = $event;
+        }
+        if ($callbackURL) {
+            $params['callbackURL'] = $callbackURL;
+        }
+        if ($access_key) {
+            $params['access_key'] = $access_key;
+        }
+        if ($host) {
+            $params['host'] = $host;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
+     * 获取bucket事件通知规则
+     *
+     * @param $bucket     空间名
+     * 
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function getBucketEvents($bucket){
+        $path = '/events/get?bucket=' . $bucket;
+        $info = $this->ucGet($path);
+        return $info;
+    }
+
+    /**
+     * 删除bucket事件通知规则
+     *
+     * @param $bucket     空间名
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * 
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     */
+    public function deleteBucketEvent($bucket, $name){
+        $path = '/events/delete';
+        if ($bucket) {
+            $params['bucket'] = $bucket;
+        }
+        if ($name) {
+            $params['name'] = $name;
+        }
+        $data = http_build_query($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间
