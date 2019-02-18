@@ -381,6 +381,40 @@ final class BucketManager
     }
 
     /**
+     * 设置bucket的跨域信息，最多允许设置10条跨域规则。
+     * 对于同一个域名如果设置了多条规则，那么按顺序使用第一条匹配的规则去生成返回值。
+     * 对于简单跨域请求，只匹配 Origin；
+     * 对于预检请求， 需要匹配 Origin、AllowedMethod、AllowedHeader；
+     * allowed_orgin: 允许的域名。必填；支持通配符*；*表示全部匹配；只有第一个*生效；需要设置"Scheme"；大小写敏感。例如
+     * 规则：http://*.abc.*.com 请求："http://test.abc.test.com" 结果：不通过
+     * 规则："http://abc.com" 请求："https://abc.com"/"abc.com" 结果：不通过
+     * 规则："abc.com" 请求："http://abc.com" 结果：不通过
+     * allowed_method: 允许的方法。必填；不支持通配符；大小写不敏感；
+     * allowed_header: 允许的header。选填；支持通配符*，但只能是单独的*，表示允许全部header，其他*不生效；空则不允许任何header；大小写不敏感；
+     * exposed_header: 暴露的header。选填；不支持通配符；X-Log, X-Reqid是默认会暴露的两个header；其他的header如果没有设置，则不会暴露；大小写不敏感；
+     * max_age: 结果可以缓存的时间。选填；空则不缓存；
+     * allowed_credentials：该配置不支持设置，默认为true。
+     * 备注：如果没有设置任何corsRules，那么默认允许所有的跨域请求
+     */
+    public function putCorsRules($bucket, $params){
+        $path = '/corsRules/set/' . $bucket;
+        $data = json_encode($params);
+        $info = $this->ucPost($path, $data);
+        return $info;
+    }
+
+    /**
+     * 获取bucket的跨域信息
+     * 
+     * $bucket 空间名
+     */
+    public function getCorsRules($bucket){
+        $path = '/corsRules/get/' . $bucket;
+        $info = $this->ucGet($path);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间
