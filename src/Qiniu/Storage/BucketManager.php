@@ -454,6 +454,16 @@ final class BucketManager
     }
 
     /**
+     * 开关原图保护
+     * maxAge为0或者负数表示为默认值（31536000）
+     */
+    public function putBucketMaxAge($bucket, $maxAge){
+        $path = '/maxAge?bucket=' . $bucket . '&maxAge=' . $maxAge;
+        $info = $this->ucPost($path, null);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间
