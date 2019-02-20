@@ -444,6 +444,16 @@ final class BucketManager
     }
 
     /**
+     * 开关原图保护
+     * mode 为1表示开启原图保护，0表示关闭
+     */
+    public function putBucketAccessStyleMode($bucket, $mode){
+        $path = '/accessMode/' . $bucket . '/mode/' . $mode;
+        $info = $this->ucPost($path, null);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间

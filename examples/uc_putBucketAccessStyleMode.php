@@ -11,9 +11,9 @@ $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
 $bucket = 'xxxx';
-$name = 'demo';
+$mode = 1;
 
-list($Info, $err) = $bucketManager->deleteBucketEvent($bucket, $name);
+list($Info, $err) = $bucketManager->putBucketAccessStyleMode($bucket, $mode);
 if ($err) {
     print_r($err);
 } else {
