@@ -415,6 +415,35 @@ final class BucketManager
     }
 
     /**
+     * 设置回源规则
+     * 使用该API设置源站优先级高于/image设置的源站，即IO优先读取source接口设置的源站配置,如果存在会忽略/image设置的源站
+     * Bucket 空间名
+     * Host(可选)回源Host
+     * RetryCodes(可选),镜像回源时源站返回Code可以重试，最多指定3个，当前只支持4xx错误码重试
+     * SourceQiniuAK,SourceQiniuSK(可选)如果存在将在回源时对URL进行签名，客户源站可以验证以保证请求来自Qiniu服务器
+     * Expires(可选) 签名过期时间，如果不设置默认为1小时
+     * Addr 回源地址，不可重复。
+     * Weight 权重,范围限制1-100,不填默认为1,回源时会根据所有源的权重值进行源站选择,主备源会分开计算.
+     * Backup 是否备用回源,回源优先尝试主源
+     */
+    public function putBucktSourceConfig($params){
+        $path = '/mirrorConfig/set';
+        $data = json_encode($params);
+        $info = $this->ucPostV2($path, $data);
+        return $info;
+    }
+
+    /**
+     * 获取空间回源配置
+     */
+    public function getBucktSourceConfig($params){
+        $path = '/mirrorConfig/get';
+        $data = json_encode($params);
+        $info = $this->ucPostV2($path, $data);
+        return $info;
+    }
+
+    /**
      * 获取资源的元信息，但不返回文件内容
      *
      * @param $bucket     待获取信息资源所在的空间
@@ -753,6 +782,23 @@ final class BucketManager
     private function post($url, $body)
     {
         $headers = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
+        $ret = Client::post($url, $body, $headers);
+        if (!$ret->ok()) {
+            return array(null, new Error($url, $ret));
+        }
+        $r = ($ret->body === null) ? array() : $ret->json();
+        return array($r, null);
+    }
+
+    private function ucPostV2($path, $body){
+        $url = $this->getUcHost() . $path;
+        return $this->postV2($url, $body);
+    }
+
+    private function postV2($url, $body)
+    {
+        $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/json');
+        $headers["Content-Type"] = 'application/json';
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
