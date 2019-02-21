@@ -454,12 +454,34 @@ final class BucketManager
     }
 
     /**
-     * 开关原图保护
+     * 设置Bucket的maxAge
      * maxAge为0或者负数表示为默认值（31536000）
      */
     public function putBucketMaxAge($bucket, $maxAge){
         $path = '/maxAge?bucket=' . $bucket . '&maxAge=' . $maxAge;
         $info = $this->ucPost($path, null);
+        return $info;
+    }
+
+    /**
+     * 设置配额
+     * <bucket>: 空间名称，不支持授权空间
+     * <size>: 空间存储量配额,参数传入0或不传表示不更改当前配置，传入-1表示取消限额，新创建的空间默认没有限额。
+     * <count>: 空间文件数配额，参数含义同<size>
+     */
+    public function putBucketQuota($bucket, $size, $count){
+        $path = '/setbucketquota/' . $bucket . '/size/' . $size . '/count/' . $count;
+        $info = $this->apiPost($path, null);
+        return $info;
+    }
+
+    /**
+     * 获取配额
+     * bucket 空间名称
+     */
+    public function getBucketQuota($bucket){
+        $path = '/getbucketquota/' . $bucket;
+        $info = $this->apiPost($path, null);
         return $info;
     }
 
