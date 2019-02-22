@@ -559,7 +559,7 @@ final class BucketManager
     }
 
     /**
-     * 给资源进行重命名，本质为move操作。
+     * 对资源进行复制。
      *
      * @param $from_bucket     待操作资源所在空间
      * @param $from_key        待操作资源文件名
