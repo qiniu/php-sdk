@@ -53,9 +53,9 @@ final class BucketManager
      * 在指定了line为 true 时，只返回 Line 空间；否则，只返回非 Line 空间。
      * share 参数用于指定共享空间。
      */
-    public function listbuckets($region=null, $global='false', $line='false', $share='false')
+    public function listbuckets($region=null, $global='false', $line='false', $shared='false')
     {
-        $path = '/v3/buckets?region=' . $region . '&line=' . $line . '&share=' . $shared . '&fs=' . $fs;
+        $path = '/v3/buckets?region=' . $region . '&global=' . $global . '&line=' . $line . '&shared=' . $share;
         $info = $this->ucPost($path);
         return $info;
     }
