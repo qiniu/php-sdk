@@ -42,6 +42,25 @@ final class BucketManager
     }
 
     /**
+     * 列举空间，返回bucket列表
+     * region 指定区域，global 指定全局空间。
+     * 在指定了 region 参数时，
+     * 如果指定 global 为 true，那么忽略 region 参数指定的区域，返回所有区域的全局空间。
+     * 如果没有指定 global 为 true，那么返回指定区域中非全局空间。
+     * 在没有指定 region 参数时（包括指定为空""），
+     * 如果指定 global 为 true，那么返回所有区域的全局空间。
+     * 如果没有指定 global 为 true，那么返回指定区域中所有的空间，包括全局空间。
+     * 在指定了line为 true 时，只返回 Line 空间；否则，只返回非 Line 空间。
+     * share 参数用于指定共享空间。
+     */
+    public function listbuckets($region=null, $global='false', $line='false', $share='false')
+    {
+        $path = '/v3/buckets?region=' . $region . '&line=' . $line . '&share=' . $shared . '&fs=' . $fs;
+        $info = $this->ucPost($path);
+        return $info;
+    }
+
+    /**
      * 创建空间
      *
      * @param $name     创建的空间名
