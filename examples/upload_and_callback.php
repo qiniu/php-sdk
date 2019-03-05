@@ -2,8 +2,10 @@
 require_once __DIR__ . '/../autoload.php';
 use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
+
 // use Qiniu\Config;
 // use Qiniu\Zone;
+
 // 指定zone上传
 // $zone = Zone::qvmZonez0(); //华东QVM内网上传指定host
 // $config = new Config($zone);

@@ -3,8 +3,8 @@ namespace Qiniu;
 
 use Qiniu\Region;
 
-class Zone extends Region{
-
+class Zone extends Region
+{
     public static function zonez0()
     {
         return parent::regionHuadong();
@@ -32,11 +32,11 @@ class Zone extends Region{
 
     public static function qvmZonez0()
     {
-        return parent::qvmRegionZ0();
+        return parent::qvmRegionhuadong();
     }
 
     public static function qvmZonez1()
     {
-        return parent::qvmRegionZ1();
+        return parent::qvmRegionhuabei();
     }
 }
