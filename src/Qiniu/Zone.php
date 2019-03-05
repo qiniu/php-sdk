@@ -7,27 +7,27 @@ class Zone extends Region{
 
     public static function zonez0()
     {
-        return parent::Regionz0();
+        return parent::regionHuadong();
     }
 
     public static function zonez1()
     {
-        return parent::Regionz1();
+        return parent::regionHuabei();
     }
 
     public static function zonez2()
     {
-        return parent::Regionz2();
+        return parent::regionHuanan();
     }
 
     public static function zoneAs0()
     {
-        return parent::RegionAs0();
+        return parent::regionSingapore();
     }
 
     public static function zoneNa0()
     {
-        return parent::RegionNa0();
+        return parent::regionNorthAmerica();
     }
 
     public static function qvmZonez0()
