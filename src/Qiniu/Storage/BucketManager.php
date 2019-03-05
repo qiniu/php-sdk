@@ -289,7 +289,8 @@ final class BucketManager
      * 删除bucket生命规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，
+     * 只能为字母、数字、下划线（）
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function deleteBucketLifecycleRule($bucket, $name)
@@ -310,11 +311,12 @@ final class BucketManager
      * 增加bucket事件通知规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，
+     * 只能为字母、数字、下划线()
      * @param $prefix     同一个 bucket 里面前缀不能重复
      * @param $suffix      可选，文件配置的后缀
-     * @param $event  事件类型，可以指定多个，包括 put,mkfile,delete,copy,move,append,disable,
-     * enable,deleteMarkerCreate
+     * @param $event  事件类型，可以指定多个，包括 put,mkfile,delete,copy,move,append,
+     * disable,enable,deleteMarkerCreate
      * @param $callbackURL 通知URL，可以指定多个，失败依次重试
      * @param $access_key 可选，设置的话会对通知请求用对应的ak、sk进行签名
      * @param $host 可选，通知请求的host
@@ -365,7 +367,8 @@ final class BucketManager
      * 更新bucket事件通知规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，
+     * 只能为字母、数字、下划线()
      * @param $prefix     同一个 bucket 里面前缀不能重复
      * @param $suffix      可选，文件配置的后缀
      * @param $event  事件类型，可以指定多个，包括 put,mkfile,delete,copy,move,append,disable,
@@ -433,7 +436,8 @@ final class BucketManager
      * 删除bucket事件通知规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，
+     * 只能为字母、数字、下划线
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function deleteBucketEvent($bucket, $name)
@@ -455,14 +459,17 @@ final class BucketManager
      * 对于同一个域名如果设置了多条规则，那么按顺序使用第一条匹配的规则去生成返回值。
      * 对于简单跨域请求，只匹配 Origin；
      * 对于预检请求， 需要匹配 Origin、AllowedMethod、AllowedHeader；
-     * allowed_orgin: 允许的域名。必填；支持通配符*；*表示全部匹配；只有第一个*生效；需要设置"Scheme"；大小写敏感。例如
+     * allowed_orgin: 允许的域名。必填；支持通配符*；*表示全部匹配；只有第一个*生效；
+     * 需要设置"Scheme"；大小写敏感。例如
      * 规则：http://*.abc.*.com 请求："http://test.abc.test.com" 结果：不通过
      * 规则："http://abc.com" 请求："https://abc.com"/"abc.com" 结果：不通过
      * 规则："abc.com" 请求："http://abc.com" 结果：不通过
      * allowed_method: 允许的方法。必填；不支持通配符；大小写不敏感；
-     * allowed_header: 允许的header。选填；支持通配符*，但只能是单独的*，表示允许全部header，其他*不生效；
+     * allowed_header: 允许的header。选填；支持通配符*，
+     * 但只能是单独的*，表示允许全部header，其他*不生效；
      * 空则不允许任何header；大小写不敏感；
-     * exposed_header: 暴露的header。选填；不支持通配符；X-Log, X-Reqid是默认会暴露的两个header；
+     * exposed_header: 暴露的header。选填；不支持通配符；
+     * X-Log, X-Reqid是默认会暴露的两个header；
      * 其他的header如果没有设置，则不会暴露；大小写不敏感；
      * max_age: 结果可以缓存的时间。选填；空则不缓存；
      * allowed_credentials：该配置不支持设置，默认为true。
