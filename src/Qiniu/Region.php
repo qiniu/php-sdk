@@ -53,29 +53,29 @@ class Region
     }
 
     //华东机房内网上传
-    public static function qvmRegionz0()
+    public static function qvmRegionhuadong()
     {
-        $qvmRegionz0 = new Region(
+        $qvmRegionhuadong = new Region(
             array("free-qvm-z0-xs.qiniup.com"),
             'rs.qbox.me',
             'rsf.qbox.me',
             'api.qiniu.com',
             'iovip.qbox.me'
         );
-        return $qvmRegionz0;
+        return $qvmRegionhuadong;
     }
 
     //华北机房内网上传
-    public static function qvmRegionZ1()
+    public static function qvmRegionhuabei()
     {
-        $qvmRegionZ1 = new Region(
+        $qvmRegionhuabei = new Region(
             array("free-qvm-z1-zz.qiniup.com"),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
             "api-z1.qiniu.com",
             "iovip-z1.qbox.me"
         );
-        return $qvmRegionZ1;
+        return $qvmRegionhuabei;
     }
 
     //华北机房
