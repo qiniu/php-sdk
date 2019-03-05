@@ -167,9 +167,11 @@ final class BucketManager
      * 设置Referer防盗链
      *
      * @param $bucket     空间名
-     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值); 1: 表示设置Referer白名单; 2: 表示设置Referer黑名单
+     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值); 1: 表示设置Referer白名单; 2: 表示设置Referer
+     * 黑名单
      * @param $norefer     0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
-     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名, 比如 *.bar.com; 一种是完全通配符,
+     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名, 比如 *.bar.com; 一种
+     * 是完全通配符,
      *          即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
      * @param $source_enabled  源站是否支持，默认为0只给CDN配置, 设置为1表示开启源站防盗链
      *
@@ -433,8 +435,10 @@ final class BucketManager
      * 规则："http://abc.com" 请求："https://abc.com"/"abc.com" 结果：不通过
      * 规则："abc.com" 请求："http://abc.com" 结果：不通过
      * allowed_method: 允许的方法。必填；不支持通配符；大小写不敏感；
-     * allowed_header: 允许的header。选填；支持通配符*，但只能是单独的*，表示允许全部header，其他*不生效；空则不允许任何header；大小写不敏感；
-     * exposed_header: 暴露的header。选填；不支持通配符；X-Log, X-Reqid是默认会暴露的两个header；其他的header如果没有设置，则不会暴露；大小写不敏感；
+     * allowed_header: 允许的header。选填；支持通配符*，但只能是单独的*，表示允许全部header，其他*不生效；空则不允许任何header；大小
+     * 写不敏感；
+     * exposed_header: 暴露的header。选填；不支持通配符；X-Log, X-Reqid是默认会暴露的两个header；其他的header如果没有设置，则不会
+     * 暴露；大小写不敏感；
      * max_age: 结果可以缓存的时间。选填；空则不缓存；
      * allowed_credentials：该配置不支持设置，默认为true。
      * 备注：如果没有设置任何corsRules，那么默认允许所有的跨域请求
