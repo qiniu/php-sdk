@@ -16,7 +16,13 @@ $prefix = 'test';
 $delete_after_days = 80;
 $to_line_after_days =70;
 
-list($Info, $err) = $bucketManager->bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days);
+list($Info, $err) = $bucketManager->bucketLifecycleRule(
+    $bucket,
+    $name,
+    $prefix,
+    $delete_after_days,
+    $to_line_after_days
+);
 if ($err) {
     print_r($err);
 } else {

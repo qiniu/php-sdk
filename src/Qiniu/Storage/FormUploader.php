@@ -36,7 +36,6 @@ final class FormUploader
     ) {
         $fields = array('token' => $upToken);
         if ($key === null) {
-            
         } else {
             $fields['key'] = $key;
         }

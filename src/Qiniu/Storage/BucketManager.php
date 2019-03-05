@@ -53,7 +53,8 @@ final class BucketManager
      * 在指定了line为 true 时，只返回 Line 空间；否则，只返回非 Line 空间。
      * share 参数用于指定共享空间。
      */
-    public function listbuckets($region=null, $global='false', $line='false', $shared='false')
+
+    public function listbuckets($region = null, $global = 'false', $line = 'false', $shared = 'false')
     {
         $path = '/v3/buckets?region=' . $region . '&global=' . $global . '&line=' . $line . '&shared=' . $share;
         $info = $this->ucPost($path);
@@ -68,7 +69,7 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function creatBucket($name, $region='z0')
+    public function creatBucket($name, $region = 'z0')
     {
         $path = '/mkbucketv2/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
@@ -102,7 +103,8 @@ final class BucketManager
      *
      * @return string[] 包含空间信息
      */
-    public function bucketInfo($bucket){
+    public function bucketInfo($bucket)
+    {
         $path = '/v2/bucketInfo?bucket=' . $bucket;
         $info = $this->ucPost($path);
         return $info;
@@ -118,7 +120,8 @@ final class BucketManager
      *
      * @return string[] 包含空间信息
      */
-    public function bucketInfos($region=null, $global='false', $shared='false', $fs='false'){
+    public function bucketInfos($region = null, $global = 'false', $shared = 'false', $fs = 'false')
+    {
         $path = '/v2/bucketInfos?region=' . $region . '&global=' . $global . '&shared=' . $shared . '&fs=' . $fs;
         $info = $this->ucPost($path);
         return $info;
@@ -166,14 +169,15 @@ final class BucketManager
      * @param $bucket     空间名
      * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值); 1: 表示设置Referer白名单; 2: 表示设置Referer黑名单
      * @param $norefer     0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
-     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名, 比如 *.bar.com; 一种是完全通配符, 即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
+     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名, 比如 *.bar.com; 一种是完全通配符,
+     *          即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
      * @param $source_enabled  源站是否支持，默认为0只给CDN配置, 设置为1表示开启源站防盗链
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function referAntiLeech(){
+    // public function referAntiLeech(){
 
-    }
+    // }
 
     /**
      * 增加bucket生命规则
@@ -186,7 +190,8 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days){
+    public function bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days)
+    {
         $path = '/rules/add';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -219,7 +224,8 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function updateBucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days){
+    public function updateBucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days)
+    {
         $path = '/rules/update';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -245,10 +251,10 @@ final class BucketManager
      * 获取bucket生命规则
      *
      * @param $bucket     空间名
-     * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function getBucketLifecycleRules($bucket){
+    public function getBucketLifecycleRules($bucket)
+    {
         $path = '/rules/get?bucket=' . $bucket;
         $info = $this->ucGet($path);
         return $info;
@@ -259,10 +265,10 @@ final class BucketManager
      *
      * @param $bucket     空间名
      * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
-     * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function deleteBucketLifecycleRule($bucket, $name){
+    public function deleteBucketLifecycleRule($bucket, $name)
+    {
         $path = '/rules/delete';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -289,7 +295,16 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function putBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL, $access_key=null, $host=null){
+    public function putBucketEvent(
+        $bucket,
+        $name,
+        $prefix,
+        $suffix,
+        $event,
+        $callbackURL,
+        $access_key = null,
+        $host = null
+    ) {
         $path = '/events/add';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -334,7 +349,16 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function updateBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL, $access_key=null, $host=null){
+    public function updateBucketEvent(
+        $bucket,
+        $name,
+        $prefix,
+        $suffix,
+        $event,
+        $callbackURL,
+        $access_key = null,
+        $host = null
+    ) {
         $path = '/events/update';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -369,10 +393,10 @@ final class BucketManager
      * 获取bucket事件通知规则
      *
      * @param $bucket     空间名
-     * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function getBucketEvents($bucket){
+    public function getBucketEvents($bucket)
+    {
         $path = '/events/get?bucket=' . $bucket;
         $info = $this->ucGet($path);
         return $info;
@@ -383,10 +407,10 @@ final class BucketManager
      *
      * @param $bucket     空间名
      * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
-     * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function deleteBucketEvent($bucket, $name){
+    public function deleteBucketEvent($bucket, $name)
+    {
         $path = '/events/delete';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -415,7 +439,8 @@ final class BucketManager
      * allowed_credentials：该配置不支持设置，默认为true。
      * 备注：如果没有设置任何corsRules，那么默认允许所有的跨域请求
      */
-    public function putCorsRules($bucket, $params){
+    public function putCorsRules($bucket, $params)
+    {
         $path = '/corsRules/set/' . $bucket;
         $data = json_encode($params);
         $info = $this->ucPost($path, $data);
@@ -424,10 +449,10 @@ final class BucketManager
 
     /**
      * 获取bucket的跨域信息
-     * 
      * $bucket 空间名
      */
-    public function getCorsRules($bucket){
+    public function getCorsRules($bucket)
+    {
         $path = '/corsRules/get/' . $bucket;
         $info = $this->ucGet($path);
         return $info;
@@ -445,7 +470,8 @@ final class BucketManager
      * Weight 权重,范围限制1-100,不填默认为1,回源时会根据所有源的权重值进行源站选择,主备源会分开计算.
      * Backup 是否备用回源,回源优先尝试主源
      */
-    public function putBucktSourceConfig($params){
+    public function putBucktSourceConfig($params)
+    {
         $path = '/mirrorConfig/set';
         $data = json_encode($params);
         $info = $this->ucPostV2($path, $data);
@@ -455,7 +481,8 @@ final class BucketManager
     /**
      * 获取空间回源配置
      */
-    public function getBucktSourceConfig($params){
+    public function getBucktSourceConfig($params)
+    {
         $path = '/mirrorConfig/get';
         $data = json_encode($params);
         $info = $this->ucPostV2($path, $data);
@@ -466,7 +493,8 @@ final class BucketManager
      * 开关原图保护
      * mode 为1表示开启原图保护，0表示关闭
      */
-    public function putBucketAccessStyleMode($bucket, $mode){
+    public function putBucketAccessStyleMode($bucket, $mode)
+    {
         $path = '/accessMode/' . $bucket . '/mode/' . $mode;
         $info = $this->ucPost($path, null);
         return $info;
@@ -476,7 +504,8 @@ final class BucketManager
      * 设置Bucket的maxAge
      * maxAge为0或者负数表示为默认值（31536000）
      */
-    public function putBucketMaxAge($bucket, $maxAge){
+    public function putBucketMaxAge($bucket, $maxAge)
+    {
         $path = '/maxAge?bucket=' . $bucket . '&maxAge=' . $maxAge;
         $info = $this->ucPost($path, null);
         return $info;
@@ -488,7 +517,8 @@ final class BucketManager
      * <size>: 空间存储量配额,参数传入0或不传表示不更改当前配置，传入-1表示取消限额，新创建的空间默认没有限额。
      * <count>: 空间文件数配额，参数含义同<size>
      */
-    public function putBucketQuota($bucket, $size, $count){
+    public function putBucketQuota($bucket, $size, $count)
+    {
         $path = '/setbucketquota/' . $bucket . '/size/' . $size . '/count/' . $count;
         $info = $this->apiPost($path, null);
         return $info;
@@ -498,7 +528,8 @@ final class BucketManager
      * 获取配额
      * bucket 空间名称
      */
-    public function getBucketQuota($bucket){
+    public function getBucketQuota($bucket)
+    {
         $path = '/getbucketquota/' . $bucket;
         $info = $this->apiPost($path, null);
         return $info;
@@ -851,7 +882,8 @@ final class BucketManager
         return array($r, null);
     }
 
-    private function ucPostV2($path, $body){
+    private function ucPostV2($path, $body)
+    {
         $url = $this->getUcHost() . $path;
         return $this->postV2($url, $body);
     }

@@ -53,29 +53,29 @@ class Region
     }
 
     //华东机房内网上传
-    public static function qvmRegionhuadong()
+    public static function qvmRegionHuadong()
     {
-        $qvmRegionhuadong = new Region(
+        $qvmRegionHuadong = new Region(
             array("free-qvm-z0-xs.qiniup.com"),
             'rs.qbox.me',
             'rsf.qbox.me',
             'api.qiniu.com',
             'iovip.qbox.me'
         );
-        return $qvmRegionhuadong;
+        return $qvmRegionHuadong;
     }
 
     //华北机房内网上传
-    public static function qvmRegionhuabei()
+    public static function qvmRegionHuabei()
     {
-        $qvmRegionhuabei = new Region(
+        $qvmRegionHuabei = new Region(
             array("free-qvm-z1-zz.qiniup.com"),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
             "api-z1.qiniu.com",
             "iovip-z1.qbox.me"
         );
-        return $qvmRegionhuabei;
+        return $qvmRegionHuabei;
     }
 
     //华北机房
@@ -140,7 +140,7 @@ class Region
     /*
      * GET /v2/query?ak=<ak>&&bucket=<bucket>
      **/
-    public static function queryZone($ak, $bucket)
+    public static function queryRegion($ak, $bucket)
     {
         $Region = new Region();
         $url = Config::API_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";

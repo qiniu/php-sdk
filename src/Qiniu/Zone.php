@@ -32,11 +32,11 @@ class Zone extends Region
 
     public static function qvmZonez0()
     {
-        return parent::qvmRegionhuadong();
+        return parent::qvmRegionHuadong();
     }
 
     public static function qvmZonez1()
     {
-        return parent::qvmRegionhuabei();
+        return parent::qvmRegionHuabei();
     }
 }
