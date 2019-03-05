@@ -13,9 +13,10 @@ final class Config
     const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'argus.atlab.ai';
+    const CASTER_HOST = 'pili-caster.qiniuapi.com';
     const RTCAPI_VERSION = 'v3';
 
-    // Zone 空间对应的机房
+    // Zone 空间对应的存储区域
     public $region;
     //BOOL 是否使用https域名
     public $useHTTPS;
