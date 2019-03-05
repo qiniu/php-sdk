@@ -187,9 +187,10 @@ final class BucketManager
      * @param $bucket     空间名
      * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
      * @param $prefix     同一个 bucket 里面前缀不能重复
-     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除，需大于 to_line_after_days
-     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，小于0表示上传的文件立即变低频存储
-     *
+     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除,
+     * 需大于 to_line_after_days
+     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，
+     * 小于0表示上传的文件立即变低频存储
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days)
