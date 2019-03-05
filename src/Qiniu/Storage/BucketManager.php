@@ -54,8 +54,12 @@ final class BucketManager
      * share 参数用于指定共享空间。
      */
 
-    public function listbuckets($region = null, $global = 'false', $line = 'false', $shared = 'false')
-    {
+    public function listbuckets(
+        $region = null,
+        $global = 'false',
+        $line = 'false',
+        $shared = 'false'
+    ) {
         $path = '/v3/buckets?region=' . $region . '&global=' . $global . '&line=' . $line . '&shared=' . $share;
         $info = $this->ucPost($path);
         return $info;
@@ -115,9 +119,9 @@ final class BucketManager
      * 在Region 未指定且Global 不为 true 时(包含未指定的情况,下同)，返回用户的所有空间。
      * 在指定了 region 参数且 global 不为 true 时，只列举非全局空间。
      * 在指定了global为 true 时，返回所有全局空间，忽略region 参数
-     * shared 不指定shared参数或指定shared为rw或false时，返回包含具有读写权限空间，指定shared为rd或true时，返回包含具有读权限空间。
+     * shared 不指定shared参数或指定shared为rw或false时，返回包含具有读写权限空间，
+     * 指定shared为rd或true时，返回包含具有读权限空间。
      * fs：如果为 true，会返回每个空间当前的文件数和存储量（实时数据）。
-     *
      * @return string[] 包含空间信息
      */
     public function bucketInfos($region = null, $global = 'false', $shared = 'false', $fs = 'false')
@@ -142,18 +146,23 @@ final class BucketManager
      * @param $delimiter  指定目录分隔符
      *
      * @return array    包含文件信息的数组，类似：[
-     *                                              {
-     *                                                 "hash" => "<Hash string>",
-     *                                                  "key" => "<Key string>",
-     *                                                  "fsize" => "<file size>",
-     *                                                  "putTime" => "<file modify time>"
-     *                                              },
-     *                                              ...
-     *                                            ]
+*                                              {
+*                                                 "hash" => "<Hash string>",
+*                                                  "key" => "<Key string>",
+*                                                  "fsize" => "<file size>",
+*                                                  "putTime" => "<file modify time>"
+*                                              },
+*                                              ...
+*                                            ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
      */
-    public function listFiles($bucket, $prefix = null, $marker = null, $limit = 1000, $delimiter = null)
-    {
+    public function listFiles(
+        $bucket,
+        $prefix = null,
+        $marker = null,
+        $limit = 1000,
+        $delimiter = null
+    ) {
         $query = array('bucket' => $bucket);
         \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
         \Qiniu\setWithoutEmpty($query, 'marker', $marker);
@@ -167,12 +176,12 @@ final class BucketManager
      * 设置Referer防盗链
      *
      * @param $bucket     空间名
-     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值); 1: 表示设置Referer白名单; 2:
-     * 表示设置Referer黑名单
+     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值);
+     * 1: 表示设置Referer白名单; 2:表示设置Referer黑名单
      * @param $norefer     0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
-     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名, 比如 foo.com; 一种是泛域名,
-     * 比如 *.bar.com; 一种是完全通配符,
-     *          即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
+     * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名,
+     * 比如 foo.com; 一种是泛域名,比如 *.bar.com; 一种是完全通配符,
+     * 即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
      * @param $source_enabled  源站是否支持，默认为0只给CDN配置, 设置为1表示开启源站防盗链
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
@@ -185,16 +194,22 @@ final class BucketManager
      * 增加bucket生命规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为
+     * 字母、数字、下划线
      * @param $prefix     同一个 bucket 里面前缀不能重复
-     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除,
-     * 需大于 to_line_after_days
-     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，
-     * 小于0表示上传的文件立即变低频存储
+     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除,
+     * 大于0表示多少天后删除,需大于 to_line_after_days
+     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示
+     * 不转低频存储，小于0表示上传的文件立即变低频存储
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function bucketLifecycleRule($bucket, $name, $prefix, $delete_after_days, $to_line_after_days)
-    {
+    public function bucketLifecycleRule(
+        $bucket,
+        $name,
+        $prefix,
+        $delete_after_days,
+        $to_line_after_days
+    ) {
         $path = '/rules/add';
         if ($bucket) {
             $params['bucket'] = $bucket;
@@ -220,12 +235,13 @@ final class BucketManager
      * 更新bucket生命规则
      *
      * @param $bucket     空间名
-     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param $name     规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、
+     * 数字、下划线
      * @param $prefix     同一个 bucket 里面前缀不能重复
-     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除，
-     * 需大于 to_line_after_days
-     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不转低频存储，
-     * 小于0表示上传的文件立即变低频存储
+     * @param $delete_after_days      指定上传文件多少天后删除，指定为0表示不删除，
+     * 大于0表示多少天后删除，需大于 to_line_after_days
+     * @param $to_line_after_days  指定文件上传多少天后转低频存储。指定为0表示不
+     * 转低频存储，小于0表示上传的文件立即变低频存储
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     public function updateBucketLifecycleRule(
@@ -473,14 +489,17 @@ final class BucketManager
 
     /**
      * 设置回源规则
-     * 使用该API设置源站优先级高于/image设置的源站，即IO优先读取source接口设置的源站配置,如果存在会忽略/image设置的源站
+     * 使用该API设置源站优先级高于/image设置的源站，即IO优先读取source接口设置的源站配置,
+     * 如果存在会忽略/image设置的源站
      * Bucket 空间名
      * Host(可选)回源Host
      * RetryCodes(可选),镜像回源时源站返回Code可以重试，最多指定3个，当前只支持4xx错误码重试
-     * SourceQiniuAK,SourceQiniuSK(可选)如果存在将在回源时对URL进行签名，客户源站可以验证以保证请求来自Qiniu服务器
+     * SourceQiniuAK,SourceQiniuSK(可选)如果存在将在回源时对URL进行签名，客户源站可以验证
+     * 以保证请求来自Qiniu服务器
      * Expires(可选) 签名过期时间，如果不设置默认为1小时
      * Addr 回源地址，不可重复。
-     * Weight 权重,范围限制1-100,不填默认为1,回源时会根据所有源的权重值进行源站选择,主备源会分开计算.
+     * Weight 权重,范围限制1-100,不填默认为1,回源时会根据所有源的权重值进行源站选择,
+     * 主备源会分开计算.
      * Backup 是否备用回源,回源优先尝试主源
      */
     public function putBucktSourceConfig($params)
@@ -527,7 +546,8 @@ final class BucketManager
     /**
      * 设置配额
      * <bucket>: 空间名称，不支持授权空间
-     * <size>: 空间存储量配额,参数传入0或不传表示不更改当前配置，传入-1表示取消限额，新创建的空间默认没有限额。
+     * <size>: 空间存储量配额,参数传入0或不传表示不更改当前配置，传入-1表示取消限额，
+     * 新创建的空间默认没有限额。
      * <count>: 空间文件数配额，参数含义同<size>
      */
     public function putBucketQuota($bucket, $size, $count)
@@ -555,13 +575,13 @@ final class BucketManager
      * @param $key        待获取资源的文件名
      *
      * @return array    包含文件信息的数组，类似：
-     *                                              [
-     *                                                  "hash" => "<Hash string>",
-     *                                                  "key" => "<Key string>",
-     *                                                  "fsize" => <file size>,
-     *                                                  "putTime" => "<file modify time>"
-     *                                                  "fileType" => <file type>
-     *                                              ]
+*                                              [
+*                                                  "hash" => "<Hash string>",
+*                                                  "key" => "<Key string>",
+*                                                  "fsize" => <file size>,
+*                                                  "putTime" => "<file modify time>"
+*                                                  "fileType" => <file type>
+*                                              ]
      *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
      */
