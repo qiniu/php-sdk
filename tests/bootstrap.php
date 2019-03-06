@@ -4,8 +4,8 @@ require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = getenv('QINIU_ACCESS_KEY');
-$secretKey = getenv('QINIU_SECRET_KEY');
+$accessKey = getenv('accessKey');
+$secretKey = getenv('secretKey');
 $testAuth = new Auth($accessKey, $secretKey);
 
 $bucketName = 'phpsdk';
@@ -15,8 +15,8 @@ $key2 = 'niu.jpg';
 $bucketNameBC = 'phpsdk-bc';
 $bucketNameNA = 'phpsdk-na';
 
-$dummyAccessKey = 'abcdefghklmnopq';
-$dummySecretKey = '1234567890';
+$dummyAccessKey = getenv('accessKey');
+$dummySecretKey = getenv('secretKey');
 $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
 //cdn
