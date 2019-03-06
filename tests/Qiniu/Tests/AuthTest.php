@@ -29,7 +29,10 @@ namespace Qiniu\Tests {
         {
             global $dummyAuth;
             $token = $dummyAuth->signWithData('test');
-            $this->assertEquals('vHg2e7nOh7Jsucv2Azr5FH6omPgX22zoJRWa0FN5:D0TKcI_ZrPkfVcQf7jGDMEyIa-c=:dGVzdA==', $token);
+            $this->assertEquals(
+                'vHg2e7nOh7Jsucv2Azr5FH6omPgX22zoJRWa0FN5:D0TKcI_ZrPkfVcQf7jGDMEyIa-c=:dGVzdA==',
+                $token
+            );
         }
 
         public function testSignRequest()

@@ -24,7 +24,16 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
     public function testData()
     {
         $token = $this->auth->uploadToken($this->bucketName);
-        list($ret, $error) = FormUploader::put($token, 'formput', 'hello world', $this->cfg, null, 'text/plain', null, false);
+        list($ret, $error) = FormUploader::put(
+            $token,
+            'formput',
+            'hello world',
+            $this->cfg,
+            null,
+            'text/plain',
+            null,
+            false
+        );
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
     }
