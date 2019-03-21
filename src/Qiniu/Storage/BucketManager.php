@@ -73,7 +73,7 @@ final class BucketManager
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
-    public function creatBucket($name, $region = 'z0')
+    public function createBucket($name, $region = 'z0')
     {
         $path = '/mkbucketv2/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
@@ -170,6 +170,53 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
         $url = $this->getRsfHost() . '/list?' . http_build_query($query);
         return $this->get($url);
+    }
+
+    /**
+     * 列取空间的文件列表
+     *
+     * @param $bucket     空间名
+     * @param $prefix     列举前缀
+     * @param $marker     列举标识符
+     * @param $limit      单次列举个数限制
+     * @param $delimiter  指定目录分隔符
+     * @param $skipconfirm  是否跳过已删除条目的确认机制
+     *
+     * @return array    包含文件信息的数组，类似：[
+*                                              {
+*                                                 "hash" => "<Hash string>",
+*                                                  "key" => "<Key string>",
+*                                                  "fsize" => "<file size>",
+*                                                  "putTime" => "<file modify time>"
+*                                              },
+*                                              ...
+*                                            ]
+     * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
+     */
+    public function listFilesv2(
+        $bucket,
+        $prefix = null,
+        $marker = null,
+        $limit = 1000,
+        $delimiter = null,
+        $skipconfirm = true
+    ) {
+        $query = array('bucket' => $bucket);
+        \Qiniu\setWithoutEmpty($query, 'prefix', $prefix);
+        \Qiniu\setWithoutEmpty($query, 'marker', $marker);
+        \Qiniu\setWithoutEmpty($query, 'limit', $limit);
+        \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
+        \Qiniu\setWithoutEmpty($query, 'skipconfirm', $skipconfirm);
+        $path = '/v2/list?' . http_build_query($query);
+        $url = $this->getRsfHost() . $path;
+        $headers = $this->auth->authorization($url, null, 'application/x-www-form-urlencoded');
+        $ret = Client::post($url, null, $headers);
+        if (!$ret->ok()) {
+            return array(null, new Error($url, $ret));
+        }
+        $r = explode("\n", $ret->body);
+        $pop = array_pop($r);
+        return array($r, null);
     }
 
     /**
@@ -535,6 +582,40 @@ final class BucketManager
     public function putBucketAccessStyleMode($bucket, $mode)
     {
         $path = '/accessMode/' . $bucket . '/mode/' . $mode;
+        $info = $this->ucPost($path, null);
+        return $info;
+    }
+
+    /**
+     * 设置私有属性
+     * private为0表示公开，为1表示私有
+     */
+    public function putBucketAccessMode($bucket, $private)
+    {
+        $path = '/bucket/' . $bucket . '/private/' . $private;
+        $info = $this->ucPost($path, null);
+        return $info;
+    }
+
+    /**
+     * 设置referer防盗链
+     * bucket=<BucketName>: bucket 名
+     * mode=<AntiLeechMode>:
+     * 0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值);
+     * 1: 表示设置Referer白名单; 2: 表示设置Referer黑名单
+     * norefer=<NoRefer>: 0: 表示不允许空 Refer 访问;
+     * 1: 表示允许空 Refer 访问
+     * pattern=<Pattern>: 规则字符串, 当前允许格式分为三种:
+     * 一种为空主机头域名, 比如 foo.com;
+     * 一种是泛域名, 比如 *.bar.com; 一种是完全通配符, 即一个 *;
+     * 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
+     * 空主机头域名可以是多级域名，比如 foo.bar.com。
+     * 多个域名之间不允许夹带空白字符。
+     * source_enabled=:1
+     */
+    public function putReferAntiLeech($bucket, $mode, $norefer, $pattern, $source_enabled=1)
+    {
+        $path = "/referAntiLeech?bucket=$bucket&mode=$mode&norefer=$norefer&pattern=$pattern&source_enabled=$source_enabled";
         $info = $this->ucPost($path, null);
         return $info;
     }

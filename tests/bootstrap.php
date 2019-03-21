@@ -4,24 +4,24 @@ require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
 
-$accessKey = getenv('accessKey');
-$secretKey = getenv('secretKey');
+$accessKey = getenv('QINIU_ACCESS_KEY');
+$secretKey = getenv('QINIU_SECRET_KEY');
 $testAuth = new Auth($accessKey, $secretKey);
 
 $bucketName = 'phpsdk';
-$key = 'php-logo.png';
-$key2 = 'niu.jpg';
+$key = '1503385451.png';
+$key2 = '1503385568.png';
 
 $bucketNameBC = 'phpsdk-bc';
 $bucketNameNA = 'phpsdk-na';
 
-$dummyAccessKey = getenv('accessKey');
-$dummySecretKey = getenv('secretKey');
+$dummyAccessKey = 'abcdefghklmnopq';
+$dummySecretKey = '1234567890';
 $dummyAuth = new Auth($dummyAccessKey, $dummySecretKey);
 
 //cdn
 $timestampAntiLeechEncryptKey = getenv('QINIU_TIMESTAMP_ENCRPTKEY');
-$customDomain = "http://phpsdk.qiniuts.com";
+$customDomain = "http://phpsdk.support2technical.me";
 
 $tid = getenv('TRAVIS_JOB_NUMBER');
 if (!empty($tid)) {
