@@ -613,9 +613,9 @@ final class BucketManager
      * 多个域名之间不允许夹带空白字符。
      * source_enabled=:1
      */
-    public function putReferAntiLeech($bucket, $mode, $norefer, $pattern, $source_enabled=1)
+    public function putReferAntiLeech($bucket, $mode, $norefer, $pattern, $enabled = 1)
     {
-        $path = "/referAntiLeech?bucket=$bucket&mode=$mode&norefer=$norefer&pattern=$pattern&source_enabled=$source_enabled";
+        $path = "/referAntiLeech?bucket=$bucket&mode=$mode&norefer=$norefer&pattern=$pattern&source_enabled=$enabled";
         $info = $this->ucPost($path, null);
         return $info;
     }

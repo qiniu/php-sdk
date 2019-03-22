@@ -70,6 +70,5 @@ namespace Qiniu\Tests {
             $this->assertEquals($exp, $token);
             unset($_SERVER['override_qiniu_auth_time']);
         }
-
     }
 }

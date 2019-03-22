@@ -1,6 +1,7 @@
 <?php
 
 namespace Qiniu\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 /**
