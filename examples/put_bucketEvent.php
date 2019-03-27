@@ -11,10 +11,10 @@ $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
 $bucket = 'xxxx';
-$name = 'demo';
-$prefix = 'test';
-$suffix = 'mp4';
-$event = 'mkfile';
+$name = 'testdemo';
+$prefix = 'test1';
+$suffix = 'mp3';
+$event = array("move","copy");
 $callbackURL = 'http://www.qiniu.com';
 
 list($Info, $err) = $bucketManager->putBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL);
