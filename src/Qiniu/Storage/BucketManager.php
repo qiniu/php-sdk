@@ -56,11 +56,10 @@ final class BucketManager
 
     public function listbuckets(
         $region = null,
-        $global = 'false',
         $line = 'false',
         $shared = 'false'
     ) {
-        $path = '/v3/buckets?region=' . $region . '&global=' . $global . '&line=' . $line . '&shared=' . $share;
+        $path = '/v3/buckets?region=' . $region . '&line=' . $line . '&shared=' . $share;
         $info = $this->ucPost($path);
         return $info;
     }
@@ -118,15 +117,14 @@ final class BucketManager
      * 获取指定zone的空间信息列表
      * 在Region 未指定且Global 不为 true 时(包含未指定的情况,下同)，返回用户的所有空间。
      * 在指定了 region 参数且 global 不为 true 时，只列举非全局空间。
-     * 在指定了global为 true 时，返回所有全局空间，忽略region 参数
      * shared 不指定shared参数或指定shared为rw或false时，返回包含具有读写权限空间，
      * 指定shared为rd或true时，返回包含具有读权限空间。
      * fs：如果为 true，会返回每个空间当前的文件数和存储量（实时数据）。
      * @return string[] 包含空间信息
      */
-    public function bucketInfos($region = null, $global = 'false', $shared = 'false', $fs = 'false')
+    public function bucketInfos($region = null, $shared = 'false', $fs = 'false')
     {
-        $path = '/v2/bucketInfos?region=' . $region . '&global=' . $global . '&shared=' . $shared . '&fs=' . $fs;
+        $path = '/v2/bucketInfos?region=' . $region . '&shared=' . $shared . '&fs=' . $fs;
         $info = $this->ucPost($path);
         return $info;
     }
@@ -560,7 +558,7 @@ final class BucketManager
      * 主备源会分开计算.
      * Backup 是否备用回源,回源优先尝试主源
      */
-    public function putBucktSourceConfig($params)
+    public function putBucktSourceConfig(array $params)
     {
         $path = '/mirrorConfig/set';
         $data = json_encode($params);
@@ -571,7 +569,7 @@ final class BucketManager
     /**
      * 获取空间回源配置
      */
-    public function getBucktSourceConfig($params)
+    public function getBucktSourceConfig(array $params)
     {
         $path = '/mirrorConfig/get';
         $data = json_encode($params);

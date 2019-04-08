@@ -12,10 +12,13 @@ $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
 $body = array(
+    //回源配置的空间名
     "bucket" => $bucket,
     "sources" => array(
         array(
-            "addr" => "http://www.qiniu.com",
+            "addr" => "http://www.qiniu.com", //回源地址
+            // "weight"=> "<Weight>",  //权重
+            // "backup"=> "<Backup>"   //是否备用回源
         ),
     ),
 );
