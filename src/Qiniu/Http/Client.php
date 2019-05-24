@@ -25,6 +25,12 @@ final class Client
         return self::sendRequest($request);
     }
 
+    public static function PUT($url, $body, array $headers = array())
+    {
+        $request = new Request('PUT', $url, $headers, $body);
+        return self::sendRequest($request);
+    }
+
     public static function multipartPost(
         $url,
         $fields,
@@ -56,6 +62,7 @@ final class Client
         array_push($data, '');
 
         $body = implode("\r\n", $data);
+        // var_dump($data);exit;
         $contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
         $headers['Content-Type'] = $contentType;
         $request = new Request('POST', $url, $headers, $body);
@@ -119,7 +126,13 @@ final class Client
             curl_close($ch);
             return $r;
         }
+        $curl_info   = curl_getinfo($ch);
+        $header_size = $curl_info["header_size"];
+        $body = substr($result, $header_size);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($code != 200) {
+            throw new \Exception("\nhttpcode:".$code."\nmessage".$body);
+        }
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $headers = self::parseHeaders(substr($result, 0, $header_size));
         $body = substr($result, $header_size);

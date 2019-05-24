@@ -14,7 +14,9 @@ final class Config
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'argus.atlab.ai';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
+    const SMS_HOST="https://sms.qiniuapi.com";
     const RTCAPI_VERSION = 'v3';
+    const SMS_VERSION='v1';
 
     // Zone 空间对应的存储区域
     public $region;
