@@ -507,7 +507,6 @@ final class BucketManager
      * 设置bucket的跨域信息，最多允许设置10条跨域规则。
      * 对于同一个域名如果设置了多条规则，那么按顺序使用第一条匹配的规则去生成返回值。
      * 对于简单跨域请求，只匹配 Origin；
-     * 对于预检请求， 需要匹配 Origin、AllowedMethod、AllowedHeader；
      * allowed_orgin: 允许的域名。必填；支持通配符*；*表示全部匹配；只有第一个*生效；
      * 需要设置"Scheme"；大小写敏感。例如
      * 规则：http://*.abc.*.com 请求："http://test.abc.test.com" 结果：不通过
@@ -524,13 +523,13 @@ final class BucketManager
      * allowed_credentials：该配置不支持设置，默认为true。
      * 备注：如果没有设置任何corsRules，那么默认允许所有的跨域请求
      */
-    public function putCorsRules($bucket, $params)
-    {
-        $path = '/corsRules/set/' . $bucket;
-        $data = json_encode($params);
-        $info = $this->ucPost($path, $data);
-        return $info;
-    }
+    // public function putCorsRules(string $bucket, array $params)
+    // {
+    //     $path = '/corsRules/set/' . $bucket;
+    //     $data = json_encode($params);
+    //     $info = $this->ucPost($path, $data);
+    //     return $info;
+    // }
 
     /**
      * 获取bucket的跨域信息
@@ -558,13 +557,13 @@ final class BucketManager
      * 主备源会分开计算.
      * Backup 是否备用回源,回源优先尝试主源
      */
-    public function putBucktSourceConfig(array $params)
-    {
-        $path = '/mirrorConfig/set';
-        $data = json_encode($params);
-        $info = $this->ucPostV2($path, $data);
-        return $info;
-    }
+    // public function putBucktSourceConfig(array $params)
+    // {
+    //     $path = '/mirrorConfig/set';
+    //     $data = json_encode($params);
+    //     $info = $this->ucPostV2($path, $data);
+    //     return $info;
+    // }
 
     /**
      * 获取空间回源配置
