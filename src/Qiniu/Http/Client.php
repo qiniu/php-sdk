@@ -98,12 +98,10 @@ final class Client
             CURLOPT_CUSTOMREQUEST => $request->method,
             CURLOPT_URL => $request->url,
         );
-
         // Handle open_basedir & safe mode
         if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
             $options[CURLOPT_FOLLOWLOCATION] = true;
         }
-
         if (!empty($request->headers)) {
             $headers = array();
             foreach ($request->headers as $key => $val) {
@@ -112,7 +110,6 @@ final class Client
             $options[CURLOPT_HTTPHEADER] = $headers;
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-
         if (!empty($request->body)) {
             $options[CURLOPT_POSTFIELDS] = $request->body;
         }
@@ -126,13 +123,7 @@ final class Client
             curl_close($ch);
             return $r;
         }
-        $curl_info   = curl_getinfo($ch);
-        $header_size = $curl_info["header_size"];
-        $body = substr($result, $header_size);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($code != 200) {
-            throw new \Exception("\nhttpcode:".$code."\nmessage".$body);
-        }
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $headers = self::parseHeaders(substr($result, 0, $header_size));
         $body = substr($result, $header_size);

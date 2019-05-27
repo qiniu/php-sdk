@@ -20,17 +20,20 @@ class Sms
 
     /*
      * 创建签名
-     * signature: string 类型，必填，
-     * source: string	类型，必填，申请签名时必须指定签名来源。取值范围为：
+     * signature: string 类型，必填，【长度限制8个字符内】超过长度会报错
+     * source: string   类型，必填，申请签名时必须指定签名来源。取值范围为：
         nterprises_and_institutions 企事业单位的全称或简称
         website 工信部备案网站的全称或简称
         app APP应用的全称或简称
         public_number_or_small_program 公众号或小程序的全称或简称
         store_name 电商平台店铺名的全称或简称
         trade_name 商标名的全称或简称，
-     * pics: 本地的图片路径 string	 类型，可选
+     * pics: 本地的图片路径 string 类型，可选
+     *@return: 类型array {
+        "signature_id": <signature_id>
+        }
      */
-    public function createSignature($signature, $source, $pics = null)
+    public function createSignature(string $signature, string $source, string $pics = null)
     {
         $params['signature'] = $signature;
         $params['source'] = $source;
@@ -38,25 +41,28 @@ class Sms
             $params['pics'] = $this->imgToBase64($pics);
         }
         $body = json_encode($params);
-        $url =$this->baseURL."signature";
+        $url =$this->baseURL.'signature';
         $ret = $this->post($url, $body);
         return $ret;
     }
 
     /*
     * 编辑签名
-    *  id 签名id
+    *  id 签名id : string 类型，必填，
     * signature: string 类型，必填，
-    * source: string	类型，必填，申请签名时必须指定签名来源。取值范围为：
+    * source: string    类型，必填，申请签名时必须指定签名来源。取值范围为：
         enterprises_and_institutions 企事业单位的全称或简称
         website 工信部备案网站的全称或简称
         app APP应用的全称或简称
         public_number_or_small_program 公众号或小程序的全称或简称
         store_name 电商平台店铺名的全称或简称
         trade_name 商标名的全称或简称，
-    * pics: 本地的图片路径 string	 类型，可选，
+    * pics: 本地的图片路径 string   类型，可选，
+    * @return: 类型array {
+        "signature": string
+        }
     */
-    public function updateSignature($id, $signature, $source, $pics = null)
+    public function updateSignature(string $id, string $signature, string $source, string $pics = null)
     {
         $params['signature'] = $signature;
         $params['source'] = $source;
@@ -64,25 +70,38 @@ class Sms
             $params['pics'] = $this->imgToBase64($pics);
         }
         $body = json_encode($params);
-        $url =$this->baseURL."signature/".$id;
+        $url =$this->baseURL.'signature/'.$id;
         $ret = $this->PUT($url, $body);
         return $ret;
     }
 
     /*
  * 查询签名
- * audit_status: 审核状态 string 类型，可选， 
+ * audit_status: 审核状态 string 类型，可选，
    取值范围为: "passed"(通过), "rejected"(未通过), "reviewing"(审核中)
  * page:页码 int  类型，
- * maxUsers：人数限制 ，可选，默认为 1
  * page_size: 分页大小 int 类型，可选， 默认为20
+ *@return: 类型array {
+    "items": [{
+        "id": string,
+        "signature": string,
+        "source": string,
+        "audit_status": string,
+        "reject_reason": string,
+        "created_at": int64,
+        "updated_at": int64
+            }...],
+    "total": int,
+    "page": int,
+    "page_size": int,
+    }
  */
-    public function checkSignature($audit_status = null, $page = 1, $page_size = 20)
+    public function checkSignature(string $audit_status = null, int $page = 1, int $page_size = 20)
     {
 
         $url = sprintf(
             "%s?audit_status=%s&page=%s&page_size=%s",
-            $this->baseURL."signature",
+            $this->baseURL.'signature',
             $audit_status,
             $page,
             $page_size
@@ -94,9 +113,10 @@ class Sms
 
     /*
  * 删除签名
- * id 签名id
+ * id 签名id string 类型，必填，
+ * @retrun : 请求成功 HTTP 状态码为 200
  */
-    public function deleteSignature($id)
+    public function deleteSignature(string $id)
     {
         $url = $this->baseURL . 'signature/' . $id;
         list(, $err)  = $this->delete($url);
@@ -108,15 +128,23 @@ class Sms
 
     /*
     * 创建模板
-    * name	: 模板名称 string 类型 ，必填
+    * name  : 模板名称 string 类型 ，必填
     * template:  模板内容 string  类型，必填
     * type: 模板类型 string 类型，必填，
       取值范围为: notification (通知类短信), verification (验证码短信), marketing (营销类短信)
     * description:  申请理由简述 string  类型，必填
     * signature_id:  已经审核通过的签名 string  类型，必填
+    * @return: 类型 array {
+        "template_id": string
+                }
     */
-    public function createTemplate($name, $template, $type, $description, $signture_id)
-    {
+    public function createTemplate(
+        string $name,
+        string $template,
+        string $type,
+        string $description,
+        string $signture_id
+    ) {
         $params['name'] = $name;
         $params['template'] = $template;
         $params['type'] = $type;
@@ -124,8 +152,7 @@ class Sms
         $params['signature_id'] = $signture_id;
 
         $body = json_encode($params);
-        var_dump($body);
-        $url =$this->baseURL."template";
+        $url =$this->baseURL.'template';
         $ret = $this->post($url, $body);
         return $ret;
     }
@@ -136,13 +163,30 @@ class Sms
     取值范围为: passed (通过), rejected (未通过), reviewing (审核中)
   * page:  页码 int  类型，可选，默认为 1
   * page_size: 分页大小 int 类型，可选，默认为 20
+  * @return: 类型array{
+      "items": [{
+            "id": string,
+            "name": string,
+            "template": string,
+            "audit_status": string,
+            "reject_reason": string,
+            "type": string,
+            "signature_id": string, // 模版绑定的签名ID
+            "signature_text": string, // 模版绑定的签名内容
+            "created_at": int64,
+            "updated_at": int64
+        }...],
+        "total": int,
+        "page": int,
+        "page_size": int
+        }
   */
-    public function queryTemplate($audit_status = null, $page = 1, $page_size = 20)
+    public function queryTemplate(string $audit_status = null, int $page = 1, int $page_size = 20)
     {
 
         $url = sprintf(
             "%s?audit_status=%s&page=%s&page_size=%s",
-            $this->baseURL."template",
+            $this->baseURL.'template',
             $audit_status,
             $page,
             $page_size
@@ -154,28 +198,35 @@ class Sms
     /*
     * 编辑模板
     * id :模板id
-    * name	: 模板名称 string 类型 ，必填
+    * name  : 模板名称 string 类型 ，必填
     * template:  模板内容 string  类型，必填
     * description:  申请理由简述 string  类型，必填
     * signature_id:  已经审核通过的签名 string  类型，必填
+    * @retrun : 请求成功 HTTP 状态码为 200
     */
-    public function updateTemplate($id, $name, $template, $description, $signature_id)
-    {
+    public function updateTemplate(
+        string $id,
+        string $name,
+        string $template,
+        string $description,
+        string $signature_id
+    ) {
         $params['name'] = $name;
         $params['template'] = $template;
         $params['description'] = $description;
         $params['signature_id'] = $signature_id;
         $body = json_encode($params);
-        $url =$this->baseURL."template/".$id;
+        $url =$this->baseURL.'template/'.$id;
         $ret = $this->PUT($url, $body);
         return $ret;
     }
 
     /*
     * 删除模板
-    * id :模板id
+    * id :模板id string 类型，必填，
+    * @retrun : 请求成功 HTTP 状态码为 200
     */
-    public function deleteTemplate($id)
+    public function deleteTemplate(string $id)
     {
         $url = $this->baseURL . 'template/' . $id;
         list(, $err)  = $this->delete($url);
@@ -186,10 +237,13 @@ class Sms
     * 发送短信
     * 编辑模板
     * template_id :模板id string类型，必填
-    * mobiles	: 手机号数组 []string 类型 ，必填
-    * parameters:  模板内容 map[string]string	  类型，可选
+    * mobiles   : 手机号数组 []string 类型 ，必填
+    * parameters:  模板内容 map[string]string     类型，可选
+    * @return: 类型json {
+        "job_id": string
+        }
     */
-    public function sendMessage($template_id, $mobiles, array $parameters = null)
+    public function sendMessage(string $template_id, array $mobiles, array $parameters = null)
     {
         $params['template_id'] = $template_id;
         $params['mobiles'] = $mobiles;
@@ -197,12 +251,12 @@ class Sms
             $params['parameters'] = $parameters;
         }
         $body = json_encode($params);
-        $url =$this->baseURL."message";
+        $url =$this->baseURL.'message';
         $ret = $this->post($url, $body);
         return $ret;
     }
 
-    public function imgToBase64($img_file)
+    public function imgToBase64(string $img_file)
     {
         $img_base64 = '';
         if (file_exists($img_file)) {
@@ -212,19 +266,19 @@ class Sms
             if ($fp) {
                 $filesize = filesize($app_img_file);
                 if ($filesize > 5*1024*1024) {
-                    new Error("pic size < 5M !");
+                    die("pic size < 5M !");
                 }
                 $content = fread($fp, $filesize);
                 $file_content = chunk_split(base64_encode($content)); // base64编码
                 switch ($img_info[2]) {           //判读图片类型
                     case 1:
-                        $img_type = "gif";
+                        $img_type = 'gif';
                         break;
                     case 2:
-                        $img_type = "jpg";
+                        $img_type = 'jpg';
                         break;
                     case 3:
-                        $img_type = "png";
+                        $img_type = 'png';
                         break;
                 }
                 //合成图片的base64编码
