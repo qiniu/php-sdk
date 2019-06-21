@@ -7,7 +7,7 @@ $ak="xxxx";
 $sk="xxxx";
 
 $auth = new Auth($ak, $sk);
-$client = new Qiniu\Sms\sms($auth);
+$client = new Qiniu\Sms\Sms($auth);
 
 //发送信息模块
 $template_id="1131792074274775040";
