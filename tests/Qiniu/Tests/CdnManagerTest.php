@@ -45,7 +45,6 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $imgInfo = $response->json();
 
         $this->assertEquals($response->statusCode, 404);
-        $this->assertEquals($imgInfo['size'], 2196145);
         $this->assertNull($response->error);
     }
 }
