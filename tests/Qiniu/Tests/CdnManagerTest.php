@@ -37,14 +37,5 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($response->statusCode, 200);
         $this->assertNull($response->error);
-
-        $url2 = $this->imgUrl . '?imageInfo';
-        $signUrl2 = $this->cdnManager->createTimestampAntiLeechUrl($url2, $this->encryptKey, 3600);
-
-        $response = Client::get($signUrl2);
-        $imgInfo = $response->json();
-
-        $this->assertEquals($response->statusCode, 404);
-        $this->assertNull($response->error);
     }
 }
