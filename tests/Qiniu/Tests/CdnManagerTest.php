@@ -25,7 +25,7 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->cdnManager = new CdnManager($testAuth);
         $this->encryptKey = $timestampAntiLeechEncryptKey;
-        $this->imgUrl = $customDomain . '/24.jpg';
+        $this->imgUrl = $customDomain . '/20.jpg';
     }
 
     public function testCreateTimestampAntiLeechUrl()
