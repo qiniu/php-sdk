@@ -44,7 +44,7 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $response = Client::get($signUrl2);
         $imgInfo = $response->json();
 
-        $this->assertEquals($response->statusCode, 200);
+        $this->assertEquals($response->statusCode, 404);
         $this->assertEquals($imgInfo['size'], 2196145);
         $this->assertNull($response->error);
     }
