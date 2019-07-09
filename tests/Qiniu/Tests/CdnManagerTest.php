@@ -34,6 +34,7 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $signUrl = $this->cdnManager->createTimestampAntiLeechUrl($this->imgUrl, $this->encryptKey, 3600);
 
         $response = Client::get($signUrl);
+        print_r($signUrl);
         $this->assertEquals($response->statusCode, 200);
         $this->assertNull($response->error);
 
