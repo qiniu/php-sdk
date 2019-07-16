@@ -84,8 +84,7 @@ final class UploadManager
         $key,
         $filePath,
         $params = null,
-        $mime = 'application/octet-stream',
-        $checkCrc = false
+        $mime = 'application/octet-stream'
     ) {
     
         $file = fopen($filePath, 'rb');
