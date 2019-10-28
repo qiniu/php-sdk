@@ -9,7 +9,7 @@ class FopTest extends \PHPUnit_Framework_TestCase
     public function testExifPub()
     {
         $fop = new Operation('sdk.peterpy.cn');
-        list($exif, $error) = $fop->execute('sdktest.png', 'exif');
+        list($exif, $error) = $fop->execute('gogopher.jpg', 'exif');
         $this->assertNull($error);
         $this->assertNotNull($exif);
     }
