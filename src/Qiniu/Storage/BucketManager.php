@@ -74,7 +74,7 @@ final class BucketManager
      */
     public function createBucket($name, $region = 'z0')
     {
-        $path = '/mkbucketv2/'.$name.'/region/' . $region;
+        $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
 
