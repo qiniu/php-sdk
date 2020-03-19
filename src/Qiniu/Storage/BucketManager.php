@@ -71,7 +71,6 @@ final class BucketManager
      * BucketName不满足以上要求返回400 （the specified bucket is not valid）
      * 如果BucketName已经被使用，返回614（bucket exists）
      * @param $region    创建的区域，默认华东
-     * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
     
