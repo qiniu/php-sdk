@@ -74,12 +74,13 @@ final class BucketManager
      * 
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
+    
     public function createBucket($name, $region = 'z0')
     {
         $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
-
+    
     /**
      * 删除空间
      *
@@ -793,6 +794,24 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/chtype/' . $resource . '/type/' . $fileType;
+        list(, $error) = $this->rsPost($path);
+        return $error;
+    }
+
+    /**
+     * 修改指定资源的存储类型
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $day        解冻有效时长，取值范围 1～7
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/kodo/api/6380/restore-archive
+     */
+    public function restoreFile($bucket, $key, $day)
+    {
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/restoreAr/' . $resource . '/type/' . $day;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
