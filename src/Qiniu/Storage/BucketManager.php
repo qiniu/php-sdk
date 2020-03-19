@@ -80,7 +80,7 @@ final class BucketManager
         $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
-    
+
     /**
      * 删除空间
      *
@@ -811,7 +811,7 @@ final class BucketManager
     public function restoreFile($bucket, $key, $day)
     {
         $resource = \Qiniu\entry($bucket, $key);
-        $path = '/restoreAr/' . $resource . '/type/' . $day;
+        $path = '/restoreAr/' . $resource . '/freezeAfterDays/' . $day;
         list(, $error) = $this->rsPost($path);
         return $error;
     }
