@@ -811,7 +811,7 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/restoreAr/' . $resource . '/freezeAfterDays/' . $day;
-        list(, $error) = $this->rsPost($path);
+        list(, $error) = $this->rsPostV2($path, null);
         return $error;
     }
 
@@ -1027,6 +1027,12 @@ final class BucketManager
     private function ucPostV2($path, $body)
     {
         $url = $this->getUcHost() . $path;
+        return $this->postV2($url, $body);
+    }
+
+    private function rsPostV2($path, $body)
+    {
+        $url = $this->getRsHost() . $path;
         return $this->postV2($url, $body);
     }
 
