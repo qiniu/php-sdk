@@ -802,7 +802,7 @@ final class BucketManager
      *
      * @param $bucket     待操作资源所在空间
      * @param $key        待操作资源文件名
-     * @param $day        解冻有效时长，取值范围 1～7
+     * @param $day        解冻有效时长，取值范围 1～7，解冻存在等待时间
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  https://developer.qiniu.com/kodo/api/6380/restore-archive
      */
