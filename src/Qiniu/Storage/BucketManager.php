@@ -837,7 +837,6 @@ final class BucketManager
      */
     public function fetch($url, $bucket, $key = null)
     {
-
         $resource = \Qiniu\base64_urlSafeEncode($url);
         $to = \Qiniu\entry($bucket, $key);
         $path = '/fetch/' . $resource . '/to/' . $to;
@@ -869,6 +868,59 @@ final class BucketManager
         $url = $ioHost . $path;
         list(, $error) = $this->post($url, null);
         return $error;
+    }
+
+    /**
+     * 异步第三方资源抓取
+     *
+     * @param $url
+     * @param $bucket
+     * @param null $host
+     * @param null $key
+     * @param null $md5
+     * @param null $etag
+     * @param null $callbackurl
+     * @param null $callbackbody
+     * @param null $callbackbodytype
+     * @param null $callbackhost
+     * @param int $file_type
+     * @param bool $ignore_same_key
+     *
+     * @return array 成功返回array，失败返回对象Qiniu\Http\Error
+     *
+     * @link https://developer.qiniu.com/kodo/api/4097/asynch-fetch
+     */
+    public function asyncFetch(
+        $url,
+        $bucket,
+        $host = null,
+        $key = null,
+        $md5 = null,
+        $etag = null,
+        $callbackurl = null,
+        $callbackbody = null,
+        $callbackbodytype = null,
+        $callbackhost = null,
+        $file_type = 0,
+        $ignore_same_key = false
+    ) {
+        $path = '/sisyphus/fetch';
+
+        $params = array('url' => $url, 'bucket' => $bucket);
+        \Qiniu\setWithoutEmpty($params, 'host', $host);
+        \Qiniu\setWithoutEmpty($params, 'key', $key);
+        \Qiniu\setWithoutEmpty($params, 'md5', $md5);
+        \Qiniu\setWithoutEmpty($params, 'etag', $etag);
+        \Qiniu\setWithoutEmpty($params, 'callbackurl', $callbackurl);
+        \Qiniu\setWithoutEmpty($params, 'callbackbody', $callbackbody);
+        \Qiniu\setWithoutEmpty($params, 'callbackbodytype', $callbackbodytype);
+        \Qiniu\setWithoutEmpty($params, 'callbackhost', $callbackhost);
+        \Qiniu\setWithoutEmpty($params, 'file_type', $file_type);
+        \Qiniu\setWithoutEmpty($params, 'ignore_same_key', $ignore_same_key);
+        $data = json_encode($params);
+
+        $url = $this->getApiHost() . $path;
+        return $this->postV2($url, $data);
     }
 
     /**
