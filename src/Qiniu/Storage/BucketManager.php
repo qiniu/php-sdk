@@ -911,6 +911,38 @@ final class BucketManager
         return $error;
     }
 
+    /**
+     * @param array $bucket 待获取存储空间的 bucket
+     * @param string $beginTime 起始日期字符串，闭区间  格式类似 20200326105005
+     * @param string $endDate 结束日期字符串，开区间  格式类似 20200426105005
+     * @param string $granularity 获取数据的时间间隔(时间粒度)，可以是 5min, hour 或者 day
+     * @param string $region 存储区域   z0:华东 z1:华北 z2:华南 na0:北美 as0:东南亚
+     *
+     * @return array 存储数据和错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/kodo/api/3908/statistic-space
+     */
+    public function getSpaceData(string $bucket, string $beginTime, string $endTime, $granularity, $region)
+    {
+        $req = array();
+        $req['bucket'] = $bucket;
+        $req['begin'] = $beginTime;
+        $req['end'] = $endTime;
+        $req['g'] = $granularity;
+        $req['region'] = $region;
+
+        $url = '/v6/space';
+        foreach($req as $key => $val){
+            if($key == array_key_first($req)){
+                $url .= "?{$key}={$val}";
+            }else {
+                $url .= "&{$key}={$val}";
+            }
+        }
+
+        return $this->apiGet($url);
+    }
+
     private function getRsfHost()
     {
         $scheme = "http://";
