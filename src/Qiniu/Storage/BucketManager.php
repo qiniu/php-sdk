@@ -918,7 +918,7 @@ final class BucketManager
      * @param string $granularity 获取数据的时间间隔(时间粒度)，可以是 5min, hour 或者 day
      * @param string $region 存储区域   z0:华东 z1:华北 z2:华南 na0:北美 as0:东南亚
      *
-     * @return array 存储数据和错误信息，参考 examples/cdn_manager.php 代码
+     * @return array 存储数据和错误信息，参考 examples/get_bucket_space_data.php 代码
      *
      * @link https://developer.qiniu.com/kodo/api/3908/statistic-space
      */
