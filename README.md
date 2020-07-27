@@ -1,13 +1,14 @@
 # Qiniu Cloud SDK for PHP
-[![doxygen.io](http://doxygen.io/github.com/qiniu/php-sdk/?status.svg)](http://doxygen.io/github.com/qiniu/php-sdk/)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/qiniu/php-sdk.svg)](https://travis-ci.org/qiniu/php-sdk)
+[![GitHub release](https://img.shields.io/github/v/tag/qiniu/php-sdk.svg?label=release)](https://github.com/qiniu/php-sdk/releases)
 [![Latest Stable Version](https://img.shields.io/packagist/v/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
 [![Total Downloads](https://img.shields.io/packagist/dt/qiniu/php-sdk.svg)](https://packagist.org/packages/qiniu/php-sdk)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/qiniu/php-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/qiniu/php-sdk/?branch=master)
+[![Coverage Status](https://codecov.io/gh/qiniu/php-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/qiniu/php-sdk)
 [![Join Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/qiniu/php-sdk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![@qiniu on weibo](http://img.shields.io/badge/weibo-%40qiniutek-blue.svg)](http://weibo.com/qiniutek)
+
 
 ## 安装
 
