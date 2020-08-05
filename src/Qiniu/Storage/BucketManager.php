@@ -68,13 +68,15 @@ final class BucketManager
      * 创建空间
      *
      * @param $name     创建的空间名
+     * BucketName不满足以上要求返回400 （the specified bucket is not valid）
+     * 如果BucketName已经被使用，返回614（bucket exists）
      * @param $region    创建的区域，默认华东
-     *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      */
+    
     public function createBucket($name, $region = 'z0')
     {
-        $path = '/mkbucketv2/'.$name.'/region/' . $region;
+        $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
 
@@ -796,6 +798,23 @@ final class BucketManager
     }
 
     /**
+     * 修改指定资源的存储类型
+     *
+     * @param $bucket     待操作资源所在空间
+     * @param $key        待操作资源文件名
+     * @param $day        解冻有效时长，取值范围 1～7，解冻存在等待时间
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/kodo/api/6380/restore-archive
+     */
+    public function restoreFile($bucket, $key, $day)
+    {
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/restoreAr/' . $resource . '/freezeAfterDays/' . $day;
+        list(, $error) = $this->rsPostV2($path, null);
+        return $error;
+    }
+
+    /**
      * 修改文件的存储状态，即禁用状态和启用状态间的的互相转换
      *
      * @param $bucket     待操作资源所在空间
@@ -1007,6 +1026,12 @@ final class BucketManager
     private function ucPostV2($path, $body)
     {
         $url = $this->getUcHost() . $path;
+        return $this->postV2($url, $body);
+    }
+
+    private function rsPostV2($path, $body)
+    {
+        $url = $this->getRsHost() . $path;
         return $this->postV2($url, $body);
     }
 

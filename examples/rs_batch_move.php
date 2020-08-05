@@ -21,7 +21,7 @@ $keys = array(
 
 $keyPairs = array();
 foreach ($keys as $key) {
-    $keyPairs[$key . "_copy"] = $key . "_move";
+    $keyPairs[$key] = $key . "_move";
 }
 
 $srcBucket = $bucket;

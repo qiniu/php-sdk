@@ -12,11 +12,11 @@
 
 ## 安装
 
-* 通过composer，这是推荐的方式，可以使用composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`qiniu/php-sdk`][install-packagist] 。
+* 推荐使用 `composer` 进行安装。可以使用 composer.json 声明依赖，或者运行下面的命令。SDK 包已经放到这里 [`qiniu/php-sdk`][install-packagist] 。
 ```bash
 $ composer require qiniu/php-sdk
 ```
-* 直接下载安装，SDK 没有依赖其他第三方库，但需要参照 composer的autoloader，增加一个自己的autoloader程序。
+* 直接下载安装，SDK 没有依赖其他第三方库，但需要参照 composer 的 autoloader，增加一个自己的 autoloader 程序。
 
 ## 运行环境
 
@@ -32,10 +32,10 @@ $ composer require qiniu/php-sdk
 use Qiniu\Storage\UploadManager;
 use Qiniu\Auth;
 ...
-    $upManager = new UploadManager();
+    $uploadMgr = new UploadManager();
     $auth = new Auth($accessKey, $secretKey);
-    $token = $auth->uploadToken($bucketName);
-    list($ret, $error) = $upManager->put($token, 'formput', 'hello world');
+    $token = $auth->uploadToken($bucket);
+    list($ret, $error) = $uploadMgr->putFile($token, 'key', 'filePath');
 ...
 ```
 
@@ -47,7 +47,7 @@ $ ./vendor/bin/phpunit tests/Qiniu/Tests/
 
 ## 常见问题
 
-- $error保留了请求响应的信息，失败情况下ret 为none, 将$error可以打印出来，提交给我们。
+- `$error` 保留了请求响应的信息，失败情况下 `ret` 为 `none`, 将 `$error` 可以打印出来，提交给我们。
 - API 的使用 demo 可以参考 [单元测试](https://github.com/qiniu/php-sdk/blob/master/tests)。
 
 ## 代码贡献
@@ -61,12 +61,12 @@ $ ./vendor/bin/phpunit tests/Qiniu/Tests/
 ## 联系我们
 
 - 如果需要帮助，请提交工单（在portal右侧点击咨询和建议提交工单，或者直接向 support@qiniu.com 发送邮件）
-- 如果有什么问题，可以到问答社区提问，[问答社区](http://qiniu.segmentfault.com/)
-- 更详细的文档，见[官方文档站](http://developer.qiniu.com/)
-- 如果发现了bug， 欢迎提交 [issue](https://github.com/qiniu/php-sdk/issues)
+- 如果有什么问题，可以到问答社区提问，[问答社区](https://qiniu.segmentfault.com/)
+- 更详细的文档，见[官方文档站](https://developer.qiniu.com/)
+- 如果发现了 bug， 欢迎提交 [issue](https://github.com/qiniu/php-sdk/issues)
 - 如果有功能需求，欢迎提交 [issue](https://github.com/qiniu/php-sdk/issues)
 - 如果要提交代码，欢迎提交 pull request
-- 欢迎关注我们的[微信](http://www.qiniu.com/#weixin) [微博](http://weibo.com/qiniutek)，及时获取动态信息。
+- 欢迎关注我们的[微信](https://www.qiniu.com/#weixin) [微博](https://weibo.com/qiniutek)，及时获取动态信息。
 
 ## 代码许可
 

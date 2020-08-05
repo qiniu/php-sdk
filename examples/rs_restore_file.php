@@ -12,9 +12,9 @@ $auth = new Auth($accessKey, $secretKey);
 $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
-$fileType = 1;//0 表示普通存储，1表示低频存储，2表示归档存储
+$day = 1;// 解冻有效时长，取值范围 1～7
 
-$err = $bucketManager->changeType($bucket, $key, $fileType);
+$err = $bucketManager->restoreFile($bucket, $key, $day);
 if ($err) {
     print_r($err);
 }
