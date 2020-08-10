@@ -10,7 +10,7 @@ $secretKey = getenv('QINIU_SECRET_KEY');
 $bucket = getenv('QINIU_TEST_BUCKET');
 $auth = new Auth($accessKey, $secretKey);
 
-// 使用 上传策略 实现上传文件后，自动对该文件进行转码处理，并持久化生成一个新的文件存储到空间中
+// 使用上传策略实现上传文件后，自动对该文件进行转码处理，并持久化生成一个新的文件存储到空间中
 
 // 上传到七牛后保存的文件名
 $key = 'php-logo.png';
