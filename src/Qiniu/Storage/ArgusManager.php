@@ -8,9 +8,9 @@ use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 
 /**
- * 主要涉及了鉴黄接口的实现，具体的接口规格可以参考
+ * 主要涉及了内容审核接口的实现，具体的接口规格可以参考
  *
- * @link https://developer.qiniu.com/dora/manual/3674/kodo-product-introduction
+ * @link https://developer.qiniu.com/censor/api/5620/video-censor
  */
 final class ArgusManager
 {
@@ -28,17 +28,16 @@ final class ArgusManager
     }
 
     /**
-     * 视频鉴黄
+     * 视频审核
      *
      * @param $body     body信息
-     * @param $vid      videoID
      *
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
-     * @link  https://developer.qiniu.com/dora/manual/4258/video-pulp
+     * @link  https://developer.qiniu.com/censor/api/5620/video-censor
      */
-    public function pulpVideo($body, $vid)
+    public function pulpVideo($body)
     {
-        $path = '/v1/video/' . $vid;
+        $path = '/v3/video/censor';
         
         return $this->arPost($path, $body);
     }
@@ -58,6 +57,16 @@ final class ArgusManager
         return $this->post($url, $body);
     }
 
+    private function get($url)
+    {
+        $headers = $this->auth->authorizationV2($url,'GET');
+        $ret = Client::get($url, $headers);
+        if (!$ret->ok()) {
+            return array(null, new Error($url, $ret));
+        }
+        return $ret;
+    }
+
     private function post($url, $body)
     {
         $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/json');
@@ -68,6 +77,22 @@ final class ArgusManager
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        return array($r, null);
+        $jobid = $r['job'];
+        return array($jobid, null);
+    }
+
+    public function censorStatus($jobid)
+    {
+        $scheme = "http://";
+
+        if ($this->config->useHTTPS === true) {
+            $scheme = "https://";
+        }
+        $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
+        $response = Client::post($url);
+        if (!$response->ok()) {
+            return array(null, new Error($url, $response));
+        }
+        return array($response->json(), null);
     }
 }
