@@ -21,7 +21,7 @@ $uptoken = $auth->uploadToken($bucket);
 // 上传文件的本地路径
 $filePath = './php-logo.png';
 
-// 七牛云主机 QVM 和七牛对象存储 KODO 内网上传，目前支持华东 1 区域(杭州)和华北 2 区域(北京)的云主机可以访问同区域的对象存储服务
+// 七牛云主机QVM和七牛对象存储KODO内网上传，目前支持华东1区域(杭州)和华北2区域(北京)的云主机可以访问同区域的对象存储服务
 // 参考文档：https://developer.qiniu.com/qvm/manual/4269/qvm-kodo
 
 $zone = Zone::qvmZonez0(); // 华东：z0，华北：z1

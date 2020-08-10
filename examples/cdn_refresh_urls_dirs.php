@@ -12,7 +12,8 @@ $auth = new Qiniu\Auth($accessKey, $secretKey);
 
 //---------------------------------------- demo1 ----------------------------------------
 // 刷新文件和目录
-// 文件列表一次最多提交 60 个，目录一次最多提交 10 个，参考文档：https://developer.qiniu.com/fusion/api/1229/cache-refresh
+// 文件列表一次最多提交 60 个，目录一次最多提交 10 个
+// 参考文档：https://developer.qiniu.com/fusion/api/1229/cache-refresh
 
 $urls = array(
     "http://phpsdk.qiniudn.com/qiniu.jpg",

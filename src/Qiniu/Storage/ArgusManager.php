@@ -59,7 +59,7 @@ final class ArgusManager
 
     private function get($url)
     {
-        $headers = $this->auth->authorizationV2($url,'GET');
+        $headers = $this->auth->authorizationV2($url, 'GET');
         $ret = Client::get($url, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));

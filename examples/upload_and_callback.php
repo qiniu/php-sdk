@@ -9,7 +9,7 @@ $secretKey = getenv('QINIU_SECRET_KEY');
 $bucket = getenv('QINIU_TEST_BUCKET');
 $auth = new Auth($accessKey, $secretKey);
 
-// 上传文件到七牛后， 七牛将文件名和文件大小回调给业务服务器（需要可以公网访问，并能够相应 200 OK）
+// 上传完成后通知到你的业务服务器（需要可以公网访问，并能够相应 200 OK）
 // 上传策略参数：https://developer.qiniu.com/kodo/manual/1206/put-policy
 
 $policy = array(

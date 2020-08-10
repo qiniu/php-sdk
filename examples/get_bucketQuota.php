@@ -12,7 +12,7 @@ $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
 // 获取用户 bucket 配额限制
-// 返回值中的 size 表示空间存储量配额，count 表示空间文件数配额，新创建的空间默认没有限额
+// size 表示空间存储量配额，count 表示空间文件数配额，新创建的空间默认没有限额
 
 $bucket = 'xxxx'; // 存储空间名称
 
