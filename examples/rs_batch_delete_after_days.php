@@ -3,6 +3,7 @@ require_once __DIR__ . '/../autoload.php';
 
 use \Qiniu\Auth;
 
+// 控制台获取密钥：https://portal.qiniu.com/user/key
 $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
 $bucket = getenv('QINIU_TEST_BUCKET');
@@ -12,7 +13,8 @@ $auth = new Auth($accessKey, $secretKey);
 $config = new \Qiniu\Config();
 $bucketManager = new \Qiniu\Storage\BucketManager($auth, $config);
 
-//每次最多不能超过1000个
+// 批量修改文件生命周期，每次最多不能超过 1000 个
+
 $keys = array(
     'qiniu.mp4',
     'qiniu.png',
@@ -20,7 +22,8 @@ $keys = array(
 );
 
 $keyDayPairs = array();
-//day=0表示永久存储
+
+// day=0表示永久存储
 foreach ($keys as $key) {
     $keyDayPairs[$key] = 0;
 }

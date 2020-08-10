@@ -6,7 +6,7 @@ use Qiniu\Processing\ImageUrlBuilder;
 
 $imageUrlBuilder = new ImageUrlBuilder();
 
-// 要处理图片
+// 要处理的图片
 $url = 'http://78re52.com1.z0.glb.clouddn.com/resource/gogopher.jpg';
 $url2 = 'http://78re52.com1.z0.glb.clouddn.com/resource/gogopher.jpg?watermark/1/gravity/SouthEast/dx/0/dy/0/image/'
     . 'aHR0cDovL2Fkcy1jZG4uY2h1Y2h1amllLmNvbS9Ga1R6bnpIY2RLdmRBUFc5cHZZZ3pTc21UY0tB';
