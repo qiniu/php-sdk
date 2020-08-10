@@ -593,7 +593,7 @@ final class BucketManager
      */
     public function putBucketAccessMode($bucket, $private)
     {
-        $path = '/bucket/' . $bucket . '/private/' . $private;
+        $path = "/private?bucket=$bucket&private=$private";
         $info = $this->ucPost($path, null);
         return $info;
     }
