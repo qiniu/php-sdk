@@ -35,7 +35,7 @@ final class ArgusManager
      * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  https://developer.qiniu.com/censor/api/5620/video-censor
      */
-    public function pulpVideo($body)
+    public function censorVideo($body)
     {
         $path = '/v3/video/censor';
         
