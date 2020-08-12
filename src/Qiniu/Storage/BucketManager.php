@@ -854,16 +854,16 @@ final class BucketManager
      *
      * @param $url                       需要抓取的url
      * @param $bucket                    所在区域的bucket
-     * @param null $host                 从指定url下载数据时使用的Host
-     * @param null $key                  文件存储的key
-     * @param null $md5                  文件md5
-     * @param null $etag                 文件etag
-     * @param null $callbackurl          回调URL
-     * @param null $callbackbody         回调Body
-     * @param null $callbackbodytype     回调Body内容类型,默认为"application/x-www-form-urlencoded"
-     * @param null $callbackhost         回调时使用的Host
-     * @param int $file_type             存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储
-     * @param bool $ignore_same_key      如果空间中已经存在同名文件则放弃本次抓取(仅对比Key，不校验文件内容)
+     * @param null $host 从指定url下载数据时使用的Host
+     * @param null $key 文件存储的key
+     * @param null $md5 文件md5
+     * @param null $etag 文件etag
+     * @param null $callbackurl 回调URL
+     * @param null $callbackbody 回调Body
+     * @param string $callbackbodytype 回调Body内容类型,默认为"application/x-www-form-urlencoded"
+     * @param null $callbackhost 回调时使用的Host
+     * @param int $file_type 存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储
+     * @param bool $ignore_same_key 如果空间中已经存在同名文件则放弃本次抓取
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/4097/asynch-fetch
      */
@@ -876,7 +876,7 @@ final class BucketManager
         $etag = null,
         $callbackurl = null,
         $callbackbody = null,
-        $callbackbodytype = null,
+        $callbackbodytype = 'application/x-www-form-urlencoded',
         $callbackhost = null,
         $file_type = 0,
         $ignore_same_key = false
