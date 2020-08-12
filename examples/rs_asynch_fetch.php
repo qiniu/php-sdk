@@ -15,7 +15,7 @@ $auth = new Auth($accessKey, $secretKey);
 $config = new Config();
 $config->useHTTPS = true; // 接口是否使用 HTTPS 协议
 
-$bucketManager = new BucketManager($auth,$config);
+$bucketManager = new BucketManager($auth, $config);
 
 // 异步第三方资源抓取
 // 参考文档：https://developer.qiniu.com/kodo/api/4097/asynch-fetch
@@ -29,14 +29,12 @@ $callbackurl = "http://your.domain.com/upload_verify_callback.php";
 // 回调Body
 $callbackbody = '{"key":"$(key)","hash":"$(etag)","w":"$(imageInfo.width)","h":"$(imageInfo.height)"}';
 
-// 回调 Body 内容类型,默认为"application/x-www-form-urlencoded"
-$callbackbodytype = "application/json";
 
 //---------------------------------------- demo1 ----------------------------------------
 // 指定抓取的文件保存到七牛云空间中的名称
 
 $key = time() . '.png';
-list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key,null, null, $callbackurl, $callbackbody, $callbackbodytype,null,0,false);
+list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
 echo "=====> asynch fetch $url to bucket: $bucket  key: $key\n";
 if ($err !== null) {
     var_dump($err);
@@ -48,7 +46,7 @@ if ($err !== null) {
 // 不指定 key 时，以文件内容的 hash 作为文件名
 
 $key = null;
-list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key,null, null, $callbackurl, $callbackbody, $callbackbodytype,null,0,false);
+list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
 echo "=====> asynch fetch $url to bucket: $bucket  key: $(etag)\n";
 if ($err !== null) {
     var_dump($err);
