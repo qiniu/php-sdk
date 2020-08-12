@@ -42,6 +42,44 @@ final class ArgusManager
         return $this->arPost($path, $body);
     }
 
+
+    /**
+     * 图片审核
+     *
+     * @param $body
+     *
+     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @link  https://developer.qiniu.com/censor/api/5588/image-censor
+     */
+    public function censorImage($body)
+    {
+        $path = '/v3/image/censor';
+
+        return $this->arPost($path, $body);
+    }
+
+    /**
+     * 查询视频审核结果
+     *
+     * @param $jobid  任务ID
+     * @return array
+     * @link  https://developer.qiniu.com/censor/api/5620/video-censor
+     */
+    public function censorStatus($jobid)
+    {
+        $scheme = "http://";
+
+        if ($this->config->useHTTPS === true) {
+            $scheme = "https://";
+        }
+        $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
+        $response = $this->get($url);
+        if (!$response->ok()) {
+            return array(null, new Error($url, $response));
+        }
+        return array($response->json(), null);
+    }
+
     private function getArHost()
     {
         $scheme = "http://";
@@ -77,22 +115,10 @@ final class ArgusManager
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        $jobid = $r['job'];
-        return array($jobid, null);
-    }
-
-    public function censorStatus($jobid)
-    {
-        $scheme = "http://";
-
-        if ($this->config->useHTTPS === true) {
-            $scheme = "https://";
+        if(strstr($url,"video")){
+            $jobid = $r['job'];
+            return array($jobid, null);
         }
-        $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
-        $response = $this->get($url);
-        if (!$response->ok()) {
-            return array(null, new Error($url, $response));
-        }
-        return array($response->json(), null);
+        return array($r, null);
     }
 }
