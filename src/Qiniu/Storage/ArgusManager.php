@@ -89,7 +89,7 @@ final class ArgusManager
             $scheme = "https://";
         }
         $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
-        $response = Client::post($url);
+        $response = $this->get($url);
         if (!$response->ok()) {
             return array(null, new Error($url, $response));
         }
