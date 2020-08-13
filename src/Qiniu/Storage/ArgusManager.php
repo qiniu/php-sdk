@@ -115,7 +115,7 @@ final class ArgusManager
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        if(strstr($url,"video")){
+        if (strstr($url, "video")) {
             $jobid = $r['job'];
             return array($jobid, null);
         }
