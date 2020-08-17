@@ -1079,7 +1079,7 @@ final class BucketManager
     private function getV2($url)
     {
         $headers = $this->auth->authorizationV2($url, 'GET');
-        return Client::get($url, $headers);;
+        return Client::get($url, $headers);
     }
 
     private function post($url, $body)
