@@ -75,6 +75,7 @@ final class ArgusManager
         $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
         $response = $this->get($url);
         if (!$response->ok()) {
+            print("statusCode: " . $response->statusCode);
             return array(null, new Error($url, $response));
         }
         return array($response->json(), null);
@@ -98,11 +99,8 @@ final class ArgusManager
     private function get($url)
     {
         $headers = $this->auth->authorizationV2($url, 'GET');
-        $ret = Client::get($url, $headers);
-        if (!$ret->ok()) {
-            return array(null, new Error($url, $ret));
-        }
-        return $ret;
+
+        return Client::get($url, $headers);
     }
 
     private function post($url, $body)
@@ -111,7 +109,7 @@ final class ArgusManager
         $headers['Content-Type']='application/json';
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
-            print($ret->statusCode);
+            print("statusCode: " . $ret->statusCode);
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
