@@ -34,7 +34,7 @@ $body = '{
 }';
 
 list($jobid, $err) = $argusManager->censorVideo($body);
-
+echo "\n====> Result is: \n";
 if ($err !== null) {
     var_dump($err);
 } else {
