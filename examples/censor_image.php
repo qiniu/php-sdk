@@ -34,7 +34,7 @@ $body = '{
 }';
 
 list($ret, $err) = $argusManager->censorImage($body);
-
+echo "\n====> Result is: \n";
 if ($err !== null) {
     var_dump($err);
 } else {
