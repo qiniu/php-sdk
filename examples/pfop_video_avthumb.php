@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
+use Qiniu\Config;
 use Qiniu\Processing\PersistentFop;
 
 // 控制台获取密钥：https://portal.qiniu.com/user/key
@@ -25,8 +26,8 @@ $force = false;
 
 // 转码完成后通知到你的业务服务器（需要可以公网访问，并能够相应 200 OK）
 $notifyUrl = 'http://375dec79.ngrok.com/notify.php';
-$config = new \Qiniu\Config();
-//$config->useHTTPS=true;
+$config = new Config();
+$config->useHTTPS=true;
 
 // 视频处理完毕后保存到空间中的名称
 $saveasKey = 'qiniu_640x360.mp4';
