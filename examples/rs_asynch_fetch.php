@@ -34,11 +34,12 @@ $callbackbody = '{"key":"$(key)","hash":"$(etag)","w":"$(imageInfo.width)","h":"
 // 指定抓取的文件保存到七牛云空间中的名称
 
 $key = time() . '.png';
-list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
+list($ret, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
 echo "=====> asynch fetch $url to bucket: $bucket  key: $key\n";
 if ($err !== null) {
     var_dump($err);
 } else {
+    $id = $ret['id'];
     echo "id is: $id\n";
 }
 
@@ -46,11 +47,12 @@ if ($err !== null) {
 // 不指定 key 时，以文件内容的 hash 作为文件名
 
 $key = null;
-list($id, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
+list($ret, $err) = $bucketManager->asynchFetch($url, $bucket, null, $key, null, null, $callbackurl, $callbackbody);
 echo "=====> asynch fetch $url to bucket: $bucket  key: $(etag)\n";
 if ($err !== null) {
     var_dump($err);
 } else {
+    $id = $ret['id'];
     echo "id is: $id\n";
 }
 
