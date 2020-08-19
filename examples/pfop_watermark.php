@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../autoload.php';
 
 use Qiniu\Auth;
+use Qiniu\Config;
 use Qiniu\Processing\PersistentFop;
 
 // 控制台获取密钥：https://portal.qiniu.com/user/key
@@ -26,8 +27,8 @@ $notifyUrl = 'http://375dec79.ngrok.com/notify.php';
 // 当转码后的文件名与源文件名相同时，是否覆盖源文件
 $force = false;
 
-$config = new \Qiniu\Config();
-//$config->useHTTPS=true;
+$config = new Config();
+$config->useHTTPS=true;
 $pfop = new PersistentFop($auth, $config);
 
 // 图片水印的源路径，也就是给视频打图片水印的图片
