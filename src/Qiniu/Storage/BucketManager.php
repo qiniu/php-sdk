@@ -74,7 +74,7 @@ final class BucketManager
      */
     public function createBucket($name, $region = 'z0')
     {
-        $path = '/mkbucketv2/'.$name.'/region/' . $region;
+        $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
 
@@ -464,6 +464,13 @@ final class BucketManager
             $params['host'] = $host;
         }
         $data = http_build_query($params);
+        if ($event) {
+            $eventpath = "";
+            foreach ($event as $key => $value) {
+                $eventpath .= "&event=$value";
+            }
+            $data .= $eventpath;
+        }
         $info = $this->ucPost($path, $data);
         return $info;
     }
