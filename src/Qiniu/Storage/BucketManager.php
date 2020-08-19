@@ -1115,8 +1115,7 @@ final class BucketManager
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        $id = $r['id'];
-        return array($id, null);
+        return array($r, null);
     }
 
     public static function buildBatchCopy($source_bucket, $key_pairs, $target_bucket, $force)
