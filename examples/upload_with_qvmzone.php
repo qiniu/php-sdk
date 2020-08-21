@@ -31,7 +31,7 @@ $config->useHTTPS = true;
 // 指定 config
 $uploadMgr = new UploadManager($config);
 
-list($ret, $err) = $uploadMgr->putFile($uptoken, null, $filePath);
+list($ret, $err) = $uploadMgr->putFile($uptoken, $key, $filePath);
 echo "\n====> putFile result: \n";
 if ($err !== null) {
     var_dump($err);
