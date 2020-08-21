@@ -74,7 +74,7 @@ final class BucketManager
      */
     public function createBucket($name, $region = 'z0')
     {
-        $path = '/mkbucketv2/'.$name.'/region/' . $region;
+        $path = '/mkbucketv3/'.$name.'/region/' . $region;
         return $this->rsPost($path, null);
     }
 
@@ -464,6 +464,13 @@ final class BucketManager
             $params['host'] = $host;
         }
         $data = http_build_query($params);
+        if ($event) {
+            $eventpath = "";
+            foreach ($event as $key => $value) {
+                $eventpath .= "&event=$value";
+            }
+            $data .= $eventpath;
+        }
         $info = $this->ucPost($path, $data);
         return $info;
     }
@@ -593,7 +600,7 @@ final class BucketManager
      */
     public function putBucketAccessMode($bucket, $private)
     {
-        $path = '/bucket/' . $bucket . '/private/' . $private;
+        $path = "/private?bucket=$bucket&private=$private";
         $info = $this->ucPost($path, null);
         return $info;
     }
@@ -850,6 +857,89 @@ final class BucketManager
     }
 
     /**
+     * 从指定URL异步抓取资源，并将该资源存储到指定空间中
+     *
+     * @param $url                       需要抓取的url
+     * @param $bucket                    所在区域的bucket
+     * @param null $host 从指定url下载数据时使用的Host
+     * @param null $key 文件存储的key
+     * @param null $md5 文件md5
+     * @param null $etag 文件etag
+     * @param null $callbackurl 回调URL
+     * @param null $callbackbody 回调Body
+     * @param string $callbackbodytype 回调Body内容类型,默认为"application/x-www-form-urlencoded"
+     * @param null $callbackhost 回调时使用的Host
+     * @param int $file_type 存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储
+     * @param bool $ignore_same_key 如果空间中已经存在同名文件则放弃本次抓取
+     * @return array
+     * @link  https://developer.qiniu.com/kodo/api/4097/asynch-fetch
+     */
+    public function asynchFetch(
+        $url,
+        $bucket,
+        $host = null,
+        $key = null,
+        $md5 = null,
+        $etag = null,
+        $callbackurl = null,
+        $callbackbody = null,
+        $callbackbodytype = 'application/x-www-form-urlencoded',
+        $callbackhost = null,
+        $file_type = 0,
+        $ignore_same_key = false
+    ) {
+        $path = '/sisyphus/fetch';
+
+        $params = array('url' => $url, 'bucket' => $bucket);
+        \Qiniu\setWithoutEmpty($params, 'host', $host);
+        \Qiniu\setWithoutEmpty($params, 'key', $key);
+        \Qiniu\setWithoutEmpty($params, 'md5', $md5);
+        \Qiniu\setWithoutEmpty($params, 'etag', $etag);
+        \Qiniu\setWithoutEmpty($params, 'callbackurl', $callbackurl);
+        \Qiniu\setWithoutEmpty($params, 'callbackbody', $callbackbody);
+        \Qiniu\setWithoutEmpty($params, 'callbackbodytype', $callbackbodytype);
+        \Qiniu\setWithoutEmpty($params, 'callbackhost', $callbackhost);
+        \Qiniu\setWithoutEmpty($params, 'file_type', $file_type);
+        \Qiniu\setWithoutEmpty($params, 'ignore_same_key', $ignore_same_key);
+        $data = json_encode($params);
+
+        $ak = $this->auth->getAccessKey();
+        $apiHost = $this->config->getApiHost($ak, $bucket);
+        $url = $apiHost . $path;
+
+        return $this->postV2($url, $data);
+    }
+
+
+    /**
+     * 查询异步第三方资源抓取任务状态
+     *
+     * @param $zone
+     * @param $id
+     * @return array
+     * @link  https://developer.qiniu.com/kodo/api/4097/asynch-fetch
+     */
+    public function asynchFetchStatus($zone, $id)
+    {
+        $scheme = "http://";
+
+        if ($this->config->useHTTPS === true) {
+            $scheme = "https://";
+        }
+
+        $url = $scheme . "api-" . $zone . ".qiniu.com/sisyphus/fetch?id=" . $id;
+
+        $response = $this->getV2($url);
+
+        if (!$response->ok()) {
+            print("statusCode: " . $response->statusCode);
+            return array(null, new Error($url, $response));
+        }
+        return array($response->json(), null);
+    }
+
+
+    /**
      * 从镜像源站抓取资源到空间中，如果空间中已经存在，则覆盖该资源
      *
      * @param $bucket     待获取资源所在的空间
@@ -991,6 +1081,12 @@ final class BucketManager
             return array(null, new Error($url, $ret));
         }
         return array($ret->json(), null);
+    }
+
+    private function getV2($url)
+    {
+        $headers = $this->auth->authorizationV2($url, 'GET');
+        return Client::get($url, $headers);
     }
 
     private function post($url, $body)

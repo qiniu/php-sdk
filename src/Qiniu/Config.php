@@ -12,7 +12,7 @@ final class Config
     const RS_HOST = 'rs.qiniu.com';      //RS Host
     const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
-    const ARGUS_HOST = 'argus.atlab.ai';
+    const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
     const SMS_HOST="https://sms.qiniuapi.com";
     const RTCAPI_VERSION = 'v3';
