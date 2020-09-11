@@ -112,6 +112,15 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($err);
     }
 
+    public function testGetCdnRefreshList()
+    {
+        $params['state'] = 'success'; // 指定要查询记录的状态，取值 processing／success／failure
+
+        list($ret, $err) = $this->cdnManager->getCdnRefreshList($params);
+        $this->assertNotNull($ret);
+        $this->assertNull($err);
+    }
+
     public function testCreateTimestampAntiLeechUrl()
     {
         $signUrl = $this->cdnManager->createTimestampAntiLeechUrl($this->refreshUrl, $this->encryptKey, 3600);

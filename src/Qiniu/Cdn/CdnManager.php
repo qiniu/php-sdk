@@ -145,6 +145,16 @@ final class CdnManager
         $body = json_encode($req);
         return $this->post($url, $body);
     }
+    /**
+     * @param array $params 查询CDN刷新参数
+     * @return array 参考 examples/cdn_get_refresh_list.php 代码
+     */
+    public function getCdnRefreshList($params = array())
+    {
+        $url = $this->server . '/v2/tune/refresh/list';
+        $body = json_encode($params);
+        return $this->post($url, $body);
+    }
 
     private function post($url, $body)
     {
