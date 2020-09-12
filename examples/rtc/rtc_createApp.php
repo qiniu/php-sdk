@@ -11,7 +11,7 @@ $secretKey = getenv('QINIU_SECRET_KEY');
 $auth = new Auth($accessKey, $secretKey);
 $client = new AppClient($auth);
 
-// 绑定的直播 hub，使用此 hub 的资源进行推流等业务功能，hub 与 app 必须属于同一个七牛账户
+// 绑定的直播hub，使用此hub的资源进行推流等业务功能，hub与app必须属于同一个七牛账户
 $hub = 'rtchub';
 
 // app 的名称，注意：Title 不是唯一标识，重复 create 动作将生成多个 app
