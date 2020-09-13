@@ -23,4 +23,3 @@ if ($err !== null) {
 } else {
     echo "\n====> Delete Template $template_id Successfully\n";
 }
-

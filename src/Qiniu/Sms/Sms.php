@@ -66,7 +66,7 @@ class Sms
     /**
      * 列出签名
      *
-     * @param string $audit_status 审核状态, 取值范围为: "passed"(通过), "rejected"(未通过), "reviewing"(审核中)
+     * @param string $audit_status 审核状态："passed"(通过), "rejected"(未通过), "reviewing"(审核中)
      * @param int $page 页码。默认为 1
      * @param int $page_size 分页大小。默认为 20
      * @return array
@@ -121,7 +121,7 @@ class Sms
      *
      * @param string $name 模板名称
      * @param string $template 模板内容 可设置自定义变量，发送短信时候使用，参考:${code}
-     * @param string $type 模板类型，取值范围为: notification (通知类短信), verification (验证码短信), marketing (营销类短信), voice(语音类短信)
+     * @param string $type notification：通知类,verification：验证码,marketing：营销类,voice：语音类
      * @param string $description 申请理由简述
      * @param string $signature_id 已经审核通过的签名
      * @return array array
@@ -148,7 +148,7 @@ class Sms
     /**
      * 列出模板
      *
-     * @param string $audit_status 审核状态, 取值范围为: passed (通过), rejected (未通过), reviewing (审核中)
+     * @param string $audit_status 审核状态：passed (通过), rejected (未通过), reviewing (审核中)
      * @param int $page 页码。默认为 1
      * @param int $page_size 分页大小。默认为 20
      * @return array
@@ -223,7 +223,6 @@ class Sms
     {
         $url = $this->baseURL . 'template/' . $template_id;
         return $this->delete($url);
-
     }
 
     /**
@@ -253,9 +252,9 @@ class Sms
      * @param string $job_id 发送任务返回的 id
      * @param string $message_id 单条短信发送接口返回的 id
      * @param string $mobile 接收短信的手机号码
-     * @param string $status 短信的状态，sending: 发送中，success: 发送成功，failed: 发送失败，waiting: 等待发送
+     * @param string $status sending: 发送中，success: 发送成功，failed: 发送失败，waiting: 等待发送
      * @param string $template_id 模版 id
-     * @param string $type 短信类型，marketing: 营销短信，notification: 通知短信，verification: 验证码类短信，voice: 语音短信
+     * @param string $type marketing:营销，notification:通知，verification:验证码，voice:语音
      * @param string $start 开始时间，timestamp，例如: 1563280448
      * @param int $end 结束时间，timestamp，例如: 1563280471
      * @param int $page 页码，默认为 1

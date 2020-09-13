@@ -18,7 +18,7 @@ $client = new Sms($auth);
 $name = 'xxxxxx'; // 模板名称
 $template = '您的验证码为: ${code}，如非本人操作，请忽略本短信'; // 模板内容 可设置自定义变量，发送短信时候使用
 
-// 模板类型，取值范围为: notification (通知类短信), verification (验证码短信), marketing (营销类短信), voice(语音类短信)
+// notification (通知类短信), verification (验证码短信), marketing (营销类短信), voice(语音类短信)
 $type = 'verification';
 $description = '发送验证码使用'; // 申请理由简述
 $signature_id = 'xxxxxx'; // 已经审核通过的签名
@@ -31,5 +31,3 @@ if ($err !== null) {
 } else {
     var_dump($ret);
 }
-
-

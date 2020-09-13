@@ -29,5 +29,3 @@ if ($err !== null) {
 } else {
     echo "\n====> Update Template Successfully\n";
 }
-
-
