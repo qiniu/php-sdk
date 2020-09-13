@@ -28,5 +28,3 @@ if ($err !== null) {
 } else {
     echo "\n====> Update Signature Successfully\n";
 }
-
-

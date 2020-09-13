@@ -30,4 +30,3 @@ if ($err !== null) {
     echo "\n====> Send Message Successfully： \n";
     var_dump($ret);
 }
-

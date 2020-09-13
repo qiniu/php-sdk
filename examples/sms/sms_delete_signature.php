@@ -23,4 +23,3 @@ if ($err !== null) {
 } else {
     echo "\n====> Delete Signature $signature_id Successfully\n";
 }
-

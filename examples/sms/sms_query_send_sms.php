@@ -22,7 +22,7 @@ $mobile = 'xxxx'; // 接收短信的手机号码
 $status = 'success';
 $template_id = 'xxxx'; // 模版 id
 
-// 短信类型，marketing: 营销短信，notification: 通知短信，verification: 验证码类短信，voice: 语音短信
+// marketing: 营销短信，notification: 通知短信，verification: 验证码类短信，voice: 语音短信
 $type = 'notification';
 
 $start = 1599976580; // 开始时间
@@ -40,12 +40,11 @@ list($ret, $err) = $client->querySendSms(
     $start,
     $end,
     $page,
-    $page_size);
+    $page_size
+);
 echo "\n====> query send sms result: \n";
 if ($err !== null) {
     var_dump($err);
 } else {
     var_dump($ret);
 }
-
-
