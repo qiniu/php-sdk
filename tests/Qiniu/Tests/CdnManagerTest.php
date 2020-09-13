@@ -133,8 +133,11 @@ class CdnManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($response->statusCode, 200);
         $this->assertNull($response->error);
 
-        $signUrl = $this->cdnManager->createTimestampAntiLeechUrl($this->refreshUrl . '?qiniu', $this->encryptKey,
-            3600);
+        $signUrl = $this->cdnManager->createTimestampAntiLeechUrl(
+            $this->refreshUrl . '?qiniu',
+            $this->encryptKey,
+            3600
+        );
         $response = Client::get($signUrl);
         $this->assertEquals($response->statusCode, 200);
         $this->assertNull($response->error);
