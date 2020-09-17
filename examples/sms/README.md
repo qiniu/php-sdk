@@ -42,4 +42,4 @@
     - [发送短信](https://github.com/qiniu/php-sdk/tree/master/examples/sms/sms_send_message.php)    
 
 - 查询发送记录
-    - [发送短信](https://github.com/qiniu/php-sdk/tree/master/examples/sms/sms_query_send_sms.php)
+    - [查询发送记录](https://github.com/qiniu/php-sdk/tree/master/examples/sms/sms_query_send_sms.php)
