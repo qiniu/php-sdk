@@ -31,6 +31,7 @@ class Sms
      */
     public function createSignature($signature, $source, $pics = null)
     {
+        $params = array();
         $params['signature'] = $signature;
         $params['source'] = $source;
         if (!empty($pics)) {
@@ -53,6 +54,7 @@ class Sms
      */
     public function updateSignature($id, $signature, $source, $pics = null)
     {
+        $params = array();
         $params['signature'] = $signature;
         $params['source'] = $source;
         if (!empty($pics)) {
@@ -134,6 +136,7 @@ class Sms
         $description,
         $signature_id
     ) {
+        $params = array();
         $params['name'] = $name;
         $params['template'] = $template;
         $params['type'] = $type;
@@ -203,6 +206,7 @@ class Sms
         $description,
         $signature_id
     ) {
+        $params = array();
         $params['name'] = $name;
         $params['template'] = $template;
         $params['description'] = $description;
@@ -229,13 +233,14 @@ class Sms
      * 发送短信
      *
      * @param string $template_id 模板 ID
-     * @param string[] $mobiles 手机号
-     * @param string $parameters 自定义模板变量，变量设置在创建模板时，参数template指定
+     * @param array $mobiles 手机号
+     * @param array $parameters 自定义模板变量，变量设置在创建模板时，参数template指定
      * @return array
      * @link https://developer.qiniu.com/sms/api/5897/sms-api-send-message
      */
     public function sendMessage($template_id, $mobiles, $parameters = null)
     {
+        $params = array();
         $params['template_id'] = $template_id;
         $params['mobiles'] = $mobiles;
         if (!empty($parameters)) {
