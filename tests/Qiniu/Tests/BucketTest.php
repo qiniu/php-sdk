@@ -388,4 +388,65 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         list($ret, $error) = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
         $this->assertEquals(null, $ret);
     }
+
+    public function testGetCorsRules()
+    {
+        list($ret, $err) = $this->bucketManager->getCorsRules($this->bucketName);
+        $this->assertNull($err);
+    }
+
+    public function testPutBucketAccessStyleMode()
+    {
+        list($ret, $err) = $this->bucketManager->putBucketAccessStyleMode($this->bucketName, 0);
+        $this->assertNull($err);
+    }
+
+    public function testPutBucketAccessMode()
+    {
+        list($ret, $err) = $this->bucketManager->putBucketAccessMode($this->bucketName, 0);
+        $this->assertNull($err);
+    }
+
+    public function testPutReferAntiLeech()
+    {
+        list($ret, $err) = $this->bucketManager->putReferAntiLeech($this->bucketName, 0, "1", "*");
+        $this->assertNull($err);
+    }
+
+    public function testPutBucketMaxAge()
+    {
+        list($ret, $err) = $this->bucketManager->putBucketMaxAge($this->bucketName, 31536000);
+        $this->assertNull($err);
+    }
+
+    public function testPutBucketQuota()
+    {
+        list($ret, $err) = $this->bucketManager->putBucketQuota($this->bucketName, -1, -1);
+        $this->assertNull($err);
+    }
+
+    public function testGetBucketQuota()
+    {
+        list($ret, $err) = $this->bucketManager->getBucketQuota($this->bucketName);
+        $this->assertNull($err);
+    }
+
+    public function testChangeType()
+    {
+        list($ret, $err) = $this->bucketManager->changeType($this->bucketName, $this->key, 0);
+        $this->assertNull($err);
+
+        list($ret, $err) = $this->bucketManager->changeType($this->bucketName, $this->key, 1);
+        $this->assertNull($err);
+    }
+
+    public function testChangeStatus()
+    {
+        list($ret, $err) = $this->bucketManager->changeStatus($this->bucketName, $this->key, 1);
+        $this->assertNull($err);
+
+        list($ret, $err) = $this->bucketManager->changeStatus($this->bucketName, $this->key, 0);
+        $this->assertNull($err);
+    }
+
 }
