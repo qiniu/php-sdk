@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Tests;
 
 use Qiniu\Config;
@@ -200,8 +201,9 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $error = $this->bucketManager->delete($this->bucketName, 'del');
-        $this->assertEquals(612, $error->code());
+        list($ret, $error) = $this->bucketManager->delete($this->bucketName, 'del');
+        $this->assertNull($ret);
+        $this->assertNotNull($error);
     }
 
 
@@ -210,9 +212,9 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $key = 'renamefrom' . rand();
         $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
         $key2 = 'renameto' . $key;
-        $error = $this->bucketManager->rename($this->bucketName, $key, $key2);
+        list($ret, $error) = $this->bucketManager->rename($this->bucketName, $key, $key2);
         $this->assertNull($error);
-        $error = $this->bucketManager->delete($this->bucketName, $key2);
+        list($ret, $error) = $this->bucketManager->delete($this->bucketName, $key2);
         $this->assertNull($error);
     }
 
@@ -222,7 +224,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $key = 'copyto' . rand();
         $this->bucketManager->delete($this->bucketName, $key);
 
-        $error = $this->bucketManager->copy(
+        list($ret, $error) = $this->bucketManager->copy(
             $this->bucketName,
             $this->key,
             $this->bucketName,
@@ -231,7 +233,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($error);
 
         //test force copy
-        $error = $this->bucketManager->copy(
+        list($ret, $error) = $this->bucketManager->copy(
             $this->bucketName,
             $this->key2,
             $this->bucketName,
@@ -245,14 +247,14 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($key2Stat['hash'], $key2CopiedStat['hash']);
 
-        $error = $this->bucketManager->delete($this->bucketName, $key);
+        list($ret, $error) = $this->bucketManager->delete($this->bucketName, $key);
         $this->assertNull($error);
     }
 
 
     public function testChangeMime()
     {
-        $error = $this->bucketManager->changeMime(
+        list($ret, $error) = $this->bucketManager->changeMime(
             $this->bucketName,
             'php-sdk.html',
             'text/html'
@@ -262,7 +264,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
     public function testPrefetch()
     {
-        $error = $this->bucketManager->prefetch(
+        list($ret, $error) = $this->bucketManager->prefetch(
             $this->bucketName,
             'php-sdk.html'
         );
@@ -353,7 +355,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         );
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
-        $error = $this->bucketManager->delete($this->bucketName, $key2);
+        list($ret, $error) = $this->bucketManager->delete($this->bucketName, $key2);
         $this->assertNull($error);
     }
 
@@ -365,7 +367,7 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $ops = BucketManager::buildBatchRename($this->bucketName, array($key => $key2), true);
         list($ret, $error) = $this->bucketManager->batch($ops);
         $this->assertEquals(200, $ret[0]['code']);
-        $error = $this->bucketManager->delete($this->bucketName, $key2);
+        list($ret, $error) = $this->bucketManager->delete($this->bucketName, $key2);
         $this->assertNull($error);
     }
 
@@ -379,11 +381,11 @@ class BucketTest extends \PHPUnit_Framework_TestCase
     public function testDeleteAfterDays()
     {
         $key = rand();
-        $err = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
-        $this->assertEquals(612, $err->code());
+        list($ret, $error) = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
+        $this->assertNotNull($error);
 
         $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
-        $err = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
-        $this->assertEquals(null, $err);
+        list($ret, $error) = $this->bucketManager->deleteAfterDays($this->bucketName, $key, 1);
+        $this->assertEquals(null, $ret);
     }
 }
