@@ -18,9 +18,9 @@ $bucketManager = new BucketManager($auth, $config);
 
 $region = 'z1';  // 华东：z0，华北：z1，华南：z2，北美：na0，东南亚：as0
 
-list($Info, $err) = $bucketManager->bucketInfos($region);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->bucketInfos($region);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

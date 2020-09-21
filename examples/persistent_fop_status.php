@@ -12,9 +12,8 @@ $pfop = new Qiniu\Processing\PersistentFop(null, null);
 $persistentId = 'z2.01z201c4oyre6q1hgy00murnel0002nh';
 
 list($ret, $err) = $pfop->status($persistentId);
-
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($ret);
+    var_dump($ret);
 }

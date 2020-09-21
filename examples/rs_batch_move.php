@@ -33,8 +33,8 @@ $destBucket = $bucket;
 
 $ops = $bucketManager->buildBatchMove($srcBucket, $keyPairs, $destBucket, true);
 list($ret, $err) = $bucketManager->batch($ops);
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($ret);
+    var_dump($ret);
 }

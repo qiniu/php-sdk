@@ -20,9 +20,9 @@ $bucketManager = new BucketManager($auth, $config);
 
 $key = "qiniu.mp4";
 
-list($fileInfo, $err) = $bucketManager->stat($bucket, $key);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->stat($bucket, $key);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($fileInfo);
+    var_dump($ret);
 }

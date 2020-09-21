@@ -22,15 +22,15 @@ $prefix = 'test'; // 规则策略中的前缀
 $delete_after_days = 80; // 用户新创建的文件将在该设定时间之后自动删除
 $to_line_after_days = 70; // 用户新创建的文件将在该设定的时间之后自动转为低频存储
 
-list($Info, $err) = $bucketManager->bucketLifecycleRule(
+list($ret, $err) = $bucketManager->bucketLifecycleRule(
     $bucket,
     $name,
     $prefix,
     $delete_after_days,
     $to_line_after_days
 );
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

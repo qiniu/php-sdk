@@ -25,8 +25,8 @@ $keys = array(
 
 $ops = $bucketManager->buildBatchDelete($bucket, $keys);
 list($ret, $err) = $bucketManager->batch($ops);
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($ret);
+    var_dump($ret);
 }
