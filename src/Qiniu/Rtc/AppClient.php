@@ -180,7 +180,7 @@ class AppClient
      *
      * @param string $appId app 的唯一标识，创建的时候由系统生成
      * @param string $roomName 房间名称，需满足规格 ^[a-zA-Z0-9_-]{3,64}$
-     * @param int $userId 请求加入房间的用户 ID，需满足规格 ^[a-zA-Z0-9_-]{3,50}$
+     * @param string $userId 请求加入房间的用户 ID，需满足规格 ^[a-zA-Z0-9_-]{3,50}$
      * @param int $expireAt 鉴权的有效时间，传入以秒为单位的64位 Unix 绝对时间
      * @param string $permission 该用户的房间管理权限，"admin" 或 "user"，默认为 "user"
      * @return string
