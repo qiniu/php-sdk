@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Storage;
 
 use Qiniu\Auth;
@@ -74,7 +75,7 @@ final class BucketManager
      */
     public function createBucket($name, $region = 'z0')
     {
-        $path = '/mkbucketv3/'.$name.'/region/' . $region;
+        $path = '/mkbucketv3/' . $name . '/region/' . $region;
         return $this->rsPost($path, null);
     }
 
@@ -87,7 +88,7 @@ final class BucketManager
      */
     public function deleteBucket($name)
     {
-        $path = '/drop/'.$name;
+        $path = '/drop/' . $name;
         return $this->rsPost($path, null);
     }
 
@@ -144,14 +145,14 @@ final class BucketManager
      * @param $delimiter  指定目录分隔符
      *
      * @return array    包含文件信息的数组，类似：[
-*                                              {
-*                                                 "hash" => "<Hash string>",
-*                                                  "key" => "<Key string>",
-*                                                  "fsize" => "<file size>",
-*                                                  "putTime" => "<file modify time>"
-*                                              },
-*                                              ...
-*                                            ]
+     *                                              {
+     *                                                 "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>",
+     *                                                  "fsize" => "<file size>",
+     *                                                  "putTime" => "<file modify time>"
+     *                                              },
+     *                                              ...
+     *                                            ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
      */
     public function listFiles(
@@ -181,14 +182,14 @@ final class BucketManager
      * @param $skipconfirm  是否跳过已删除条目的确认机制
      *
      * @return array    包含文件信息的数组，类似：[
-*                                              {
-*                                                 "hash" => "<Hash string>",
-*                                                  "key" => "<Key string>",
-*                                                  "fsize" => "<file size>",
-*                                                  "putTime" => "<file modify time>"
-*                                              },
-*                                              ...
-*                                            ]
+     *                                              {
+     *                                                 "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>",
+     *                                                  "fsize" => "<file size>",
+     *                                                  "putTime" => "<file modify time>"
+     *                                              },
+     *                                              ...
+     *                                            ]
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
      */
     public function listFilesv2(
@@ -213,7 +214,7 @@ final class BucketManager
             return array(null, new Error($url, $ret));
         }
         $r = explode("\n", $ret->body);
-        $pop = array_pop($r);
+        array_pop($r);
         return array($r, null);
     }
 
@@ -221,9 +222,9 @@ final class BucketManager
      * 设置Referer防盗链
      *
      * @param $bucket     空间名
-     * @param $mode     0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值);
+     * @param $mode 0: 表示关闭Referer(使用此选项将会忽略以下参数并将恢复默认值);
      * 1: 表示设置Referer白名单; 2:表示设置Referer黑名单
-     * @param $norefer     0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
+     * @param $norefer 0: 表示不允许空 Refer 访问; 1: 表示允许空 Refer 访问
      * @param $pattern      规则字符串, 当前允许格式分为三种: 一种为空主机头域名,
      * 比如 foo.com; 一种是泛域名,比如 *.bar.com; 一种是完全通配符,
      * 即一个 *; 多个规则之间用;隔开, 比如: foo.com;*.bar.com;sub.foo.com;*.sub.bar.com
@@ -256,6 +257,7 @@ final class BucketManager
         $to_line_after_days
     ) {
         $path = '/rules/add';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -297,6 +299,7 @@ final class BucketManager
         $to_line_after_days
     ) {
         $path = '/rules/update';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -341,6 +344,7 @@ final class BucketManager
     public function deleteBucketLifecycleRule($bucket, $name)
     {
         $path = '/rules/delete';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -379,6 +383,7 @@ final class BucketManager
         $host = null
     ) {
         $path = '/events/add';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -439,6 +444,7 @@ final class BucketManager
         $host = null
     ) {
         $path = '/events/update';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -499,6 +505,7 @@ final class BucketManager
     public function deleteBucketEvent($bucket, $name)
     {
         $path = '/events/delete';
+        $params = array();
         if ($bucket) {
             $params['bucket'] = $bucket;
         }
@@ -671,13 +678,13 @@ final class BucketManager
      * @param $key        待获取资源的文件名
      *
      * @return array    包含文件信息的数组，类似：
-*                                              [
-*                                                  "hash" => "<Hash string>",
-*                                                  "key" => "<Key string>",
-*                                                  "fsize" => <file size>,
-*                                                  "putTime" => "<file modify time>"
-*                                                  "fileType" => <file type>
-*                                              ]
+     *                                              [
+     *                                                  "hash" => "<Hash string>",
+     *                                                  "key" => "<Key string>",
+     *                                                  "fsize" => <file size>,
+     *                                                  "putTime" => "<file modify time>"
+     *                                                  "fileType" => <file type>
+     *                                              ]
      *
      * @link  http://developer.qiniu.com/docs/v6/api/reference/rs/stat.html
      */
@@ -1004,7 +1011,7 @@ final class BucketManager
     private function getRsfHost()
     {
         $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
+        if ($this->config->useHTTPS === true) {
             $scheme = "https://";
         }
         return $scheme . Config::RSF_HOST;
@@ -1013,7 +1020,7 @@ final class BucketManager
     private function getRsHost()
     {
         $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
+        if ($this->config->useHTTPS === true) {
             $scheme = "https://";
         }
         return $scheme . Config::RS_HOST;
@@ -1022,7 +1029,7 @@ final class BucketManager
     private function getApiHost()
     {
         $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
+        if ($this->config->useHTTPS === true) {
             $scheme = "https://";
         }
         return $scheme . Config::API_HOST;
@@ -1031,7 +1038,7 @@ final class BucketManager
     private function getUcHost()
     {
         $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
+        if ($this->config->useHTTPS === true) {
             $scheme = "https://";
         }
         return $scheme . Config::UC_HOST;

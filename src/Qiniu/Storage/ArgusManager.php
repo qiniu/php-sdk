@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Storage;
 
 use Qiniu\Auth;
@@ -30,15 +31,15 @@ final class ArgusManager
     /**
      * 视频审核
      *
-     * @param $body     body信息
+     * @param string $body body信息
      *
-     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @return array 成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  https://developer.qiniu.com/censor/api/5620/video-censor
      */
     public function censorVideo($body)
     {
         $path = '/v3/video/censor';
-        
+
         return $this->arPost($path, $body);
     }
 
@@ -46,9 +47,9 @@ final class ArgusManager
     /**
      * 图片审核
      *
-     * @param $body
+     * @param string $body
      *
-     * @return mixed      成功返回NULL，失败返回对象Qiniu\Http\Error
+     * @return array 成功返回NULL，失败返回对象Qiniu\Http\Error
      * @link  https://developer.qiniu.com/censor/api/5588/image-censor
      */
     public function censorImage($body)
@@ -61,7 +62,7 @@ final class ArgusManager
     /**
      * 查询视频审核结果
      *
-     * @param $jobid  任务ID
+     * @param string $jobid 任务ID
      * @return array
      * @link  https://developer.qiniu.com/censor/api/5620/video-censor
      */
@@ -84,7 +85,7 @@ final class ArgusManager
     private function getArHost()
     {
         $scheme = "http://";
-        if ($this->config->useHTTPS == true) {
+        if ($this->config->useHTTPS === true) {
             $scheme = "https://";
         }
         return $scheme . Config::ARGUS_HOST;
@@ -106,7 +107,7 @@ final class ArgusManager
     private function post($url, $body)
     {
         $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/json');
-        $headers['Content-Type']='application/json';
+        $headers['Content-Type'] = 'application/json';
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
             print("statusCode: " . $ret->statusCode);
