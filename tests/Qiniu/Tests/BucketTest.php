@@ -448,5 +448,4 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         list($ret, $err) = $this->bucketManager->changeStatus($this->bucketName, $this->key, 0);
         $this->assertNull($err);
     }
-
 }
