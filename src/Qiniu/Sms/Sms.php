@@ -308,6 +308,7 @@ class Sms
                 if ($filesize > 5 * 1024 * 1024) {
                     die("pic size < 5M !");
                 }
+                $img_type = null;
                 $content = fread($fp, $filesize);
                 $file_content = chunk_split(base64_encode($content)); // base64编码
                 switch ($img_info[2]) {           //判读图片类型
