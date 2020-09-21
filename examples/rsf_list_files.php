@@ -36,5 +36,4 @@ if ($err !== null) {
         echo "Marker:" . $ret["marker"] . "\n";
     }
     echo "\nList Iterms====>\n";
-    //var_dump($ret['items']);
 }

@@ -21,9 +21,9 @@ $bucketManager = new BucketManager($auth, $config);
 $size = 99999;
 $count = 99;
 
-list($Info, $err) = $bucketManager->putBucketQuota($bucket, $size, $count);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->putBucketQuota($bucket, $size, $count);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

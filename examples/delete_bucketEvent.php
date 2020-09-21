@@ -20,9 +20,9 @@ $bucket = 'xxxx';  // 存储空间名称
 
 $name = 'demo'; // 规则名称 bucket 内唯一，由 1 ~ 50 个字符组成，可包含：字母、数字和下划线
 
-list($Info, $err) = $bucketManager->deleteBucketEvent($bucket, $name);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->deleteBucketEvent($bucket, $name);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

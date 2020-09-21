@@ -17,7 +17,13 @@ $cdnManager = new CdnManager($auth);
 
 $requestId = 'xxxxxx';     // 指定要查询记录所在的刷新请求id
 $isDir = 'no';             // 指定是否查询目录，取值为yes/no，默认不填则为两种类型记录都查询
-$urls = array();           // 要查询的url列表，每个url可以是文件url，也可以是目录url
+
+// 要查询的url列表，每个url可以是文件url，也可以是目录url
+$urls = array(
+    "http://sdk.peterpy.cn/sdktest.png",
+    "http://sdk.peterpy.cn/qiniulogo.png"
+);
+
 $state = 'success';        // 指定要查询记录的状态，取值 processing／success／failure
 $pageNo = 0;               // 要求返回的页号，默认为0
 $pageSize = 100;           // 要求返回的页长度，默认为100

@@ -17,9 +17,9 @@ $bucketManager = new BucketManager($auth, $config);
 // 获取指定账号下所有的空间名
 // 参考文档：https://developer.qiniu.com/kodo/api/3926/get-service
 
-list($buckets, $err) = $bucketManager->buckets(true);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->buckets(true);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($buckets);
+    var_dump($ret);
 }

@@ -7,7 +7,7 @@ use Qiniu\Storage\BucketManager;
 // 控制台获取密钥：https://portal.qiniu.com/user/key
 $accessKey = getenv('QINIU_ACCESS_KEY');
 $secretKey = getenv('QINIU_SECRET_KEY');
-$bucket = 'xxxx';
+$bucket = getenv('QINIU_TEST_BUCKET');
 
 $auth = new Auth($accessKey, $secretKey);
 $bucketManager = new BucketManager($auth);
@@ -27,9 +27,8 @@ $limit = 1000;
 $delimiter = '';
 
 list($ret, $err) = $bucketManager->listFilesv2($bucket, $prefix, $marker, $limit, $delimiter, true);
-
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($ret);
+    var_dump($ret);
 }

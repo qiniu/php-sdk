@@ -22,9 +22,9 @@ $mode = 1; // 关闭Referer(使用此选项将会忽略以下参数并将恢复�
 $norefer = "1"; // 表示不允许空 Refer 访问：0，表示允许空 Refer 访问：1
 $pattern = "*.qiniu.com"; // 当前仅支持这三种格式：a.b.com，*.b.com，*
 
-list($Info, $err) = $bucketManager->putReferAntiLeech($bucket, $mode, $norefer, $pattern);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->putReferAntiLeech($bucket, $mode, $norefer, $pattern);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

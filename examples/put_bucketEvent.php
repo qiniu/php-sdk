@@ -24,9 +24,9 @@ $suffix = 'mp3';
 $event = array("move","copy");
 $callbackURL = 'http://www.qiniu.com'; // 回调服务器地址，需要可以公网访问，并能够相应 200 OK
 
-list($Info, $err) = $bucketManager->putBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->putBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }
