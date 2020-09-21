@@ -675,7 +675,7 @@ final class BucketManager
      *
      * @param string $bucket 待操作资源所在空间
      * @param string $key 待操作资源文件名
-     * @param int $fileType 待操作文件目标文件类型
+     * @param int $fileType 0 表示标准存储；1 表示低频存储；2 表示归档存储
      *
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/3710/chtype
@@ -692,7 +692,7 @@ final class BucketManager
      *
      * @param string $bucket 待操作资源所在空间
      * @param string $key 待操作资源文件名
-     * @param int $status 待操作文件目标文件类型
+     * @param int $status 0表示启用；1表示禁用
      *
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/4173/modify-the-file-status
