@@ -21,7 +21,7 @@ $prefix = null;
 $offset = null;
 
 // 此次查询的最大长度
-$limit = '100';
+$limit = 100;
 
 // 获取当前所有活跃的房间
 // 参考文档：https://doc.qnsdk.com/rtn/docs/server_overview#2_2

@@ -16,7 +16,13 @@ $cdnManager = new CdnManager($auth);
 // 参考文档：https://developer.qiniu.com/fusion/api/1227/file-prefetching#4
 
 $requestId = null;     // 指定要查询记录所在的刷新请求id
-$urls = null;              // 要查询的url列表
+
+// 要查询的url列表
+$urls = array(
+    "http://sdk.peterpy.cn/sdktest.png",
+    "http://sdk.peterpy.cn/qiniulogo.png"
+);
+
 $state = 'success';        // 指定要查询记录的状态，取值 processing／success／failure
 $pageNo = 0;               // 要求返回的页号，默认为0
 $pageSize = 100;           // 要求返回的页长度，默认为100

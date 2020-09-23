@@ -19,9 +19,9 @@ $bucketManager = new BucketManager($auth, $config);
 $bucket = getenv('QINIU_TEST_BUCKET');
 $maxAge = 31536000;
 
-list($Info, $err) = $bucketManager->putBucketMaxAge($bucket, $maxAge);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->putBucketMaxAge($bucket, $maxAge);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

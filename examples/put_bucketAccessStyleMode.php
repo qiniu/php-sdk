@@ -19,9 +19,9 @@ $mode = 1; // 关闭：0 ，开启：1
 // 存储空间 - 原图保护开关
 // 原图保护：https://developer.qiniu.com/kodo/kb/1359/what-is-the-original-protection
 
-list($Info, $err) = $bucketManager->putBucketAccessStyleMode($bucket, $mode);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->putBucketAccessStyleMode($bucket, $mode);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

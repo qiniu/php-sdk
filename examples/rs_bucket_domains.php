@@ -18,9 +18,9 @@ $bucketManager = new BucketManager($auth, $config);
 // 获取指定空间绑定的所有的域名
 // 参考文档：https://developer.qiniu.com/kodo/api/3949/get-the-bucket-space-domain
 
-list($domains, $err) = $bucketManager->domains($bucket);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->domains($bucket);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($domains);
+    var_dump($ret);
 }

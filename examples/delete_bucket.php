@@ -19,9 +19,9 @@ $bucketManager = new BucketManager($auth, $config);
 
 $bucket = 'xxxx'; // 存储空间名称
 
-list($Info, $err) = $bucketManager->deleteBucket($bucket);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->deleteBucket($bucket);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

@@ -20,12 +20,12 @@ $bucket = 'xxxx';
 $name = 'demo';
 $prefix = 'test';
 $suffix = 'mp4';
-$event = 'mkfile';
+$event = array("move","copy");
 $callbackURL = 'https://www.qiniu.com';
 
-list($Info, $err) = $bucketManager->updateBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->updateBucketEvent($bucket, $name, $prefix, $suffix, $event, $callbackURL);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }

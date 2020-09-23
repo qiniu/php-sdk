@@ -68,7 +68,7 @@ final class CdnManager
      *
      * @param string $requestId 指定要查询记录所在的刷新请求id
      * @param string $isDir 指定是否查询目录，取值为 yes/no，默认不填则为两种类型记录都查询
-     * @param string $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
+     * @param array $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
      * @param string $state 指定要查询记录的状态，取值processing／success／failure
      * @param int $pageNo 要求返回的页号，默认为0
      * @param int $pageSize 要求返回的页长度，默认为100
@@ -80,7 +80,7 @@ final class CdnManager
     public function getCdnRefreshList(
         $requestId = null,
         $isDir = null,
-        $urls = null,
+        $urls = array(),
         $state = null,
         $pageNo = 0,
         $pageSize = 100,
@@ -124,7 +124,7 @@ final class CdnManager
      * 查询 CDN 预取记录
      *
      * @param string $requestId 指定要查询记录所在的刷新请求id
-     * @param string $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
+     * @param array $urls 要查询的url列表，每个url可以是文件url，也可以是目录url
      * @param string $state 指定要查询记录的状态，取值processing／success／failure
      * @param int $pageNo 要求返回的页号，默认为0
      * @param int $pageSize 要求返回的页长度，默认为100
@@ -135,7 +135,7 @@ final class CdnManager
      */
     public function getCdnPrefetchList(
         $requestId = null,
-        $urls = null,
+        $urls = array(),
         $state = null,
         $pageNo = 0,
         $pageSize = 100,

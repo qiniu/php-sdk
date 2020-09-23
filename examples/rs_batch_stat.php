@@ -25,8 +25,8 @@ $keys = array(
 
 $ops = $bucketManager->buildBatchStat($bucket, $keys);
 list($ret, $err) = $bucketManager->batch($ops);
-if ($err) {
-    print_r($err);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($ret);
+    var_dump($ret);
 }

@@ -19,9 +19,9 @@ $bucketManager = new BucketManager($auth, $config);
 $bucket = 'xxxx'; // 存储空间名称
 $name = 'demo'; // 生命周期规则名称
 
-list($Info, $err) = $bucketManager->deleteBucketLifecycleRule($bucket, $name);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->deleteBucketLifecycleRule($bucket, $name);
+if ($err != null) {
+    var_dump($err);
 } else {
-    print_r($Info);
+    var_dump($ret);
 }
