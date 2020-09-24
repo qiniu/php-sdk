@@ -114,7 +114,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
             );
             $this->assertNull($error);
             $this->assertNotNull($ret['hash']);
-            var_dump($testFileSize);
             unlink($resumeFile);
             unlink($tempFile);
         }
