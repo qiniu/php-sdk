@@ -359,7 +359,6 @@ class Sms
 
         $headers['Content-Type'] = $contentType;
         $ret = Client::post($url, $body, $headers);
-        var_dump($body);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
