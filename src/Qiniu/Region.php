@@ -146,7 +146,7 @@ class Region
         $url = Config::API_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
-            return array(null, new Error($url, $ret));
+            throw new \Exception($ret->body);
         }
         $r = ($ret->body === null) ? array() : $ret->json();
         //parse Region;
