@@ -26,14 +26,21 @@ final class Config
     public $useCdnDomains;
     // Zone Cache
     private $regionCache;
+    // Timeout
+    public $options = array(
+        'timeout' => 60
+    );
 
     // 构造函数
-    public function __construct(Region $z = null)
+    public function __construct(Region $z = null, $options = array())
     {
         $this->zone = $z;
         $this->useHTTPS = false;
         $this->useCdnDomains = false;
         $this->regionCache = array();
+        if (!empty($options)) {
+            $this->options = array_merge($this->options, $options);
+        }
     }
 
     public function getUpHost($accessKey, $bucket)

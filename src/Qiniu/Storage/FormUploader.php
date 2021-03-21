@@ -58,7 +58,7 @@ final class FormUploader
 
         $upHost = $config->getUpHost($accessKey, $bucket);
 
-        $response = Client::multipartPost($upHost, $fields, 'file', $fname, $data, $mime);
+        $response = Client::multipartPost($upHost, $fields, 'file', $fname, $data, $mime, $config->options);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));
         }
@@ -114,7 +114,7 @@ final class FormUploader
 
         $upHost = $config->getUpHost($accessKey, $bucket);
 
-        $response = Client::post($upHost, $fields, $headers);
+        $response = Client::post($upHost, $fields, $headers, $config->options);
         if (!$response->ok()) {
             return array(null, new Error($upHost, $response));
         }
