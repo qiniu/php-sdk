@@ -85,12 +85,12 @@ final class UploadManager
         $upToken,
         $key,
         $filePath,
-        $resumeRecordFile = null,
-        $version = 'v1',
-        $partSize = config::BLOCK_SIZE,
         $params = null,
         $mime = 'application/octet-stream',
-        $checkCrc = false
+        $checkCrc = false,
+        $resumeRecordFile = null,
+        $version = 'v1',
+        $partSize = config::BLOCK_SIZE
     ) {
     
         $file = fopen($filePath, 'rb');

@@ -56,9 +56,9 @@ final class ResumeUploader
         $params,
         $mime,
         $config,
-        $resumeRecordFile,
-        $version,
-        $partSize
+        $resumeRecordFile = null,
+        $version = 'v1',
+        $partSize = config::BLOCK_SIZE
     ) {
 
         $this->upToken = $upToken;
@@ -70,7 +70,7 @@ final class ResumeUploader
         $this->contexts = array();
         $this->finishedEtags = array("etags"=>array(), "uploadId"=>"", "expiredAt"=>0, "uploaded"=>0);
         $this->config = $config;
-        $this->resumeRecordFile = $resumeRecordFile;
+        $this->resumeRecordFile = $resumeRecordFile ? $resumeRecordFile : null;
         $this->version = $version ? $version : 'v1';
         $this->partSize = $partSize ? $partSize : config::BLOCK_SIZE;
 
@@ -102,12 +102,24 @@ final class ResumeUploader
             $blkputRets = null;
             if (file_exists($this->resumeRecordFile)) {
                 $stream = fopen($this->resumeRecordFile, 'r');
-                if ($stream && filesize($this->resumeRecordFile) > 0) {
-                    $contents = fread($stream, filesize($this->resumeRecordFile));
-                    fclose($stream);
-                    $blkputRets = json_decode($contents, true);
+                if ($stream) {
+                    $streamLen = filesize($this->resumeRecordFile);
+                    if ($streamLen > 0) {
+                        $contents = fread($stream, $streamLen);
+                        fclose($stream);
+                        if ($contents) {
+                            $blkputRets = json_decode($contents, true);
+                            if ($blkputRets === false) {
+                                error_log("resumeFile contents decode error");
+                            }
+                        } else {
+                            error_log("read resumeFile failed");
+                        }
+                    } else {
+                        error_log("resumeFile is empty");
+                    }
                 } else {
-                    error_log("resumeFile open failed or resumeFile is empty");
+                    error_log("resumeFile open failed");
                 }
             } else {
                 error_log("resumeFile not exists");
@@ -116,19 +128,24 @@ final class ResumeUploader
             if ($blkputRets) {
                 if ($this->version == 'v1') {
                     if (isset($blkputRets['contexts']) && isset($blkputRets['uploaded'])) {
-                        $this->contexts = $blkputRets['contexts'];
-                        $uploaded = $blkputRets['uploaded'];
+                        if (is_array($blkputRets['contexts']) && is_int($blkputRets['uploaded'])) {
+                            $this->contexts = $blkputRets['contexts'];
+                            $uploaded = $blkputRets['uploaded'];
+                        }
                     }
                 } else if ($this->version == 'v2') {
                     if (isset($blkputRets["etags"]) && isset($blkputRets["uploadId"]) &&
                         isset($blkputRets["expiredAt"]) && $blkputRets["expiredAt"] > time()
                         && $blkputRets["uploaded"] > 0) {
+                        if (is_array($blkputRets["etags"]) && is_string($blkputRets["uploadId"]) &&
+                        is_int($blkputRets["expiredAt"])) {
                             $this->finishedEtags['etags'] = $blkputRets["etags"];
                             $this->finishedEtags["uploadId"] = $blkputRets["uploadId"];
                             $this->finishedEtags["expiredAt"] = $blkputRets["expiredAt"];
                             $this->finishedEtags["uploaded"] = $blkputRets["uploaded"];
                             $uploaded = $blkputRets["uploaded"];
                             $partNumber = count($this->finishedEtags["etags"]) + 1;
+                        }
                     } else {
                         $this->makeInitReq($encodedObjectName);
                     }
@@ -204,21 +221,18 @@ final class ResumeUploader
             }
 
             if ($this->resumeRecordFile !== null) {
-                $recordFile = fopen($this->resumeRecordFile, 'w');
-                if ($recordFile) {
-                    if ($this->version == 'v1') {
-                        $recordData = array(
-                            'contexts' => $this->contexts,
-                            'uploaded' => $uploaded
-                        );
-                        $recordData = json_encode($recordData);
-                    } else {
-                        $recordData = json_encode($this->finishedEtags);
-                    }
-                    $isWrited = fwrite($recordFile, $recordData);
-                    if ($isWrited === false) {
-                        error_log("write resumeRecordFile failed");
-                    }
+                if ($this->version == 'v1') {
+                    $recordData = array(
+                        'contexts' => $this->contexts,
+                        'uploaded' => $uploaded
+                    );
+                    $recordData = json_encode($recordData);
+                } else {
+                    $recordData = json_encode($this->finishedEtags);
+                }
+                $isWrited = file_put_contents($this->resumeRecordFile, $recordData);
+                if ($isWrited === false) {
+                    error_log("write resumeRecordFile failed");
                 }
             }
         }
