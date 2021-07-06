@@ -71,7 +71,8 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param string $sort  排序类型 SORT_ASC SORT_DESC
      * return array 排序后的数组
      */
-    function arraySort($array, $key, $sort = SORT_ASC) {
+    function arraySort($array, $key, $sort = SORT_ASC)
+    {
         $keysValue = array();
         foreach ($array as $k => $v) {
             $keysValue[$k] = $v[$key];
