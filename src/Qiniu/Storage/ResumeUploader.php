@@ -2,7 +2,6 @@
 
 namespace Qiniu\Storage;
 
-
 use Qiniu\Config;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
@@ -132,7 +131,7 @@ final class ResumeUploader
                         $this->contexts = $blkputRets['contexts'];
                         $uploaded = $blkputRets['uploaded'];
                     }
-                } else if ($this->version == 'v2') {
+                } elseif ($this->version == 'v2') {
                     if (isset($blkputRets["etags"]) && isset($blkputRets["uploadId"]) &&
                         isset($blkputRets["expiredAt"]) && $blkputRets["expiredAt"] > time()
                         && $blkputRets["uploaded"] > 0 && is_array($blkputRets["etags"]) &&
@@ -242,7 +241,6 @@ final class ResumeUploader
         } else {
             return $this->completeParts($fname, $this->finishedEtags['uploadId'], $encodedObjectName);
         }
-
     }
 
     /**
@@ -303,7 +301,8 @@ final class ResumeUploader
         return $this->partSize;
     }
 
-    private function makeInitReq($encodedObjectName) {
+    private function makeInitReq($encodedObjectName)
+    {
         $res = $this->initReq($encodedObjectName);
         $this->finishedEtags["uploadId"] = $res['uploadId'];
         $this->finishedEtags["expiredAt"] = $res['expireAt'];
@@ -312,7 +311,8 @@ final class ResumeUploader
     /**
      * 初始化上传任务
      */
-    private function initReq($encodedObjectName) {
+    private function initReq($encodedObjectName)
+    {
         $url = $this->host.'/buckets/'.$this->bucket.'/objects/'.$encodedObjectName.'/uploads';
         $headers = array(
             'Authorization' => 'UpToken ' . $this->upToken,
@@ -325,7 +325,8 @@ final class ResumeUploader
     /**
      * 分块上传v2
      */
-    private function uploadPart($block, $partNumber, $uploadId, $encodedObjectName) {
+    private function uploadPart($block, $partNumber, $uploadId, $encodedObjectName)
+    {
         $headers = array(
             'Authorization' => 'UpToken ' . $this->upToken,
             'Content-Type' => 'application/octet-stream',
@@ -336,7 +337,8 @@ final class ResumeUploader
         return $response;
     }
 
-    private function completeParts($fname, $uploadId, $encodedObjectName) {
+    private function completeParts($fname, $uploadId, $encodedObjectName)
+    {
         $headers = array(
             'Authorization' => 'UpToken '.$this->upToken,
             'Content-Type' => 'application/json'
@@ -372,5 +374,4 @@ final class ResumeUploader
         $this->currentUrl = $url;
         return Client::post($url, $data, $headers);
     }
-
 }
