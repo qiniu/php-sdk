@@ -30,7 +30,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
         $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
         $this->assertNotFalse($resumeFile);
-        file_put_contents($resumeFile, '');
         list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
             null, 'application/octet-stream', false, $resumeFile);
         $this->assertNull($error);
@@ -49,7 +48,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
         $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
         $this->assertNotFalse($resumeFile);
-        file_put_contents($resumeFile, '');
         list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
             null,'application/octet-stream', false, $resumeFile);
         $this->assertNull($error);
@@ -88,10 +86,8 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
             $tempFile = qiniuTempFile($item);
             $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
             $this->assertNotFalse($resumeFile);
-            file_put_contents($resumeFile, '');
             list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
                 null, 'application/octet-stream', false, $resumeFile,'v2', $partSize);
-            var_dump($ret);
             $this->assertNull($error);
             $this->assertNotNull($ret['hash']);
             unlink($resumeFile);

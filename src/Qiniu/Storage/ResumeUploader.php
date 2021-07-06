@@ -127,27 +127,22 @@ final class ResumeUploader
 
             if ($blkputRets) {
                 if ($this->version == 'v1') {
-                    if (isset($blkputRets['contexts']) && isset($blkputRets['uploaded'])) {
-                        if (is_array($blkputRets['contexts']) && is_int($blkputRets['uploaded'])) {
-                            $this->contexts = $blkputRets['contexts'];
-                            $uploaded = $blkputRets['uploaded'];
-                        }
+                    if (isset($blkputRets['contexts']) && isset($blkputRets['uploaded']) &&
+                        is_array($blkputRets['contexts']) && is_int($blkputRets['uploaded'])) {
+                        $this->contexts = $blkputRets['contexts'];
+                        $uploaded = $blkputRets['uploaded'];
                     }
                 } else if ($this->version == 'v2') {
                     if (isset($blkputRets["etags"]) && isset($blkputRets["uploadId"]) &&
                         isset($blkputRets["expiredAt"]) && $blkputRets["expiredAt"] > time()
-                        && $blkputRets["uploaded"] > 0) {
-                        if (is_array($blkputRets["etags"]) && is_string($blkputRets["uploadId"]) &&
-                        is_int($blkputRets["expiredAt"])) {
-                            $this->finishedEtags['etags'] = $blkputRets["etags"];
-                            $this->finishedEtags["uploadId"] = $blkputRets["uploadId"];
-                            $this->finishedEtags["expiredAt"] = $blkputRets["expiredAt"];
-                            $this->finishedEtags["uploaded"] = $blkputRets["uploaded"];
-                            $uploaded = $blkputRets["uploaded"];
-                            $partNumber = count($this->finishedEtags["etags"]) + 1;
-                        } else {
-                            $this->makeInitReq($encodedObjectName);
-                        }
+                        && $blkputRets["uploaded"] > 0 && is_array($blkputRets["etags"]) &&
+                        is_string($blkputRets["uploadId"]) && is_int($blkputRets["expiredAt"])) {
+                        $this->finishedEtags['etags'] = $blkputRets["etags"];
+                        $this->finishedEtags["uploadId"] = $blkputRets["uploadId"];
+                        $this->finishedEtags["expiredAt"] = $blkputRets["expiredAt"];
+                        $this->finishedEtags["uploaded"] = $blkputRets["uploaded"];
+                        $uploaded = $blkputRets["uploaded"];
+                        $partNumber = count($this->finishedEtags["etags"]) + 1;
                     } else {
                         $this->makeInitReq($encodedObjectName);
                     }
