@@ -109,7 +109,7 @@ final class ResumeUploader
                         fclose($stream);
                         if ($contents) {
                             $blkputRets = json_decode($contents, true);
-                            if ($blkputRets === false) {
+                            if ($blkputRets === null) {
                                 error_log("resumeFile contents decode error");
                             }
                         } else {
@@ -145,6 +145,8 @@ final class ResumeUploader
                             $this->finishedEtags["uploaded"] = $blkputRets["uploaded"];
                             $uploaded = $blkputRets["uploaded"];
                             $partNumber = count($this->finishedEtags["etags"]) + 1;
+                        } else {
+                            $this->makeInitReq($encodedObjectName);
                         }
                     } else {
                         $this->makeInitReq($encodedObjectName);
@@ -230,9 +232,13 @@ final class ResumeUploader
                 } else {
                     $recordData = json_encode($this->finishedEtags);
                 }
-                $isWrited = file_put_contents($this->resumeRecordFile, $recordData);
-                if ($isWrited === false) {
-                    error_log("write resumeRecordFile failed");
+                if ($recordData) {
+                    $isWritten = file_put_contents($this->resumeRecordFile, $recordData);
+                    if ($isWritten === false) {
+                        error_log("write resumeRecordFile failed");
+                    }
+                } else {
+                    error_log('resumeRecordData encode failed');
                 }
             }
         }

@@ -29,11 +29,8 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $token = $this->auth->uploadToken($this->bucketName, $key);
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
         $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-        if ($resumeFile === false) {
-            $resumeFile = touch('resume_file.log');
-        } else {
-            file_put_contents($resumeFile, '');
-        }
+        $this->assertNotFalse($resumeFile);
+        file_put_contents($resumeFile, '');
         list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
             null, 'application/octet-stream', false, $resumeFile);
         $this->assertNull($error);
@@ -51,11 +48,8 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $token = $this->auth->uploadToken($this->bucketName, $key);
         $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
         $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-        if ($resumeFile === false) {
-            $resumeFile = touch('resume_file.log');
-        } else {
-            file_put_contents($resumeFile, '');
-        }
+        $this->assertNotFalse($resumeFile);
+        file_put_contents($resumeFile, '');
         list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
             null,'application/octet-stream', false, $resumeFile);
         $this->assertNull($error);
@@ -93,11 +87,8 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         foreach ($testFileSize as $item) {
             $tempFile = qiniuTempFile($item);
             $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
-            if ($resumeFile === false) {
-                $resumeFile = touch('resume_file.log');
-            } else {
-                file_put_contents($resumeFile, '');
-            }
+            $this->assertNotFalse($resumeFile);
+            file_put_contents($resumeFile, '');
             list($ret, $error) = $upManager->putFile($token, $key, $tempFile,
                 null, 'application/octet-stream', false, $resumeFile,'v2', $partSize);
             var_dump($ret);
