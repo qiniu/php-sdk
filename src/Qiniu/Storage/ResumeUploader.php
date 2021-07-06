@@ -199,8 +199,12 @@ final class ResumeUploader
                 array_push($this->contexts, $ret['ctx']);
             } else {
                 if ($response->needRetry() || !isset($ret['md5']) || $md5 != $ret['md5']) {
-                    $response = $this->uploadPart($data, $partNumber, $this->finishedEtags["uploadId"],
-                                $encodedObjectName);
+                    $response = $this->uploadPart(
+                        $data,
+                        $partNumber,
+                        $this->finishedEtags["uploadId"],
+                        $encodedObjectName
+                    );
                     $ret = $response->json();
                 }
 
