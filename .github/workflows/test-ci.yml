@@ -34,7 +34,7 @@ jobs:
           composer self-update
           composer install --no-interaction --prefer-source --dev
           composer remove phpunit/phpunit --dev
-          composer require phpunit/phpunit=9.0.0
+          composer require phpunit/phpunit=8.0.0
 
       - name: Run cases
         run: |
