@@ -34,7 +34,6 @@ jobs:
           composer self-update
           composer install --no-interaction --prefer-source --dev
 
-
       - name: Run cases
         run: |
           ./vendor/bin/phpcs --standard=PSR2 src
