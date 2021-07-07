@@ -32,7 +32,6 @@ jobs:
         if: ${{ matrix.php-versions == '8.0' }}
         run: |
           echo ${{ matrix.php-versions }}
-#          composer self-update
           composer require phpunit/phpunit=8.0.0
           composer install --no-interaction --prefer-source --dev
 
