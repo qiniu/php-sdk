@@ -25,7 +25,10 @@ jobs:
       - name: Test echo
         env:
           MATRIX_CONTEXT: ${{ toJSON(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
+        run: |
+          echo "$MATRIX_CONTEXT"
+          echo matrix
+          echo matrix.php-versions
 
 #      - name: Install dependencies
 #        run: |
