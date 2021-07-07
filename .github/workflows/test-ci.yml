@@ -33,7 +33,8 @@ jobs:
         run: |
           composer self-update
           composer install --no-interaction --prefer-source --dev
-          composer update phpunit/phpunit=9.0.0
+          composer remove phpunit/phpunit --dev
+          composer require phpunit/phpunit=9.0.0
 
       - name: Run cases
         run: |
