@@ -25,11 +25,13 @@ jobs:
       - name: Test echo
         env:
           MATRIX_CONTEXT: ${{ toJSON(matrix) }}
-#        if: ${{ matrix.php-versions == '5.4' }}
+        if: ${{ matrix.php-versions != '8.0' }}
         run: |
           echo "$MATRIX_CONTEXT"
-          echo ${{ matrix.php-versions }}
-          echo ${{ matrix.php-versions == '5.4' }}
+
+      - name: Test echov2
+        if: ${{ matrix.php-versions == '8.0' }}
+        run: echo ${{ matrix.php-versions }}
 
 #      - name: Install dependencies
 #        run: |
