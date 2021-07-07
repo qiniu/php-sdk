@@ -22,34 +22,30 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Test echo
-        env:
-          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+      - name: Install dependencies
         if: ${{ matrix.php-versions != '8.0' }}
         run: |
-          echo "$MATRIX_CONTEXT"
+          composer self-update
+          composer install --no-interaction --prefer-source --dev
 
-      - name: Test echov2
+      - name: Install dependencies(php8)
         if: ${{ matrix.php-versions == '8.0' }}
-        run: echo ${{ matrix.php-versions }}
+        run: |
+          composer self-update
+          composer install --no-interaction --prefer-source --dev-v8
 
-#      - name: Install dependencies
-#        run: |
-#          composer self-update
-#          composer install --no-interaction --prefer-source --dev
-#
-#      - name: Run cases
-#        run: |
-#          ./vendor/bin/phpcs --standard=PSR2 src
-#          ./vendor/bin/phpcs --standard=PSR2 examples
-#          ./vendor/bin/phpcs --standard=PSR2 tests
-#          ./vendor/bin/phpunit --coverage-clover=coverage.xml
-#
-#        env:
-#          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
-#          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
-#          QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
-#          QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
-#
-#      - name: After_success
-#        run: bash <(curl -s https://codecov.io/bash)
+      - name: Run cases
+        run: |
+          ./vendor/bin/phpcs --standard=PSR2 src
+          ./vendor/bin/phpcs --standard=PSR2 examples
+          ./vendor/bin/phpcs --standard=PSR2 tests
+          ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+          QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
+          QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
+
+      - name: After_success
+        run: bash <(curl -s https://codecov.io/bash)
