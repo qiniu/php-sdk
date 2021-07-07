@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        php-versions: ['8.0.0']
+        php-versions: ['8.0']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,18 +23,18 @@ jobs:
           php-version: ${{ matrix.php-versions }}
 
       - name: Install dependencies
-        if: ${{ matrix.php-versions != '8.0.0' }}
+        if: ${{ matrix.php-versions != '8.0' }}
         run: |
           composer self-update
           composer install --no-interaction --prefer-source --dev
 
       - name: Install dependencies(php8)
-        if: ${{ matrix.php-versions == '8.0.0' }}
+        if: ${{ matrix.php-versions == '8.0' }}
         run: |
-          echo ${{ matrix.php-versions }}
+          composer self-update
+          composer install --no-interaction --prefer-source --no-dev
+          composer require squizlabs/php_codesniffer=3.6.0
           composer require phpunit/phpunit=9.0.0
-          composer install --no-interaction --prefer-source --dev
-
 
       - name: Run cases
         run: |
