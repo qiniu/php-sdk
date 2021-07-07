@@ -23,7 +23,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
 
       - name: Install dependencies
-        if: ${{ matrix.php-versions != '8.0' }}
+        if: ${{ matrix.php-versions != '8.0.0' }}
         run: |
           composer self-update
           composer install --no-interaction --prefer-source --dev
