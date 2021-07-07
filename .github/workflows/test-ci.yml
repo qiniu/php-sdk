@@ -22,23 +22,28 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Install dependencies
-        run: |
-          composer self-update
-          composer install --no-interaction --prefer-source --dev
-
-      - name: Run cases
-        run: |
-          ./vendor/bin/phpcs --standard=PSR2 src
-          ./vendor/bin/phpcs --standard=PSR2 examples
-          ./vendor/bin/phpcs --standard=PSR2 tests
-          ./vendor/bin/phpunit --coverage-clover=coverage.xml
-
+      - name: Test echo
         env:
-          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
-          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
-          QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
-          QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
+          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+          run: echo "$MATRIX_CONTEXT"
 
-      - name: After_success
-        run: bash <(curl -s https://codecov.io/bash)
+#      - name: Install dependencies
+#        run: |
+#          composer self-update
+#          composer install --no-interaction --prefer-source --dev
+#
+#      - name: Run cases
+#        run: |
+#          ./vendor/bin/phpcs --standard=PSR2 src
+#          ./vendor/bin/phpcs --standard=PSR2 examples
+#          ./vendor/bin/phpcs --standard=PSR2 tests
+#          ./vendor/bin/phpunit --coverage-clover=coverage.xml
+#
+#        env:
+#          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+#          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+#          QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
+#          QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
+#
+#      - name: After_success
+#        run: bash <(curl -s https://codecov.io/bash)
