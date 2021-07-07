@@ -33,8 +33,7 @@ jobs:
         run: |
           composer self-update
           composer install --no-interaction --prefer-source --no-dev
-          composer require squizlabs/php_codesniffer=3.6.0
-          composer require --ignore-platform-reqs phpunit/phpunit=9.0.0
+
 
       - name: Run cases
         run: |
