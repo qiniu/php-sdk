@@ -34,7 +34,7 @@ jobs:
           composer self-update
           composer require squizlabs/php_codesniffer==3.6.0
           composer require phpunit/phpunit==9.0.0
-          composer install --no-interaction --prefer-source --dev
+#          composer install --no-interaction --prefer-source --dev
 
       - name: Run cases
         run: |
