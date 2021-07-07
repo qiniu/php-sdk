@@ -34,11 +34,11 @@ jobs:
           ./vendor/bin/phpcs --standard=PSR2 tests
           ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+          QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
+          QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
+
       - name: After_success
         run: bash <(curl -s https://codecov.io/bash)
-
-        env:
-            QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
-            QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
-            QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
-            QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
