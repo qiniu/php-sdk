@@ -32,7 +32,7 @@ jobs:
         if: ${{ matrix.php-versions == '8.0' }}
         run: |
           composer self-update
-          composer install --no-interaction --prefer-source --no-dev
+          composer install --no-interaction --prefer-source --dev
 
 
       - name: Run cases
