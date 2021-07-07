@@ -31,10 +31,11 @@ jobs:
       - name: Install dependencies(php8)
         if: ${{ matrix.php-versions == '8.0' }}
         run: |
-          composer self-update
-          composer install --no-interaction --prefer-source --dev
-          composer remove phpunit/phpunit --dev
+          echo ${{ matrix.php-versions }}
+#          composer self-update
           composer require phpunit/phpunit=8.0.0
+          composer install --no-interaction --prefer-source --dev
+
 
       - name: Run cases
         run: |
