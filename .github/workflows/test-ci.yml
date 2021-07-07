@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        php-versions: ['5.4', '5.5', '5.6', '7.0']
+        php-versions: ['5.4', '5.5', '5.6', '7.0', '8.0']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +33,9 @@ jobs:
           ./vendor/bin/phpcs --standard=PSR2 examples
           ./vendor/bin/phpcs --standard=PSR2 tests
           ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: After_success
+        run: bash <(curl -s https://codecov.io/bash)
 
         env:
             QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
