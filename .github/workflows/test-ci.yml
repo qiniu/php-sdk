@@ -27,11 +27,11 @@ jobs:
           MATRIX_CONTEXT: ${{ toJSON(matrix) }}
           run: echo "$MATRIX_CONTEXT"
 
-#      - name: Install dependencies
-#        run: |
-#          composer self-update
-#          composer install --no-interaction --prefer-source --dev
-#
+      - name: Install dependencies
+        run: |
+          composer self-update
+          composer install --no-interaction --prefer-source --dev
+
 #      - name: Run cases
 #        run: |
 #          ./vendor/bin/phpcs --standard=PSR2 src
