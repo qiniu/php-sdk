@@ -279,4 +279,3 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return array($accessKey, $bucket, null);
     }
 }
-
