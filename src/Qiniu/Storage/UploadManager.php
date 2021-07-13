@@ -73,7 +73,7 @@ final class UploadManager
      * @param $mime       上传数据的mimeType
      * @param $checkCrc   是否校验crc32
      * @param $version    分片上传版本 目前支持v1/v2版本 默认v1
-     * @param $partSize   分片上传v2必传字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
+     * @param $partSize   分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
      * @param $resumeRecordFile 断点续传文件路径 默认为null
      * @return array    包含已上传文件的信息，类似：
      *                                              [
