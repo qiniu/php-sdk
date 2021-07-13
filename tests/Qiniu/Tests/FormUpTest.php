@@ -21,6 +21,14 @@ class FormUpTest extends \PHPUnit_Framework_TestCase
         $this->cfg = new Config();
     }
 
+    public function testConfig()
+    {
+        $this->assertSame($this->cfg->options, array('timeout' => 60));
+
+        $cfg = new Config(null, array('timeout' => 600));
+        $this->assertSame($cfg->options, array('timeout' => 600));
+    }
+
     public function testData()
     {
         $token = $this->auth->uploadToken($this->bucketName);

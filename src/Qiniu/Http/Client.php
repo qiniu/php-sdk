@@ -7,27 +7,27 @@ use Qiniu\Http\Response;
 
 final class Client
 {
-    public static function get($url, array $headers = array())
+    public static function get($url, array $headers = array(), array $options = array())
     {
-        $request = new Request('GET', $url, $headers);
+        $request = new Request('GET', $url, $headers, $options);
         return self::sendRequest($request);
     }
 
-    public static function delete($url, array $headers = array())
+    public static function delete($url, array $headers = array(), array $options = array())
     {
-        $request = new Request('DELETE', $url, $headers);
+        $request = new Request('DELETE', $url, $headers, $options);
         return self::sendRequest($request);
     }
 
-    public static function post($url, $body, array $headers = array())
+    public static function post($url, $body, array $headers = array(), array $options = array())
     {
-        $request = new Request('POST', $url, $headers, $body);
+        $request = new Request('POST', $url, $headers, $body, $options);
         return self::sendRequest($request);
     }
 
-    public static function PUT($url, $body, array $headers = array())
+    public static function PUT($url, $body, array $headers = array(), array $options = array())
     {
-        $request = new Request('PUT', $url, $headers, $body);
+        $request = new Request('PUT', $url, $headers, $body, $options);
         return self::sendRequest($request);
     }
 
@@ -38,7 +38,8 @@ final class Client
         $fileName,
         $fileBody,
         $mimeType = null,
-        array $headers = array()
+        array $headers = array(),
+        array $options = array()
     ) {
         $data = array();
         $mimeBoundary = md5(microtime());
@@ -65,7 +66,7 @@ final class Client
         // var_dump($data);exit;
         $contentType = 'multipart/form-data; boundary=' . $mimeBoundary;
         $headers['Content-Type'] = $contentType;
-        $request = new Request('POST', $url, $headers, $body);
+        $request = new Request('POST', $url, $headers, $body, $options);
         return self::sendRequest($request);
     }
 
@@ -97,6 +98,7 @@ final class Client
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST => $request->method,
             CURLOPT_URL => $request->url,
+            CURLOPT_TIMEOUT => $request->options['timeout'],
         );
         // Handle open_basedir & safe mode
         if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
