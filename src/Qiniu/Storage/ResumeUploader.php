@@ -43,7 +43,7 @@ final class ResumeUploader
      * @param string $config
      * @param string $resumeRecordFile 断点续传的已上传的部分信息记录文件
      * @param string $version 分片上传版本 目前支持v1/v2版本 默认v1
-     * @param string $partSize 分片上传v2必传字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
+     * @param string $partSize 分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
      *
      * @link http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
      */
