@@ -1,7 +1,7 @@
 # Changelog
 
 ## 7.4.0 (2021-07-19)
-* 【对象存储】支持 [分片上传 v2](https://developer.qiniu.com/kodo/7458/multipartupload) 和 断点续传，使用方式见 [开发者文档](https://developer.qiniu.io/kodo/1241/php#form-upload-file-resume)
+* 【对象存储】支持 [分片上传 v2](https://developer.qiniu.com/kodo/7458/multipartupload) 和 断点续传，使用方式见 [开发者文档](https://developer.qiniu.com/kodo/1241/php#resume-upload-file)
 
 ## 7.3.0 (2020-09-24)
 ### 新增
