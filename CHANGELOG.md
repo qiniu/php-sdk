@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.4.1（2021-09-24）
+* 修复了 分片上传 v2 已知问题，明确给出了参数不合理情况下对应的错误提示信息
+
 ## 7.4.0 (2021-07-19)
 * 【对象存储】支持 [分片上传 v2](https://developer.qiniu.com/kodo/7458/multipartupload) 和 断点续传，使用方式见 [开发者文档](https://developer.qiniu.com/kodo/1241/php#resume-upload-file)
 
