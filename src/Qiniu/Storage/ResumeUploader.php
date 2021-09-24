@@ -358,10 +358,28 @@ final class ResumeUploader
         );
         $etags = $this->finishedEtags['etags'];
         $sortedEtags = \Qiniu\arraySort($etags, 'partNumber');
+        $metadata = array();
+        $customVars = array();
+        if ($this->params) {
+            foreach ($this->params as $k => $v) {
+                if (strpos($k, 'x:') === 0) {
+                    $customVars[$k] = $v;
+                } elseif (strpos($k, 'x-qn-meta-') === 0) {
+                    $metadata[$k] = $v;
+                }
+            }
+        }
+        if (empty($metadata)) {
+            $metadata = null;
+        }
+        if (empty($customVars)) {
+            $customVars = null;
+        }
         $body = array(
             'fname' => $fname,
-            '$mimeType' => $this->mime,
-            'customVars' => $this->params,
+            'mimeType' => $this->mime,
+            'metadata' => $metadata,
+            'customVars' => $customVars,
             'parts' => $sortedEtags
         );
         $jsonBody = json_encode($body);
