@@ -18,7 +18,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "myclabs/php-enum": "1.6.6"
     },
     "require-dev": {
         "paragonie/random_compat": ">=2",

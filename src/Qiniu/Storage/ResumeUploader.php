@@ -5,6 +5,7 @@ namespace Qiniu\Storage;
 use Qiniu\Config;
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use Qiniu\Enum\SplitUploadVersion;
 
 /**
  * 断点续上传类, 该类主要实现了断点续上传中的分块上传,
@@ -70,8 +71,13 @@ final class ResumeUploader
         $this->finishedEtags = array("etags"=>array(), "uploadId"=>"", "expiredAt"=>0, "uploaded"=>0);
         $this->config = $config;
         $this->resumeRecordFile = $resumeRecordFile ? $resumeRecordFile : null;
-        $this->version = $version ? $version : 'v1';
         $this->partSize = $partSize ? $partSize : config::BLOCK_SIZE;
+
+        try {
+            $this->version = SplitUploadVersion::from($version ? $version : 'v1');
+        } catch (\Exception $e) {
+            throw new \Exception("only support v1/v2 now!", 0, $e);
+        }
 
         list($accessKey, $bucket, $err) = \Qiniu\explodeUpToken($upToken);
         $this->bucket = $bucket;
@@ -92,7 +98,7 @@ final class ResumeUploader
     public function upload($fname)
     {
         $uploaded = 0;
-        if ($this->version == 'v2') {
+        if ($this->version == SplitUploadVersion::V2) {
             $partNumber = 1;
             $encodedObjectName = $this->key? \Qiniu\base64_urlSafeEncode($this->key) : '~';
         };
@@ -125,13 +131,13 @@ final class ResumeUploader
             }
 
             if ($blkputRets) {
-                if ($this->version == 'v1') {
+                if ($this->version == SplitUploadVersion::V1) {
                     if (isset($blkputRets['contexts']) && isset($blkputRets['uploaded']) &&
                         is_array($blkputRets['contexts']) && is_int($blkputRets['uploaded'])) {
                         $this->contexts = $blkputRets['contexts'];
                         $uploaded = $blkputRets['uploaded'];
                     }
-                } elseif ($this->version == 'v2') {
+                } elseif ($this->version == SplitUploadVersion::V2) {
                     if (isset($blkputRets["etags"]) && isset($blkputRets["uploadId"]) &&
                         isset($blkputRets["expiredAt"]) && $blkputRets["expiredAt"] > time()
                         && $blkputRets["uploaded"] > 0 && is_array($blkputRets["etags"]) &&
@@ -149,13 +155,13 @@ final class ResumeUploader
                     throw new \Exception("only support v1/v2 now!");
                 }
             } else {
-                if ($this->version == 'v2') {
+                if ($this->version == SplitUploadVersion::V2) {
                     $this->makeInitReq($encodedObjectName);
                 }
             }
         } else {
             // init a Multipart Upload task if choose v2
-            if ($this->version == 'v2') {
+            if ($this->version == SplitUploadVersion::V2) {
                 $this->makeInitReq($encodedObjectName);
             }
         }
@@ -166,10 +172,10 @@ final class ResumeUploader
             if ($data === false) {
                 throw new \Exception("file read failed", 1);
             }
-            if ($this->version == 'v1') {
+            if ($this->version == SplitUploadVersion::V1) {
                 $crc = \Qiniu\crc32_data($data);
                 $response = $this->makeBlock($data, $blockSize);
-            } else {
+            } elseif ($this->version == SplitUploadVersion::V2) {
                 $md5 = md5($data);
                 $response = $this->uploadPart(
                     $data,
@@ -178,6 +184,8 @@ final class ResumeUploader
                     $encodedObjectName,
                     $md5
                 );
+            } else {
+                throw new \Exception("only support v1/v2 now!");
             }
 
             $ret = null;
@@ -193,7 +201,7 @@ final class ResumeUploader
                 $this->host = $upHostBackup;
             }
 
-            if ($this->version == 'v1') {
+            if ($this->version == SplitUploadVersion::V1) {
                 if ($response->needRetry() || !isset($ret['crc32']) || $crc != $ret['crc32']) {
                     $response = $this->makeBlock($data, $blockSize);
                     $ret = $response->json();
@@ -203,7 +211,7 @@ final class ResumeUploader
                     return array(null, new Error($this->currentUrl, $response));
                 }
                 array_push($this->contexts, $ret['ctx']);
-            } else {
+            } elseif ($this->version == SplitUploadVersion::V2) {
                 if ($response->needRetry() || !isset($ret['md5']) || $md5 != $ret['md5']) {
                     $response = $this->uploadPart(
                         $data,
@@ -221,22 +229,26 @@ final class ResumeUploader
                 $blockStatus = array('etag' => $ret['etag'], 'partNumber' => $partNumber);
                 array_push($this->finishedEtags['etags'], $blockStatus);
                 $partNumber += 1;
+            } else {
+                throw new \Exception("only support v1/v2 now!");
             }
 
             $uploaded += $blockSize;
-            if ($this->version == 'v2') {
+            if ($this->version == SplitUploadVersion::V2) {
                 $this->finishedEtags['uploaded'] = $uploaded;
             }
 
             if ($this->resumeRecordFile !== null) {
-                if ($this->version == 'v1') {
+                if ($this->version == SplitUploadVersion::V1) {
                     $recordData = array(
                         'contexts' => $this->contexts,
                         'uploaded' => $uploaded
                     );
                     $recordData = json_encode($recordData);
-                } else {
+                } elseif ($this->version == SplitUploadVersion::V2) {
                     $recordData = json_encode($this->finishedEtags);
+                } else {
+                    throw new \Exception("only support v1/v2 now!");
                 }
                 if ($recordData) {
                     $isWritten = file_put_contents($this->resumeRecordFile, $recordData);
@@ -248,10 +260,12 @@ final class ResumeUploader
                 }
             }
         }
-        if ($this->version == 'v1') {
+        if ($this->version == SplitUploadVersion::V1) {
             return $this->makeFile($fname);
-        } else {
+        } elseif ($this->version == SplitUploadVersion::V2) {
             return $this->completeParts($fname, $this->finishedEtags['uploadId'], $encodedObjectName);
+        } else {
+            throw new \Exception("only support v1/v2 now!");
         }
     }
 
