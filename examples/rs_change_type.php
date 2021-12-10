@@ -23,7 +23,9 @@ $bucketManager = new BucketManager($auth, $config);
 $key = "qiniu.mp4";
 $fileType = 1; // 0 表示标准存储；1 表示低频存储；2 表示归档存储
 
-$err = $bucketManager->changeType($bucket, $key, $fileType);
-if ($err) {
-    print_r($err);
+list($ret, $err) = $bucketManager->changeType($bucket, $key, $fileType);
+if ($err != null) {
+    var_dump($err);
+} else {
+    var_dump($ret);
 }
