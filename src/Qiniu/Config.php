@@ -133,6 +133,12 @@ final class Config
             $this->regionCache[$cacheId] = $region;
         } else {
             $region = Zone::queryZone($accessKey, $bucket);
+            if (is_array($region)) {
+                list($region, $err) = $region;
+                if ($err != null) {
+                    throw new \Exception($err->message());
+                }
+            }
             $this->regionCache[$cacheId] = $region;
         }
         return $region;
