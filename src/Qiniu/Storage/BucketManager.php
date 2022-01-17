@@ -722,7 +722,11 @@ final class BucketManager
         $path = '/fetch/' . $resource . '/to/' . $to;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->config->getIovipHost($ak, $bucket);
+        try {
+            $ioHost = $this->config->getIovipHost($ak, $bucket);
+        } catch (\Exception $err) {
+            return array(null, $err);
+        }
 
         $url = $ioHost . $path;
         return $this->post($url, null);
@@ -776,7 +780,11 @@ final class BucketManager
         $data = json_encode($params);
 
         $ak = $this->auth->getAccessKey();
-        $apiHost = $this->config->getApiHost($ak, $bucket);
+        try {
+            $apiHost = $this->config->getApiHost($ak, $bucket);
+        } catch (\Exception $err) {
+            return array(null, $err);
+        }
         $url = $apiHost . $path;
 
         return $this->postV2($url, $data);
@@ -826,7 +834,11 @@ final class BucketManager
         $path = '/prefetch/' . $resource;
 
         $ak = $this->auth->getAccessKey();
-        $ioHost = $this->config->getIovipHost($ak, $bucket);
+        try {
+            $ioHost = $this->config->getIovipHost($ak, $bucket);
+        } catch (\Exception $err) {
+            return array(null, $err);
+        }
 
         $url = $ioHost . $path;
         return $this->post($url, null);

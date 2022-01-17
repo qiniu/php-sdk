@@ -271,6 +271,16 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($error);
     }
 
+    public function testPrefetchFailed()
+    {
+        list($ret, $error) = $this->bucketManager->prefetch(
+            'fakebucket',
+            'php-sdk.html'
+        );
+        $this->assertNull($ret);
+        $this->assertNotNull($error);
+    }
+
     public function testFetch()
     {
         list($ret, $error) = $this->bucketManager->fetch(
@@ -295,6 +305,16 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertArrayHasKey('key', $ret);
         $this->assertNull($error);
+    }
+
+    public function testFetchFailed()
+    {
+        list($ret, $error) = $this->bucketManager->fetch(
+            'http://developer.qiniu.com/docs/v6/sdk/php-sdk.html',
+            'fakebucket'
+        );
+        $this->assertNull($ret);
+        $this->assertNotNull($error);
     }
 
     public function testAsynchFetch()
@@ -323,6 +343,16 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertArrayHasKey('id', $ret);
         $this->assertNull($error);
+    }
+
+    public function testAsynchFetchFailed()
+    {
+        list($ret, $error) = $this->bucketManager->asynchFetch(
+            'http://devtools.qiniu.com/qiniu.png',
+            'fakebucket'
+        );
+        $this->assertNull($ret);
+        $this->assertNotNull($error);
     }
 
 
