@@ -40,6 +40,20 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($actual, $except);
     }
 
+
+    public function testInvalidKeyName()
+    {
+        $except = array(
+            'a:x-test-1',
+        );
+
+        $actual = array_map(function ($str) {
+            return Header::normalizeKey($str);
+        }, $except);
+
+        $this->assertEquals($except, $actual);
+    }
+
     public function testGetRawData()
     {
         $header = new Header($this->heads);
