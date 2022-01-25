@@ -264,7 +264,7 @@ class Header implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     private static function isValidKeyName($str)
     {
-        for ($i = 0; $i < count($str); $i += 1) {
+        for ($i = 0; $i < strlen($str); $i += 1) {
             if (!isset(self::$isTokenTable[$str[$i]])) {
                 return false;
             }
