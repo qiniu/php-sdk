@@ -203,4 +203,59 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("val_2", $response->headers()["X-Qn-Meta-M2"]);
         unlink($tempFile);
     }
+
+    // valid versions are tested above
+    // Use PHPUnit's Data Provider to test multiple Exception is better,
+    // but not match the test style of this project
+    public function testResumeUploadWithInvalidVersion()
+    {
+        $zone = new Zone(array('up.qiniup.com'));
+        $cfg = new Config($zone);
+        $upManager = new UploadManager($cfg);
+        $testFileSize = config::BLOCK_SIZE * 2;
+        $partSize = 5 * 1024 * 1024;
+        $testInvalidVersions = array(
+            // High probability invalid versions
+            'v',
+            '1',
+            '2'
+        );
+
+        $expectExceptionCount = 0;
+        foreach ($testInvalidVersions as $invalidVersion) {
+            $key = 'resumePutFile4ML_'.rand()."_";
+            $token = $this->auth->uploadToken($this->bucketName, $key);
+            $tempFile = qiniuTempFile($testFileSize);
+            $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
+            $this->assertNotFalse($resumeFile);
+            try {
+                $upManager->putFile(
+                    $token,
+                    $key,
+                    $tempFile,
+                    null,
+                    'application/octet-stream',
+                    false,
+                    $resumeFile,
+                    $invalidVersion,
+                    $partSize
+                );
+            } catch (\Exception $e) {
+                $isRightException = false;
+                $expectExceptionCount++;
+                while ($e) {
+                    $isRightException = $e instanceof \UnexpectedValueException;
+                    if ($isRightException) {
+                        break;
+                    }
+                    $e = $e->getPrevious();
+                }
+                $this->assertTrue($isRightException);
+            }
+
+            unlink($resumeFile);
+            unlink($tempFile);
+        }
+        $this->assertEquals(count($testInvalidVersions), $expectExceptionCount);
+    }
 }
