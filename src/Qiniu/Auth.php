@@ -216,48 +216,16 @@ final class Auth
 
     public function authorizationV2($url, $method, $body = null, $contentType = null)
     {
-        $urlItems = parse_url($url);
-        $host = $urlItems['host'];
-
-        if (isset($urlItems['port'])) {
-            $port = $urlItems['port'];
-        } else {
-            $port = '';
+        $headers = null;
+        $result = array();
+        if ($contentType != null) {
+            $headers = new Header(array(
+                'Content-Type' => array($contentType),
+            ));
+            $result['Content-Type'] = $contentType;
         }
-
-        $path = $urlItems['path'];
-        if (isset($urlItems['query'])) {
-            $query = $urlItems['query'];
-        } else {
-            $query = '';
-        }
-
-        //write request uri
-        $toSignStr = $method . ' ' . $path;
-        if (!empty($query)) {
-            $toSignStr .= '?' . $query;
-        }
-
-        //write host and port
-        $toSignStr .= "\nHost: " . $host;
-        if (!empty($port)) {
-            $toSignStr .= ":" . $port;
-        }
-
-        //write content type
-        if (!empty($contentType)) {
-            $toSignStr .= "\nContent-Type: " . $contentType;
-        }
-
-        $toSignStr .= "\n\n";
-
-        //write body
-        if (!empty($body)) {
-            $toSignStr .= $body;
-        }
-
-        $sign = $this->sign($toSignStr);
-        $auth = 'Qiniu ' . $sign;
-        return array('Authorization' => $auth);
+        list($sign) = $this->signQiniuAuthorization($url, $method, $body, $headers);
+        $result['Authorization'] = 'Qiniu ' . $sign;
+        return $result;
     }
 }

@@ -150,7 +150,7 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'limit', $limit);
         \Qiniu\setWithoutEmpty($query, 'delimiter', $delimiter);
         $url = $this->getRsfHost() . '/list?' . http_build_query($query);
-        return $this->get($url);
+        return $this->getV2($url);
     }
 
     /**
@@ -182,7 +182,7 @@ final class BucketManager
         \Qiniu\setWithoutEmpty($query, 'skipconfirm', $skipconfirm);
         $path = '/v2/list?' . http_build_query($query);
         $url = $this->getRsfHost() . $path;
-        $headers = $this->auth->authorization($url, null, 'application/x-www-form-urlencoded');
+        $headers = $this->auth->authorizationV2($url, 'POST', null, 'application/x-www-form-urlencoded');
         $ret = Client::post($url, null, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
@@ -729,7 +729,7 @@ final class BucketManager
         }
 
         $url = $ioHost . $path;
-        return $this->post($url, null);
+        return $this->postV2($url, null);
     }
 
     /**
@@ -809,13 +809,12 @@ final class BucketManager
 
         $url = $scheme . "api-" . $zone . ".qiniu.com/sisyphus/fetch?id=" . $id;
 
-        $response = $this->getV2($url);
+        list($ret, $err) = $this->getV2($url);
 
-        if (!$response->ok()) {
-            print("statusCode: " . $response->statusCode);
-            return array(null, new Error($url, $response));
+        if ($err != null) {
+            return array(null, $err);
         }
-        return array($response->json(), null);
+        return array($ret, null);
     }
 
 
@@ -841,7 +840,7 @@ final class BucketManager
         }
 
         $url = $ioHost . $path;
-        return $this->post($url, null);
+        return $this->postV2($url, null);
     }
 
     /**
@@ -922,42 +921,42 @@ final class BucketManager
     private function rsPost($path, $body = null)
     {
         $url = $this->getRsHost() . $path;
-        return $this->post($url, $body);
+        return $this->postV2($url, $body);
     }
 
     private function apiPost($path, $body = null)
     {
         $url = $this->getApiHost() . $path;
-        return $this->post($url, $body);
+        return $this->postV2($url, $body);
     }
 
     private function ucPost($path, $body = null)
     {
         $url = $this->getUcHost() . $path;
-        return $this->post($url, $body);
+        return $this->postV2($url, $body);
     }
 
     private function ucGet($path)
     {
         $url = $this->getUcHost() . $path;
-        return $this->get($url);
+        return $this->getV2($url);
     }
 
     private function apiGet($path)
     {
         $url = $this->getApiHost() . $path;
-        return $this->get($url);
+        return $this->getV2($url);
     }
 
     private function rsGet($path)
     {
         $url = $this->getRsHost() . $path;
-        return $this->get($url);
+        return $this->getV2($url);
     }
 
-    private function get($url)
+    private function getV2($url)
     {
-        $headers = $this->auth->authorization($url);
+        $headers = $this->auth->authorizationV2($url, 'GET', null, 'application/x-www-form-urlencoded');
         $ret = Client::get($url, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
@@ -965,27 +964,9 @@ final class BucketManager
         return array($ret->json(), null);
     }
 
-    private function getV2($url)
-    {
-        $headers = $this->auth->authorizationV2($url, 'GET');
-        return Client::get($url, $headers);
-    }
-
-    private function post($url, $body)
-    {
-        $headers = $this->auth->authorization($url, $body, 'application/x-www-form-urlencoded');
-        $ret = Client::post($url, $body, $headers);
-        if (!$ret->ok()) {
-            return array(null, new Error($url, $ret));
-        }
-        $r = ($ret->body === null) ? array() : $ret->json();
-        return array($r, null);
-    }
-
     private function postV2($url, $body)
     {
-        $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/json');
-        $headers["Content-Type"] = 'application/json';
+        $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/x-www-form-urlencoded');
         $ret = Client::post($url, $body, $headers);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
