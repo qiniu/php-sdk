@@ -141,7 +141,7 @@ class Header implements \ArrayAccess, \IteratorAggregate, \Countable
     public function offsetSet($offset, $value)
     {
         $key = self::normalizeKey($offset);
-        if (isset($this->data[$key]) && count($this->data[$key] > 0)) {
+        if (isset($this->data[$key]) && count($this->data[$key]) > 0) {
             $this->data[$key][0] = self::normalizeValue($value);
         } else {
             $this->data[$key] = array(self::normalizeValue($value));
