@@ -3,6 +3,7 @@ namespace Qiniu\Tests;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
 use Qiniu\Region;
+use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Http\Client;
@@ -11,6 +12,19 @@ use Qiniu\Zone;
 
 class ResumeUpTest extends \PHPUnit_Framework_TestCase
 {
+    private static $keyToDelete = array();
+
+    public static function tearDownAfterClass()
+    {
+        global $bucketName;
+        global $testAuth;
+
+        $config = new Config();
+        $bucketManager = new BucketManager($testAuth, $config);
+        foreach (self::$keyToDelete as $key) {
+            $bucketManager->delete($bucketName, $key);
+        }
+    }
     protected $bucketName;
     protected $auth;
 
@@ -92,6 +106,43 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
     //     $this->assertNotNull($ret['hash']);
     //     unlink($tempFile);
     // }
+
+    public function testFileWithFileType()
+    {
+        $config = new Config();
+        $bucketManager = new BucketManager($this->auth, $config);
+
+        $testCases = array(
+            array(
+                "fileType" => 1,
+                "name" => "IA"
+            ),
+            array(
+                "fileType" => 2,
+                "name" => "Archive"
+            ),
+            array(
+                "fileType" => 3,
+                "name" => "DeepArchive"
+            )
+        );
+
+        foreach ($testCases as $testCase) {
+            $key = 'FileType'.$testCase["name"].rand();
+            $police = array(
+                "fileType" => $testCase["fileType"],
+            );
+            $token = $this->auth->uploadToken($this->bucketName, $key, 3600, $police);
+            $upManager = new UploadManager();
+            list($ret, $error) = $upManager->putFile($token, $key, __file__, null, 'text/plain');
+            $this->assertNull($error);
+            $this->assertNotNull($ret);
+            array_push(self::$keyToDelete, $key);
+            list($ret, $err) = $bucketManager->stat($this->bucketName, $key);
+            $this->assertNull($err);
+            $this->assertEquals($testCase["fileType"], $ret["type"]);
+        }
+    }
 
     public function testResumeUploadWithParams()
     {
