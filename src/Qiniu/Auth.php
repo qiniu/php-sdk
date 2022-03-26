@@ -114,10 +114,7 @@ final class Auth
 
         // append body
         $data .= "\n\n";
-        if (count($body) > 0
-            && isset($headers["Content-Type"])
-            && $headers["Content-Type"] != "application/octet-stream"
-        ) {
+        if (isset($headers["Content-Type"]) && $headers["Content-Type"] != "application/octet-stream") {
             $data .= $body;
         }
 
