@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.5.0 (2022-04-18)
+* 对象存储，新增支持 [深度归档存储类型](https://developer.qiniu.com/kodo/3956/kodo-category#deep_archive)
+
 ## 7.4.3 (2022-04-01)
 * 优化签名算法逻辑
 
