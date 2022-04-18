@@ -107,33 +107,72 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
     public function testBucketLifecycleRule()
     {
-        list($ret, $error) = $this->bucketManager->bucketLifecycleRule($this->bucketName, 'demo', 'test', 80, 70);
+        // delete
+        $this->bucketManager->deleteBucketLifecycleRule($this->bucketName, 'demo');
+
+        // add
+        list($ret, $error) = $this->bucketManager->bucketLifecycleRule(
+            $this->bucketName,
+            'demo',
+            'test',
+            80,
+            70,
+            72,
+            74
+        );
         $this->assertNull($error);
         $this->assertNotNull($ret);
-    }
 
-    public function testGetbucketLifecycleRule()
-    {
+        // get
         list($ret, $error) = $this->bucketManager->getBucketLifecycleRules($this->bucketName);
         $this->assertNull($error);
         $this->assertNotNull($ret);
-    }
+        $rule = null;
+        foreach ($ret as $r) {
+            if ($r["name"] === "demo") {
+                $rule = $r;
+                break;
+            }
+        }
+        $this->assertNotNull($rule);
+        $this->assertEquals("test", $rule["prefix"]);
+        $this->assertEquals(80, $rule["delete_after_days"]);
+        $this->assertEquals(70, $rule["to_line_after_days"]);
+        $this->assertEquals(72, $rule["to_archive_after_days"]);
+        $this->assertEquals(74, $rule["to_deep_archive_after_days"]);
 
-    public function testUpdatebucketLifecycleRule()
-    {
+        // update
         list($ret, $error) = $this->bucketManager->updateBucketLifecycleRule(
             $this->bucketName,
             'demo',
             'testupdate',
+            90,
+            75,
             80,
-            70
+            85
         );
         $this->assertNull($error);
         $this->assertNotNull($ret);
-    }
 
-    public function testDeleteBucketLifecycleRule()
-    {
+        // get
+        list($ret, $error) = $this->bucketManager->getBucketLifecycleRules($this->bucketName);
+        $this->assertNull($error);
+        $this->assertNotNull($ret);
+        $rule = null;
+        foreach ($ret as $r) {
+            if ($r["name"] === "demo") {
+                $rule = $r;
+                break;
+            }
+        }
+        $this->assertNotNull($rule);
+        $this->assertEquals("testupdate", $rule["prefix"]);
+        $this->assertEquals(90, $rule["delete_after_days"]);
+        $this->assertEquals(75, $rule["to_line_after_days"]);
+        $this->assertEquals(80, $rule["to_archive_after_days"]);
+        $this->assertEquals(85, $rule["to_deep_archive_after_days"]);
+
+        // delete
         list($ret, $error) = $this->bucketManager->deleteBucketLifecycleRule($this->bucketName, 'demo');
         $this->assertNull($error);
         $this->assertNotNull($ret);
@@ -408,6 +447,24 @@ class BucketTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, $ret[0]['code']);
     }
 
+    public function testBatchChangeTypeAndBatchRestoreAr()
+    {
+        $key = 'toChangeTypeThenRestore' . rand();
+        $this->bucketManager->copy($this->bucketName, $this->key, $this->bucketName, $key);
+
+        $ops = BucketManager::buildBatchChangeType($this->bucketName, array($key => 2)); // 2 Archive
+        list($ret, $error) = $this->bucketManager->batch($ops);
+        $this->assertNull($error);
+        $this->assertEquals(200, $ret[0]['code']);
+
+        $ops = BucketManager::buildBatchRestoreAr($this->bucketName, array($key => 1)); // 1 day
+        list($ret, $error) = $this->bucketManager->batch($ops);
+        $this->assertNull($error);
+        $this->assertEquals(200, $ret[0]['code']);
+
+        $this->bucketManager->delete($this->bucketName, $key);
+    }
+
     public function testDeleteAfterDays()
     {
         $key = rand();
@@ -468,6 +525,66 @@ class BucketTest extends \PHPUnit_Framework_TestCase
 
         list($ret, $err) = $this->bucketManager->changeType($this->bucketName, $this->key, 1);
         $this->assertNull($err);
+    }
+
+    public function testArchiveRestoreAr()
+    {
+        $key = 'archiveToRestore' . rand();
+        $this->bucketManager->delete($this->bucketName, $key);
+
+        $this->bucketManager->copy(
+            $this->bucketName,
+            $this->key,
+            $this->bucketName,
+            $key
+        );
+        $this->bucketManager->changeType($this->bucketName, $key, 2);
+
+        list(, $err) = $this->bucketManager->restoreAr($this->bucketName, $key, 2);
+        $this->assertNull($err);
+        list($ret, $err) = $this->bucketManager->stat($this->bucketName, $key);
+        $this->assertNull($err);
+
+        $this->assertEquals(2, $ret["type"]);
+
+        // restoreStatus
+        // null means frozen;
+        // 1 means be unfreezing;
+        // 2 means be unfrozen;
+        $this->assertNotNull($ret["restoreStatus"]);
+        $this->assertContains($ret["restoreStatus"], array(1, 2));
+
+        $this->bucketManager->delete($this->bucketName, $key);
+    }
+
+    public function testDeepArchiveRestoreAr()
+    {
+        $key = 'deepArchiveToRestore' . rand();
+        $this->bucketManager->delete($this->bucketName, $key);
+
+        $this->bucketManager->copy(
+            $this->bucketName,
+            $this->key,
+            $this->bucketName,
+            $key
+        );
+        $this->bucketManager->changeType($this->bucketName, $key, 3);
+
+        list(, $err) = $this->bucketManager->restoreAr($this->bucketName, $key, 1);
+        $this->assertNull($err);
+        list($ret, $err) = $this->bucketManager->stat($this->bucketName, $key);
+        $this->assertNull($err);
+
+        $this->assertEquals(3, $ret["type"]);
+
+        // restoreStatus
+        // null means frozen;
+        // 1 means be unfreezing;
+        // 2 means be unfrozen;
+        $this->assertNotNull($ret["restoreStatus"]);
+        $this->assertContains($ret["restoreStatus"], array(1, 2));
+
+        $this->bucketManager->delete($this->bucketName, $key);
     }
 
     public function testChangeStatus()

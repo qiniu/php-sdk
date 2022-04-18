@@ -65,21 +65,23 @@ final class UploadManager
     /**
      * 上传文件到七牛
      *
-     * @param $upToken    上传凭证
-     * @param $key        上传文件名
-     * @param $filePath   上传文件的路径
-     * @param $params     自定义变量，规格参考
-     *                    http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
-     * @param $mime       上传数据的mimeType
-     * @param $checkCrc   是否校验crc32
-     * @param $version    分片上传版本 目前支持v1/v2版本 默认v1
-     * @param $partSize   分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
-     * @param $resumeRecordFile 断点续传文件路径 默认为null
-     * @return array    包含已上传文件的信息，类似：
+     * @param string $upToken 上传凭证
+     * @param string $key 上传文件名
+     * @param string $filePath 上传文件的路径
+     * @param array<string, mixed> $params 定义变量，规格参考
+     *                                     http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html#xvar
+     * @param boolean $mime 上传数据的mimeType
+     * @param string $checkCrc 是否校验crc32
+     * @param string $resumeRecordFile 断点续传文件路径 默认为null
+     * @param string $version 分片上传版本 目前支持v1/v2版本 默认v1
+     * @param int $partSize 分片上传v2字段 默认大小为4MB 分片大小范围为1 MB - 1 GB
+     *
+     * @return array<string, mixed> 包含已上传文件的信息，类似：
      *                                              [
      *                                                  "hash" => "<Hash string>",
      *                                                  "key" => "<Key string>"
      *                                              ]
+     * @throws \Exception
      */
     public function putFile(
         $upToken,
