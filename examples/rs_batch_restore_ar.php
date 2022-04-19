@@ -15,27 +15,24 @@ $auth = new Auth($accessKey, $secretKey);
 $config = new Config();
 $bucketManager = new BucketManager($auth, $config);
 
-// 批量修改文件存储类型，每次最多不能超过 1000 个
+// 批量解冻归档/深度归档文件，每次最多不能超过 1000 个
 
 $keys = array(
-    'qiniu.mp4',
-    'qiniu.png',
-    'qiniu.jpg'
+    'archived_file.mp4',
+    'deep_archived_file.png',
+    'others.jpg'
 );
 
 $keyTypePairs = array();
 
+
 // key 是文件
-// value 是存储类型（fileType）
-// 0 表示普通存储
-// 1 表示低频存储
-// 2 表示归档存储
-// 3 表示深度归档存储
+// value 是解冻时间（单位：天，范围 1~7）
 foreach ($keys as $key) {
     $keyTypePairs[$key] = 1;
 }
 
-$ops = BucketManager::buildBatchChangeType($bucket, $keyTypePairs);
+$ops = BucketManager::buildBatchRestoreAr($bucket, $keyTypePairs);
 list($ret, $err) = $bucketManager->batch($ops);
 if ($err != null) {
     var_dump($err);

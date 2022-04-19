@@ -203,14 +203,20 @@ final class BucketManager
      * 大于0表示多少天后删除,需大于 to_line_after_days
      * @param int $to_line_after_days 指定文件上传多少天后转低频存储。指定为0表示
      * 不转低频存储，小于0表示上传的文件立即变低频存储
+     * @param int $to_archive_after_days 指定文件上传多少天后转归档存储。指定为0表示
+     * 不转归档存储，小于0表示上传的文件立即变归档存储
+     * @param int $to_deep_archive_after_days 指定文件上传多少天后转深度归档存储。指定为0表示
+     * 不转深度归档存储，小于0表示上传的文件立即变深度归档存储
      * @return array
      */
     public function bucketLifecycleRule(
         $bucket,
         $name,
         $prefix,
-        $delete_after_days,
-        $to_line_after_days
+        $delete_after_days = null,
+        $to_line_after_days = null,
+        $to_archive_after_days = null,
+        $to_deep_archive_after_days = null
     ) {
         $path = '/rules/add';
         $params = array();
@@ -229,6 +235,12 @@ final class BucketManager
         if ($to_line_after_days) {
             $params['to_line_after_days'] = $to_line_after_days;
         }
+        if ($to_archive_after_days) {
+            $params['to_archive_after_days'] = $to_archive_after_days;
+        }
+        if ($to_deep_archive_after_days) {
+            $params['to_deep_archive_after_days'] = $to_deep_archive_after_days;
+        }
         $data = http_build_query($params);
         $info = $this->ucPost($path, $data);
         return $info;
@@ -245,14 +257,20 @@ final class BucketManager
      * 大于0表示多少天后删除，需大于 to_line_after_days
      * @param int $to_line_after_days 指定文件上传多少天后转低频存储。指定为0表示不
      * 转低频存储，小于0表示上传的文件立即变低频存储
+     * @param int $to_archive_after_days 指定文件上传多少天后转归档存储。指定为0表示
+     * 不转归档存储，小于0表示上传的文件立即变归档存储
+     * @param int $to_deep_archive_after_days 指定文件上传多少天后转深度归档存储。指定为0表示
+     * 不转深度归档存储，小于0表示上传的文件立即变深度归档存储
      * @return array
      */
     public function updateBucketLifecycleRule(
         $bucket,
         $name,
         $prefix,
-        $delete_after_days,
-        $to_line_after_days
+        $delete_after_days = null,
+        $to_line_after_days = null,
+        $to_archive_after_days = null,
+        $to_deep_archive_after_days = null
     ) {
         $path = '/rules/update';
         $params = array();
@@ -270,6 +288,12 @@ final class BucketManager
         }
         if ($to_line_after_days) {
             $params['to_line_after_days'] = $to_line_after_days;
+        }
+        if ($to_archive_after_days) {
+            $params['to_archive_after_days'] = $to_archive_after_days;
+        }
+        if ($to_deep_archive_after_days) {
+            $params['to_deep_archive_after_days'] = $to_deep_archive_after_days;
         }
         $data = http_build_query($params);
         return $this->ucPost($path, $data);
@@ -675,7 +699,7 @@ final class BucketManager
      *
      * @param string $bucket 待操作资源所在空间
      * @param string $key 待操作资源文件名
-     * @param int $fileType 0 表示标准存储；1 表示低频存储；2 表示归档存储
+     * @param int $fileType 0 表示标准存储；1 表示低频存储；2 表示归档存储；3 表示深度归档存储
      *
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/3710/chtype
@@ -684,6 +708,23 @@ final class BucketManager
     {
         $resource = \Qiniu\entry($bucket, $key);
         $path = '/chtype/' . $resource . '/type/' . $fileType;
+        return $this->rsPost($path);
+    }
+
+    /**
+     * 解冻指定资源的存储类型
+     *
+     * @param string $bucket 待操作资源所在空间
+     * @param string $key 待操作资源文件名
+     * @param int $freezeAfterDays 解冻有效时长，取值范围 1~7
+     *
+     * @return array
+     * @link  https://developer.qiniu.com/kodo/api/6380/restore-archive
+     */
+    public function restoreAr($bucket, $key, $freezeAfterDays)
+    {
+        $resource = \Qiniu\entry($bucket, $key);
+        $path = '/restoreAr/' . $resource . '/freezeAfterDays/' . $freezeAfterDays;
         return $this->rsPost($path);
     }
 
@@ -1027,6 +1068,15 @@ final class BucketManager
         $data = array();
         foreach ($key_type_pairs as $key => $type) {
             array_push($data, '/chtype/' . \Qiniu\entry($bucket, $key) . '/type/' . $type);
+        }
+        return $data;
+    }
+
+    public static function buildBatchRestoreAr($bucket, $key_restore_days_pairs)
+    {
+        $data = array();
+        foreach ($key_restore_days_pairs as $key => $restore_days) {
+            array_push($data, '/restoreAr/' . \Qiniu\entry($bucket, $key) . '/freezeAfterDays/' . $restore_days);
         }
         return $data;
     }
