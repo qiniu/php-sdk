@@ -42,8 +42,8 @@ class Region
     public static function regionHuadong()
     {
         $regionHuadong = new Region(
-            array("up.qiniup.com", 'up-jjh.qiniup.com', 'up-xs.qiniup.com'),
-            array('upload.qiniup.com', 'upload-jjh.qiniup.com', 'upload-xs.qiniup.com'),
+            array("up.qiniup.com"),
+            array('upload.qiniup.com'),
             'rs.qbox.me',
             'rsf.qbox.me',
             'api.qiniu.com',
@@ -97,8 +97,8 @@ class Region
     public static function regionHuanan()
     {
         $regionHuanan = new Region(
-            array('up-z2.qiniup.com', 'up-dg.qiniup.com', 'up-fs.qiniup.com'),
-            array('upload-z2.qiniup.com', 'upload-dg.qiniup.com', 'upload-fs.qiniup.com'),
+            array('up-z2.qiniup.com'),
+            array('upload-z2.qiniup.com'),
             "rs-z2.qbox.me",
             "rsf-z2.qbox.me",
             "api-z2.qiniu.com",
