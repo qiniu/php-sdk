@@ -26,7 +26,7 @@ class Region
         $cdnUpHosts = array(),
         $rsHost = "rs.qiniu.com",
         $rsfHost = "rsf.qiniu.com",
-        $apiHost = "api.qiniu.com",
+        $apiHost = "api.qiniuapi.com",
         $iovipHost = null
     ) {
 
@@ -46,7 +46,7 @@ class Region
             array('upload.qiniup.com'),
             'rs.qbox.me',
             'rsf.qbox.me',
-            'api.qiniu.com',
+            'api.qiniuapi.com',
             'iovip.qbox.me'
         );
         return $regionHuadong;
@@ -59,7 +59,7 @@ class Region
             array("free-qvm-z0-xs.qiniup.com"),
             'rs.qbox.me',
             'rsf.qbox.me',
-            'api.qiniu.com',
+            'api.qiniuapi.com',
             'iovip.qbox.me'
         );
         return $qvmRegionHuadong;
@@ -72,7 +72,7 @@ class Region
             array("free-qvm-z1-zz.qiniup.com"),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
-            "api-z1.qiniu.com",
+            "api-z1.qiniuapi.com",
             "iovip-z1.qbox.me"
         );
         return $qvmRegionHuabei;
@@ -86,7 +86,7 @@ class Region
             array('upload-z1.qiniup.com'),
             "rs-z1.qbox.me",
             "rsf-z1.qbox.me",
-            "api-z1.qiniu.com",
+            "api-z1.qiniuapi.com",
             "iovip-z1.qbox.me"
         );
 
@@ -101,7 +101,7 @@ class Region
             array('upload-z2.qiniup.com'),
             "rs-z2.qbox.me",
             "rsf-z2.qbox.me",
-            "api-z2.qiniu.com",
+            "api-z2.qiniuapi.com",
             "iovip-z2.qbox.me"
         );
         return $regionHuanan;
@@ -129,7 +129,7 @@ class Region
             array('upload-na0.qiniup.com'),
             "rs-na0.qbox.me",
             "rsf-na0.qbox.me",
-            "api-na0.qiniu.com",
+            "api-na0.qiniuapi.com",
             "iovip-na0.qbox.me"
         );
         return $regionNorthAmerica;
@@ -144,7 +144,7 @@ class Region
             array('upload-as0.qiniup.com'),
             "rs-as0.qbox.me",
             "rsf-as0.qbox.me",
-            "api-as0.qiniu.com",
+            "api-as0.qiniuapi.com",
             "iovip-as0.qbox.me"
         );
         return $regionSingapore;
@@ -199,11 +199,11 @@ class Region
         if (strstr($Region->iovipHost, "z1") !== false) {
             $Region->rsHost = "rs-z1.qbox.me";
             $Region->rsfHost = "rsf-z1.qbox.me";
-            $Region->apiHost = "api-z1.qiniu.com";
+            $Region->apiHost = "api-z1.qiniuapi.com";
         } elseif (strstr($Region->iovipHost, "z2") !== false) {
             $Region->rsHost = "rs-z2.qbox.me";
             $Region->rsfHost = "rsf-z2.qbox.me";
-            $Region->apiHost = "api-z2.qiniu.com";
+            $Region->apiHost = "api-z2.qiniuapi.com";
         } elseif (strstr($Region->iovipHost, "cn-east-2") !== false) {
             $Region->rsHost = "rs-cn-east-2.qiniuapi.com";
             $Region->rsfHost = "rsf-cn-east-2.qiniuapi.com";
@@ -211,11 +211,11 @@ class Region
         } elseif (strstr($Region->iovipHost, "na0") !== false) {
             $Region->rsHost = "rs-na0.qbox.me";
             $Region->rsfHost = "rsf-na0.qbox.me";
-            $Region->apiHost = "api-na0.qiniu.com";
+            $Region->apiHost = "api-na0.qiniuapi.com";
         } elseif (strstr($Region->iovipHost, "as0") !== false) {
             $Region->rsHost = "rs-as0.qbox.me";
             $Region->rsfHost = "rsf-as0.qbox.me";
-            $Region->apiHost = "api-as0.qiniu.com";
+            $Region->apiHost = "api-as0.qiniuapi.com";
         } elseif (strstr($Region->iovipHost, "ap-northeast-1") !== false) {
             $Region->rsHost = "rs-ap-northeast-1.qiniuapi.com";
             $Region->rsfHost = "rsf-ap-northeast-1.qiniuapi.com";
@@ -223,7 +223,7 @@ class Region
         } else {
             $Region->rsHost = "rs.qbox.me";
             $Region->rsfHost = "rsf.qbox.me";
-            $Region->apiHost = "api.qiniu.com";
+            $Region->apiHost = "api.qiniuapi.com";
         }
 
         return $Region;

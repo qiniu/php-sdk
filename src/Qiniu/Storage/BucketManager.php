@@ -847,7 +847,7 @@ final class BucketManager
             $scheme = "https://";
         }
 
-        $url = $scheme . "api-" . $zone . ".qiniu.com/sisyphus/fetch?id=" . $id;
+        $url = $scheme . "api-" . $zone . ".qiniuapi.com/sisyphus/fetch?id=" . $id;
 
         list($ret, $err) = $this->getV2($url);
 

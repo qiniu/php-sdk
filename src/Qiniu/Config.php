@@ -8,7 +8,7 @@ final class Config
     const BLOCK_SIZE = 4194304; //4*1024*1024 分块上传块大小，该参数为接口规格，不能修改
 
     const RSF_HOST = 'rsf.qiniu.com';
-    const API_HOST = 'api.qiniu.com';
+    const API_HOST = 'api.qiniuapi.com';
     const RS_HOST = 'rs.qiniu.com';      //RS Host
     const UC_HOST = 'uc.qbox.me';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
