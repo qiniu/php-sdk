@@ -85,7 +85,7 @@ final class ResumeUploader
             return array(null, $err);
         }
 
-        $upHost = $config->getUpHost($accessKey, $bucket);
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
         if ($err != null) {
             throw new \Exception($err->message(), 1);
         }
@@ -197,7 +197,10 @@ final class ResumeUploader
                 if ($err != null) {
                     return array(null, $err);
                 }
-                $upHostBackup = $this->config->getUpBackupHost($accessKey, $bucket);
+                list($upHostBackup, $err) = $this->config->getUpBackupHostV2($accessKey, $bucket);
+                if ($err != null) {
+                    return array(null, $err);
+                }
                 $this->host = $upHostBackup;
             }
 
