@@ -1,6 +1,7 @@
 <?php
 namespace Qiniu;
 
+#[\AllowDynamicProperties]
 final class Config
 {
     const SDK_VER = '7.6.0';
