@@ -133,6 +133,9 @@ final class Client
 
     private static function escapeQuotes($str)
     {
+        if (is_null($str)) {
+            return null;
+        }
         $find = array("\\", "\"");
         $replace = array("\\\\", "\\\"");
         return str_replace($find, $replace, $str);
