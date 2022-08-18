@@ -24,6 +24,10 @@ final class Config
     public $useHTTPS;
     //BOOL 是否使用CDN加速上传域名
     public $useCdnDomains;
+    /**
+     * @var Region
+     */
+    public $zone;
     // Zone Cache
     private $regionCache;
 
