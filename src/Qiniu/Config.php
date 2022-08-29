@@ -57,6 +57,27 @@ final class Config
         return $scheme . $host;
     }
 
+    public function getUpHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        $host = $region->srcUpHosts[0];
+        if ($this->useCdnDomains === true) {
+            $host = $region->cdnUpHosts[0];
+        }
+
+        return array($scheme . $host, null);
+    }
+
     public function getUpBackupHost($accessKey, $bucket)
     {
         $region = $this->getRegion($accessKey, $bucket);
@@ -74,6 +95,27 @@ final class Config
         return $scheme . $host;
     }
 
+    public function getUpBackupHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        $host = $region->cdnUpHosts[0];
+        if ($this->useCdnDomains === true) {
+            $host = $region->srcUpHosts[0];
+        }
+
+        return array($scheme . $host, null);
+    }
+
     public function getRsHost($accessKey, $bucket)
     {
         $region = $this->getRegion($accessKey, $bucket);
@@ -85,6 +127,22 @@ final class Config
         }
 
         return $scheme . $region->rsHost;
+    }
+
+    public function getRsHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return array($scheme . $region->rsHost, null);
     }
 
     public function getRsfHost($accessKey, $bucket)
@@ -100,6 +158,22 @@ final class Config
         return $scheme . $region->rsfHost;
     }
 
+    public function getRsfHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return array($scheme . $region->rsfHost, null);
+    }
+
     public function getIovipHost($accessKey, $bucket)
     {
         $region = $this->getRegion($accessKey, $bucket);
@@ -113,6 +187,22 @@ final class Config
         return $scheme . $region->iovipHost;
     }
 
+    public function getIovipHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return array($scheme . $region->iovipHost, null);
+    }
+
     public function getApiHost($accessKey, $bucket)
     {
         $region = $this->getRegion($accessKey, $bucket);
@@ -124,6 +214,22 @@ final class Config
         }
 
         return $scheme . $region->apiHost;
+    }
+
+    public function getApiHostV2($accessKey, $bucket)
+    {
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        if ($err != null) {
+            return array(null, $err);
+        }
+
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return array($scheme . $region->apiHost, null);
     }
 
     private function getRegion($accessKey, $bucket)
@@ -146,5 +252,26 @@ final class Config
             $this->regionCache[$cacheId] = $region;
         }
         return $region;
+    }
+
+    private function getRegionV2($accessKey, $bucket)
+    {
+        $cacheId = "$accessKey:$bucket";
+
+        if (isset($this->regionCache[$cacheId])) {
+            $region = $this->regionCache[$cacheId];
+        } elseif (isset($this->zone)) {
+            $region = $this->zone;
+            $this->regionCache[$cacheId] = $region;
+        } else {
+            $region = Zone::queryZone($accessKey, $bucket);
+            if (is_array($region)) {
+                list($region, $err) = $region;
+                return array($region, $err);
+            }
+            $this->regionCache[$cacheId] = $region;
+        }
+
+        return array($region, null);
     }
 }

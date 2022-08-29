@@ -62,9 +62,8 @@ final class FormUploader
             return array(null, $err);
         }
 
-        try {
-            $upHost = $config->getUpHost($accessKey, $bucket);
-        } catch (\Exception $err) {
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
+        if ($err != null) {
             return array(null, $err);
         }
 
@@ -135,9 +134,8 @@ final class FormUploader
             return array(null, $err);
         }
 
-        try {
-            $upHost = $config->getUpHost($accessKey, $bucket);
-        } catch (\Exception $err) {
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
+        if ($err != null) {
             return array(null, $err);
         }
 
