@@ -56,7 +56,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
-        unlink($resumeFile);
 
         $domain = getenv('QINIU_TEST_DOMAIN');
         $response = Client::get("http://$domain/$key");
@@ -85,7 +84,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
-        unlink($resumeFile);
 
         $domain = getenv('QINIU_TEST_DOMAIN');
         $response = Client::get("http://$domain/$key");
@@ -166,7 +164,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("val_1", $ret['var_1']);
         $this->assertEquals("val_2", $ret['var_2']);
         $this->assertEquals(basename($tempFile), $ret['fname']);
-        unlink($resumeFile);
 
         $domain = getenv('QINIU_TEST_DOMAIN');
         $response = Client::get("http://$domain/$key");
@@ -208,7 +205,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
             );
             $this->assertNull($error);
             $this->assertNotNull($ret['hash']);
-            unlink($resumeFile);
 
             $domain = getenv('QINIU_TEST_DOMAIN');
             $response = Client::get("http://$domain/$key");
@@ -242,7 +238,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("val_1", $ret['var_1']);
         $this->assertEquals("val_2", $ret['var_2']);
         $this->assertEquals(basename($tempFile), $ret['fname']);
-        unlink($resumeFile);
 
         $domain = getenv('QINIU_TEST_DOMAIN');
         $response = Client::get("http://$domain/$key");
@@ -301,7 +296,6 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
                 $this->assertTrue($isRightException);
             }
 
-            unlink($resumeFile);
             unlink($tempFile);
         }
         $this->assertEquals(count($testInvalidVersions), $expectExceptionCount);

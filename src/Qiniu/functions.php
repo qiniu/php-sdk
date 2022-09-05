@@ -24,7 +24,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     /**
      * 计算输入流的crc32检验码
      *
-     * @param $data 待计算校验码的字符串
+     * @param $data string 待计算校验码的字符串
      *
      * @return string 输入字符串的crc32校验码
      */
