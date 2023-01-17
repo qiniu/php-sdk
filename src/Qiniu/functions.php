@@ -129,12 +129,12 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param string $key 待操作的文件名
      *
      * @return string  符合七牛API规格的数据格式
-     * @link http://developer.qiniu.com/docs/v6/api/reference/data-formats.html
+     * @link https://developer.qiniu.com/kodo/api/data-format
      */
-    function entry($bucket, $key)
+    function entry($bucket, $key = null)
     {
         $en = $bucket;
-        if (!empty($key)) {
+        if ($key !== null) {
             $en = $bucket . ':' . $key;
         }
         return base64_urlSafeEncode($en);
