@@ -232,46 +232,94 @@ final class Config
         return array($scheme . $region->apiHost, null);
     }
 
+
+    /**
+     * 从缓存中获取区域
+     *
+     * @param string $cacheId 缓存 ID
+     * @return null|Region
+     */
+    private function getRegionCache($cacheId)
+    {
+        if (isset($this->regionCache[$cacheId]) &&
+            isset($this->regionCache[$cacheId]["deadline"]) &&
+            time() < $this->regionCache[$cacheId]["deadline"]
+        ) {
+            return $this->regionCache[$cacheId]["region"];
+        }
+
+        return null;
+    }
+
+    /**
+     * 将区域设置到缓存中
+     *
+     * @param string $cacheId 缓存 ID
+     * @param Region $region 缓存 ID
+     * @return void
+     */
+    private function setRegionCache($cacheId, $region)
+    {
+        $this->regionCache[$cacheId] = array(
+            "region" => $region,
+        );
+        if (isset($region->ttl)) {
+            $this->regionCache[$cacheId]["deadline"] = time() + $region->ttl;
+        }
+    }
+
+    /**
+     * 从缓存中获取区域
+     *
+     * @param string $accessKey
+     * @param string $bucket
+     * @return Region
+     *
+     * @throws \Exception
+     */
     private function getRegion($accessKey, $bucket)
     {
-        $cacheId = "$accessKey:$bucket";
-
-        if (isset($this->regionCache[$cacheId])) {
-            $region = $this->regionCache[$cacheId];
-        } elseif (isset($this->zone)) {
-            $region = $this->zone;
-            $this->regionCache[$cacheId] = $region;
-        } else {
-            $region = Zone::queryZone($accessKey, $bucket);
-            if (is_array($region)) {
-                list($region, $err) = $region;
-                if ($err != null) {
-                    throw new \Exception($err->message());
-                }
-            }
-            $this->regionCache[$cacheId] = $region;
+        if (isset($this->zone)) {
+            return $this->zone;
         }
+
+        $cacheId = "$accessKey:$bucket";
+        $regionCache = $this->getRegionCache($cacheId);
+        if ($regionCache) {
+            return $regionCache;
+        }
+
+        $region = Zone::queryZone($accessKey, $bucket);
+        if (is_array($region)) {
+            list($region, $err) = $region;
+            if ($err != null) {
+                throw new \Exception($err->message());
+            }
+        }
+
+        $this->setRegionCache($cacheId, $region);
         return $region;
     }
 
     private function getRegionV2($accessKey, $bucket)
     {
-        $cacheId = "$accessKey:$bucket";
-
-        if (isset($this->regionCache[$cacheId])) {
-            $region = $this->regionCache[$cacheId];
-        } elseif (isset($this->zone)) {
-            $region = $this->zone;
-            $this->regionCache[$cacheId] = $region;
-        } else {
-            $region = Zone::queryZone($accessKey, $bucket);
-            if (is_array($region)) {
-                list($region, $err) = $region;
-                return array($region, $err);
-            }
-            $this->regionCache[$cacheId] = $region;
+        if (isset($this->zone)) {
+            return array($this->zone, null);
         }
 
+        $cacheId = "$accessKey:$bucket";
+        $regionCache = $this->getRegionCache($cacheId);
+        if (isset($regionCache)) {
+            return array($regionCache, null);
+        }
+
+        $region = Zone::queryZone($accessKey, $bucket);
+        if (is_array($region)) {
+            list($region, $err) = $region;
+            return array($region, $err);
+        }
+
+        $this->setRegionCache($cacheId, $region);
         return array($region, null);
     }
 }
