@@ -96,7 +96,7 @@ final class BucketManager
      */
     public function domains($bucket)
     {
-        return $this->apiGet($bucket, '/v6/domain/list?tbl=' . $bucket);
+        return $this->ucGet('/v2/domains?tbl=' . $bucket);
     }
 
     /**
