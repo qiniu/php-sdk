@@ -58,5 +58,19 @@ namespace Qiniu\Tests {
             $this->assertEquals(631, $err->code());
             $this->assertNull($apiHost);
         }
+
+        public function testSetUcHost()
+        {
+            $conf = new Config();
+            $this->assertEquals("http://uc.qbox.me", $conf->getUcHost());
+            $conf->setUcHost("uc.example.com");
+            $this->assertEquals("http://uc.example.com", $conf->getUcHost());
+
+            $conf = new Config();
+            $conf->useHTTPS = true;
+            $this->assertEquals("https://uc.qbox.me", $conf->getUcHost());
+            $conf->setUcHost("uc.example.com");
+            $this->assertEquals("https://uc.example.com", $conf->getUcHost());
+        }
     }
 }

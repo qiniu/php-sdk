@@ -30,6 +30,8 @@ final class Config
     public $zone;
     // Zone Cache
     private $regionCache;
+    // UC Host
+    private $ucHost;
 
     // 构造函数
     public function __construct(Region $z = null)
@@ -38,6 +40,23 @@ final class Config
         $this->useHTTPS = false;
         $this->useCdnDomains = false;
         $this->regionCache = array();
+        $this->ucHost = Config::UC_HOST;
+    }
+
+    public function setUcHost($ucHost)
+    {
+        $this->ucHost = $ucHost;
+    }
+
+    public function getUcHost()
+    {
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $this->ucHost;
     }
 
     public function getUpHost($accessKey, $bucket)
@@ -289,7 +308,7 @@ final class Config
             return $regionCache;
         }
 
-        $region = Zone::queryZone($accessKey, $bucket);
+        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
         if (is_array($region)) {
             list($region, $err) = $region;
             if ($err != null) {
@@ -313,7 +332,7 @@ final class Config
             return array($regionCache, null);
         }
 
-        $region = Zone::queryZone($accessKey, $bucket);
+        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
         if (is_array($region)) {
             list($region, $err) = $region;
             return array($region, $err);

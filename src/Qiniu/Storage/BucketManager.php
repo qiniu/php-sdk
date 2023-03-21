@@ -39,7 +39,7 @@ final class BucketManager
         if ($shared === true) {
             $includeShared = "true";
         }
-        return $this->getV2($this->getUcHost(). '/buckets?shared=' . $includeShared);
+        return $this->getV2($this->config->getUcHost(). '/buckets?shared=' . $includeShared);
     }
 
     /**
@@ -71,7 +71,7 @@ final class BucketManager
     public function createBucket($name, $region = 'z0')
     {
         $path = '/mkbucketv3/' . $name . '/region/' . $region;
-        return $this->postV2($this->getUcHost() . $path, null);
+        return $this->postV2($this->config->getUcHost() . $path, null);
     }
 
     /**
@@ -85,7 +85,7 @@ final class BucketManager
     public function deleteBucket($name)
     {
         $path = '/drop/' . $name;
-        return $this->postV2($this->getUcHost() . $path, null);
+        return $this->postV2($this->config->getUcHost() . $path, null);
     }
 
     /**
@@ -994,15 +994,6 @@ final class BucketManager
         return $this->rsPost($bucket, $path);
     }
 
-    private function getUcHost()
-    {
-        $scheme = "http://";
-        if ($this->config->useHTTPS === true) {
-            $scheme = "https://";
-        }
-        return $scheme . Config::UC_HOST;
-    }
-
     private function rsfGet($bucket, $path)
     {
         list($host, $err) = $this->config->getRsfHostV2($this->auth->getAccessKey(), $bucket);
@@ -1061,13 +1052,13 @@ final class BucketManager
 
     private function ucGet($path)
     {
-        $url = $this->getUcHost() . $path;
+        $url = $this->config->getUcHost() . $path;
         return $this->getV2($url);
     }
 
     private function ucPost($path, $body = null)
     {
-        $url = $this->getUcHost() . $path;
+        $url = $this->config->getUcHost() . $path;
         return $this->postV2($url, $body);
     }
 

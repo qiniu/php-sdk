@@ -169,12 +169,15 @@ class Region
     }
 
     /*
-     * GET /v2/query?ak=<ak>&&bucket=<bucket>
+     * GET /v2/query?ak=<ak>&bucket=<bucket>
      **/
-    public static function queryRegion($ak, $bucket)
+    public static function queryRegion($ak, $bucket, $ucHost = null)
     {
         $Region = new Region();
-        $url = 'https://' . Config::UC_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
+        if (!$ucHost) {
+            $ucHost = "https://" . Config::UC_HOST;
+        }
+        $url = $ucHost . '/v2/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
@@ -200,18 +203,18 @@ class Region
         }
 
         //set specific hosts
-        if (isset($r['rs']['acc']['main'])) {
-            $Region->rsHost = $r['rs']['acc']['main'];
+        if (isset($r['rs']['acc']['main']) && count($r['rs']['acc']['main']) > 0) {
+            $Region->rsHost = $r['rs']['acc']['main'][0];
         } else {
             $Region->rsHost = Config::RS_HOST;
         }
-        if (isset($r['rs']['rsf']['main'])) {
-            $Region->rsfHost = $r['rs']['rsf']['main'];
+        if (isset($r['rsf']['acc']['main']) && count($r['rsf']['acc']['main']) > 0) {
+            $Region->rsfHost = $r['rsf']['acc']['main'][0];
         } else {
             $Region->rsfHost = Config::RSF_HOST;
         }
-        if (isset($r['rs']['api']['main'])) {
-            $Region->apiHost = $r['rs']['api']['main'];
+        if (isset($r['api']['acc']['main']) && count($r['api']['acc']['main']) > 0) {
+            $Region->apiHost = $r['api']['acc']['main'][0];
         } else {
             $Region->apiHost = Config::API_HOST;
         }
