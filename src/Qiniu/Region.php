@@ -173,55 +173,46 @@ class Region
      **/
     public static function queryRegion($ak, $bucket, $ucHost = null)
     {
-        $Region = new Region();
+        $region = new Region();
         if (!$ucHost) {
             $ucHost = "https://" . Config::UC_HOST;
         }
-        $url = $ucHost . '/v2/query' . "?ak=$ak&bucket=$bucket";
+        $url = $ucHost . '/v4/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        //parse Region;
-
-        $iovipHost = $r['io']['src']['main'][0];
-        $Region->iovipHost = $iovipHost;
-        $accMain = $r['up']['acc']['main'][0];
-        array_push($Region->cdnUpHosts, $accMain);
-        if (isset($r['up']['acc']['backup'])) {
-            foreach ($r['up']['acc']['backup'] as $key => $value) {
-                array_push($Region->cdnUpHosts, $value);
-            }
-        }
-        $srcMain = $r['up']['src']['main'][0];
-        array_push($Region->srcUpHosts, $srcMain);
-        if (isset($r['up']['src']['backup'])) {
-            foreach ($r['up']['src']['backup'] as $key => $value) {
-                array_push($Region->srcUpHosts, $value);
-            }
+        if (!is_array($r["hosts"]) || count($r["hosts"]) == 0) {
+            return array(null, new Error($url, $ret));
         }
 
-        //set specific hosts
-        if (isset($r['rs']['acc']['main']) && count($r['rs']['acc']['main']) > 0) {
-            $Region->rsHost = $r['rs']['acc']['main'][0];
+        // parse region;
+        $regionHost = $r["hosts"][0];
+        $region->cdnUpHosts = array_merge($region->cdnUpHosts, $regionHost['up']['domains']);
+        $region->srcUpHosts = array_merge($region->srcUpHosts, $regionHost['up']['domains']);
+
+        // set specific hosts
+        $region->iovipHost = $regionHost['io']['domains'][0];
+        if (isset($regionHost['rs']['domains']) && count($regionHost['rs']['domains']) > 0) {
+            $region->rsHost = $regionHost['rs']['domains'][0];
         } else {
-            $Region->rsHost = Config::RS_HOST;
+            $region->rsHost = Config::RS_HOST;
         }
-        if (isset($r['rsf']['acc']['main']) && count($r['rsf']['acc']['main']) > 0) {
-            $Region->rsfHost = $r['rsf']['acc']['main'][0];
+        if (isset($regionHost['rsf']['domains']) && count($regionHost['rsf']['domains']) > 0) {
+            $region->rsfHost = $regionHost['rsf']['domains'][0];
         } else {
-            $Region->rsfHost = Config::RSF_HOST;
+            $region->rsfHost = Config::RSF_HOST;
         }
-        if (isset($r['api']['acc']['main']) && count($r['api']['acc']['main']) > 0) {
-            $Region->apiHost = $r['api']['acc']['main'][0];
+        if (isset($regionHost['api']['domains']) && count($regionHost['api']['domains']) > 0) {
+            $region->apiHost = $regionHost['api']['domains'][0];
         } else {
-            $Region->apiHost = Config::API_HOST;
+            $region->apiHost = Config::API_HOST;
         }
 
         // set ttl
-        $Region->ttl = $r['ttl'];
+        $region->ttl = $regionHost['ttl'];
 
-        return $Region;
+        return $region;
     }
 }
