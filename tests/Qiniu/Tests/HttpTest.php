@@ -32,6 +32,15 @@ class HttpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(-1, $response->statusCode);
     }
 
+    public function testGetRedirect()
+    {
+        $response = Client::get('localhost:9000/redirect.php');
+        $this->assertEquals(200, $response->statusCode);
+        $this->assertEquals('application/json;charset=UTF-8', $response->normalizedHeaders['Content-Type']);
+        $respData = $response->json();
+        $this->assertEquals('ok', $respData['msg']);
+    }
+
     public function testDelete()
     {
         $response = Client::delete('uc.qbox.me/bucketTagging', array());
