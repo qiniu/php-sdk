@@ -1,9 +1,8 @@
 name: PHP CI with Composer
 
-on:
-  push:
-    paths-ignore:
-      - '**.md'
+on: [push, pull_request]
+
+concurrency: keep-only-one
 
 jobs:
   build:

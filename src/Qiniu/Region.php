@@ -19,6 +19,8 @@ class Region
     public $apiHost;
     //IOVIP域名
     public $iovipHost;
+    // TTL
+    public $ttl;
 
     //构造一个Region对象
     public function __construct(
@@ -27,7 +29,8 @@ class Region
         $rsHost = "rs-z0.qiniuapi.com",
         $rsfHost = "rsf-z0.qiniuapi.com",
         $apiHost = "api.qiniuapi.com",
-        $iovipHost = null
+        $iovipHost = null,
+        $ttl = null
     ) {
 
         $this->srcUpHosts = $srcUpHosts;
@@ -36,6 +39,7 @@ class Region
         $this->rsfHost = $rsfHost;
         $this->apiHost = $apiHost;
         $this->iovipHost = $iovipHost;
+        $this->ttl = $ttl;
     }
 
     //华东机房
@@ -165,67 +169,50 @@ class Region
     }
 
     /*
-     * GET /v2/query?ak=<ak>&&bucket=<bucket>
+     * GET /v2/query?ak=<ak>&bucket=<bucket>
      **/
-    public static function queryRegion($ak, $bucket)
+    public static function queryRegion($ak, $bucket, $ucHost = null)
     {
-        $Region = new Region();
-        $url = Config::API_HOST . '/v2/query' . "?ak=$ak&bucket=$bucket";
+        $region = new Region();
+        if (!$ucHost) {
+            $ucHost = "https://" . Config::UC_HOST;
+        }
+        $url = $ucHost . '/v4/query' . "?ak=$ak&bucket=$bucket";
         $ret = Client::Get($url);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();
-        //parse Region;
-
-        $iovipHost = $r['io']['src']['main'][0];
-        $Region->iovipHost = $iovipHost;
-        $accMain = $r['up']['acc']['main'][0];
-        array_push($Region->cdnUpHosts, $accMain);
-        if (isset($r['up']['acc']['backup'])) {
-            foreach ($r['up']['acc']['backup'] as $key => $value) {
-                array_push($Region->cdnUpHosts, $value);
-            }
-        }
-        $srcMain = $r['up']['src']['main'][0];
-        array_push($Region->srcUpHosts, $srcMain);
-        if (isset($r['up']['src']['backup'])) {
-            foreach ($r['up']['src']['backup'] as $key => $value) {
-                array_push($Region->srcUpHosts, $value);
-            }
+        if (!is_array($r["hosts"]) || count($r["hosts"]) == 0) {
+            return array(null, new Error($url, $ret));
         }
 
-        //set specific hosts
-        if (strstr($Region->iovipHost, "z1") !== false) {
-            $Region->rsHost = "rs-z1.qiniuapi.com";
-            $Region->rsfHost = "rsf-z1.qiniuapi.com";
-            $Region->apiHost = "api-z1.qiniuapi.com";
-        } elseif (strstr($Region->iovipHost, "z2") !== false) {
-            $Region->rsHost = "rs-z2.qiniuapi.com";
-            $Region->rsfHost = "rsf-z2.qiniuapi.com";
-            $Region->apiHost = "api-z2.qiniuapi.com";
-        } elseif (strstr($Region->iovipHost, "cn-east-2") !== false) {
-            $Region->rsHost = "rs-cn-east-2.qiniuapi.com";
-            $Region->rsfHost = "rsf-cn-east-2.qiniuapi.com";
-            $Region->apiHost = "api-cn-east-2.qiniuapi.com";
-        } elseif (strstr($Region->iovipHost, "na0") !== false) {
-            $Region->rsHost = "rs-na0.qiniuapi.com";
-            $Region->rsfHost = "rsf-na0.qiniuapi.com";
-            $Region->apiHost = "api-na0.qiniuapi.com";
-        } elseif (strstr($Region->iovipHost, "as0") !== false) {
-            $Region->rsHost = "rs-as0.qiniuapi.com";
-            $Region->rsfHost = "rsf-as0.qiniuapi.com";
-            $Region->apiHost = "api-as0.qiniuapi.com";
-        } elseif (strstr($Region->iovipHost, "ap-northeast-1") !== false) {
-            $Region->rsHost = "rs-ap-northeast-1.qiniuapi.com";
-            $Region->rsfHost = "rsf-ap-northeast-1.qiniuapi.com";
-            $Region->apiHost = "api-ap-northeast-1.qiniuapi.com";
+        // parse region;
+        $regionHost = $r["hosts"][0];
+        $region->cdnUpHosts = array_merge($region->cdnUpHosts, $regionHost['up']['domains']);
+        $region->srcUpHosts = array_merge($region->srcUpHosts, $regionHost['up']['domains']);
+
+        // set specific hosts
+        $region->iovipHost = $regionHost['io']['domains'][0];
+        if (isset($regionHost['rs']['domains']) && count($regionHost['rs']['domains']) > 0) {
+            $region->rsHost = $regionHost['rs']['domains'][0];
         } else {
-            $Region->rsHost = "rs.qiniuapi.com";
-            $Region->rsfHost = "rsf.qiniuapi.com";
-            $Region->apiHost = "api.qiniuapi.com";
+            $region->rsHost = Config::RS_HOST;
+        }
+        if (isset($regionHost['rsf']['domains']) && count($regionHost['rsf']['domains']) > 0) {
+            $region->rsfHost = $regionHost['rsf']['domains'][0];
+        } else {
+            $region->rsfHost = Config::RSF_HOST;
+        }
+        if (isset($regionHost['api']['domains']) && count($regionHost['api']['domains']) > 0) {
+            $region->apiHost = $regionHost['api']['domains'][0];
+        } else {
+            $region->apiHost = Config::API_HOST;
         }
 
-        return $Region;
+        // set ttl
+        $region->ttl = $regionHost['ttl'];
+
+        return $region;
     }
 }

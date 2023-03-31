@@ -27,7 +27,6 @@ namespace Qiniu\Tests {
                 $hasException = true;
             }
             $this->assertFalse($hasException);
-            $this->assertEquals('http://api.qiniuapi.com', $apiHost);
         }
 
         public function testGetApiHostErrored()
@@ -47,7 +46,6 @@ namespace Qiniu\Tests {
             $conf = new Config();
             list($apiHost, $err) = $conf->getApiHostV2($this->accessKey, $this->bucketName);
             $this->assertNull($err);
-            $this->assertEquals('http://api.qiniuapi.com', $apiHost);
         }
 
         public function testGetApiHostV2Errored()
@@ -57,6 +55,20 @@ namespace Qiniu\Tests {
             $this->assertNotNull($err->code());
             $this->assertEquals(631, $err->code());
             $this->assertNull($apiHost);
+        }
+
+        public function testSetUcHost()
+        {
+            $conf = new Config();
+            $this->assertEquals("http://uc.qbox.me", $conf->getUcHost());
+            $conf->setUcHost("uc.example.com");
+            $this->assertEquals("http://uc.example.com", $conf->getUcHost());
+
+            $conf = new Config();
+            $conf->useHTTPS = true;
+            $this->assertEquals("https://uc.qbox.me", $conf->getUcHost());
+            $conf->setUcHost("uc.example.com");
+            $this->assertEquals("https://uc.example.com", $conf->getUcHost());
         }
     }
 }
