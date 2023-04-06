@@ -67,10 +67,6 @@ namespace Qiniu\Tests {
             unset($_SERVER['override_qiniu_auth_time']);
         }
 
-        public function testVerifyCallback()
-        {
-        }
-
         public function testSignQiniuAuthorization()
         {
             $auth = new Auth("ak", "sk");
