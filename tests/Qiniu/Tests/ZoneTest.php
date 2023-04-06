@@ -19,7 +19,10 @@ class ZoneTest extends TestCase
     protected $bucketNameAS;
 
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpZoneAndBucket()
     {
         global $bucketName;
         $this->bucketName = $bucketName;

@@ -16,7 +16,10 @@ class BucketTest extends TestCase
     protected $key2;
     protected $customCallbackURL;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpBucketManager()
     {
         global $bucketName;
         global $key;

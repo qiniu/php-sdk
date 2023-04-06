@@ -13,7 +13,10 @@ class FormUpTest extends TestCase
     protected $auth;
     protected $cfg;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpConfigAndBucket()
     {
         global $bucketName;
         $this->bucketName = $bucketName;

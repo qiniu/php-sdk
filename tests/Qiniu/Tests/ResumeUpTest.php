@@ -16,7 +16,10 @@ class ResumeUpTest extends TestCase
 {
     private static $keyToDelete = array();
 
-    public static function tearDownAfterClass()
+    /**
+     * @afterClass
+     */
+    public static function cleanupTestData()
     {
         global $bucketName;
         global $testAuth;
@@ -30,7 +33,10 @@ class ResumeUpTest extends TestCase
     protected $bucketName;
     protected $auth;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpAuthAndBucket()
     {
         global $bucketName;
         $this->bucketName = $bucketName;
@@ -171,8 +177,9 @@ class ResumeUpTest extends TestCase
         $response = Client::get("http://$domain/$key");
         $this->assertEquals(200, $response->statusCode);
         $this->assertEquals(md5_file($tempFile, true), md5($response->body(), true));
-        $this->assertEquals("val_1", $response->headers()["X-Qn-Meta-M1"]);
-        $this->assertEquals("val_2", $response->headers()["X-Qn-Meta-M2"]);
+        $headers = $response->headers();
+        $this->assertEquals("val_1", $headers["X-Qn-Meta-M1"]);
+        $this->assertEquals("val_2", $headers["X-Qn-Meta-M2"]);
         unlink($tempFile);
     }
 
@@ -245,8 +252,9 @@ class ResumeUpTest extends TestCase
         $response = Client::get("http://$domain/$key");
         $this->assertEquals(200, $response->statusCode);
         $this->assertEquals(md5_file($tempFile, true), md5($response->body(), true));
-        $this->assertEquals("val_1", $response->headers()["X-Qn-Meta-M1"]);
-        $this->assertEquals("val_2", $response->headers()["X-Qn-Meta-M2"]);
+        $headers = $response->headers();
+        $this->assertEquals("val_1", $headers["X-Qn-Meta-M1"]);
+        $this->assertEquals("val_2", $headers["X-Qn-Meta-M2"]);
         unlink($tempFile);
     }
 

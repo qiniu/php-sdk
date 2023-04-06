@@ -10,7 +10,10 @@ namespace Qiniu\Tests {
         protected $accessKey;
         protected $bucketName;
 
-        protected function setUp()
+        /**
+         * @before
+         */
+        protected function setUpAkAndBucket()
         {
             global $accessKey;
             $this->accessKey = $accessKey;

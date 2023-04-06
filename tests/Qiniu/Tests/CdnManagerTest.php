@@ -26,7 +26,10 @@ class CdnManagerTest extends TestCase
     protected $customDomain;
     protected $customDomain2;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpCdnManager()
     {
         global $testAuth;
         $this->cdnManager = new CdnManager($testAuth);
