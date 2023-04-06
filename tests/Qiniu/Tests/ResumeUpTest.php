@@ -1,6 +1,8 @@
 <?php
 namespace Qiniu\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
 use Qiniu\Region;
 use Qiniu\Storage\BucketManager;
@@ -10,7 +12,7 @@ use Qiniu\Http\Client;
 use Qiniu\Config;
 use Qiniu\Zone;
 
-class ResumeUpTest extends \PHPUnit_Framework_TestCase
+class ResumeUpTest extends TestCase
 {
     private static $keyToDelete = array();
 

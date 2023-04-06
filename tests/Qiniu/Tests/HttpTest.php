@@ -1,10 +1,12 @@
 <?php
 namespace Qiniu\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 use Qiniu\Http\Client;
 use Qiniu\Http\RequestOptions;
 
-class HttpTest extends \PHPUnit_Framework_TestCase
+class HttpTest extends TestCase
 {
     public function testGet()
     {

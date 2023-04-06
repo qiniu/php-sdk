@@ -1,9 +1,11 @@
 <?php
 
 namespace Qiniu\Tests {
+    use PHPUnit\Framework\TestCase;
+
     use Qiniu\Config;
 
-    class ConfigTest extends \PHPUnit_Framework_TestCase
+    class ConfigTest extends TestCase
     {
         protected $accessKey;
         protected $bucketName;
