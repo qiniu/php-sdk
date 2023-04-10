@@ -1,6 +1,6 @@
 <?php
-// phpcs:disable
-// PSR1.Classes.ClassDeclaration.MultipleClasses
+// @codingStandardsIgnoreStart
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
 
 namespace Qiniu\Enum;
 
@@ -9,6 +9,8 @@ use MyCLabs\Enum\Enum;
 if (method_exists("MyCLabs\\Enum\\Enum", "from")) {
     abstract class QiniuEnum extends Enum
     {
+        // @codingStandardsIgnoreEnd
+        // @codingStandardsIgnoreStart
     }
 } else {
     /**
@@ -18,6 +20,7 @@ if (method_exists("MyCLabs\\Enum\\Enum", "from")) {
      */
     abstract class QiniuEnum extends Enum
     {
+        // @codingStandardsIgnoreEnd
         /**
          * @param mixed $value
          * @return static
@@ -45,5 +48,6 @@ if (method_exists("MyCLabs\\Enum\\Enum", "from")) {
 
             return $key;
         }
+        // @codingStandardsIgnoreStart
     }
 }

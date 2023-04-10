@@ -278,4 +278,23 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $bucket = $scopeItems[0];
         return array($accessKey, $bucket, null);
     }
+
+    // polyfill ucwords for php version < 5.4.32
+    if (phpversion() < "5.4.32") {
+        function ucwords($str, $delimiters = " \t\r\n\f\v")
+        {
+            $delims = preg_split('//u', $delimiters, -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($delims as $delim) {
+                $str = implode($delim, array_map('ucfirst', explode($delim, $str)));
+            }
+
+            return $str;
+        }
+    } else {
+        function ucwords($str, $delimiters)
+        {
+            return \ucwords($str, $delimiters);
+        }
+    }
 }

@@ -162,7 +162,7 @@ class ResumeUpTest extends TestCase
             $token,
             $key,
             $tempFile,
-            ["x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"],
+            array("x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"),
             'application/octet-stream',
             false,
             $resumeFile
@@ -236,7 +236,7 @@ class ResumeUpTest extends TestCase
             $token,
             $key,
             $tempFile,
-            ["x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"],
+            array("x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"),
             'application/octet-stream',
             false,
             $resumeFile,
