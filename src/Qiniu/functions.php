@@ -279,8 +279,13 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return array($accessKey, $bucket, null);
     }
 
-    // polyfill ucwords for php version < 5.4.32
-    if (version_compare(phpversion(), "5.4.32") < 0) {
+    // polyfill ucwords for `php version < 5.4.32` or `5.5.0 <= php version < 5.5.16`
+    if (version_compare(phpversion(), "5.4.32") < 0 ||
+        (
+            version_compare(phpversion(), "5.5.0") >= 0 &&
+            version_compare(phpversion(), "5.5.16") < 0
+        )
+    ) {
         function ucwords($str, $delimiters = " \t\r\n\f\v")
         {
             $delims = preg_split('//u', $delimiters, -1, PREG_SPLIT_NO_EMPTY);
