@@ -280,7 +280,7 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
     }
 
     // polyfill ucwords for php version < 5.4.32
-    if (phpversion() < "5.4.32") {
+    if (version_compare(phpversion(), "5.4.32") < 0) {
         function ucwords($str, $delimiters = " \t\r\n\f\v")
         {
             $delims = preg_split('//u', $delimiters, -1, PREG_SPLIT_NO_EMPTY);
