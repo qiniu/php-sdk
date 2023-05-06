@@ -705,7 +705,11 @@ final class BucketManager
      *
      * @param string $bucket 待操作资源所在空间
      * @param string $key 待操作资源文件名
-     * @param int $fileType 0 表示标准存储；1 表示低频存储；2 表示归档存储；3 表示深度归档存储
+     * @param int $fileType 对象存储类型
+     *   0 表示标准存储；
+     *   1 表示低频存储；
+     *   2 表示归档存储；
+     *   3 表示深度归档存储；
      *
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/3710/chtype
@@ -931,10 +935,18 @@ final class BucketManager
      *
      * @param string $bucket 空间名
      * @param string $key 目标资源
-     * @param int $to_line_after_days 多少天后将文件转为低频存储，设置为 -1 表示取消已设置的转低频存储的生命周期规则， 0 表示不修改转低频生命周期规则。
-     * @param int $to_archive_after_days 多少天后将文件转为归档存储，设置为 -1 表示取消已设置的转归档存储的生命周期规则， 0 表示不修改转归档生命周期规则。
-     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储，设置为 -1 表示取消已设置的转深度归档存储的生命周期规则， 0 表示不修改转深度归档生命周期规则。
-     * @param int $delete_after_days 多少天后将文件删除，设置为 -1 表示取消已设置的删除存储的生命周期规则， 0 表示不修改删除存储的生命周期规则。
+     * @param int $to_line_after_days 多少天后将文件转为低频存储。
+     *   -1 表示取消已设置的转低频存储的生命周期规则；
+     *   0 表示不修改转低频生命周期规则。
+     * @param int $to_archive_after_days 多少天后将文件转为归档存储。
+     *   -1 表示取消已设置的转归档存储的生命周期规则；
+     *   0 表示不修改转归档生命周期规则。
+     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储。
+     *   -1 表示取消已设置的转深度归档存储的生命周期规则；
+     *   0 表示不修改转深度归档生命周期规则。
+     * @param int $delete_after_days 多少天后将文件删除。
+     *   -1 表示取消已设置的删除存储的生命周期规则；
+     *   0 表示不修改删除存储的生命周期规则。
      * @return array
      */
     public function setObjectLifecycle(
@@ -961,11 +973,20 @@ final class BucketManager
      *
      * @param string $bucket 空间名
      * @param string $key 目标资源
-     * @param int $to_line_after_days 多少天后将文件转为低频存储，设置为 -1 表示取消已设置的转低频存储的生命周期规则， 0 表示不修改转低频生命周期规则。
-     * @param int $to_archive_after_days 多少天后将文件转为归档存储，设置为 -1 表示取消已设置的转归档存储的生命周期规则， 0 表示不修改转归档生命周期规则。
-     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储，设置为 -1 表示取消已设置的转深度归档存储的生命周期规则， 0 表示不修改转深度归档生命周期规则。
-     * @param int $delete_after_days 多少天后将文件删除，设置为 -1 表示取消已设置的删除存储的生命周期规则， 0 表示不修改删除存储的生命周期规则。
-     * @param array<string, mixed> $cond 匹配条件，只有条件匹配才会设置成功，目前支持：hash、mime、fsize、putTime
+     * @param int $to_line_after_days 多少天后将文件转为低频存储。
+     *   设置为 -1 表示取消已设置的转低频存储的生命周期规则；
+     *   0 表示不修改转低频生命周期规则。
+     * @param int $to_archive_after_days 多少天后将文件转为归档存储。
+     *   -1 表示取消已设置的转归档存储的生命周期规则；
+     *   0 表示不修改转归档生命周期规则。
+     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储。
+     *   -1 表示取消已设置的转深度归档存储的生命周期规则；
+     *   0 表示不修改转深度归档生命周期规则。
+     * @param int $delete_after_days 多少天后将文件删除。
+     *   -1 表示取消已设置的删除存储的生命周期规则；
+     *   0 表示不修改删除存储的生命周期规则。
+     * @param array<string, mixed> $cond 匹配条件，只有条件匹配才会设置成功。
+     *   目前支持：hash、mime、fsize、putTime
      * @return array
      */
     public function setObjectLifecycleWithCond(
@@ -1124,10 +1145,18 @@ final class BucketManager
     /**
      * @param string $bucket 空间名
      * @param array<string> $keys 目标资源
-     * @param int $to_line_after_days 多少天后将文件转为低频存储，设置为 -1 表示取消已设置的转低频存储的生命周期规则， 0 表示不修改转低频生命周期规则。
-     * @param int $to_archive_after_days 多少天后将文件转为归档存储，设置为 -1 表示取消已设置的转归档存储的生命周期规则， 0 表示不修改转归档生命周期规则。
-     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储，设置为 -1 表示取消已设置的转深度归档存储的生命周期规则， 0 表示不修改转深度归档生命周期规则。
-     * @param int $delete_after_days 多少天后将文件删除，设置为 -1 表示取消已设置的删除存储的生命周期规则， 0 表示不修改删除存储的生命周期规则。
+     * @param int $to_line_after_days 多少天后将文件转为低频存储。
+     *   -1 表示取消已设置的转低频存储的生命周期规则；
+     *   0 表示不修改转低频生命周期规则。
+     * @param int $to_archive_after_days 多少天后将文件转为归档存储。
+     *   -1 表示取消已设置的转归档存储的生命周期规则；
+     *   0 表示不修改转归档生命周期规则。
+     * @param int $to_deep_archive_after_days 多少天后将文件转为深度归档存储。
+     *   -1 表示取消已设置的转深度归档存储的生命周期规则；
+     *   0 表示不修改转深度归档生命周期规则。
+     * @param int $delete_after_days 多少天后将文件删除。
+     *   -1 表示取消已设置的删除存储的生命周期规则；
+     *   0 表示不修改删除存储的生命周期规则。
      *
      * @retrun array<string>
      */

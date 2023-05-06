@@ -1,14 +1,20 @@
 <?php
 
 namespace Qiniu\Tests {
+
+    use PHPUnit\Framework\TestCase;
+
     use Qiniu\Config;
 
-    class ConfigTest extends \PHPUnit_Framework_TestCase
+    class ConfigTest extends TestCase
     {
         protected $accessKey;
         protected $bucketName;
 
-        protected function setUp()
+        /**
+         * @before
+         */
+        protected function setUpAkAndBucket()
         {
             global $accessKey;
             $this->accessKey = $accessKey;

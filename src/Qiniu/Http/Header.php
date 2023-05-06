@@ -83,7 +83,7 @@ class Header implements \ArrayAccess, \IteratorAggregate, \Countable
             return $key;
         }
 
-        return ucwords(strtolower($key), '-');
+        return \Qiniu\ucwords(strtolower($key), '-');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 namespace Qiniu\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 use phpDocumentor\Reflection\DocBlock\Tags\Version;
 use Qiniu\Region;
 use Qiniu\Storage\BucketManager;
@@ -10,11 +12,14 @@ use Qiniu\Http\Client;
 use Qiniu\Config;
 use Qiniu\Zone;
 
-class ResumeUpTest extends \PHPUnit_Framework_TestCase
+class ResumeUpTest extends TestCase
 {
     private static $keyToDelete = array();
 
-    public static function tearDownAfterClass()
+    /**
+     * @afterClass
+     */
+    public static function cleanupTestData()
     {
         global $bucketName;
         global $testAuth;
@@ -28,7 +33,10 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
     protected $bucketName;
     protected $auth;
 
-    protected function setUp()
+    /**
+     * @before
+     */
+    protected function setUpAuthAndBucket()
     {
         global $bucketName;
         $this->bucketName = $bucketName;
@@ -154,7 +162,7 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
             $token,
             $key,
             $tempFile,
-            ["x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"],
+            array("x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"),
             'application/octet-stream',
             false,
             $resumeFile
@@ -169,8 +177,9 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $response = Client::get("http://$domain/$key");
         $this->assertEquals(200, $response->statusCode);
         $this->assertEquals(md5_file($tempFile, true), md5($response->body(), true));
-        $this->assertEquals("val_1", $response->headers()["X-Qn-Meta-M1"]);
-        $this->assertEquals("val_2", $response->headers()["X-Qn-Meta-M2"]);
+        $headers = $response->headers();
+        $this->assertEquals("val_1", $headers["X-Qn-Meta-M1"]);
+        $this->assertEquals("val_2", $headers["X-Qn-Meta-M2"]);
         unlink($tempFile);
     }
 
@@ -227,7 +236,7 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
             $token,
             $key,
             $tempFile,
-            ["x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"],
+            array("x:var_1" => "val_1", "x:var_2" => "val_2", "x-qn-meta-m1" => "val_1", "x-qn-meta-m2" => "val_2"),
             'application/octet-stream',
             false,
             $resumeFile,
@@ -243,8 +252,9 @@ class ResumeUpTest extends \PHPUnit_Framework_TestCase
         $response = Client::get("http://$domain/$key");
         $this->assertEquals(200, $response->statusCode);
         $this->assertEquals(md5_file($tempFile, true), md5($response->body(), true));
-        $this->assertEquals("val_1", $response->headers()["X-Qn-Meta-M1"]);
-        $this->assertEquals("val_2", $response->headers()["X-Qn-Meta-M2"]);
+        $headers = $response->headers();
+        $this->assertEquals("val_1", $headers["X-Qn-Meta-M1"]);
+        $this->assertEquals("val_2", $headers["X-Qn-Meta-M2"]);
         unlink($tempFile);
     }
 
