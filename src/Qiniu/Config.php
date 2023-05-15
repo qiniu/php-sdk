@@ -32,6 +32,10 @@ final class Config
     private $regionCache;
     // UC Host
     private $ucHost;
+    // backup UC Hosts
+    private $backupUcHosts;
+    // backup UC Hosts max retry time
+    public $backupUcHostsRetryTimes;
 
     // 构造函数
     public function __construct(Region $z = null)
@@ -41,11 +45,17 @@ final class Config
         $this->useCdnDomains = false;
         $this->regionCache = array();
         $this->ucHost = Config::UC_HOST;
+        $this->backupUcHosts = array(
+            "kodo-config.qiniuapi.com",
+            "api.qiniu.com"
+        );
+        $this->backupUcHostsRetryTimes = 2;
     }
 
-    public function setUcHost($ucHost)
+    public function setUcHost($ucHost, $backupUcHosts=array())
     {
         $this->ucHost = $ucHost;
+        $this->backupUcHosts = $backupUcHosts;
     }
 
     public function getUcHost()
@@ -57,6 +67,18 @@ final class Config
         }
 
         return $scheme . $this->ucHost;
+    }
+
+    public function appendBackupUcHosts($hosts) {
+        $this->backupUcHosts = array_merge($this->backupUcHosts, $hosts);
+    }
+
+    public function prependBackupUcHosts($hosts) {
+        $this->backupUcHosts = array_merge($hosts, $this->backupUcHosts);
+    }
+
+    public function getBackupUcHosts() {
+        return $this->backupUcHosts;
     }
 
     public function getUpHost($accessKey, $bucket)
@@ -308,7 +330,13 @@ final class Config
             return $regionCache;
         }
 
-        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
+        $region = Zone::queryZone(
+            $accessKey,
+            $bucket,
+            $this->getUcHost(),
+            $this->getBackupUcHosts(),
+            $this->backupUcHostsRetryTimes
+        );
         if (is_array($region)) {
             list($region, $err) = $region;
             if ($err != null) {
@@ -332,7 +360,13 @@ final class Config
             return array($regionCache, null);
         }
 
-        $region = Zone::queryZone($accessKey, $bucket, $this->getUcHost());
+        $region = Zone::queryZone(
+            $accessKey,
+            $bucket,
+            $this->getUcHost(),
+            $this->getBackupUcHosts(),
+            $this->backupUcHostsRetryTimes
+        );
         if (is_array($region)) {
             list($region, $err) = $region;
             return array($region, $err);

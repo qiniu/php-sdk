@@ -2,6 +2,8 @@
 
 namespace Qiniu\Http;
 
+use Qiniu\Http\Middleware\Middleware;
+
 final class RequestOptions
 {
 
@@ -30,16 +32,23 @@ final class RequestOptions
      */
     public $timeout_ms;
 
+    /**
+     * @var array<Middleware>
+     */
+    public $middlewares;
+
     public function __construct(
         $connection_timeout = null,
         $connection_timeout_ms = null,
         $timeout = null,
-        $timeout_ms = null
+        $timeout_ms = null,
+        $middlewares = array()
     ) {
         $this->connection_timeout = $connection_timeout;
         $this->connection_timeout_ms = $connection_timeout_ms;
         $this->timeout = $timeout;
         $this->timeout_ms = $timeout_ms;
+        $this->middlewares = $middlewares;
     }
 
     public function getCurlOpt()
