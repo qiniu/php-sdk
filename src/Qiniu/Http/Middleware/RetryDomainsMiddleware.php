@@ -4,7 +4,8 @@ namespace Qiniu\Http\Middleware;
 use Qiniu\Http\Request;
 use Qiniu\Http\Response;
 
-class RetryDomainsMiddleware implements Middleware {
+class RetryDomainsMiddleware implements Middleware
+{
     /**
      * @var array<string> backup domains.
      */
@@ -40,7 +41,7 @@ class RetryDomainsMiddleware implements Middleware {
             $request->url = \Qiniu\unparse_url($urlComponents);
             $retriedTimes = 0;
 
-            while($retriedTimes < $this->maxRetryTimes) {
+            while ($retriedTimes < $this->maxRetryTimes) {
                 $response = $next($request);
 
                 $retriedTimes += 1;

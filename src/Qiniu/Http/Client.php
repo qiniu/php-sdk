@@ -124,7 +124,8 @@ final class Client
      * @param Request $request
      * @return Response
      */
-    public static function sendRequestWithMiddleware($request) {
+    public static function sendRequestWithMiddleware($request)
+    {
         $middlewares = $request->opt->middlewares;
         $handle = Middleware\compose($middlewares, function ($req) {
             return Client::sendRequest($req);

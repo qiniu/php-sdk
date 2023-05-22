@@ -1,4 +1,7 @@
 <?php
+// @codingStandardsIgnoreStart
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qiniu\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -8,7 +11,8 @@ use Qiniu\Http\Request;
 use Qiniu\Http\Middleware;
 use Qiniu\Http\RequestOptions;
 
-class RecorderMiddleware implements Middleware\Middleware {
+class RecorderMiddleware implements Middleware\Middleware
+{
     /**
      * @var array<string>
      */
@@ -36,7 +40,8 @@ class RecorderMiddleware implements Middleware\Middleware {
 
 class MiddlewareTest extends TestCase
 {
-    public function testSendWithMiddleware() {
+    public function testSendWithMiddleware()
+    {
         $orderRecorder = array();
 
         $reqOpt = new RequestOptions();
@@ -65,7 +70,8 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(200, $response->statusCode);
     }
 
-    public function testSendWithRetryDomains() {
+    public function testSendWithRetryDomains()
+    {
         $orderRecorder = array();
 
         $reqOpt = new RequestOptions();

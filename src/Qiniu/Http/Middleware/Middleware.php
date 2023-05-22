@@ -4,7 +4,8 @@ namespace Qiniu\Http\Middleware;
 use Qiniu\Http\Request;
 use Qiniu\Http\Response;
 
-interface Middleware {
+interface Middleware
+{
     /**
      * @param Request $request
      * @param callable(Request): Response $next
@@ -18,7 +19,8 @@ interface Middleware {
  * @param callable(Request): Response $handler
  * @return callable(Request): Response
  */
-function compose($middlewares, $handler) {
+function compose($middlewares, $handler)
+{
     $next = $handler;
     foreach (array_reverse($middlewares) as $middleware) {
         $next = function ($request) use ($middleware, $next) {
@@ -27,4 +29,3 @@ function compose($middlewares, $handler) {
     }
     return $next;
 }
-

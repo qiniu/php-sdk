@@ -52,7 +52,7 @@ final class Config
         $this->backupUcHostsRetryTimes = 2;
     }
 
-    public function setUcHost($ucHost, $backupUcHosts=array())
+    public function setUcHost($ucHost, $backupUcHosts = array())
     {
         $this->ucHost = $ucHost;
         $this->backupUcHosts = $backupUcHosts;
@@ -69,15 +69,18 @@ final class Config
         return $scheme . $this->ucHost;
     }
 
-    public function appendBackupUcHosts($hosts) {
+    public function appendBackupUcHosts($hosts)
+    {
         $this->backupUcHosts = array_merge($this->backupUcHosts, $hosts);
     }
 
-    public function prependBackupUcHosts($hosts) {
+    public function prependBackupUcHosts($hosts)
+    {
         $this->backupUcHosts = array_merge($hosts, $this->backupUcHosts);
     }
 
-    public function getBackupUcHosts() {
+    public function getBackupUcHosts()
+    {
         return $this->backupUcHosts;
     }
 

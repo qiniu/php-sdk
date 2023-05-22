@@ -310,7 +310,8 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
      * @param $parsed_url - parse_url 的结果
      * @return string
      */
-    function unparse_url($parsed_url) {
+    function unparse_url($parsed_url)
+    {
 
         $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 
@@ -331,6 +332,5 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
         return "$scheme$user$pass$host$port$path$query$fragment";
-
     }
 }
