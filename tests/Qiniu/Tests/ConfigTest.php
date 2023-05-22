@@ -76,5 +76,19 @@ namespace Qiniu\Tests {
             $conf->setUcHost("uc.example.com");
             $this->assertEquals("https://uc.example.com", $conf->getUcHost());
         }
+
+        public function testGetRegionWithBackupDomains()
+        {
+            $conf = new Config();
+            $conf->setUcHost(
+                "fake-uc.phpsdk.qiniu.com",
+                array(
+                    "unavailable-uc.phpsdk.qiniu.com",
+                    "uc.qbox.me" // real uc
+                )
+            );
+            list(, $err) = $conf->getRsHostV2($this->accessKey, $this->bucketName);
+            $this->assertNull($err);
+        }
     }
 }
