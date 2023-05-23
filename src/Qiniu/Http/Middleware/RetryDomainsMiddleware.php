@@ -17,13 +17,28 @@ class RetryDomainsMiddleware implements Middleware
     private $maxRetryTimes;
 
     /**
+     * @var callable args response and request; returns bool; If true will retry with backup domains.
+     */
+    private $retryCondition;
+
+    /**
      * @param array<string> $backupDomains
      * @param numeric $maxRetryTimes
      */
-    public function __construct($backupDomains, $maxRetryTimes = 2)
+    public function __construct($backupDomains, $maxRetryTimes = 2, $retryCondition = null)
     {
         $this->backupDomains = $backupDomains;
         $this->maxRetryTimes = $maxRetryTimes;
+        $this->retryCondition = $retryCondition;
+    }
+
+    private function shouldRetry($resp, $req)
+    {
+        if (is_callable($this->retryCondition)) {
+            return call_user_func($this->retryCondition, $resp, $req);
+        }
+
+        return !$resp || !$resp->ok();
     }
 
     /**
@@ -46,7 +61,7 @@ class RetryDomainsMiddleware implements Middleware
 
                 $retriedTimes += 1;
 
-                if ($response->ok()) {
+                if (!$this->shouldRetry($response, $request)) {
                     return $response;
                 }
             }

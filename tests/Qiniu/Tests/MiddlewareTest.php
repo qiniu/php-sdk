@@ -120,4 +120,41 @@ class MiddlewareTest extends TestCase
         $this->assertEquals($expectRecords, $orderRecorder);
         $this->assertEquals(200, $response->statusCode);
     }
+
+    public function testSendFailFastWithRetryDomains()
+    {
+        $orderRecorder = array();
+
+        $reqOpt = new RequestOptions();
+        $reqOpt->middlewares = array(
+            new Middleware\RetryDomainsMiddleware(
+                array(
+                    "unavailable.phpsdk.qiniu.com",
+                    "qiniu.com",
+                ),
+                3,
+                function () {
+                    return false;
+                }
+            ),
+            new RecorderMiddleware($orderRecorder, "rec")
+        );
+
+        $request = new Request(
+            "GET",
+            "https://fake.phpsdk.qiniu.com/index.html",
+            array(),
+            null,
+            $reqOpt
+        );
+        $response = Client::sendRequestWithMiddleware($request);
+
+        $expectRecords = array(
+            //  'fake.phpsdk.qiniu.com' will fail fast
+            'bef_rec0',
+            'aft_rec1'
+        );
+        $this->assertEquals($expectRecords, $orderRecorder);
+        $this->assertEquals(-1, $response->statusCode);
+    }
 }
