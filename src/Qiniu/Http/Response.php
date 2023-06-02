@@ -199,10 +199,18 @@ final class Response
 
     public function needRetry()
     {
-        $code = $this->statusCode;
-        if ($code < 0 || ($code / 100 === 5 and $code !== 579) || $code === 996) {
-            return true;
+        if ($this->statusCode > 0 && $this->statusCode < 500) {
+            return false;
         }
+
+        // https://developer.qiniu.com/fusion/kb/1352/the-http-request-return-a-status-code
+        if (in_array($this->statusCode, array(
+            501, 509, 573, 579, 608, 612, 614, 616, 618, 630, 631, 632, 640, 701
+        ))) {
+            return false;
+        }
+
+        return true;
     }
 
     private static function isJson($headers)

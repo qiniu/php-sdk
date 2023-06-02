@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 use Qiniu\Http\Client;
 use Qiniu\Http\RequestOptions;
+use Qiniu\Http\Response;
 
 class HttpTest extends TestCase
 {
@@ -121,5 +122,30 @@ class HttpTest extends TestCase
         $reqOpt->timeout = 1;
         $response = Client::put('localhost:9000/timeout.php', null, array(), $reqOpt);
         $this->assertEquals(-1, $response->statusCode);
+    }
+
+    public function testNeedRetry()
+    {
+        $testCases = array_merge(
+            array(array(-1, true)),
+            array_map(function ($i) {
+                return array($i, false);
+            }, range(100, 499)),
+            array_map(function ($i) {
+                if (in_array($i, array(
+                    501, 509, 573, 579, 608, 612, 614, 616, 618, 630, 631, 632, 640, 701
+                ))) {
+                    return array($i, false);
+                }
+                return array($i, true);
+            }, range(500, 799))
+        );
+        $resp = new Response(-1, 222, array(), '{"msg": "mock"}', null);
+        foreach ($testCases as $testCase) {
+            list($code, $expectNeedRetry) = $testCase;
+            $resp->statusCode = $code;
+            $msg = $resp->statusCode . ' need' . ($expectNeedRetry ? '' : ' NOT') . ' retry';
+            $this->assertEquals($expectNeedRetry, $resp->needRetry(), $msg);
+        }
     }
 }

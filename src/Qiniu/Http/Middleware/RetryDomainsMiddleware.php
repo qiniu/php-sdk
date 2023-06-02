@@ -38,7 +38,7 @@ class RetryDomainsMiddleware implements Middleware
             return call_user_func($this->retryCondition, $resp, $req);
         }
 
-        return !$resp || !$resp->ok();
+        return !$resp || $resp->needRetry();
     }
 
     /**

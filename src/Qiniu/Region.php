@@ -184,12 +184,7 @@ class Region
         $reqOpt->middlewares = array(
             new RetryDomainsMiddleware(
                 $backupUcHosts,
-                $retryTimes,
-                function ($resp) {
-                    // 612 is app/accesskey is not found
-                    // 631 is no such bucket
-                    return !$resp->ok() && !in_array($resp->statusCode, array(612, 631));
-                }
+                $retryTimes
             )
         );
         $ret = Client::Get($url, array(), $reqOpt);
