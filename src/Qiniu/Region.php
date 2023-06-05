@@ -171,7 +171,7 @@ class Region
     }
 
     /*
-     * GET /v2/query?ak=<ak>&bucket=<bucket>
+     * GET /v4/query?ak=<ak>&bucket=<bucket>
      **/
     public static function queryRegion($ak, $bucket, $ucHost = null, $backupUcHosts = array(), $retryTimes = 2)
     {
