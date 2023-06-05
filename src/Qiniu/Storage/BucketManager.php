@@ -155,6 +155,8 @@ final class BucketManager
     /**
      * 列取空间的文件列表
      *
+     * @deprecated API 可能返回仅包含 marker，不包含 item 或 dir 的项，请使用 {@link listFiles}
+     *
      * @param string $bucket 空间名
      * @param string $prefix 列举前缀
      * @param string $marker 列举标识符
