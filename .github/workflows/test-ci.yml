@@ -2,8 +2,6 @@ name: PHP CI with Composer
 
 on: [push, pull_request]
 
-concurrency: keep-only-one
-
 jobs:
   build:
     strategy:
