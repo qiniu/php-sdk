@@ -2,6 +2,7 @@
 namespace Qiniu\Http;
 
 use Qiniu\Config;
+use Qiniu\Http\Middleware;
 
 final class Client
 {
@@ -14,7 +15,7 @@ final class Client
     public static function get($url, array $headers = array(), $opt = null)
     {
         $request = new Request('GET', $url, $headers, null, $opt);
-        return self::sendRequest($request);
+        return self::sendRequestWithMiddleware($request);
     }
 
     /**
@@ -117,6 +118,19 @@ final class Client
 
         $ua = "$sdkInfo $envInfo PHP/$phpVer";
         return $ua;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public static function sendRequestWithMiddleware($request)
+    {
+        $middlewares = $request->opt->middlewares;
+        $handle = Middleware\compose($middlewares, function ($req) {
+            return Client::sendRequest($req);
+        });
+        return $handle($request);
     }
 
     /**

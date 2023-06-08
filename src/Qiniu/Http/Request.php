@@ -3,10 +3,26 @@ namespace Qiniu\Http;
 
 final class Request
 {
+    /**
+     * @var string
+     */
     public $url;
+
+    /**
+     * @var array<string, string>
+     */
     public $headers;
+
+    /**
+     * @var mixed|null
+     */
     public $body;
+
+    /**
+     * @var string
+     */
     public $method;
+
     /**
      * @var RequestOptions
      */
