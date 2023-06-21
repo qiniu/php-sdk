@@ -2,13 +2,10 @@ name: PHP CI with Composer
 
 on: [push, pull_request]
 
-concurrency: keep-only-one
-
 jobs:
   build:
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         php-versions: ['5.3', '5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2']
     runs-on: ubuntu-latest
