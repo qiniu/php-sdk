@@ -283,8 +283,10 @@ final class ResumeUploader
         $uploaded = 0;
         $partNumber = 1;
         $encodedObjectName = $this->key ? \Qiniu\base64_urlSafeEncode($this->key) : '~';
-
         $isResumeUpload = $blkputRets !== null;
+
+        // 初始化 upload id
+        $err = null;
         if ($blkputRets) {
             if (isset($blkputRets["etags"]) && isset($blkputRets["uploadId"]) &&
                 isset($blkputRets["expiredAt"]) && $blkputRets["expiredAt"] > time() &&
@@ -298,12 +300,16 @@ final class ResumeUploader
                 $uploaded = $blkputRets["uploaded"];
                 $partNumber = count($this->finishedEtags["etags"]) + 1;
             } else {
-                $this->makeInitReq($encodedObjectName);
+                $err = $this->makeInitReq($encodedObjectName);
             }
         } else {
-            $this->makeInitReq($encodedObjectName);
+            $err = $this->makeInitReq($encodedObjectName);
+        }
+        if ($err != null) {
+            return array(null, $err);
         }
 
+        // 上传分片
         fseek($this->inputStream, $uploaded);
         while ($uploaded < $this->size) {
             $blockSize = $this->blockSize($uploaded);
@@ -452,9 +458,15 @@ final class ResumeUploader
 
     private function makeInitReq($encodedObjectName)
     {
-        $res = $this->initReq($encodedObjectName);
-        $this->finishedEtags["uploadId"] = $res['uploadId'];
-        $this->finishedEtags["expiredAt"] = $res['expireAt'];
+        list($ret, $err) = $this->initReq($encodedObjectName);
+
+        if ($ret == null) {
+            return $err;
+        }
+
+        $this->finishedEtags["uploadId"] = $ret['uploadId'];
+        $this->finishedEtags["expiredAt"] = $ret['expireAt'];
+        return $err;
     }
 
     /**
@@ -468,7 +480,12 @@ final class ResumeUploader
             'Content-Type' => 'application/json'
         );
         $response = $this->postWithHeaders($url, null, $headers);
-        return $response->json();
+        $ret = $response->json();
+        if ($response->ok() && $ret != null) {
+            return array($ret, null);
+        }
+
+        return array(null, new Error($url, $response));
     }
 
     /**
