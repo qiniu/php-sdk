@@ -35,11 +35,6 @@ class Zone extends Region
         return parent::regionNorthAmerica();
     }
 
-    public static function zoneApNortheast1()
-    {
-        return parent::regionSeoul();
-    }
-
     public static function qvmZonez0()
     {
         return parent::qvmRegionHuadong();
