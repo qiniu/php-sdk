@@ -156,20 +156,6 @@ class Region
         return $regionSingapore;
     }
 
-    //首尔
-    public static function regionSeoul()
-    {
-        //首尔
-        return new Region(
-            array('up-ap-northeast-1.qiniup.com'),
-            array('upload-ap-northeast-1.qiniup.com'),
-            "rs-ap-northeast-1.qiniuapi.com",
-            "rsf-ap-northeast-1.qiniuapi.com",
-            "api-ap-northeast-1.qiniuapi.com",
-            "iovip-ap-northeast-1.qiniuio.com"
-        );
-    }
-
     /*
      * GET /v4/query?ak=<ak>&bucket=<bucket>
      **/

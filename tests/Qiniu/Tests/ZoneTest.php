@@ -122,12 +122,6 @@ class ZoneTest extends TestCase
         $this->assertContains('upload-as0.qiniup.com', $zone->cdnUpHosts);
     }
 
-    public function testZoneApNortheast1()
-    {
-        $zone = Zone::zoneApNortheast1();
-        $this->assertContains('upload-ap-northeast-1.qiniup.com', $zone->cdnUpHosts);
-    }
-
     public function testQvmZonez0()
     {
         $zone = Zone::qvmZonez0();
