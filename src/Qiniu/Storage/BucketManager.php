@@ -6,6 +6,9 @@ use Qiniu\Auth;
 use Qiniu\Config;
 use Qiniu\Http\Error;
 use Qiniu\Http\Client;
+use Qiniu\Http\Middleware\AuthMiddleware;
+use Qiniu\Http\Middleware\RetryDomainsMiddleware;
+use Qiniu\Http\RequestOptions;
 
 /**
  * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
@@ -39,7 +42,8 @@ final class BucketManager
         if ($shared === true) {
             $includeShared = "true";
         }
-        return $this->getV2($this->config->getUcHost(). '/buckets?shared=' . $includeShared);
+        $path = '/buckets?shared=' . $includeShared;
+        return $this->ucGet($path);
     }
 
     /**
@@ -71,7 +75,7 @@ final class BucketManager
     public function createBucket($name, $region = 'z0')
     {
         $path = '/mkbucketv3/' . $name . '/region/' . $region;
-        return $this->postV2($this->config->getUcHost() . $path, null);
+        return $this->ucPost($path);
     }
 
     /**
@@ -85,7 +89,7 @@ final class BucketManager
     public function deleteBucket($name)
     {
         $path = '/drop/' . $name;
-        return $this->postV2($this->config->getUcHost() . $path, null);
+        return $this->ucPost($path);
     }
 
     /**
@@ -96,7 +100,8 @@ final class BucketManager
      */
     public function domains($bucket)
     {
-        return $this->ucGet('/v2/domains?tbl=' . $bucket);
+        $path = '/v2/domains?tbl=' . $bucket;
+        return $this->ucGet($path);
     }
 
     /**
@@ -1076,29 +1081,53 @@ final class BucketManager
     private function ucGet($path)
     {
         $url = $this->config->getUcHost() . $path;
-        return $this->getV2($url);
+        $opt = new RequestOptions();
+        $opt->middlewares = array(
+            new RetryDomainsMiddleware(
+                $this->config->getBackupUcHosts()
+            )
+        );
+        return $this->getV2($url, $opt);
     }
 
     private function ucPost($path, $body = null)
     {
         $url = $this->config->getUcHost() . $path;
-        return $this->postV2($url, $body);
+        $opt = new RequestOptions();
+        $opt->middlewares = array(
+            new RetryDomainsMiddleware(
+                $this->config->getBackupUcHosts()
+            )
+        );
+        return $this->postV2($url, $body, $opt);
     }
 
-    private function getV2($url)
+    private function getV2($url, $opt = null)
     {
-        $headers = $this->auth->authorizationV2($url, 'GET', null, 'application/x-www-form-urlencoded');
-        $ret = Client::get($url, $headers);
+        $headers = array(
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        );
+        if ($opt == null) {
+            $opt = new RequestOptions();
+        }
+        array_push($opt->middlewares, new AuthMiddleware($this->auth));
+        $ret = Client::get($url, $headers, $opt);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
         return array($ret->json(), null);
     }
 
-    private function postV2($url, $body)
+    private function postV2($url, $body, $opt = null)
     {
-        $headers = $this->auth->authorizationV2($url, 'POST', $body, 'application/x-www-form-urlencoded');
-        $ret = Client::post($url, $body, $headers);
+        $headers = array(
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        );
+        if ($opt == null) {
+            $opt = new RequestOptions();
+        }
+        array_push($opt->middlewares, new AuthMiddleware($this->auth));
+        $ret = Client::post($url, $body, $headers, $opt);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

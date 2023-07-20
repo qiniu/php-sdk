@@ -10,7 +10,7 @@ final class Config
     const RSF_HOST = 'rsf.qiniuapi.com';
     const API_HOST = 'api.qiniuapi.com';
     const RS_HOST = 'rs.qiniuapi.com';      //RS Host
-    const UC_HOST = 'uc.qbox.me';              //UC Host
+    const UC_HOST = 'kodo-config.qiniuapi.com';              //UC Host
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
@@ -35,6 +35,7 @@ final class Config
     // backup UC Hosts
     private $backupUcHosts;
     // backup UC Hosts max retry time
+    private $backupQueryRegionHosts;
     public $backupUcHostsRetryTimes;
 
     // 构造函数
@@ -46,16 +47,19 @@ final class Config
         $this->regionCache = array();
         $this->ucHost = Config::UC_HOST;
         $this->backupUcHosts = array(
-            "kodo-config.qiniuapi.com",
+            "uc.qbox.me"
+        );
+        $this->backupQueryRegionHosts = array(
             "api.qiniu.com"
         );
         $this->backupUcHostsRetryTimes = 2;
     }
 
-    public function setUcHost($ucHost, $backupUcHosts = array())
+    public function setUcHost($ucHost, $backupUcHosts = array(), $backupQueryRegionHosts = array())
     {
         $this->ucHost = $ucHost;
         $this->backupUcHosts = $backupUcHosts;
+        $this->backupQueryRegionHosts = $backupQueryRegionHosts;
     }
 
     public function getUcHost()
@@ -82,6 +86,11 @@ final class Config
     public function getBackupUcHosts()
     {
         return $this->backupUcHosts;
+    }
+
+    public function getBackupQueryRegionHosts()
+    {
+        return $this->backupQueryRegionHosts;
     }
 
     public function getUpHost($accessKey, $bucket)
@@ -333,11 +342,12 @@ final class Config
             return $regionCache;
         }
 
+        $backupUcHosts = array_merge($this->getBackupUcHosts(), $this->getBackupQueryRegionHosts());
         $region = Zone::queryZone(
             $accessKey,
             $bucket,
             $this->getUcHost(),
-            $this->getBackupUcHosts(),
+            $backupUcHosts,
             $this->backupUcHostsRetryTimes
         );
         if (is_array($region)) {
@@ -363,11 +373,12 @@ final class Config
             return array($regionCache, null);
         }
 
+        $backupUcHosts = array_merge($this->getBackupUcHosts(), $this->getBackupQueryRegionHosts());
         $region = Zone::queryZone(
             $accessKey,
             $bucket,
             $this->getUcHost(),
-            $this->getBackupUcHosts(),
+            $backupUcHosts,
             $this->backupUcHostsRetryTimes
         );
         if (is_array($region)) {

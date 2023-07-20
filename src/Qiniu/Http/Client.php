@@ -40,7 +40,7 @@ final class Client
     public static function post($url, $body, array $headers = array(), $opt = null)
     {
         $request = new Request('POST', $url, $headers, $body, $opt);
-        return self::sendRequest($request);
+        return self::sendRequestWithMiddleware($request);
     }
 
     /**

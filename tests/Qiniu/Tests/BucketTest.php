@@ -102,6 +102,22 @@ class BucketTest extends TestCase
         $this->assertNull($list2);
     }
 
+    public function testBucketsWithBackupDomains()
+    {
+        global $testAuth;
+        $config = new Config();
+        $config->setUcHost(
+            "fake-uc.phpsdk.qiniu.com",
+            array(
+                "uc.qbox.me"
+            )
+        );
+        $bucketManager = new BucketManager($testAuth, $config);
+        list($list, $error) = $bucketManager->buckets();
+        $this->assertNull($error);
+        $this->assertTrue(in_array(self::$bucketName, $list));
+    }
+
     public function testListBuckets()
     {
         list($ret, $error) = self::$bucketManager->listbuckets('z0');
