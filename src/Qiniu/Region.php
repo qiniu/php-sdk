@@ -163,7 +163,7 @@ class Region
     {
         $region = new Region();
         if (!$ucHost) {
-            $ucHost = "https://" . Config::UC_HOST;
+            $ucHost = "https://" . Config::QUERY_REGION_HOST;
         }
         $url = $ucHost . '/v4/query' . "?ak=$ak&bucket=$bucket";
         $reqOpt = new RequestOptions();

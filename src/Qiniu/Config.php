@@ -11,6 +11,7 @@ final class Config
     const API_HOST = 'api.qiniuapi.com';
     const RS_HOST = 'rs.qiniuapi.com';      //RS Host
     const UC_HOST = 'uc.qbox.me';              //UC Host
+    const QUERY_REGION_HOST = 'kodo-config.qiniuapi.com';
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
@@ -32,8 +33,9 @@ final class Config
     private $regionCache;
     // UC Host
     private $ucHost;
+    private $queryRegionHost;
     // backup UC Hosts
-    private $backupUcHosts;
+    private $backupQueryRegionHosts;
     // backup UC Hosts max retry time
     public $backupUcHostsRetryTimes;
 
@@ -45,17 +47,18 @@ final class Config
         $this->useCdnDomains = false;
         $this->regionCache = array();
         $this->ucHost = Config::UC_HOST;
-        $this->backupUcHosts = array(
-            "kodo-config.qiniuapi.com",
+        $this->queryRegionHost = Config::QUERY_REGION_HOST;
+        $this->backupQueryRegionHosts = array(
+            "uc.qbox.me",
             "api.qiniu.com"
         );
         $this->backupUcHostsRetryTimes = 2;
     }
 
-    public function setUcHost($ucHost, $backupUcHosts = array())
+    public function setUcHost($ucHost)
     {
         $this->ucHost = $ucHost;
-        $this->backupUcHosts = $backupUcHosts;
+        $this->setQueryRegionHost($ucHost);
     }
 
     public function getUcHost()
@@ -69,19 +72,31 @@ final class Config
         return $scheme . $this->ucHost;
     }
 
-    public function appendBackupUcHosts($hosts)
+    public function setQueryRegionHost($host, $backupHosts = array())
     {
-        $this->backupUcHosts = array_merge($this->backupUcHosts, $hosts);
+        $this->queryRegionHost = $host;
+        $this->backupQueryRegionHosts = $backupHosts;
     }
 
-    public function prependBackupUcHosts($hosts)
+    public function getQueryRegionHost()
     {
-        $this->backupUcHosts = array_merge($hosts, $this->backupUcHosts);
+        if ($this->useHTTPS === true) {
+            $scheme = "https://";
+        } else {
+            $scheme = "http://";
+        }
+
+        return $scheme . $this->queryRegionHost;
     }
 
-    public function getBackupUcHosts()
+    public function setBackupQueryRegionHosts($hosts = array())
     {
-        return $this->backupUcHosts;
+        $this->backupQueryRegionHosts = $hosts;
+    }
+
+    public function getBackupQueryRegionHosts()
+    {
+        return $this->backupQueryRegionHosts;
     }
 
     public function getUpHost($accessKey, $bucket)
@@ -336,8 +351,8 @@ final class Config
         $region = Zone::queryZone(
             $accessKey,
             $bucket,
-            $this->getUcHost(),
-            $this->getBackupUcHosts(),
+            $this->getQueryRegionHost(),
+            $this->getBackupQueryRegionHosts(),
             $this->backupUcHostsRetryTimes
         );
         if (is_array($region)) {
@@ -366,8 +381,8 @@ final class Config
         $region = Zone::queryZone(
             $accessKey,
             $bucket,
-            $this->getUcHost(),
-            $this->getBackupUcHosts(),
+            $this->getQueryRegionHost(),
+            $this->getBackupQueryRegionHosts(),
             $this->backupUcHostsRetryTimes
         );
         if (is_array($region)) {
