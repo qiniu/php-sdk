@@ -31,7 +31,8 @@
             "Qiniu\\": "src/Qiniu"
         },
         "files": [
-            "src/Qiniu/functions.php"
+            "src/Qiniu/functions.php",
+            "src/Qiniu/Http/Middleware/Middleware.php"
         ]
     }
 }

@@ -16,3 +16,4 @@ function classLoader($class)
 spl_autoload_register('classLoader');
 
 require_once  __DIR__ . '/src/Qiniu/functions.php';
+require_once  __DIR__ . '/src/Qiniu/Http/Middleware/Middleware.php';
