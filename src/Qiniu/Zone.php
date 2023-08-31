@@ -45,8 +45,14 @@ class Zone extends Region
         return parent::qvmRegionHuabei();
     }
 
-    public static function queryZone($ak, $bucket, $ucHost = null, $backupUcHosts = array(), $retryTimes = 2)
-    {
-        return parent::queryRegion($ak, $bucket, $ucHost, $backupUcHosts, $retryTimes);
+    public static function queryZone(
+        $ak,
+        $bucket,
+        $ucHost = null,
+        $backupUcHosts = array(),
+        $retryTimes = 2,
+        $reqOpt = null
+    ) {
+        return parent::queryRegion($ak, $bucket, $ucHost, $backupUcHosts, $retryTimes, $reqOpt);
     }
 }

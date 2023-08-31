@@ -98,7 +98,7 @@ final class ResumeUploader
             return array(null, $err);
         }
 
-        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             throw new \Exception($err->message(), 1);
         }
@@ -212,7 +212,7 @@ final class ResumeUploader
                 if ($err != null) {
                     return array(null, $err);
                 }
-                list($upHostBackup, $err) = $this->config->getUpBackupHostV2($accessKey, $bucket);
+                list($upHostBackup, $err) = $this->config->getUpBackupHostV2($accessKey, $bucket, $this->reqOpt);
                 if ($err != null) {
                     return array(null, $err);
                 }
@@ -335,7 +335,7 @@ final class ResumeUploader
                 if ($err != null) {
                     return array(null, $err);
                 }
-                list($upHostBackup, $err) = $this->config->getUpBackupHostV2($accessKey, $bucket);
+                list($upHostBackup, $err) = $this->config->getUpBackupHostV2($accessKey, $bucket, $this->reqOpt);
                 if ($err != null) {
                     return array(null, $err);
                 }

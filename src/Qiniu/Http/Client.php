@@ -145,8 +145,6 @@ final class Client
         $options = array(
             CURLOPT_USERAGENT => self::userAgent(),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => true,
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST => $request->method,

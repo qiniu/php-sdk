@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu;
 
 use Qiniu\Http\Client;
@@ -158,22 +159,37 @@ class Region
 
     /*
      * GET /v4/query?ak=<ak>&bucket=<bucket>
+     * @param string $ak
+     * @param string $bucket
+     * @param string $ucHost|null
+     * @param array $backupUcHosts
+     * @param int $retryTimes
+     * @param RequestOptions|null $reqOpt
+     * @return Response
      **/
-    public static function queryRegion($ak, $bucket, $ucHost = null, $backupUcHosts = array(), $retryTimes = 2)
-    {
+    public static function queryRegion(
+        $ak,
+        $bucket,
+        $ucHost = null,
+        $backupUcHosts = array(),
+        $retryTimes = 2,
+        $reqOpt = null
+    ) {
         $region = new Region();
         if (!$ucHost) {
             $ucHost = "https://" . Config::QUERY_REGION_HOST;
         }
         $url = $ucHost . '/v4/query' . "?ak=$ak&bucket=$bucket";
-        $reqOpt = new RequestOptions();
+        if ($reqOpt == null) {
+            $reqOpt = new RequestOptions();
+        }
         $reqOpt->middlewares = array(
             new RetryDomainsMiddleware(
                 $backupUcHosts,
                 $retryTimes
             )
         );
-        $ret = Client::Get($url, array(), $reqOpt);
+        $ret = Client::get($url, array(), $reqOpt);
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

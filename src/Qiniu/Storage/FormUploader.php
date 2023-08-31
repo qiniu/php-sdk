@@ -62,7 +62,7 @@ final class FormUploader
             return array(null, $err);
         }
 
-        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -134,7 +134,7 @@ final class FormUploader
             return array(null, $err);
         }
 
-        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket);
+        list($upHost, $err) = $config->getUpHostV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }

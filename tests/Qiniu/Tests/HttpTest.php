@@ -97,6 +97,18 @@ class HttpTest extends TestCase
         $this->assertEquals(-1, $response->statusCode);
     }
 
+    public function testSocks5Proxy()
+    {
+        $reqOpt = new RequestOptions();
+        $reqOpt->proxy = 'socks5://localhost:8080';
+        $response = Client::post('qiniu.com', null, array(), $reqOpt);
+        $this->assertEquals(-1, $response->statusCode);
+
+        $reqOpt->proxy_user_password = 'user:pass';
+        $response = Client::post('qiniu.com', null, array(), $reqOpt);
+        $this->assertEquals(200, $response->statusCode);
+    }
+
     public function testPut()
     {
         $response = Client::PUT('uc.qbox.me/bucketTagging', null);

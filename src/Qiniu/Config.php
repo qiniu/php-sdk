@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu;
 
 final class Config
@@ -15,9 +16,9 @@ final class Config
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
-    const SMS_HOST="https://sms.qiniuapi.com";
+    const SMS_HOST = "https://sms.qiniuapi.com";
     const RTCAPI_VERSION = 'v3';
-    const SMS_VERSION='v1';
+    const SMS_VERSION = 'v1';
 
     // Zone 空间对应的存储区域
     public $region;
@@ -99,9 +100,9 @@ final class Config
         return $this->backupQueryRegionHosts;
     }
 
-    public function getUpHost($accessKey, $bucket)
+    public function getUpHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
         if ($this->useHTTPS === true) {
             $scheme = "https://";
         } else {
@@ -116,9 +117,9 @@ final class Config
         return $scheme . $host;
     }
 
-    public function getUpHostV2($accessKey, $bucket)
+    public function getUpHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -137,9 +138,9 @@ final class Config
         return array($scheme . $host, null);
     }
 
-    public function getUpBackupHost($accessKey, $bucket)
+    public function getUpBackupHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
         if ($this->useHTTPS === true) {
             $scheme = "https://";
         } else {
@@ -154,9 +155,9 @@ final class Config
         return $scheme . $host;
     }
 
-    public function getUpBackupHostV2($accessKey, $bucket)
+    public function getUpBackupHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -175,9 +176,9 @@ final class Config
         return array($scheme . $host, null);
     }
 
-    public function getRsHost($accessKey, $bucket)
+    public function getRsHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -188,9 +189,9 @@ final class Config
         return $scheme . $region->rsHost;
     }
 
-    public function getRsHostV2($accessKey, $bucket)
+    public function getRsHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -204,9 +205,9 @@ final class Config
         return array($scheme . $region->rsHost, null);
     }
 
-    public function getRsfHost($accessKey, $bucket)
+    public function getRsfHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -217,9 +218,9 @@ final class Config
         return $scheme . $region->rsfHost;
     }
 
-    public function getRsfHostV2($accessKey, $bucket)
+    public function getRsfHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -233,9 +234,9 @@ final class Config
         return array($scheme . $region->rsfHost, null);
     }
 
-    public function getIovipHost($accessKey, $bucket)
+    public function getIovipHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -246,9 +247,9 @@ final class Config
         return $scheme . $region->iovipHost;
     }
 
-    public function getIovipHostV2($accessKey, $bucket)
+    public function getIovipHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -262,9 +263,9 @@ final class Config
         return array($scheme . $region->iovipHost, null);
     }
 
-    public function getApiHost($accessKey, $bucket)
+    public function getApiHost($accessKey, $bucket, $reqOpt = null)
     {
-        $region = $this->getRegion($accessKey, $bucket);
+        $region = $this->getRegion($accessKey, $bucket, $reqOpt);
 
         if ($this->useHTTPS === true) {
             $scheme = "https://";
@@ -275,9 +276,9 @@ final class Config
         return $scheme . $region->apiHost;
     }
 
-    public function getApiHostV2($accessKey, $bucket)
+    public function getApiHostV2($accessKey, $bucket, $reqOpt = null)
     {
-        list($region, $err) = $this->getRegionV2($accessKey, $bucket);
+        list($region, $err) = $this->getRegionV2($accessKey, $bucket, $reqOpt);
         if ($err != null) {
             return array(null, $err);
         }
@@ -302,8 +303,7 @@ final class Config
     {
         if (isset($this->regionCache[$cacheId]) &&
             isset($this->regionCache[$cacheId]["deadline"]) &&
-            time() < $this->regionCache[$cacheId]["deadline"]
-        ) {
+            time() < $this->regionCache[$cacheId]["deadline"]) {
             return $this->regionCache[$cacheId]["region"];
         }
 
@@ -336,7 +336,7 @@ final class Config
      *
      * @throws \Exception
      */
-    private function getRegion($accessKey, $bucket)
+    private function getRegion($accessKey, $bucket, $reqOpt = null)
     {
         if (isset($this->zone)) {
             return $this->zone;
@@ -353,7 +353,8 @@ final class Config
             $bucket,
             $this->getQueryRegionHost(),
             $this->getBackupQueryRegionHosts(),
-            $this->backupUcHostsRetryTimes
+            $this->backupUcHostsRetryTimes,
+            $reqOpt
         );
         if (is_array($region)) {
             list($region, $err) = $region;
@@ -366,7 +367,7 @@ final class Config
         return $region;
     }
 
-    private function getRegionV2($accessKey, $bucket)
+    private function getRegionV2($accessKey, $bucket, $reqOpt = null)
     {
         if (isset($this->zone)) {
             return array($this->zone, null);
@@ -383,7 +384,8 @@ final class Config
             $bucket,
             $this->getQueryRegionHost(),
             $this->getBackupQueryRegionHosts(),
-            $this->backupUcHostsRetryTimes
+            $this->backupUcHostsRetryTimes,
+            $reqOpt
         );
         if (is_array($region)) {
             list($region, $err) = $region;
