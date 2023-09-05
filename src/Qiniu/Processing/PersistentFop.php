@@ -5,6 +5,7 @@ namespace Qiniu\Processing;
 use Qiniu\Config;
 use Qiniu\Http\Error;
 use Qiniu\Http\Client;
+use Qiniu\Http\Proxy;
 
 /**
  * 持久化处理类,该类用于主动触发异步持久化操作.
@@ -23,8 +24,13 @@ final class PersistentFop
      * */
     private $config;
 
+    /**
+     * @var 代理信息
+     */
+    private $proxy;
 
-    public function __construct($auth, $config = null)
+
+    public function __construct($auth, $config = null, $proxy = null, $proxy_auth = null, $proxy_user_password = null)
     {
         $this->auth = $auth;
         if ($config == null) {
@@ -32,6 +38,7 @@ final class PersistentFop
         } else {
             $this->config = $config;
         }
+        $this->proxy = new Proxy($proxy, $proxy_auth, $proxy_user_password);
     }
 
     /**
@@ -68,7 +75,7 @@ final class PersistentFop
         $url = $scheme . Config::API_HOST . '/pfop/';
         $headers = $this->auth->authorization($url, $data, 'application/x-www-form-urlencoded');
         $headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        $response = Client::post($url, $data, $headers);
+        $response = Client::post($url, $data, $headers, $this->proxy->makeReqOpt());
         if (!$response->ok()) {
             return array(null, new Error($url, $response));
         }
@@ -85,7 +92,7 @@ final class PersistentFop
             $scheme = "https://";
         }
         $url = $scheme . Config::API_HOST . "/status/get/prefop?id=$id";
-        $response = Client::get($url);
+        $response = Client::get($url, array(), $this->proxy->makeReqOpt());
         if (!$response->ok()) {
             return array(null, new Error($url, $response));
         }

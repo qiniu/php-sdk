@@ -6,17 +6,19 @@ use Qiniu\Auth;
 use Qiniu\Config;
 use Qiniu\Http\Error;
 use Qiniu\Http\Client;
+use Qiniu\Http\Proxy;
 
 class AppClient
 {
     private $auth;
     private $baseURL;
+    private $proxy;
 
-    public function __construct(Auth $auth)
+    public function __construct(Auth $auth, $proxy = null, $proxy_auth = null, $proxy_user_password = null)
     {
         $this->auth = $auth;
-
         $this->baseURL = sprintf("%s/%s/apps", Config::RTCAPI_HOST, Config::RTCAPI_VERSION);
+        $this->proxy = new Proxy($proxy, $proxy_auth, $proxy_user_password);
     }
 
     /**
@@ -202,7 +204,7 @@ class AppClient
     {
         $rtcToken = $this->auth->authorizationV2($url, "GET", null, $cType);
         $rtcToken['Content-Type'] = $cType;
-        $ret = Client::get($url, $rtcToken);
+        $ret = Client::get($url, $rtcToken, $this->proxy->makeReqOpt());
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -213,7 +215,7 @@ class AppClient
     {
         $rtcToken = $this->auth->authorizationV2($url, "DELETE", null, $contentType);
         $rtcToken['Content-Type'] = $contentType;
-        $ret = Client::delete($url, $rtcToken);
+        $ret = Client::delete($url, $rtcToken, $this->proxy->makeReqOpt());
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }
@@ -224,7 +226,7 @@ class AppClient
     {
         $rtcToken = $this->auth->authorizationV2($url, "POST", $body, $contentType);
         $rtcToken['Content-Type'] = $contentType;
-        $ret = Client::post($url, $body, $rtcToken);
+        $ret = Client::post($url, $body, $rtcToken, $this->proxy->makeReqOpt());
         if (!$ret->ok()) {
             return array(null, new Error($url, $ret));
         }

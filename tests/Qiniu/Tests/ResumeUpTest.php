@@ -3,14 +3,11 @@ namespace Qiniu\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Version;
-use Qiniu\Region;
+use Qiniu\Http\RequestOptions;
 use Qiniu\Storage\BucketManager;
-use Qiniu\Storage\ResumeUploader;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Http\Client;
 use Qiniu\Config;
-use Qiniu\Zone;
 
 class ResumeUpTest extends TestCase
 {
@@ -95,6 +92,37 @@ class ResumeUpTest extends TestCase
             'application/octet-stream',
             false,
             $resumeFile
+        );
+        $this->assertNull($error);
+        $this->assertNotNull($ret['hash']);
+
+        $domain = getenv('QINIU_TEST_DOMAIN');
+        $response = Client::get("http://$domain/$key");
+        $this->assertEquals(200, $response->statusCode);
+        $this->assertEquals(md5_file($tempFile, true), md5($response->body(), true));
+        unlink($tempFile);
+    }
+
+    public function test4ML2WithProxy()
+    {
+        $key = self::getObjectKey('resumePutFile4ML_');
+        $cfg = new Config();
+        $upManager = new UploadManager($cfg);
+        $token = self::$auth->uploadToken(self::$bucketName, $key);
+        $tempFile = qiniuTempFile(4 * 1024 * 1024 + 10);
+        $resumeFile = tempnam(sys_get_temp_dir(), 'resume_file');
+        $this->assertNotFalse($resumeFile);
+        list($ret, $error) = $upManager->putFile(
+            $token,
+            $key,
+            $tempFile,
+            null,
+            'application/octet-stream',
+            false,
+            $resumeFile,
+            'v2',
+            Config::BLOCK_SIZE,
+            $this->makeReqOpt()
         );
         $this->assertNull($error);
         $this->assertNotNull($ret['hash']);
@@ -314,5 +342,13 @@ class ResumeUpTest extends TestCase
             unlink($tempFile);
         }
         $this->assertEquals(count($testInvalidVersions), $expectExceptionCount);
+    }
+
+    private function makeReqOpt()
+    {
+        $reqOpt = new RequestOptions();
+        $reqOpt->proxy = 'socks5://127.0.0.1:8080';
+        $reqOpt->proxy_user_password = 'user:pass';
+        return $reqOpt;
     }
 }

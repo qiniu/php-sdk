@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu\Http;
 
 use Qiniu\Config;
@@ -144,8 +145,6 @@ final class Client
         $options = array(
             CURLOPT_USERAGENT => self::userAgent(),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_HEADER => true,
             CURLOPT_NOBODY => false,
             CURLOPT_CUSTOMREQUEST => $request->method,

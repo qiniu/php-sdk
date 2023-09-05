@@ -18,10 +18,19 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.21.x'
+
       - name: Setup build-in server
         run: |
           nohup php -S localhost:9000 -t ./tests/mock-server/ > phpd.log 2>&1 &
           echo $! > mock-server.pid
+
+          cd tests/socks5-server/
+          nohup go run main.go > ../../socks5.log 2>&1 &
+          echo $! > ../../socks-server.pid
 
       - name: Setup php
         uses: shivammathur/setup-php@v2
@@ -40,6 +49,7 @@ jobs:
           ./vendor/bin/phpcs --standard=PSR2 tests
           ./vendor/bin/phpunit --coverage-clover=coverage.xml
           cat mock-server.pid | xargs kill
+          cat socks-server.pid | xargs kill
 
         env:
           QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
@@ -51,6 +61,11 @@ jobs:
         if: ${{ failure() }}
         run: |
           cat phpd.log
+
+      - name: Print socks5 server log
+        if: ${{ failure() }}
+        run: |
+          cat socks5.log
 
       - name: After_success
         run: bash <(curl -s https://codecov.io/bash)

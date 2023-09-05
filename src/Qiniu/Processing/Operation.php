@@ -4,6 +4,7 @@ namespace Qiniu\Processing;
 
 use Qiniu\Http\Client;
 use Qiniu\Http\Error;
+use Qiniu\Http\Proxy;
 
 final class Operation
 {
@@ -11,12 +12,20 @@ final class Operation
     private $auth;
     private $token_expire;
     private $domain;
+    private $proxy;
 
-    public function __construct($domain, $auth = null, $token_expire = 3600)
-    {
+    public function __construct(
+        $domain,
+        $auth = null,
+        $token_expire = 3600,
+        $proxy = null,
+        $proxy_auth = null,
+        $proxy_user_password = null
+    ) {
         $this->auth = $auth;
         $this->domain = $domain;
         $this->token_expire = $token_expire;
+        $this->proxy = new Proxy($proxy, $proxy_auth, $proxy_user_password);
     }
 
 
@@ -34,7 +43,7 @@ final class Operation
     public function execute($key, $fops)
     {
         $url = $this->buildUrl($key, $fops);
-        $resp = Client::get($url);
+        $resp = Client::get($url, array(), $this->proxy->makeReqOpt());
         if (!$resp->ok()) {
             return array(null, new Error($url, $resp));
         }
