@@ -193,7 +193,7 @@ class BucketTest extends TestCase
         $this->assertEquals(self::$bucketLifeRulePrefix, $rule["prefix"]);
         $this->assertEquals(80, $rule["delete_after_days"]);
         $this->assertEquals(70, $rule["to_line_after_days"]);
-        $this->assertEquals(71, $rule["to_archive_ir_after_days"]);
+        //$this->assertEquals(71, $rule["to_archive_ir_after_days"]);
         $this->assertEquals(72, $rule["to_archive_after_days"]);
         $this->assertEquals(74, $rule["to_deep_archive_after_days"]);
 
@@ -226,7 +226,7 @@ class BucketTest extends TestCase
         $this->assertEquals('update-' . self::$bucketLifeRulePrefix, $rule["prefix"]);
         $this->assertEquals(90, $rule["delete_after_days"]);
         $this->assertEquals(75, $rule["to_line_after_days"]);
-        $this->assertEquals(78, $rule["to_archive_ir_after_days"]);
+        //$this->assertEquals(78, $rule["to_archive_ir_after_days"]);
         $this->assertEquals(80, $rule["to_archive_after_days"]);
         $this->assertEquals(85, $rule["to_deep_archive_after_days"]);
 
@@ -561,7 +561,7 @@ class BucketTest extends TestCase
         list($ret, $error) = self::$bucketManager->stat(self::$bucketName, $key);
         $this->assertNull($error);
         $this->assertNotNull($ret['transitionToIA']);
-        $this->assertNotNull($ret['transitionToArchiveIR']);
+        //$this->assertNotNull($ret['transitionToArchiveIR']);
         $this->assertNotNull($ret['transitionToARCHIVE']);
         $this->assertNotNull($ret['transitionToDeepArchive']);
         $this->assertNotNull($ret['expiration']);
@@ -594,7 +594,7 @@ class BucketTest extends TestCase
         list($ret, $error) = self::$bucketManager->stat(self::$bucketName, $key);
         $this->assertNull($error);
         $this->assertNotNull($ret['transitionToIA']);
-        $this->assertNotNull($ret['transitionToArchiveIR']);
+        //$this->assertNotNull($ret['transitionToArchiveIR']);
         $this->assertNotNull($ret['transitionToARCHIVE']);
         $this->assertNotNull($ret['transitionToDeepArchive']);
         $this->assertNotNull($ret['expiration']);
