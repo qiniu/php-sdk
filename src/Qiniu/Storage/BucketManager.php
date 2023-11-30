@@ -215,16 +215,23 @@ final class BucketManager
     /**
      * 增加bucket生命规则
      *
-     * @param string $bucket 空间名
-     * @param string $name 规则名称 bucket 内唯一，长度小于50，不能为空，只能为
-     * 字母、数字、下划线
-     * @param string $prefix 同一个 bucket 里面前缀不能重复
-     * @param int $delete_after_days 指定上传文件多少天后删除，指定为0表示不删除,
-     * 大于0表示多少天后删除,需大于 to_line_after_days
-     * @param int $to_line_after_days 指定文件上传多少天后转低频存储。指定为0表示不转低频存储
-     * @param int $to_archive_ir_after_days 指定文件上传多少天后转归档直读。指定为0表示不转归档直读
-     * @param int $to_archive_after_days 指定文件上传多少天后转归档存储。指定为0表示不转归档存储
-     * @param int $to_deep_archive_after_days 指定文件上传多少天后转深度归档存储。指定为0表示不转深度归档存储
+     * @param string $bucket
+     * 空间名
+     * @param string $name
+     * 规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param string $prefix
+     * 同一个 bucket 里面前缀不能重复
+     * @param int $delete_after_days
+     * 指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除。
+     * 需大于 to_line_after_days
+     * @param int $to_line_after_days
+     * 指定文件上传多少天后转低频存储。指定为0表示不转低频存储
+     * @param int $to_archive_ir_after_days
+     * 指定文件上传多少天后转归档直读。指定为0表示不转归档直读
+     * @param int $to_archive_after_days
+     * 指定文件上传多少天后转归档存储。指定为0表示不转归档存储
+     * @param int $to_deep_archive_after_days
+     * 指定文件上传多少天后转深度归档存储。指定为0表示不转深度归档存储
      * @return array
      */
     public function bucketLifecycleRule(
@@ -271,16 +278,23 @@ final class BucketManager
     /**
      * 更新bucket生命规则
      *
-     * @param string $bucket 空间名
-     * @param string $name 规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、
-     * 数字、下划线
-     * @param string $prefix 同一个 bucket 里面前缀不能重复
-     * @param int $delete_after_days 指定上传文件多少天后删除，指定为0表示不删除，
-     * 大于0表示多少天后删除，需大于 to_line_after_days
-     * @param int $to_line_after_days 指定文件上传多少天后转低频存储。指定为0表示不转低频存储
-     * @param int $to_archive_ir_after_days 指定文件上传多少天后转归档只读。指定为0表示不转归档只读
-     * @param int $to_archive_after_days 指定文件上传多少天后转归档存储。指定为0表示不转归档存储
-     * @param int $to_deep_archive_after_days 指定文件上传多少天后转深度归档存储。指定为0表示不转深度归档存储
+     * @param string $bucket
+     * 空间名
+     * @param string $name
+     * 规则名称 bucket 内唯一，长度小于50，不能为空，只能为字母、数字、下划线
+     * @param string $prefix
+     * 同一个 bucket 里面前缀不能重复
+     * @param int $delete_after_days
+     * 指定上传文件多少天后删除，指定为0表示不删除，大于0表示多少天后删除
+     * 需大于 to_line_after_days
+     * @param int $to_line_after_days
+     * 指定文件上传多少天后转低频存储。指定为0表示不转低频存储
+     * @param int $to_archive_ir_after_days
+     * 指定文件上传多少天后转归档只读。指定为0表示不转归档只读
+     * @param int $to_archive_after_days
+     * 指定文件上传多少天后转归档存储。指定为0表示不转归档存储
+     * @param int $to_deep_archive_after_days
+     * 指定文件上传多少天后转深度归档存储。指定为0表示不转深度归档存储
      * @return array
      */
     public function updateBucketLifecycleRule(
