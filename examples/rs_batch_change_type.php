@@ -31,6 +31,7 @@ $keyTypePairs = array();
 // 1 表示低频存储
 // 2 表示归档存储
 // 3 表示深度归档存储
+// 4 表示归档直读存储
 foreach ($keys as $key) {
     $keyTypePairs[$key] = 1;
 }
