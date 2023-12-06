@@ -742,6 +742,7 @@ final class BucketManager
      *   1 表示低频存储；
      *   2 表示归档存储；
      *   3 表示深度归档存储；
+     *   4 表示归档直读存储；
      *
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/3710/chtype
@@ -829,7 +830,7 @@ final class BucketManager
      * @param string $callbackbody 回调Body
      * @param string $callbackbodytype 回调Body内容类型,默认为"application/x-www-form-urlencoded"
      * @param string $callbackhost 回调时使用的Host
-     * @param int $file_type 存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储
+     * @param int $file_type 存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储,3:深度归档存储,4:归档直读存储
      * @param bool $ignore_same_key 如果空间中已经存在同名文件则放弃本次抓取
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/4097/asynch-fetch
@@ -970,6 +971,9 @@ final class BucketManager
      * @param int $to_line_after_days 多少天后将文件转为低频存储。
      *   -1 表示取消已设置的转低频存储的生命周期规则；
      *   0 表示不修改转低频生命周期规则。
+     * @param int $to_archive_ir_after_days 多少天后转为归档直读存储。
+     *   -1 表示取消已设置的转归档直读存储的生命周期规则；
+     *   0 表示不修改转归档直读生命周期规则。
      * @param int $to_archive_after_days 多少天后将文件转为归档存储。
      *   -1 表示取消已设置的转归档存储的生命周期规则；
      *   0 表示不修改转归档生命周期规则。
@@ -1010,6 +1014,9 @@ final class BucketManager
      * @param int $to_line_after_days 多少天后将文件转为低频存储。
      *   设置为 -1 表示取消已设置的转低频存储的生命周期规则；
      *   0 表示不修改转低频生命周期规则。
+     * @param int $to_archive_ir_after_days 多少天后将文件转为归档直读存储。
+     *   设置为 -1 表示取消已设置的转归档直读存储的生命周期规则；
+     *   0 表示不修改转归档直读生命周期规则。
      * @param int $to_archive_after_days 多少天后将文件转为归档存储。
      *   -1 表示取消已设置的转归档存储的生命周期规则；
      *   0 表示不修改转归档生命周期规则。
