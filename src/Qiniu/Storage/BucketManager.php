@@ -7,6 +7,7 @@ use Qiniu\Config;
 use Qiniu\Http\Error;
 use Qiniu\Http\Client;
 use Qiniu\Http\Proxy;
+use Qiniu\Http\Response;
 
 /**
  * 主要涉及了空间资源管理及批量操作接口的实现，具体的接口规格可以参考
@@ -830,7 +831,12 @@ final class BucketManager
      * @param string $callbackbody 回调Body
      * @param string $callbackbodytype 回调Body内容类型,默认为"application/x-www-form-urlencoded"
      * @param string $callbackhost 回调时使用的Host
-     * @param int $file_type 存储文件类型 0:标准存储(默认),1:低频存储,2:归档存储,3:深度归档存储,4:归档直读存储
+     * @param int $file_type 存储文件类型
+     *   0:标准存储(默认)
+     *   1:低频存储
+     *   2:归档存储
+     *   3:深度归档存储
+     *   4:归档直读存储
      * @param bool $ignore_same_key 如果空间中已经存在同名文件则放弃本次抓取
      * @return array
      * @link  https://developer.qiniu.com/kodo/api/4097/asynch-fetch
@@ -943,7 +949,20 @@ final class BucketManager
             $scheme = "https://";
         }
         $params = 'op=' . implode('&op=', $operations);
-        return $this->postV2($scheme . Config::RS_HOST . '/batch', $params);
+        $errResp = new Response(0, 0);
+        if (count($operations) <= 0) {
+            $errResp->error = 'empty operations';
+            return array(null, new Error($scheme . '/batch', $errResp));
+        }
+        $bucket = '';
+        foreach ($operations as $op) {
+            $segments = explode('/', $op);
+            if (count($segments) < 3) {
+                continue;
+            }
+            list($bucket,) = \Qiniu\decodeEntry($segments[2]);
+        }
+        return $this->rsPost($bucket, '/batch', $params);
     }
 
     /**

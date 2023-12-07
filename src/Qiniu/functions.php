@@ -140,6 +140,16 @@ if (!defined('QINIU_FUNCTIONS_VERSION')) {
         return base64_urlSafeEncode($en);
     }
 
+    function decodeEntry($entry)
+    {
+        $en = base64_urlSafeDecode($entry);
+        $en = explode(':', $en);
+        if (count($en) == 1) {
+            return array($en[0], null);
+        }
+        return array($en[0], $en[1]);
+    }
+
     /**
      * array 辅助方法，无值时不set
      *
