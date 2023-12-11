@@ -46,4 +46,43 @@ class EntryTest extends TestCase
         $encodeEntryURI = Qiniu\entry($bucket, $key);
         $this->assertEquals('cWluaXVwaG90b3M6MDEydHM_YQ==', $encodeEntryURI);
     }
+    public function testDecodeEntry()
+    {
+        $entry = 'cWluaXVwaG90b3M6Z29nb3BoZXIuanBn';
+        list($bucket, $key) = Qiniu\decodeEntry($entry);
+        $this->assertEquals('qiniuphotos', $bucket);
+        $this->assertEquals('gogopher.jpg', $key);
+    }
+
+    public function testDecodeEntryWithEmptyKey()
+    {
+        $entry = 'cWluaXVwaG90b3M6';
+        list($bucket, $key) = Qiniu\decodeEntry($entry);
+        $this->assertEquals('qiniuphotos', $bucket);
+        $this->assertEquals('', $key);
+    }
+
+    public function testDecodeEntryWithNullKey()
+    {
+        $entry = 'cWluaXVwaG90b3M=';
+        list($bucket, $key) = Qiniu\decodeEntry($entry);
+        $this->assertEquals('qiniuphotos', $bucket);
+        $this->assertNull($key);
+    }
+
+    public function testDecodeEntryWithPlusSymbol()
+    {
+        $entry = 'cWluaXVwaG90b3M6MDEydHM-YQ==';
+        list($bucket, $key) = Qiniu\decodeEntry($entry);
+        $this->assertEquals('qiniuphotos', $bucket);
+        $this->assertEquals('012ts>a', $key);
+    }
+
+    public function testDecodeEntryWithSlashSymbol()
+    {
+        $entry = 'cWluaXVwaG90b3M6MDEydHM_YQ==';
+        list($bucket, $key) = Qiniu\decodeEntry($entry);
+        $this->assertEquals('qiniuphotos', $bucket);
+        $this->assertEquals('012ts?a', $key);
+    }
 }
