@@ -224,6 +224,317 @@ final class CdnManager
         return $this->post($url, $body);
     }
 
+    /**
+     * @param array $domains 待获取区域运营商流量的域名数组
+     * @param string $freq 待获取区域运营商流量的粒度，可选项为 5min、1hour、1day
+     * @param array $regions 待获取区域运营商流量的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param array $isp 待获取区域运营商流量的ISP运营商，例如比如all(所有 ISP)，telecom(电信)，unicom(联通)，mobile(中国移动)，drpeng(鹏博士)，tietong(铁通)，cernet(教育网)
+     * @param string $startDate  待获取区域运营商流量的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取区域运营商流量的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeTraffic(array $domains, $freq, $regions, $isp, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['regions'] = $regions;
+        $req['isp'] = $isp;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/traffic';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取区域运营商带宽的域名数组
+     * @param string $freq 待获取区域运营商带宽的粒度，可选项为 5min、1hour、1day
+     * @param array $regions 待获取区域运营商带宽的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param array $isp 待获取区域运营商带宽的ISP运营商，例如比如all(所有 ISP)，telecom(电信)，unicom(联通)，mobile(中国移动)，drpeng(鹏博士)，tietong(铁通)，cernet(教育网)
+     * @param string $startDate  待获取区域运营商带宽的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取区域运营商带宽的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeBandwidth(array $domains, $freq, $regions, $isp, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['regions'] = $regions;
+        $req['isp'] = $isp;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/bandwidth';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取状态码数据的域名数组
+     * @param string $freq 待获取状态码数据的粒度，可选项为 5min、1hour、1day
+     * @param string $startDate  待获取状态码数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取状态码数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeStatuscode(array $domains, $freq, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/statuscode';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取命中率数据的域名数组
+     * @param string $freq 待获取命中率数据的粒度，可选项为 5min、1hour、1day
+     * @param string $startDate  待获取命中率数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取命中率数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeHitmiss(array $domains, $freq, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/hitmiss';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取请求次数数据的域名数组
+     * @param string $freq 待获取请求次数数据的粒度，可选项为 5min、1hour、1day
+     * @param string $region 待获取请求次数数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取请求次数数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取请求次数数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeReqcount(array $domains, $freq, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/reqcount';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取 ISP 请求次数数据的域名数组
+     * @param string $freq 待获取 ISP 请求次数数据的粒度，可选项为 5min、1hour、1day
+     * @param string $region 待获取 ISP 请求次数数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取 ISP 请求次数数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取 ISP 请求次数数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeIspreqcount(array $domains, $freq, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/ispreqcount';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取 ISP 流量占比数据的域名数组
+     * @param array $regions 待获取 ISP 流量占比数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取 ISP 流量占比数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取 ISP 流量占比数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeIsptraffic(array $domains, $regions, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['regions'] = $regions;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/isptraffic';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取访问量数据的域名数组
+     * @param string $region 待获取访问量数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取访问量数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取访问量数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeTopcountip(array $domains, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/topcountip';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取访问量数据的域名数组
+     * @param string $region 待获取访问量数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取访问量数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取访问量数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeToptrafficip(array $domains, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/toptrafficip';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取访问量数据的域名数组
+     * @param string $region 待获取访问量数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取访问量数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取访问量数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeTopcounturl(array $domains, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/topcounturl';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取访问量数据的域名数组
+     * @param string $region 待获取访问量数据的区域，例如global，具体看参考：https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis#region
+     * @param string $startDate  待获取访问量数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取访问量数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeToptrafficurl(array $domains, $region, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['region'] = $region;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/toptrafficurl';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取PageView数据的域名数组
+     * @param string $freq 待获取PageView数据的粒度，可选项为 1hour、1day
+     * @param string $startDate  待获取PageView数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取PageView数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 获取PageView数据时的错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzePageview(array $domains, $freq, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/pageview';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
+    /**
+     * @param array $domains 待获取UniqueVisitor数据的域名数组
+     * @param string $freq 待获取UniqueVisitor数据的粒度，可选项为 1hour、1day
+     * @param string $startDate  待获取UniqueVisitor数据的开始日期，格式类似 2017-01-01
+     * @param string $endDate  待获取UniqueVisitor数据的结束日期，格式类似 2017-01-01
+     *
+     * @return array 获取UniqueVisitor数据时的错误信息，参考 examples/cdn_manager.php 代码
+     *
+     * @link https://developer.qiniu.com/fusion/api/4081/cdn-log-analysis
+     */
+    public function getCdnLoganalyzeUniquevisitor(array $domains, $freq, $startDate, $endDate)
+    {
+        $req = array();
+        $req['domains'] = $domains;
+        $req['freq'] = $freq;
+        $req['startDate'] = $startDate;
+        $req['endDate'] = $endDate;
+
+        $url = $this->server . '/v2/tune/loganalyze/uniquevisitor';
+        $body = json_encode($req);
+        return $this->post($url, $body);
+    }
+
     private function post($url, $body)
     {
         $headers = $this->auth->authorization($url, $body, 'application/json');
