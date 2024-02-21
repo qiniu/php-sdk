@@ -57,7 +57,7 @@ jobs:
           QINIU_TEST_BUCKET: ${{ secrets.QINIU_TEST_BUCKET }}
           QINIU_TEST_DOMAIN: ${{ secrets.QINIU_TEST_DOMAIN }}
 
-      - name: Print mock servion log
+      - name: Print mock server log
         if: ${{ failure() }}
         run: |
           cat phpd.log
