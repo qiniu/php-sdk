@@ -202,6 +202,10 @@ final class Auth
         'deleteAfterDays',
         'fileType',
         'isPrefixalScope',
+
+        'transform', // deprecated
+        'transformFallbackKey', // deprecated
+        'transformFallbackMode', // deprecated
     );
 
     private static function copyPolicy(&$policy, $originPolicy, $strictPolicy)
