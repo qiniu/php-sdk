@@ -110,7 +110,7 @@ final class CdnManager
      *
      * @return array 预取的请求回复和错误，参考 examples/cdn_manager.php 代码
      *
-     * @link http://developer.qiniu.com/article/fusion/api/refresh.html
+     * @link https://developer.qiniu.com/fusion/api/1227/file-prefetching#3
      */
     public function prefetchUrls(array $urls)
     {
