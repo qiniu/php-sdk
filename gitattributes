@@ -1,0 +1,7 @@
+* text=auto
+
+/docs              export-ignore
+/examples          export-ignore
+/tests             export-ignore
+/phpunit.xml.dist  export-ignore
+/test-env.sh       export-ignore
