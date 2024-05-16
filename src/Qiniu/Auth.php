@@ -1,4 +1,5 @@
 <?php
+
 namespace Qiniu;
 
 use Qiniu\Http\Header;
@@ -94,7 +95,7 @@ final class Auth
             $data .= ":" . $url["port"];
         }
 
-        // try append content type
+        // try to append content type
         if ($headers != null && isset($headers["Content-Type"])) {
             // append content type
             $data .= "\n";
@@ -133,9 +134,32 @@ final class Auth
         return array($this->sign($data), null);
     }
 
-    public function verifyCallback($contentType, $originAuthorization, $url, $body)
-    {
-        $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
+    public function verifyCallback(
+        $contentType,
+        $originAuthorization,
+        $url,
+        $body,
+        $method = "GET",
+        $headers = array()
+    ) {
+        if (strpos($originAuthorization, 'Qiniu') === 0) {
+            $qnHeaders = new Header($headers);
+            if (!isset($qnHeaders['Content-Type'])) {
+                $qnHeaders['Content-Type'] = $contentType;
+            }
+            list($sign, $err) = $this->signQiniuAuthorization(
+                $url,
+                $method,
+                $body,
+                $qnHeaders
+            );
+            if ($err !== null) {
+                return false;
+            }
+            $authorization = 'Qiniu ' . $sign;
+        } else {
+            $authorization = 'QBox ' . $this->signRequest($url, $body, $contentType);
+        }
         return $originAuthorization === $authorization;
     }
 

@@ -18,8 +18,18 @@ class Header implements \ArrayAccess, \IteratorAggregate, \Countable
         foreach ($obj as $key => $values) {
             $normalizedKey = self::normalizeKey($key);
             $normalizedValues = array();
-            foreach ($values as $value) {
-                array_push($normalizedValues, self::normalizeValue($value));
+            if (!is_array($values)) {
+                array_push(
+                    $normalizedValues,
+                    self::normalizeValue($values)
+                );
+            } else {
+                foreach ($values as $value) {
+                    array_push(
+                        $normalizedValues,
+                        self::normalizeValue($value)
+                    );
+                }
             }
             $this->data[$normalizedKey] = $normalizedValues;
         }
