@@ -10,9 +10,9 @@ final class Config
 
     const RSF_HOST = 'rsf.qiniuapi.com';
     const API_HOST = 'api.qiniuapi.com';
-    const RS_HOST = 'rs.qiniuapi.com';      //RS Host
-    const UC_HOST = 'uc.qbox.me';              //UC Host
-    const QUERY_REGION_HOST = 'kodo-config.qiniuapi.com';
+    const RS_HOST = 'rs.qiniuapi.com'; // RS Host
+    const UC_HOST = 'uc.qiniuapi.com'; // UC Host
+    const QUERY_REGION_HOST = Config::UC_HOST;
     const RTCAPI_HOST = 'http://rtc.qiniuapi.com';
     const ARGUS_HOST = 'ai.qiniuapi.com';
     const CASTER_HOST = 'pili-caster.qiniuapi.com';
@@ -50,8 +50,8 @@ final class Config
         $this->ucHost = Config::UC_HOST;
         $this->queryRegionHost = Config::QUERY_REGION_HOST;
         $this->backupQueryRegionHosts = array(
+            "kodo-config.qiniuapi.com",
             "uc.qbox.me",
-            "api.qiniu.com"
         );
         $this->backupUcHostsRetryTimes = 2;
     }

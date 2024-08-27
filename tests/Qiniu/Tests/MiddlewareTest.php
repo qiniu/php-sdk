@@ -52,7 +52,7 @@ class MiddlewareTest extends TestCase
 
         $request = new Request(
             "GET",
-            "https://qiniu.com/index.html",
+            "http://localhost:9000/ok.php",
             array(),
             null,
             $reqOpt
@@ -79,7 +79,7 @@ class MiddlewareTest extends TestCase
             new Middleware\RetryDomainsMiddleware(
                 array(
                     "unavailable.phpsdk.qiniu.com",
-                    "qiniu.com",
+                    "localhost:9000",
                 ),
                 3
             ),
@@ -88,7 +88,7 @@ class MiddlewareTest extends TestCase
 
         $request = new Request(
             "GET",
-            "https://fake.phpsdk.qiniu.com/index.html",
+            "http://fake.phpsdk.qiniu.com/ok.php",
             array(),
             null,
             $reqOpt
@@ -130,7 +130,7 @@ class MiddlewareTest extends TestCase
             new Middleware\RetryDomainsMiddleware(
                 array(
                     "unavailable.phpsdk.qiniu.com",
-                    "qiniu.com",
+                    "localhost:9000",
                 ),
                 3,
                 function () {
@@ -142,7 +142,7 @@ class MiddlewareTest extends TestCase
 
         $request = new Request(
             "GET",
-            "https://fake.phpsdk.qiniu.com/index.html",
+            "http://fake.phpsdk.qiniu.com/ok.php",
             array(),
             null,
             $reqOpt
