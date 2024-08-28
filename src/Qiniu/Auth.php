@@ -222,6 +222,7 @@ final class Auth
         'persistentOps',
         'persistentNotifyUrl',
         'persistentPipeline',
+        'persistentType', // 为 `1` 时开启闲时任务
 
         'deleteAfterDays',
         'fileType',
