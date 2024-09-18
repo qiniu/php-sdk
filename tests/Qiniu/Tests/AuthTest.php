@@ -236,7 +236,7 @@ namespace Qiniu\Tests {
             $this->assertArrayHasKey("X-Qiniu-Date", $authedHeaders);
             putenv('DISABLE_QINIU_TIMESTAMP_SIGNATURE');
         }
-        public function testQboxVerifyCallback()
+        public function testQboxVerifyCallbackShouldOkWithRequiredOptions()
         {
             $auth = new Auth('abcdefghklmnopq', '1234567890');
             $ok = $auth->verifyCallback(
@@ -247,7 +247,22 @@ namespace Qiniu\Tests {
             );
             $this->assertTrue($ok);
         }
-        public function testQiniuVerifyCallback()
+        public function testQboxVerifyCallbackShouldOkWithOmitOptions()
+        {
+            $auth = new Auth('abcdefghklmnopq', '1234567890');
+            $ok = $auth->verifyCallback(
+                'application/x-www-form-urlencoded',
+                'QBox abcdefghklmnopq:T7F-SjxX7X2zI4Fc1vANiNt1AUE=',
+                'https://test.qiniu.com/callback',
+                'name=sunflower.jpg&hash=Fn6qeQi4VDLQ347NiRm-RlQx_4O2&location=Shanghai&price=1500.00&uid=123',
+                'POST', // this should be omit
+                array(
+                    'X-Qiniu-Bbb' => 'BBB'
+                ) // this should be omit
+            );
+            $this->assertTrue($ok);
+        }
+        public function testQiniuVerifyCallbackShouldOk()
         {
             $auth = new Auth('abcdefghklmnopq', '1234567890');
             $ok = $auth->verifyCallback(
@@ -261,6 +276,21 @@ namespace Qiniu\Tests {
                 )
             );
             $this->assertTrue($ok);
+        }
+        public function testQiniuVerifyCallbackShouldFailed()
+        {
+            $auth = new Auth('abcdefghklmnopq', '1234567890');
+            $ok = $auth->verifyCallback(
+                'application/x-www-form-urlencoded',
+                'Qiniu abcdefghklmnopq:ZqS7EZuAKrhZaEIxqNGxDJi41IQ=',
+                'https://test.qiniu.com/callback',
+                'name=sunflower.jpg&hash=Fn6qeQi4VDLQ347NiRm-RlQx_4O2&location=Shanghai&price=1500.00&uid=123',
+                'POST',
+                array(
+                    'X-Qiniu-Bbb' => 'BBB'
+                )
+            );
+            $this->assertFalse($ok);
         }
     }
 }

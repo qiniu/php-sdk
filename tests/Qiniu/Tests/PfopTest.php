@@ -52,6 +52,27 @@ class PfopTest extends TestCase
         $this->assertNull($error);
     }
 
+    private function pfopTypeTestData()
+    {
+        return array(
+            array(
+                'type' => null
+            ),
+            array(
+                'type' => -1
+            ),
+            array(
+                'type' => 0
+            ),
+            array(
+                'type' => 1
+            ),
+            array(
+                'type' => 2
+            )
+        );
+    }
+
     public function testPfopWithIdleTimeType()
     {
         global $testAuth;
@@ -62,22 +83,34 @@ class PfopTest extends TestCase
         $fops = 'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240|saveas/' . $persistentEntry;
         $pfop = new PersistentFop($testAuth, self::getConfig());
 
-        list($id, $error) = $pfop->execute(
-            $bucket,
-            $key,
-            $fops,
-            null,
-            null,
-            false,
-            1
-        );
-        $this->assertNull($error);
-        list($status, $error) = $pfop->status($id);
-        $this->assertNotNull($status);
-        $this->assertNull($error);
-        $this->assertEquals(1, $status['type']);
-        $this->assertNotEmpty($status['creationDate']);
+        $testCases = $this->pfopTypeTestData();
+
+        foreach ($testCases as $testCase) {
+            list($id, $error) = $pfop->execute(
+                $bucket,
+                $key,
+                $fops,
+                null,
+                null,
+                false,
+                $testCase['type']
+            );
+
+            if (in_array($testCase['type'], array(null, 0, 1))) {
+                $this->assertNull($error);
+                list($status, $error) = $pfop->status($id);
+                $this->assertNotNull($status);
+                $this->assertNull($error);
+                if ($testCase['type'] == 1) {
+                    $this->assertEquals(1, $status['type']);
+                }
+                $this->assertNotEmpty($status['creationDate']);
+            } else {
+                $this->assertNotNull($error);
+            }
+        }
     }
+
 
     public function testPfopByUploadPolicy()
     {
@@ -87,34 +120,53 @@ class PfopTest extends TestCase
         $persistentEntry =  \Qiniu\entry($bucket, 'test-pfop-type_1');
         $fops = 'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240|saveas/' . $persistentEntry;
 
-        $token = $testAuth->uploadToken(
-            $bucket,
-            $key,
-            3600,
-            array(
-                'persistentOps' => $fops,
-                'persistentType' => 1
-            )
-        );
-        $upManager = new UploadManager(self::getConfig());
-        list($ret, $error) = $upManager->putFile(
-            $token,
-            $key,
-            __file__,
-            null,
-            'text/plain',
-            true
-        );
-        $this->assertNull($error);
-        $this->assertNotEmpty($ret['persistentId']);
-        $id = $ret['persistentId'];
+        $testCases = $this->pfopTypeTestData();
 
-        $pfop = new PersistentFop($testAuth, self::getConfig());
-        list($status, $error) = $pfop->status($id);
-        $this->assertNotNull($status);
-        $this->assertNull($error);
-        $this->assertEquals(1, $status['type']);
-        $this->assertNotEmpty($status['creationDate']);
+        foreach ($testCases as $testCase) {
+            $putPolicy = array(
+                'persistentOps' => $fops,
+                'persistentType' => $testCase['type']
+            );
+
+            if ($testCase['type'] == null) {
+                unset($putPolicy['persistentType']);
+            }
+
+            $token = $testAuth->uploadToken(
+                $bucket,
+                $key,
+                3600,
+                $putPolicy
+            );
+            $upManager = new UploadManager(self::getConfig());
+            list($ret, $error) = $upManager->putFile(
+                $token,
+                $key,
+                __file__,
+                null,
+                'text/plain',
+                true
+            );
+
+            if (in_array($testCase['type'], array(null, 0, 1))) {
+                $this->assertNull($error);
+                $this->assertNotEmpty($ret['persistentId']);
+                $id = $ret['persistentId'];
+            } else {
+                $this->assertNotNull($error);
+                return;
+            }
+
+            $pfop = new PersistentFop($testAuth, self::getConfig());
+            list($status, $error) = $pfop->status($id);
+
+            $this->assertNotNull($status);
+            $this->assertNull($error);
+            if ($testCase['type'] == 1) {
+                $this->assertEquals(1, $status['type']);
+            }
+            $this->assertNotEmpty($status['creationDate']);
+        }
     }
 
     public function testMkzip()
