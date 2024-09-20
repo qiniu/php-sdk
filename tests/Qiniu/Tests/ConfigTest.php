@@ -66,13 +66,13 @@ namespace Qiniu\Tests {
         public function testSetUcHost()
         {
             $conf = new Config();
-            $this->assertEquals("http://uc.qbox.me", $conf->getUcHost());
+            $this->assertEquals('http://' . Config::UC_HOST, $conf->getUcHost());
             $conf->setUcHost("uc.example.com");
             $this->assertEquals("http://uc.example.com", $conf->getUcHost());
 
             $conf = new Config();
             $conf->useHTTPS = true;
-            $this->assertEquals("https://uc.qbox.me", $conf->getUcHost());
+            $this->assertEquals('https://' . Config::UC_HOST, $conf->getUcHost());
             $conf->setUcHost("uc.example.com");
             $this->assertEquals("https://uc.example.com", $conf->getUcHost());
         }
@@ -94,7 +94,7 @@ namespace Qiniu\Tests {
                 "fake-uc.phpsdk.qiniu.com",
                 array(
                     "unavailable-uc.phpsdk.qiniu.com",
-                    "uc.qbox.me" // real uc
+                    Config::UC_HOST // real uc
                 )
             );
             list(, $err) = $conf->getRsHostV2($this->accessKey, $this->bucketName);
@@ -108,7 +108,7 @@ namespace Qiniu\Tests {
             $conf->setBackupQueryRegionHosts(
                 array(
                     "unavailable-uc.phpsdk.qiniu.com",
-                    "uc.qbox.me" // real uc
+                    Config::UC_HOST // real uc
                 )
             );
             list(, $err) = $conf->getRsHostV2($this->accessKey, $this->bucketName);
