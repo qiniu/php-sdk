@@ -99,6 +99,11 @@ final class RequestOptions
         if ($this->proxy_user_password != null) {
             $result[CURLOPT_PROXYUSERPWD] = $this->proxy_user_password;
         }
+
+        // https
+        $result[CURLOPT_SSL_VERIFYPEER] = false;
+        $result[CURLOPT_SSL_VERIFYHOST] = false;
+        
         return $result;
     }
 }
