@@ -61,19 +61,22 @@ final class PersistentFop
     public function execute(
         $bucket,
         $key,
-        $fops,
+        $fops = null,
         $pipeline = null,
         $notify_url = null,
         $force = false,
-        $type = null
+        $type = null,
+        $workflow_template_id = null
     ) {
         if (is_array($fops)) {
             $fops = implode(';', $fops);
         }
-        $params = array('bucket' => $bucket, 'key' => $key, 'fops' => $fops);
+        $params = array('bucket' => $bucket, 'key' => $key);
+        \Qiniu\setWithoutEmpty($params, 'fops', $fops);
         \Qiniu\setWithoutEmpty($params, 'pipeline', $pipeline);
         \Qiniu\setWithoutEmpty($params, 'notifyURL', $notify_url);
         \Qiniu\setWithoutEmpty($params, 'type', $type);
+        \Qiniu\setWithoutEmpty($params, 'workflowTemplateID', $workflow_template_id);
         if ($force) {
             $params['force'] = 1;
         }
