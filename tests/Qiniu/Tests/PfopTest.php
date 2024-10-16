@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Qiniu\Auth;
 use Qiniu\Processing\PersistentFop;
 use Qiniu\Storage\UploadManager;
+
 //use Qiniu\Region;
 //use Qiniu\Config;
 
@@ -17,10 +18,11 @@ class PfopTest extends TestCase
     private static $testAuth;
 
     private static $bucketName;
+
     /**
      * @beforeClass
      */
-    public static function setupBeforeClass()
+    public static function prepareEnvironment()
     {
         global $bucketName;
         global $testAuth;
