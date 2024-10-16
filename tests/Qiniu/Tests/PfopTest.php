@@ -106,7 +106,17 @@ class PfopTest extends TestCase
         $testCases = $this->pfopOptionsTestData();
 
         foreach ($testCases as $testCase) {
-            if ($testCase['workflowTemplateID']) {
+            $workflowTemplateID = null;
+            $type = null;
+
+            if (array_key_exists('workflowTemplateID', $testCase)) {
+                $workflowTemplateID = $testCase['workflowTemplateID'];
+            }
+            if (array_key_exists('type', $testCase)) {
+                $type = $testCase['type'];
+            }
+
+            if ($workflowTemplateID) {
                 $fops = null;
             } else {
                 $persistentEntry =  \Qiniu\entry(
@@ -116,7 +126,7 @@ class PfopTest extends TestCase
                         array(
                             'test-pfop/test-pfop-by-api',
                             'type',
-                            $testCase['type']
+                            $type
                         )
                     )
                 );
@@ -129,24 +139,24 @@ class PfopTest extends TestCase
                 null,
                 null,
                 false,
-                $testCase['type'],
-                $testCase['workflowTemplateID']
+                $type,
+                $workflowTemplateID
             );
 
-            if (in_array($testCase['type'], array(null, 0, 1))) {
+            if (in_array($type, array(null, 0, 1))) {
                 $this->assertNull($error);
                 list($status, $error) = $pfop->status($id);
                 $this->assertNotNull($status);
                 $this->assertNull($error);
-                if ($testCase['type'] == 1) {
+                if ($type == 1) {
                     $this->assertEquals(1, $status['type']);
                 }
-                if ($testCase['workflowTemplateID']) {
+                if ($workflowTemplateID) {
                     // assertStringContainsString when PHPUnit >= 8.0
                     $this->assertTrue(
                         strpos(
                             $status['taskFrom'],
-                            $testCase['workflowTemplateID']
+                            $workflowTemplateID
                         ) !== false
                     );
                 }
@@ -166,11 +176,21 @@ class PfopTest extends TestCase
         $testCases = $this->pfopOptionsTestData();
 
         foreach ($testCases as $testCase) {
+            $workflowTemplateID = null;
+            $type = null;
+
+            if (array_key_exists('workflowTemplateID', $testCase)) {
+                $workflowTemplateID = $testCase['workflowTemplateID'];
+            }
+            if (array_key_exists('type', $testCase)) {
+                $type = $testCase['type'];
+            }
+
             $putPolicy = array(
-                'persistentType' => $testCase['type']
+                'persistentType' => $type
             );
-            if ($testCase['workflowTemplateID']) {
-                $putPolicy['persistentWorkflowTemplateID'] = $testCase['workflowTemplateID'];
+            if ($workflowTemplateID) {
+                $putPolicy['persistentWorkflowTemplateID'] = $workflowTemplateID;
             } else {
                 $persistentEntry =  \Qiniu\entry(
                     $bucket,
@@ -179,14 +199,14 @@ class PfopTest extends TestCase
                         array(
                             'test-pfop/test-pfop-by-upload',
                             'type',
-                            $testCase['type']
+                            $type
                         )
                     )
                 );
                 $putPolicy['persistentOps'] = 'avinfo|saveas/' . $persistentEntry;
             }
 
-            if ($testCase['type'] == null) {
+            if ($type == null) {
                 unset($putPolicy['persistentType']);
             }
 
@@ -206,7 +226,7 @@ class PfopTest extends TestCase
                 true
             );
 
-            if (in_array($testCase['type'], array(null, 0, 1))) {
+            if (in_array($type, array(null, 0, 1))) {
                 $this->assertNull($error);
                 $this->assertNotEmpty($ret['persistentId']);
                 $id = $ret['persistentId'];
@@ -220,15 +240,15 @@ class PfopTest extends TestCase
 
             $this->assertNotNull($status);
             $this->assertNull($error);
-            if ($testCase['type'] == 1) {
+            if ($type == 1) {
                 $this->assertEquals(1, $status['type']);
             }
-            if ($testCase['workflowTemplateID']) {
+            if ($workflowTemplateID) {
                 // assertStringContainsString when PHPUnit >= 8.0
                 $this->assertTrue(
                     strpos(
                         $status['taskFrom'],
-                        $testCase['workflowTemplateID']
+                        $workflowTemplateID
                     ) !== false
                 );
             }
