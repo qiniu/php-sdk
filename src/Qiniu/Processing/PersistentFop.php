@@ -71,6 +71,11 @@ final class PersistentFop
         if (is_array($fops)) {
             $fops = implode(';', $fops);
         }
+
+        if (!$fops && !$workflow_template_id) {
+            throw new \InvalidArgumentException('Must provide one of fops or template_id');
+        }
+
         $params = array('bucket' => $bucket, 'key' => $key);
         \Qiniu\setWithoutEmpty($params, 'fops', $fops);
         \Qiniu\setWithoutEmpty($params, 'pipeline', $pipeline);

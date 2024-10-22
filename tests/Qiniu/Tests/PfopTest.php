@@ -167,6 +167,30 @@ class PfopTest extends TestCase
         }
     }
 
+    public function testPfopWithInvalidArgument()
+    {
+        $bucket = self::$bucketName;
+        $key = 'qiniu.png';
+        $pfop = new PersistentFop(self::$testAuth, self::getConfig());
+        $err = null;
+        try {
+            $pfop->execute(
+                $bucket,
+                $key
+            );
+        } catch (\Exception $e) {
+            $err = $e;
+        }
+
+        $this->assertNotEmpty($err);
+        $this->assertTrue(
+            strpos(
+                $err->getMessage(),
+                'Must provide one of fops or template_id'
+            ) !== false
+        );
+    }
+
     public function testPfopWithUploadPolicy()
     {
         $bucket = self::$bucketName;
