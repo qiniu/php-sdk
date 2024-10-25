@@ -84,7 +84,6 @@ final class ArgusManager
         $url = $scheme . Config::ARGUS_HOST . "/v3/jobs/video/$jobid";
         $response = $this->get($url);
         if (!$response->ok()) {
-            print("statusCode: " . $response->statusCode);
             return array(null, new Error($url, $response));
         }
         return array($response->json(), null);
@@ -118,7 +117,6 @@ final class ArgusManager
         $headers['Content-Type'] = 'application/json';
         $ret = Client::post($url, $body, $headers, $this->proxy->makeReqOpt());
         if (!$ret->ok()) {
-            print("statusCode: " . $ret->statusCode);
             return array(null, new Error($url, $ret));
         }
         $r = ($ret->body === null) ? array() : $ret->json();

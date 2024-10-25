@@ -3,13 +3,34 @@ namespace Qiniu\Tests;
 
 use PHPUnit\Framework\TestCase;
 
+use Qiniu\Auth;
 use Qiniu\Processing\PersistentFop;
 use Qiniu\Storage\UploadManager;
-use Qiniu\Region;
-use Qiniu\Config;
+
+//use Qiniu\Region;
+//use Qiniu\Config;
 
 class PfopTest extends TestCase
 {
+    /**
+     * @var Auth
+     */
+    private static $testAuth;
+
+    private static $bucketName;
+
+    /**
+     * @beforeClass
+     */
+    public static function prepareEnvironment()
+    {
+        global $bucketName;
+        global $testAuth;
+
+        self::$bucketName = $bucketName;
+        self::$testAuth = $testAuth;
+    }
+
     private static function getConfig()
     {
         // use this func to test in test env
@@ -52,7 +73,7 @@ class PfopTest extends TestCase
         $this->assertNull($error);
     }
 
-    private function pfopTypeTestData()
+    private function pfopOptionsTestData()
     {
         return array(
             array(
@@ -69,23 +90,48 @@ class PfopTest extends TestCase
             ),
             array(
                 'type' => 2
+            ),
+            array(
+                'workflowTemplateID' => 'test-workflow'
             )
         );
     }
 
-    public function testPfopWithIdleTimeType()
+    public function testPfopExecuteWithOptions()
     {
-        global $testAuth;
+        $bucket = self::$bucketName;
+        $key = 'qiniu.png';
+        $pfop = new PersistentFop(self::$testAuth, self::getConfig());
 
-        $bucket = 'testres';
-        $key = 'sintel_trailer.mp4';
-        $persistentEntry =  \Qiniu\entry($bucket, 'test-pfop-type_1');
-        $fops = 'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240|saveas/' . $persistentEntry;
-        $pfop = new PersistentFop($testAuth, self::getConfig());
-
-        $testCases = $this->pfopTypeTestData();
+        $testCases = $this->pfopOptionsTestData();
 
         foreach ($testCases as $testCase) {
+            $workflowTemplateID = null;
+            $type = null;
+
+            if (array_key_exists('workflowTemplateID', $testCase)) {
+                $workflowTemplateID = $testCase['workflowTemplateID'];
+            }
+            if (array_key_exists('type', $testCase)) {
+                $type = $testCase['type'];
+            }
+
+            if ($workflowTemplateID) {
+                $fops = null;
+            } else {
+                $persistentEntry =  \Qiniu\entry(
+                    $bucket,
+                    implode(
+                        '_',
+                        array(
+                            'test-pfop/test-pfop-by-api',
+                            'type',
+                            $type
+                        )
+                    )
+                );
+                $fops = 'avinfo|saveas/' . $persistentEntry;
+            }
             list($id, $error) = $pfop->execute(
                 $bucket,
                 $key,
@@ -93,16 +139,26 @@ class PfopTest extends TestCase
                 null,
                 null,
                 false,
-                $testCase['type']
+                $type,
+                $workflowTemplateID
             );
 
-            if (in_array($testCase['type'], array(null, 0, 1))) {
+            if (in_array($type, array(null, 0, 1))) {
                 $this->assertNull($error);
                 list($status, $error) = $pfop->status($id);
                 $this->assertNotNull($status);
                 $this->assertNull($error);
-                if ($testCase['type'] == 1) {
+                if ($type == 1) {
                     $this->assertEquals(1, $status['type']);
+                }
+                if ($workflowTemplateID) {
+                    // assertStringContainsString when PHPUnit >= 8.0
+                    $this->assertTrue(
+                        strpos(
+                            $status['taskFrom'],
+                            $workflowTemplateID
+                        ) !== false
+                    );
                 }
                 $this->assertNotEmpty($status['creationDate']);
             } else {
@@ -111,24 +167,70 @@ class PfopTest extends TestCase
         }
     }
 
-
-    public function testPfopByUploadPolicy()
+    public function testPfopWithInvalidArgument()
     {
-        global $testAuth;
-        $bucket = 'testres';
-        $key = 'sintel_trailer.mp4';
-        $persistentEntry =  \Qiniu\entry($bucket, 'test-pfop-type_1');
-        $fops = 'avthumb/m3u8/segtime/10/vcodec/libx264/s/320x240|saveas/' . $persistentEntry;
+        $bucket = self::$bucketName;
+        $key = 'qiniu.png';
+        $pfop = new PersistentFop(self::$testAuth, self::getConfig());
+        $err = null;
+        try {
+            $pfop->execute(
+                $bucket,
+                $key
+            );
+        } catch (\Exception $e) {
+            $err = $e;
+        }
 
-        $testCases = $this->pfopTypeTestData();
+        $this->assertNotEmpty($err);
+        $this->assertTrue(
+            strpos(
+                $err->getMessage(),
+                'Must provide one of fops or template_id'
+            ) !== false
+        );
+    }
+
+    public function testPfopWithUploadPolicy()
+    {
+        $bucket = self::$bucketName;
+        $testAuth = self::$testAuth;
+        $key = 'test-pfop/upload-file';
+
+        $testCases = $this->pfopOptionsTestData();
 
         foreach ($testCases as $testCase) {
-            $putPolicy = array(
-                'persistentOps' => $fops,
-                'persistentType' => $testCase['type']
-            );
+            $workflowTemplateID = null;
+            $type = null;
 
-            if ($testCase['type'] == null) {
+            if (array_key_exists('workflowTemplateID', $testCase)) {
+                $workflowTemplateID = $testCase['workflowTemplateID'];
+            }
+            if (array_key_exists('type', $testCase)) {
+                $type = $testCase['type'];
+            }
+
+            $putPolicy = array(
+                'persistentType' => $type
+            );
+            if ($workflowTemplateID) {
+                $putPolicy['persistentWorkflowTemplateID'] = $workflowTemplateID;
+            } else {
+                $persistentEntry =  \Qiniu\entry(
+                    $bucket,
+                    implode(
+                        '_',
+                        array(
+                            'test-pfop/test-pfop-by-upload',
+                            'type',
+                            $type
+                        )
+                    )
+                );
+                $putPolicy['persistentOps'] = 'avinfo|saveas/' . $persistentEntry;
+            }
+
+            if ($type == null) {
                 unset($putPolicy['persistentType']);
             }
 
@@ -148,7 +250,7 @@ class PfopTest extends TestCase
                 true
             );
 
-            if (in_array($testCase['type'], array(null, 0, 1))) {
+            if (in_array($type, array(null, 0, 1))) {
                 $this->assertNull($error);
                 $this->assertNotEmpty($ret['persistentId']);
                 $id = $ret['persistentId'];
@@ -162,8 +264,17 @@ class PfopTest extends TestCase
 
             $this->assertNotNull($status);
             $this->assertNull($error);
-            if ($testCase['type'] == 1) {
+            if ($type == 1) {
                 $this->assertEquals(1, $status['type']);
+            }
+            if ($workflowTemplateID) {
+                // assertStringContainsString when PHPUnit >= 8.0
+                $this->assertTrue(
+                    strpos(
+                        $status['taskFrom'],
+                        $workflowTemplateID
+                    ) !== false
+                );
             }
             $this->assertNotEmpty($status['creationDate']);
         }
@@ -171,10 +282,9 @@ class PfopTest extends TestCase
 
     public function testMkzip()
     {
-        global $testAuth;
-        $bucket = 'phpsdk';
+        $bucket = self::$bucketName;
         $key = 'php-logo.png';
-        $pfop = new PersistentFop($testAuth, null);
+        $pfop = new PersistentFop(self::$testAuth, null);
 
         $url1 = 'http://phpsdk.qiniudn.com/php-logo.png';
         $url2 = 'http://phpsdk.qiniudn.com/php-sdk.html';

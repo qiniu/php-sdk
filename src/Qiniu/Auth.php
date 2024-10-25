@@ -219,10 +219,11 @@ final class Auth
         'fsizeMin',
         'fsizeLimit',
 
-        'persistentOps',
+        'persistentOps', // 与 persistentWorkflowTemplateID 二选一
         'persistentNotifyUrl',
         'persistentPipeline',
         'persistentType', // 为 `1` 时开启闲时任务
+        'persistentWorkflowTemplateID', // 与 persistentOps 二选一
 
         'deleteAfterDays',
         'fileType',
