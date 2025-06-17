@@ -41,7 +41,7 @@ final class Config
     public $backupUcHostsRetryTimes;
 
     // 构造函数
-    public function __construct(Region $z = null)
+    public function __construct(?Region $z = null)
     {
         $this->zone = $z;
         $this->useHTTPS = false;
