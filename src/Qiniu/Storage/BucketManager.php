@@ -22,7 +22,7 @@ final class BucketManager
 
     public function __construct(
         Auth $auth,
-        Config $config = null,
+        ?Config $config = null,
         $proxy = null,
         $proxy_auth = null,
         $proxy_user_password = null

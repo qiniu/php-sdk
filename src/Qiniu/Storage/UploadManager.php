@@ -24,7 +24,7 @@ final class UploadManager
      * @param Config|null $config
      * @param RequestOptions|null $reqOpt
      */
-    public function __construct(Config $config = null, RequestOptions $reqOpt = null)
+    public function __construct(?Config $config = null, ?RequestOptions $reqOpt = null)
     {
         if ($config === null) {
             $config = new Config();
